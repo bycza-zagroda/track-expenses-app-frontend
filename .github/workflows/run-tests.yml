@@ -1,19 +1,16 @@
-name: GitHub Pages
+name: Run Tests
 
-on:
-  push:
-    branches:
-      - main
-      - develop
+on: [push, fork]
 
 jobs:
-  deploy:
+  run_tests:
+    if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Setup Node.js
+      - name: Setup Node.js@16
         uses: actions/setup-node@v2
         with:
           node-version: '16'
@@ -26,11 +23,3 @@ jobs:
 
       - name: Build
         run: yarn build:prod
-
-      - name: Deploy
-        if: success()
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: dist/track-expenses-app-frontend
-          enable_jekyll: true
