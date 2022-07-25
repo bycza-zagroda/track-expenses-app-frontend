@@ -25,7 +25,7 @@ jobs:
         run: yarn test:headless
 
       - name: Build
-        run: yarn build:prod
+        run: yarn build:gh
 
       - name: Deploy
         if: success()
