@@ -11,7 +11,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build:prod": "ng build --configuration production --base-href https://bycza-zagroda.github.io/track-expenses-app-frontend/",
+    "build:gh": "ng build --configuration production --base-href https://bycza-zagroda.github.io/track-expenses-app-frontend/",
+    "build:prod": "ng build --configuration production",
     "test": "ng test",
     "test:headless": "ng test --watch=false --browsers=ChromeHeadless",
     "watch": "ng build --watch --configuration development"
