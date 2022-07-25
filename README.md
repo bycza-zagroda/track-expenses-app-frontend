@@ -1,5 +1,7 @@
 [<ins>English</ins>](README.md) - [Polish](README.pl.md)
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/877a40fe-be18-4706-afca-48fef282bfac/deploy-status)](https://app.netlify.com/sites/track-expenses-app-frontend/deploys)
+
 * [About project](#about-project)
 * [Initial assumptions of the application](#initial-assumptions-of-the-application)
 * [Prerequisites](#prerequisites)
