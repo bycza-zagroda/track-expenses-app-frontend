@@ -1,3 +1,5 @@
+@use 'assets/styles/colors.scss';
+
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
@@ -38,10 +40,6 @@ $track-expenses-app-frontend-theme: mat.define-light-theme(
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include mat.all-component-themes($track-expenses-app-frontend-theme);
-
-@use 'assets/styles/colors.scss';
-
-@import '~@angular/cdk/overlay-prebuilt.css';
 
 html,
 body {
