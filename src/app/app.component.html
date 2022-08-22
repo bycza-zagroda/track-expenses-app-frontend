@@ -1,0 +1,11 @@
+<div class="app">
+  <app-menu></app-menu>
+
+  <main
+    [@routeAnimations]="outlet?.activatedRoute"
+    id="main-content"
+    class="content"
+  >
+    <router-outlet #outlet="outlet"></router-outlet>
+  </main>
+</div>
