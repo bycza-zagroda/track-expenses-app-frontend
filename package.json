@@ -9,7 +9,7 @@
   "version": "0.0.1",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --watch",
     "build": "ng build",
     "build:gh": "ng build --configuration production --base-href https://bycza-zagroda.github.io/track-expenses-app-frontend/",
     "build:prod": "ng build --configuration production",

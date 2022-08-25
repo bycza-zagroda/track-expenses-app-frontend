@@ -1,0 +1,9 @@
+<nav class="navbar">
+  <ul class="navbar__links">
+    <li *ngFor="let route of routes" class="nav__link">
+      <a routerLink="{{ route.path }}">
+        {{ route.data.label }}
+      </a>
+    </li>
+  </ul>
+</nav>

@@ -1,16 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { routerFade } from './animations/animations';
 
 @Component({
   selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <main id="main-content" style="display: grid; place-content: center;">
-      <div>Hello World!</div>
-    </main>
-
-    <router-outlet></router-outlet>
-  `,
+  animations: [routerFade],
 })
-export class AppComponent {
-  title = 'track-expenses-app-frontend';
-}
+export class AppComponent {}
