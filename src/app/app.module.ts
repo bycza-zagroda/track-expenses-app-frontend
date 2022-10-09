@@ -10,9 +10,12 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MenuModule } from './components/menu/menu.module';
+import { FooterComponent } from './components/footer/footer.component';
+import {MatCardModule} from "@angular/material/card";
+import {HomeComponent} from "./components/home/home.component";
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, HomeComponent, FooterComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -23,6 +26,7 @@ import { MenuModule } from './components/menu/menu.module';
     BrowserAnimationsModule,
 
     MenuModule,
+    MatCardModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
