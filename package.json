@@ -1,12 +1,12 @@
 {
   "name": "track-expenses-app-frontend",
   "author": "bycza-zagroda",
-  "description": "TODO!",
+  "description": "track-expenses-app",
   "license": "See license in doc/LICENSE",
   "homepage": "https://github.com/bycza-zagroda/track-expenses-app-frontend",
   "readme": "README.md",
   "repository": "https://github.com/bycza-zagroda/track-expenses-app-frontend",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
