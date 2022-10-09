@@ -1,12 +1,7 @@
 {
   "name": "track-expenses-app-frontend",
   "author": "bycza-zagroda",
-  "description": "This project is created by [Bycza Zagroda](https://github.com/bycza-zagroda) community.
-  The main aim for this project it to allow a user to track their own expenses.
-  The code for the Track Expenses App is separated for [back-end](https://github.com/bycza-zagroda/track-expenses-app-backend) and 
-  [front-end](https://github.com/bycza-zagroda/track-expenses-app-frontend) with
-  their own GitHub repository. In the application the [_REST_](https://pl.wikipedia.org/wiki/Representational_state_transfer) 
-  architecture and [_Minimum Viable Product (MVP)_](https://www.parp.gov.pl/component/content/article/52414:minimum-viable-product) model is used.",
+  "description": "track-expenses-app",
   "license": "See license in doc/LICENSE",
   "homepage": "https://github.com/bycza-zagroda/track-expenses-app-frontend",
   "readme": "README.md",
