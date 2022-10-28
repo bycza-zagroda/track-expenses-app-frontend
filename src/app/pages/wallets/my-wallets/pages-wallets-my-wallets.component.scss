@@ -1,0 +1,20 @@
+@use 'sizes';
+
+.my-wallets {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  gap: 25px 25px;
+  padding: 50px 15px 0 15px;
+
+  @media only screen and (min-width: 900px) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - #{sizes.$navbar-height});
+}

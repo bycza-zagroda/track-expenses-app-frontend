@@ -1,0 +1,29 @@
+@use 'colors';
+
+.add-new-wallet {
+  height: 100%;
+  border: 1px solid colors.$primary;
+  border-radius: 12px;
+  padding: 25px;
+  color: transparentize(colors.$primary, .6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  > mat-icon {
+    font-size: 70px;
+    width: 70px;
+    height: 70px;
+    margin-bottom: 10px;
+  }
+
+  > span {
+    font-size: 20px;
+  }
+
+  &:hover {
+    color: colors.$primary;
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,14 @@
+<div class="container">
+  <div class="loading-container" *ngIf="myWalletsData.isLoading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div *ngIf="myWalletsData.hasError">
+    ERROR - We need to implement some fancy error component
+  </div>
+
+  <div class="my-wallets" *ngIf="myWalletsData.data">
+    <app-my-wallet  *ngFor="let wallet of myWalletsData.data" [wallet]="wallet"></app-my-wallet>
+    <app-add-new-wallet></app-add-new-wallet>
+  </div>
+</div>
