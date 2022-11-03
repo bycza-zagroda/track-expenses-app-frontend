@@ -16,13 +16,13 @@ jobs:
           node-version: '16'
 
       - name: Install dependencies
-        run: yarn install
+        run: npm install
 
       - name: Check Formatting
-        run: yarn format:check
+        run: npm run format:check
 
       - name: Run tests
-        run: yarn test:headless
+        run: npm run test:headless
 
       - name: Build
-        run: yarn build:prod
+        run: npm run build:prod

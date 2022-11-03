@@ -19,13 +19,13 @@ jobs:
           node-version: '16'
 
       - name: Install dependencies
-        run: yarn install
+        run: npm install
 
       - name: Run tests
-        run: yarn test:headless
+        run: npm run test:headless
 
       - name: Build
-        run: yarn build:gh
+        run: npm run build:gh
 
       - name: Deploy
         if: success()
