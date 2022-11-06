@@ -1,0 +1,13 @@
+<div class="wrapper">
+    <div>
+        <h1 mat-dialog-title>{{ data.title }}</h1>
+        <mat-form-field appearance="fill">
+            <mat-label>Wallet Name</mat-label>
+            <input matInput [(ngModel)]="data.inputData">
+        </mat-form-field>
+        <div mat-dialog-actions>
+        <button mat-button (click)="cancel(null)">No Thanks</button>
+        <button mat-button  (click)="cancel(data.inputData)" cdkFocusInitial>{{ data.btn }}</button>
+        </div>
+    </div>
+</div>

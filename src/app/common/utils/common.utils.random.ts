@@ -3,5 +3,5 @@ export function getRandomNumber(min: number, max: number): number {
 }
 
 export function getRandomBoolean(): boolean {
-  return Math.random() < 0.5;
+  return Math.random() < 0.9;
 }

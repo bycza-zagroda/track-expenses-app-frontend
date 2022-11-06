@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PagesWalletsMyWalletsService } from './pages-wallets-my-wallets.service';
 import { MyWallet } from './pages-wallets-my-wallet.model';
 import { TDataState } from '../../../common/http/common.http.types';
+import { getRandomNumber } from 'src/app/common/utils/common.utils.random';
 
 @Component({
   selector: 'app-my-wallets',
@@ -36,5 +37,11 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
         };
       },
     });
+  }
+
+  getWalletName(walletName_: any) {
+    this.myWalletsData.data?.push(
+        new MyWallet({id: getRandomNumber(100, 10000), creationDate: new Date().toString(), name: walletName_})
+    );
   }
 }
