@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { PagesWalletsMyWalletsService } from './pages-wallets-my-wallets.service';
 import { MyWallet } from './pages-wallets-my-wallet.model';
 import { TDataState } from '../../../common/http/common.http.types';
-import { getRandomNumber } from 'src/app/common/utils/common.utils.random';
 import { MatDialog } from '@angular/material/dialog';
 import { WalletFormModalComponent } from 'src/app/common/components/modals/dialog-create-or-update-wallet/wallet-form-modal.component';
 
@@ -46,16 +45,18 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
   }
 
   public addNewWallet(userInputData_: string) {
-    this.myWalletsData.data?.push(
-        new MyWallet({id: getRandomNumber(100, 10000), creationDate: new Date().toString(), name: userInputData_ })
-    );
+    this.myWalletsService.addNewWallet(userInputData_).subscribe( (wallet_: MyWallet) => {
+        this.myWalletsData.data?.push(wallet_);
+    });
   }
 
   public updateWallet(userInputData_: string) {
-    const wallet = this.myWalletsData.data?.findIndex(w => w.id === this.myWalletsData.nowEditWallet);
-    if(wallet) {
-        //this.myWalletsData.data[wallet].id = 1;
-    }
+    this.myWalletsService.updateNewWallet(this.myWalletsData.nowEditWallet, userInputData_).subscribe( (wallet_: MyWallet) => {
+        const walletIndex = this.myWalletsData.data?.findIndex(w => w.id === this.myWalletsData.nowEditWallet);
+        if(walletIndex != undefined && walletIndex > -1) {
+            this.myWalletsData.data?.splice(walletIndex, 1, wallet_);
+        }
+    });
   }
 
   public openWalletModalCallback(id_: number): void {
@@ -73,7 +74,7 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
     const dialogRef = this.dialog.open(WalletFormModalComponent, {
         width: '350px',
         height: '300px',
-        data: { title: 'Update Wallet', isNewWallet: false, inputData: walletNameInput, }
+        data: { title: 'Update Wallet', isNewWallet: id_ === 0, inputData: walletNameInput, }
     });
 
     dialogRef.afterClosed().subscribe(result => {

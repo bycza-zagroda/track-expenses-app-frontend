@@ -16,4 +16,16 @@ export class PagesWalletsMyWalletsService {
       map(walletsResp => walletsResp.map(resp => new MyWallet(resp)))
     );
   }
+
+  public addNewWallet(name_: string): Observable<MyWallet> {
+    return this.gateway.addNewWallet(name_).pipe(
+      map(walletsResp => new MyWallet(walletsResp))
+    );
+  }
+
+  public updateNewWallet(id_: number, name_: string): Observable<MyWallet> {
+    return this.gateway.updateNewWallet(id_, name_).pipe(
+        map(response => new MyWallet(response))
+    );
+  }
 }
