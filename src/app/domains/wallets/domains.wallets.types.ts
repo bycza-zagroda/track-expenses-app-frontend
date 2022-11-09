@@ -6,3 +6,13 @@ export interface IWalletApiResponse {
   creationDate: TServerDateTime;
   name: string;
 }
+
+export interface IWalletModalData {
+  title: string;
+  isNewWallet: boolean;
+  inputData: string;
+}
+
+export interface IWalletModalUserInput {
+  name: string;
+}

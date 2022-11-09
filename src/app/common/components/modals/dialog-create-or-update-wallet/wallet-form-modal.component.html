@@ -6,8 +6,8 @@
             <input matInput [(ngModel)]="data.inputData">
         </mat-form-field>
         <div mat-dialog-actions>
-        <button mat-button (click)="cancel(null)">No Thanks</button>
-        <button mat-button  (click)="cancel(data.inputData)" cdkFocusInitial>{{ data.btn }}</button>
+        <button mat-button (click)="cancel()">No Thanks</button>
+        <button mat-button  (click)="save(data.inputData)" cdkFocusInitial>{{ data.isNewWallet ? "Add" : "Update" }}</button>
         </div>
     </div>
 </div>

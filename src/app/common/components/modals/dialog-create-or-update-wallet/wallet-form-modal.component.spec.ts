@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DialogCreateOrUpdateWalletComponent } from './dialog-create-or-update-wallet.component';
+import { WalletFormModalComponent } from './wallet-form-modal.component';
 
 describe('DialogCreateOrUpdateWalletComponent', () => {
-  let component: DialogCreateOrUpdateWalletComponent;
-  let fixture: ComponentFixture<DialogCreateOrUpdateWalletComponent>;
+  let component: WalletFormModalComponent;
+  let fixture: ComponentFixture<WalletFormModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DialogCreateOrUpdateWalletComponent ]
+      declarations: [ WalletFormModalComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DialogCreateOrUpdateWalletComponent);
+    fixture = TestBed.createComponent(WalletFormModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
