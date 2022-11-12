@@ -3,8 +3,9 @@ import { PagesWalletsMyWalletsService } from './pages-wallets-my-wallets.service
 import { MyWallet } from './pages-wallets-my-wallet.model';
 import { TDataState } from '../../../common/http/common.http.types';
 import { MatDialog } from '@angular/material/dialog';
-import { WalletFormModalComponent } from 'src/app/pages/wallets/my-wallets/modals/dialog-create-or-update-wallet/wallet-form-modal.component';
-import { IWalletModalData } from 'src/app/domains/wallet-modal/domains.wallet-modal.types';
+import { WalletFormModalComponent } from 'src/app/pages/wallets/my-wallets/wallet-form-modal/dialog-create-or-update-wallet/wallet-form-modal.component';
+import { IWalletModalData } from 'src/app/pages/wallets/my-wallets/wallet-form-modal/domains.wallet-modal.types';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-my-wallets',
@@ -12,7 +13,7 @@ import { IWalletModalData } from 'src/app/domains/wallet-modal/domains.wallet-mo
   styleUrls: ['./pages-wallets-my-wallets.component.scss']
 })
 export class PagesWalletsMyWalletsComponent implements OnInit {
-  private nowEditWallet?: number;
+  //private nowEditWallet?: number;
 
   public myWalletsData: TDataState<MyWallet[]> = {
     isLoading: true,
@@ -22,7 +23,7 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
 
   public constructor(
     private readonly myWalletsService: PagesWalletsMyWalletsService,
-    public dialog: MatDialog,
+    private dialog: MatDialog,
   ) {}
 
   public ngOnInit(): void {
@@ -44,37 +45,39 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
     });
   }
 
-  public addNewWallet(userInputData: string) {
-    this.myWalletsService.addNewWallet(userInputData).subscribe( (wallet: MyWallet) => {
+  public addNewWallet(walletModalData: IWalletModalData) {
+    this.myWalletsService.addNewWallet(walletModalData.name).subscribe( (wallet: MyWallet) => {
         this.myWalletsData.data = [wallet, ...this.myWalletsData.data!]
     });
   }
 
-  public updateWallet(userInputData: string) {
-    this.myWalletsService.updateNewWallet(this.nowEditWallet!, userInputData).subscribe( (walletResponse: MyWallet) => {
-        this.myWalletsData.data = this.myWalletsData?.data?.map(wallet => {
-            if (wallet.id === this.nowEditWallet) {
-                return walletResponse;
+  public updateWallet(wallet: MyWallet, walletModalData: IWalletModalData) {
+    this.myWalletsService.updateNewWallet(wallet.id, walletModalData.name).subscribe( (updatedWallet: MyWallet) => {
+        this.myWalletsData.data = this.myWalletsData?.data!.map(walletItem => {
+            if (walletItem.id === wallet.id) {
+                return updatedWallet;
             }
-            return wallet;
-        }) as MyWallet[];
+            return walletItem;
+        });
     });
   }
 
-  public openWalletModal(wallet: MyWallet | undefined = undefined): void {
-    this.nowEditWallet = wallet?.id;
-    const dialogRef = this.dialog.open(WalletFormModalComponent, {
-        data: wallet
-    });
+  public handleWalletCreate() {
+    this.openWalletModal().subscribe( (response: IWalletModalData) => {
+      this.addNewWallet(response);
+    })
+  }
 
-    dialogRef.afterClosed().subscribe((result: IWalletModalData | null) => {
-        if(result) {
-            if(this.nowEditWallet != undefined) {
-                this.updateWallet(result.name);
-            } else {
-                this.addNewWallet(result.name);
-            }
-        }
+  public handleWalletEdit(wallet: MyWallet) {
+    this.openWalletModal(wallet).subscribe( (response: IWalletModalData) => {
+      this.updateWallet(wallet, response);
+    })
+  }
+
+  private openWalletModal(wallet: MyWallet | undefined = undefined): Observable<IWalletModalData> {
+    const dialogRef = this.dialog.open(WalletFormModalComponent, {
+      data: wallet
     });
+    return dialogRef.afterClosed();
   }
 }
