@@ -28,19 +28,19 @@ export class DomainsWalletsGateway {
    ])
   }
 
-  public addNewWallet(name_: string): Observable<IWalletApiResponse> {
+  public addNewWallet(name: string): Observable<IWalletApiResponse> {
     return fakeRequest({
-      name: name_,
+      name: name,
       creationDate: '2022-10-22T09:47:52.595721658Z',
       id: getRandomNumber(100, 10000),
     });
   }
 
-  public updateNewWallet(id_: number, name_: string): Observable<IWalletApiResponse> {
+  public updateNewWallet(id: number, name: string): Observable<IWalletApiResponse> {
     return fakeRequest({
-      name: name_,
-      creationDate: new Date().toString(),
-      id: id_,
+      name: name,
+      creationDate: '2022-10-23T09:47:52.595721658Z',
+      id: id,
     });
   }
 }
