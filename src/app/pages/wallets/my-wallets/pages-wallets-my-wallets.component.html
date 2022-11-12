@@ -8,7 +8,7 @@
   </div>
 
   <div class="my-wallets" *ngIf="myWalletsData.data">
-    <app-my-wallet  *ngFor="let wallet of myWalletsData.data" [wallet]="wallet" (walletEdit)="openWalletModal($event)"></app-my-wallet>
-    <app-add-new-wallet (click)="openWalletModal();"></app-add-new-wallet>
+    <app-my-wallet *ngFor="let wallet of myWalletsData.data" [wallet]="wallet" (walletEdit)="handleWalletEdit($event)"></app-my-wallet>
+    <app-add-new-wallet (click)="handleWalletCreate();"></app-add-new-wallet>
   </div>
 </div>

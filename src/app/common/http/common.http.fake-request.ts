@@ -5,7 +5,7 @@ export function fakeRequest<T>(data: T): Observable<T> {
   const subject: Subject<T> = new Subject();
 
   setTimeout(() => {
-    const shouldSucceed: boolean = getRandomBoolean(0.9);
+    const shouldSucceed: boolean = getRandomBoolean(0.95);
 
     if (shouldSucceed) {
       subject.next(data);

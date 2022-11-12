@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA }  from '@angular/material/dialog';
 import { MyWallet } from '../../pages-wallets-my-wallet.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { IWalletModalData } from '../domains.wallet-modal.types';
 
 @Component({
   selector: 'app-wallet-form-modal',
@@ -22,7 +23,7 @@ export class WalletFormModalComponent {
     }
 
     public save(): void {
-        this.dialogRef.close(this.form.value);
+        this.dialogRef.close(this.form.value as IWalletModalData);
     }
 
     public cancel(): void {
