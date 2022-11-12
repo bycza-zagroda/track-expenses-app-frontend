@@ -6,6 +6,7 @@ import { DomainsWalletsModule } from '../../domains/wallets/domains.wallets.modu
 import { PagesWalletsMyWalletsMyWalletComponent } from './my-wallets/my-wallet/pages-wallets-my-wallets-my-wallet.component';
 import { MaterialModule } from '../../material.module';
 import { PagesWalletsMyWalletsAddNewWalletComponent } from './my-wallets/add-new-wallet/pages-wallets-my-wallets-add-new-wallet.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
   {
@@ -25,6 +26,7 @@ const routes: Routes = [
     CommonModule,
     DomainsWalletsModule,
     MaterialModule,
+    ReactiveFormsModule,
   ],
   exports: [
     RouterModule,
