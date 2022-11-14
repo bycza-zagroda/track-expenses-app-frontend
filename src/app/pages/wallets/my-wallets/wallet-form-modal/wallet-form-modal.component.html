@@ -2,7 +2,7 @@
     <h1 mat-dialog-title>{{ data ? "Update Wallet" : "Create Wallet" }}</h1>
     <mat-form-field appearance="fill">
         <mat-label>Wallet Name</mat-label>
-        <input matInput [formControl]='$any(form).controls["name"]'  >
+        <input matInput [formControl]='form.controls["name"]'>
     </mat-form-field>
     <div mat-dialog-actions>
         <button mat-button (click)="cancel()">Cancel</button>

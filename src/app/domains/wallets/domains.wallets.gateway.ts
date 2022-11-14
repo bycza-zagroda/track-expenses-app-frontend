@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IWalletApiResponse } from './domains.wallets.types';
+import { IWalletApiResponse, IWalletPayload } from './domains.wallets.types';
 import { fakeRequest } from '../../common/http/common.http.fake-request';
 import { getRandomNumber } from 'src/app/common/utils/common.utils.random';
 
@@ -28,7 +28,7 @@ export class DomainsWalletsGateway {
    ])
   }
 
-  public addNewWallet(name: string): Observable<IWalletApiResponse> {
+  public addNewWallet({ name }: IWalletPayload): Observable<IWalletApiResponse> {
     return fakeRequest({
       name: name,
       creationDate: '2022-10-22T09:47:52.595721658Z',
@@ -36,7 +36,7 @@ export class DomainsWalletsGateway {
     });
   }
 
-  public updateNewWallet(id: number, name: string): Observable<IWalletApiResponse> {
+  public updateNewWallet(id: number, { name }: IWalletPayload): Observable<IWalletApiResponse> {
     return fakeRequest({
       name: name,
       creationDate: '2022-10-23T09:47:52.595721658Z',

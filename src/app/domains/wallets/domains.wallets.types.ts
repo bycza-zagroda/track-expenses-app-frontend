@@ -6,3 +6,7 @@ export interface IWalletApiResponse {
   creationDate: TServerDateTime;
   name: string;
 }
+
+export interface IWalletPayload {
+  name: string;
+}
