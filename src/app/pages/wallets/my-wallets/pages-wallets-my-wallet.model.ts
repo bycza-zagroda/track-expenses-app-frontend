@@ -15,11 +15,11 @@ export class MyWallet {
     return { name: this.name }
   }
 
-  public static toAddNewWallet(name: string, creationDate: string = '2022-10-23T09:47:52.595721658Z'): MyWallet {
-    return new MyWallet({ id: 0, creationDate, name })
-  }
-
-  public static toUpdateWallet(id: number, name: string): MyWallet {
-    return new MyWallet({ id, creationDate: '2022-10-23T09:47:52.595721658Z', name })
+  public static create(data: Partial<IWalletApiResponse>): MyWallet {
+    return new MyWallet({
+        id: data.id || 0,
+        name: data.name || "",
+        creationDate: data.creationDate || new Date().toString()
+    });
   }
 }

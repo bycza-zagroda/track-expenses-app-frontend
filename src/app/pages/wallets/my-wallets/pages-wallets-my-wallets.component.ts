@@ -45,15 +45,15 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
   }
 
   public addNewWallet({ name }: IWalletModalData) {
-    this.myWalletsService.addNewWallet(MyWallet.toAddNewWallet(name)).subscribe( (wallet: MyWallet) => {
+    this.myWalletsService.addNewWallet(MyWallet.create({ name })).subscribe( (wallet: MyWallet) => {
         this.myWalletsData.data = [wallet, ...this.myWalletsData.data!]
     });
   }
 
-  public updateWallet(wallet: MyWallet, { name }: IWalletModalData) {
-    this.myWalletsService.updateNewWallet(MyWallet.toUpdateWallet(wallet.id!, name)).subscribe( (updatedWallet: MyWallet) => {
+  public updateWallet({ id }: MyWallet, { name }: IWalletModalData) {
+    this.myWalletsService.updateNewWallet(MyWallet.create({ id: id!, name })).subscribe( (updatedWallet: MyWallet) => {
         this.myWalletsData.data = this.myWalletsData?.data!.map(walletItem => {
-            if (walletItem.id === wallet.id) {
+            if (walletItem.id === id) {
                 return updatedWallet;
             }
 
