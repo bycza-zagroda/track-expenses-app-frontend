@@ -9,9 +9,9 @@ import { MyWallet } from '../pages-wallets-my-wallet.model';
 export class PagesWalletsMyWalletsMyWalletComponent {
   @Input() public wallet!: MyWallet;
 
-  @Output('walletEdit') public walletEdit = new EventEmitter<MyWallet>();
+  @Output() public walletEdit = new EventEmitter<MyWallet>();
 
-  public openEditWalletModal(): void {
+  public editWallet(): void {
     this.walletEdit.emit(this.wallet);
   }
 }
