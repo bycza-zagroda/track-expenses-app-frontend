@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DomainsWalletsGateway } from '../../../domains/wallets/domains.wallets.gateway';
-import { map, Observable } from 'rxjs';
+import { catchError, map, Observable, ObservableInput, of } from 'rxjs';
 import { MyWallet } from './pages-wallets-my-wallet.model';
 
 @Injectable({
@@ -13,19 +13,28 @@ export class PagesWalletsMyWalletsService {
 
   public getMyWallets(): Observable<MyWallet[]> {
     return this.gateway.getWallets().pipe(
-      map(walletsResp => walletsResp.map(resp => new MyWallet(resp)))
+      map(walletsResp => walletsResp.map(resp => new MyWallet(resp))),
+      catchError((error, caught): ObservableInput<any> => {
+          return of("Some error");
+      })
     );
   }
 
-  public addNewWallet(wallet: MyWallet): Observable<MyWallet> {
-    return this.gateway.addNewWallet(wallet.toPayload()).pipe(
-      map(walletsResp => new MyWallet(walletsResp))
+  public createWallet(wallet: MyWallet): Observable<MyWallet> {
+    return this.gateway.createWallet(wallet.toPayload()).pipe(
+      map(walletsResp => new MyWallet(walletsResp)),
+      catchError((error, caught): ObservableInput<any> => {
+          return of("Some error");
+      })
     );
   }
 
-  public updateNewWallet(wallet: MyWallet): Observable<MyWallet> {
-    return this.gateway.updateNewWallet(wallet.id!, wallet.toPayload()).pipe(
-        map(response => new MyWallet(response))
+  public updateWallet(wallet: MyWallet): Observable<MyWallet> {
+    return this.gateway.updateWallet(wallet.id!, wallet.toPayload()).pipe(
+        map(response => new MyWallet(response)),
+        catchError((error, caught): ObservableInput<any> => {
+            return of("Some error");
+        })
     );
   }
 }

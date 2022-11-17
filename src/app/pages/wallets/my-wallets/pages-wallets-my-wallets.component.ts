@@ -44,14 +44,14 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
     });
   }
 
-  public addNewWallet({ name }: IWalletModalData) {
-    this.myWalletsService.addNewWallet(MyWallet.create({ name })).subscribe( (wallet: MyWallet) => {
+  public createWallet({ name }: IWalletModalData) {
+    this.myWalletsService.createWallet(MyWallet.create({ name })).subscribe( (wallet: MyWallet) => {
         this.myWalletsData.data = [wallet, ...this.myWalletsData.data!]
     });
   }
 
   public updateWallet({ id }: MyWallet, { name }: IWalletModalData) {
-    this.myWalletsService.updateNewWallet(MyWallet.create({ id: id!, name })).subscribe( (updatedWallet: MyWallet) => {
+    this.myWalletsService.updateWallet(MyWallet.create({ id: id!, name })).subscribe( (updatedWallet: MyWallet) => {
         this.myWalletsData.data = this.myWalletsData?.data!.map(walletItem => {
             if (walletItem.id === id) {
                 return updatedWallet;
@@ -64,7 +64,7 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
 
   public handleWalletCreate() {
     this.openWalletModal().subscribe( (walletModalData: IWalletModalData) => {
-      this.addNewWallet(walletModalData);
+      this.createWallet(walletModalData);
     })
   }
 
