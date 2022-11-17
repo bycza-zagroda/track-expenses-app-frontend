@@ -18,7 +18,7 @@ describe('PagesWalletsMyWalletsComponent', () => {
   beforeEach(async () => {
     walletsSubject = new Subject<MyWallet[]>();
     walletResp = { creationDate: '2022-10-22T09:47:52.595721658Z', id: 999, name: 'wallet1' };
-    myWalletsServiceMock = createSpyObj(PagesWalletsMyWalletsService.name, ['getMyWallets']);
+    myWalletsServiceMock = createSpyObj<PagesWalletsMyWalletsService>(PagesWalletsMyWalletsService.name, ['getMyWallets']);
     myWalletsServiceMock.getMyWallets.and.returnValue(walletsSubject.asObservable());
 
     await TestBed.configureTestingModule({

@@ -13,19 +13,19 @@ export class PagesWalletsMyWalletsService {
 
   public getMyWallets(): Observable<MyWallet[]> {
     return this.gateway.getWallets().pipe(
-      map(walletsResp => walletsResp.map(resp => new MyWallet(resp)))
+      map(walletsResp => walletsResp.map(resp => new MyWallet(resp))),
     );
   }
 
   public addNewWallet(wallet: MyWallet): Observable<MyWallet> {
     return this.gateway.addNewWallet(wallet.toPayload()).pipe(
-      map(walletsResp => new MyWallet(walletsResp))
+      map(walletsResp => new MyWallet(walletsResp)),
     );
   }
 
   public updateNewWallet(wallet: MyWallet): Observable<MyWallet> {
     return this.gateway.updateNewWallet(wallet.id!, wallet.toPayload()).pipe(
-        map(response => new MyWallet(response))
+        map(response => new MyWallet(response)),
     );
   }
 }

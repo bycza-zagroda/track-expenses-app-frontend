@@ -14,7 +14,7 @@ describe('PagesWalletsMyWalletsService', () => {
 
   beforeEach(async () => {
     walletResp = { creationDate: '2022-10-22T09:47:52.595721658Z', id: 12, name: 'wallet1' };
-    gatewayMock = createSpyObj(DomainsWalletsGateway.name, ['getWallets']);
+    gatewayMock = createSpyObj<DomainsWalletsGateway>(DomainsWalletsGateway.name, ['getWallets']);
 
     gatewayMock.getWallets.and.returnValue(of([walletResp]));
 

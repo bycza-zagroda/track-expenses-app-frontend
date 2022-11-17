@@ -10,7 +10,7 @@ import { WalletFormModalComponent } from './wallet-form-modal/wallet-form-modal.
 @Component({
   selector: 'app-my-wallets',
   templateUrl: './pages-wallets-my-wallets.component.html',
-  styleUrls: ['./pages-wallets-my-wallets.component.scss']
+  styleUrls: ['./pages-wallets-my-wallets.component.scss'],
 })
 export class PagesWalletsMyWalletsComponent implements OnInit {
 
@@ -44,15 +44,15 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
     });
   }
 
-  public addNewWallet({ name }: IWalletModalData) {
+  public addNewWallet({ name }: IWalletModalData): void {
     this.myWalletsService.addNewWallet(MyWallet.create({ name })).subscribe( (wallet: MyWallet) => {
         this.myWalletsData.data = [wallet, ...this.myWalletsData.data!]
     });
   }
 
-  public updateWallet({ id }: MyWallet, { name }: IWalletModalData) {
+  public updateWallet({ id }: MyWallet, { name }: IWalletModalData): void {
     this.myWalletsService.updateNewWallet(MyWallet.create({ id: id!, name })).subscribe( (updatedWallet: MyWallet) => {
-        this.myWalletsData.data = this.myWalletsData?.data!.map(walletItem => {
+        this.myWalletsData.data = this.myWalletsData.data!.map(walletItem => {
             if (walletItem.id === id) {
                 return updatedWallet;
             }
@@ -62,21 +62,29 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
     });
   }
 
-  public handleWalletCreate() {
-    this.openWalletModal().subscribe( (walletModalData: IWalletModalData) => {
+  public handleWalletCreate(): void {
+    this.openWalletModal().subscribe( (walletModalData?: IWalletModalData) => {
+      if (walletModalData === undefined) {
+        return;
+      }
+
       this.addNewWallet(walletModalData);
     })
   }
 
-  public handleWalletEdit(wallet: MyWallet) {
-    this.openWalletModal(wallet).subscribe( (walletModalData: IWalletModalData) => {
+  public handleWalletEdit(wallet: MyWallet): void {
+    this.openWalletModal(wallet).subscribe( (walletModalData?: IWalletModalData) => {
+      if (walletModalData === undefined) {
+        return;
+      }
+
       this.updateWallet(wallet, walletModalData);
     })
   }
 
-  private openWalletModal(wallet?: MyWallet): Observable<IWalletModalData> {
-    const dialogRef = this.dialog.open(WalletFormModalComponent, {
-      data: wallet
+  private openWalletModal(wallet?: MyWallet): Observable<IWalletModalData | undefined> {
+    const dialogRef = this.dialog.open<WalletFormModalComponent, MyWallet | undefined, IWalletModalData>(WalletFormModalComponent, {
+      data: wallet,
     });
 
     return dialogRef.afterClosed();
