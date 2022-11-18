@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, ObservableInput, of } from 'rxjs';
 import { IWalletApiResponse, IWalletPayload } from './domains.wallets.types';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
@@ -15,7 +15,11 @@ export class DomainsWalletsGateway {
   ) {}
 
   public getWallets(): Observable<IWalletApiResponse[]> {
-    return this.http.get<IWalletApiResponse[]>(this.apiUrl);
+    return this.http.get<IWalletApiResponse[]>(this.apiUrl).pipe(
+        catchError((error, caught): ObservableInput<any> => { debugger
+            return of("Some error");
+        })
+    );
   }
 
   public createWallet({ name }: IWalletPayload): Observable<IWalletApiResponse> {

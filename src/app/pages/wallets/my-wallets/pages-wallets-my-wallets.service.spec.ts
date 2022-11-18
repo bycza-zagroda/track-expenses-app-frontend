@@ -34,6 +34,14 @@ describe('PagesWalletsMyWalletsService', () => {
         expect(val).toEqual([new MyWallet(walletResp)]);
 
         done();
+      }, (error: any) => { debugger
+        expect(error).toEqual("Some error");
+
+        done();
+      }, () => {
+        expect("noParam??").toEqual("noParam??");
+
+        done();
       });
     });
   });
