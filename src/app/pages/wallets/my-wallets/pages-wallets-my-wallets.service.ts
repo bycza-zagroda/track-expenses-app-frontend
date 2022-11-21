@@ -14,27 +14,18 @@ export class PagesWalletsMyWalletsService {
   public getMyWallets(): Observable<MyWallet[]> {
     return this.gateway.getWallets().pipe(
       map(walletsResp => walletsResp.map(resp => new MyWallet(resp))),
-      catchError((error, caught): ObservableInput<any> => {
-          return of("Some error");
-      })
     );
   }
 
   public createWallet(wallet: MyWallet): Observable<MyWallet> {
     return this.gateway.createWallet(wallet.toPayload()).pipe(
       map(walletsResp => new MyWallet(walletsResp)),
-      catchError((error, caught): ObservableInput<any> => {
-          return of("Some error");
-      })
     );
   }
 
   public updateWallet(wallet: MyWallet): Observable<MyWallet> {
     return this.gateway.updateWallet(wallet.id!, wallet.toPayload()).pipe(
         map(response => new MyWallet(response)),
-        catchError((error, caught): ObservableInput<any> => {
-            return of("Some error");
-        })
     );
   }
 }

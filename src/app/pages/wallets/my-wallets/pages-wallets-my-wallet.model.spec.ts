@@ -1,6 +1,6 @@
 import { MyWallet } from './pages-wallets-my-wallet.model';
 
-describe('DomainsWalletsGateway', () => {
+describe('MyWallet Class', () => {
   describe('toPayload', () => {
     const wallet = new MyWallet({ id: 999, creationDate: '2022-10-23T09:47:52.595721658Z', name: "wallet 5" });
 

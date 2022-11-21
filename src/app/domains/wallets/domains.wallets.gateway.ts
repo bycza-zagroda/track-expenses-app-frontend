@@ -15,11 +15,7 @@ export class DomainsWalletsGateway {
   ) {}
 
   public getWallets(): Observable<IWalletApiResponse[]> {
-    return this.http.get<IWalletApiResponse[]>(this.apiUrl).pipe(
-        catchError((error, caught): ObservableInput<any> => { debugger
-            return of("Some error");
-        })
-    );
+    return this.http.get<IWalletApiResponse[]>(this.apiUrl);
   }
 
   public createWallet({ name }: IWalletPayload): Observable<IWalletApiResponse> {
