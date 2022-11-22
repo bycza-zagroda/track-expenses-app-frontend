@@ -21,7 +21,7 @@ describe('WalletFormModalComponent', () => {
       providers: [
         { provide: MatDialogRef, useValue: null },
         { provide: MAT_DIALOG_DATA, useValue: undefined },
-      ]
+      ],
     })
     .compileComponents();
 

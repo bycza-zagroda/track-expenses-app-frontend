@@ -6,6 +6,6 @@ import { DomainsWalletsModule } from './wallets/domains.wallets.module';
   imports: [
     CommonModule,
     DomainsWalletsModule,
-  ]
+  ],
 })
 export class DomainsModule { }

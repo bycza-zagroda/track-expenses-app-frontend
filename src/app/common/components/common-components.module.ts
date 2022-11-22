@@ -20,4 +20,4 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
   ],
 })
-export class CommonComponentsModule { }
+export class CommonComponentsModule {}

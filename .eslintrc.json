@@ -10,7 +10,10 @@
       },
       "extends": [
         "plugin:@angular-eslint/recommended",
-        "plugin:@angular-eslint/template/process-inline-templates"
+        "plugin:@angular-eslint/template/process-inline-templates",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking",
+        "plugin:@typescript-eslint/strict"
       ],
       "rules": {
         "@angular-eslint/directive-selector": [
@@ -28,7 +31,19 @@
             "prefix": "app",
             "style": "kebab-case"
           }
-        ]
+        ],
+        "comma-dangle": ["warn", "always-multiline"],
+        "quotes": ["error", "single"],
+        "@typescript-eslint/explicit-member-accessibility": "warn",
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/explicit-function-return-type": "warn",
+        "no-multiple-empty-lines": ["error", { "max":  1, "maxEOF": 1, "maxBOF": 1 }]
+      }
+    },
+    {
+      "files": ["*.component.ts", "*.module.ts"],
+      "rules": {
+        "@typescript-eslint/no-extraneous-class": "off"
       }
     },
     {

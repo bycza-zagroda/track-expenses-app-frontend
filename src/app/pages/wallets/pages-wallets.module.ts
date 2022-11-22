@@ -6,14 +6,14 @@ import { DomainsWalletsModule } from '../../domains/wallets/domains.wallets.modu
 import { PagesWalletsMyWalletsMyWalletComponent } from './my-wallets/my-wallet/pages-wallets-my-wallets-my-wallet.component';
 import { MaterialModule } from '../../material.module';
 import { PagesWalletsMyWalletsAddNewWalletComponent } from './my-wallets/add-new-wallet/pages-wallets-my-wallets-add-new-wallet.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { WalletFormModalComponent } from './my-wallets/wallet-form-modal/wallet-form-modal.component';
 
 const routes: Routes = [
   {
     path: 'my',
     component: PagesWalletsMyWalletsComponent,
-  }
+  },
 ];
 
 @NgModule({
@@ -32,6 +32,6 @@ const routes: Routes = [
   ],
   exports: [
     RouterModule,
-  ]
+  ],
 })
 export class PagesWalletsModule {}
