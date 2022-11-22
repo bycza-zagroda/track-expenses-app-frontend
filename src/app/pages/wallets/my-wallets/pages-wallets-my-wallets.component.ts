@@ -47,6 +47,8 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
   public createWallet({ name }: IWalletModalData) {
     this.myWalletsService.createWallet(MyWallet.create({ name })).subscribe( (wallet: MyWallet) => {
         this.myWalletsData.data = [wallet, ...this.myWalletsData.data!]
+    }, (error: any) => {
+        console.log("Info for user xd");
     });
   }
 
@@ -59,18 +61,24 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
 
             return walletItem;
         });
+    }, (error: any) => {
+        console.log("Info for user xd");
     });
   }
 
   public handleWalletCreate() {
     this.openWalletModal().subscribe( (walletModalData: IWalletModalData) => {
       this.createWallet(walletModalData);
+    }, (error: any) => {
+        console.log("Info for user xd");
     })
   }
 
   public handleWalletEdit(wallet: MyWallet) {
     this.openWalletModal(wallet).subscribe( (walletModalData: IWalletModalData) => {
       this.updateWallet(wallet, walletModalData);
+    }, (error: any) => {
+        console.log("Info for user xd");
     })
   }
 
