@@ -53,8 +53,9 @@ describe('PagesWalletsMyWalletsComponent', () => {
 
   describe('createWallet', () => {
     it('should create new wallet', () => {
+
       walletResp = { creationDate: '2022-10-22T09:47:52.595721658Z', id: 999, name: 'updatedWallet1' };
-      walletSubject.next(new MyWallet(walletResp));
+      component.createWallet({ name: walletResp.name });
       expect(component.myWalletsData.data).toEqual([new MyWallet(walletResp)]);
     });
   });
