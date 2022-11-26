@@ -67,8 +67,10 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
   }
 
   public handleWalletCreate() {
-    this.openWalletModal().subscribe( (walletModalData: IWalletModalData) => {
-      this.createWallet(walletModalData);
+    this.openWalletModal().subscribe( (walletModalData?: IWalletModalData) => {
+      if(walletModalData) {
+        this.createWallet(walletModalData);
+      }
     }, (error: any) => {
         console.log("Info for user xd");
     })
