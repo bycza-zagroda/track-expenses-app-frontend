@@ -17,9 +17,9 @@ export class MyWallet {
 
   public static create(data: Partial<IWalletApiResponse>): MyWallet {
     return new MyWallet({
-        id: data.id || 0,
-        name: data.name || "",
-        creationDate: data.creationDate || new Date().toString()
+        id: data.id ?? 0,
+        name: data.name ?? '',
+        creationDate: data.creationDate ?? new Date().toString(),
     });
   }
 }

@@ -10,7 +10,7 @@ import { WalletFormModalComponent } from './wallet-form-modal/wallet-form-modal.
 @Component({
   selector: 'app-my-wallets',
   templateUrl: './pages-wallets-my-wallets.component.html',
-  styleUrls: ['./pages-wallets-my-wallets.component.scss']
+  styleUrls: ['./pages-wallets-my-wallets.component.scss'],
 })
 export class PagesWalletsMyWalletsComponent implements OnInit {
 
@@ -74,17 +74,21 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
     })
   }
 
-  public handleWalletEdit(wallet: MyWallet) {
-    this.openWalletModal(wallet).subscribe( (walletModalData: IWalletModalData) => {
+  public handleWalletEdit(wallet: MyWallet): void {
+    this.openWalletModal(wallet).subscribe( (walletModalData?: IWalletModalData) => {
+      if (walletModalData === undefined) {
+        return;
+      }
+
       this.updateWallet(wallet, walletModalData);
     }, (error: any) => {
         console.log("Info for user xd");
     })
   }
 
-  private openWalletModal(wallet?: MyWallet): Observable<IWalletModalData> {
-    const dialogRef = this.dialog.open(WalletFormModalComponent, {
-      data: wallet
+  private openWalletModal(wallet?: MyWallet): Observable<IWalletModalData | undefined> {
+    const dialogRef = this.dialog.open<WalletFormModalComponent, MyWallet | undefined, IWalletModalData>(WalletFormModalComponent, {
+      data: wallet,
     });
 
     return dialogRef.afterClosed();
