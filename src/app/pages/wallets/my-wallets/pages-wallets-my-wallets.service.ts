@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DomainsWalletsGateway } from '../../../domains/wallets/domains.wallets.gateway';
-import { catchError, map, Observable, ObservableInput, of } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { MyWallet } from './pages-wallets-my-wallet.model';
 
 @Injectable({

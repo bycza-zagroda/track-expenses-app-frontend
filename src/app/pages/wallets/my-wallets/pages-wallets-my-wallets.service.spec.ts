@@ -5,13 +5,12 @@ import { DomainsWalletsGateway } from '../../../domains/wallets/domains.wallets.
 import createSpyObj = jasmine.createSpyObj;
 import { of } from 'rxjs';
 import { MyWallet } from './pages-wallets-my-wallet.model';
-import { IWalletApiResponse, IWalletPayload } from '../../../domains/wallets/domains.wallets.types';
+import { IWalletApiResponse } from '../../../domains/wallets/domains.wallets.types';
 
 describe('PagesWalletsMyWalletsService', () => {
   let service: PagesWalletsMyWalletsService;
   let gatewayMock: SpyObj<DomainsWalletsGateway>;
   let walletResp: IWalletApiResponse;
-
 
   let walletRespForCreate: IWalletApiResponse;
   let walletCreatePayload: Partial<IWalletApiResponse>;
@@ -21,22 +20,17 @@ describe('PagesWalletsMyWalletsService', () => {
   let walletUpdatePayload: Partial<IWalletApiResponse>;
   let updatedWalletFromPayload: MyWallet;
 
-
   beforeEach(async () => {
     walletResp = { creationDate: '2022-10-22T09:47:52.595721658Z', id: 12, name: 'wallet1' };
     gatewayMock = createSpyObj(DomainsWalletsGateway.name, ['getWallets', 'createWallet', 'updateWallet']);
-
 
     walletCreatePayload = { id: 15, name: 'Wallet 5' };
     walletRespForCreate = { creationDate: '2022-10-22T09:47:52.595721658Z', id: 15, name: 'wallet1' };
     createdWalletFromPayload = MyWallet.create(walletCreatePayload);
 
-
     walletUpdatePayload = { id: 15, name: 'Wallet 5', creationDate: '2022-10-22T09:47:52.595721658Z' };
     walletRespForUpdate = { creationDate: '2022-10-22T09:47:52.595721658Z', id: 15, name: 'wallet1' };
     updatedWalletFromPayload = MyWallet.create(walletUpdatePayload);
-
-
 
     gatewayMock.getWallets.and.returnValue(of([walletResp]));
     gatewayMock.createWallet.and.returnValue(of(walletRespForCreate));

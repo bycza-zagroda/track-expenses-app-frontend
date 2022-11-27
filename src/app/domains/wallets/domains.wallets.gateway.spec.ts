@@ -9,12 +9,12 @@ describe('DomainsWalletsGateway', () => {
   let walletResp: IWalletApiResponse;
   let httpTestingController: HttpTestingController;
 
-  let apiUrl: string = environment.remotePath + '/api/wallet';
+  const apiUrl: string = environment.remotePath + '/api/wallet';
 
-  beforeEach( () => {
-    walletResp = { name: 'Wallet 1', creationDate: '2022-10-22T09:47:52.595721658Z', id: 1, };
+  beforeEach(async () => {
+    walletResp = { name: 'Wallet 1', creationDate: '2022-10-22T09:47:52.595721658Z', id: 1 };
 
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
       ],
@@ -24,8 +24,8 @@ describe('DomainsWalletsGateway', () => {
       ],
     }).compileComponents();
 
-    httpTestingController = TestBed.get(HttpTestingController);
-    service = TestBed.get(DomainsWalletsGateway);
+    httpTestingController = TestBed.get<HttpTestingController>(HttpTestingController);
+    service = TestBed.get<DomainsWalletsGateway>(DomainsWalletsGateway);
 
   });
 
@@ -35,7 +35,7 @@ describe('DomainsWalletsGateway', () => {
 
   describe('getWallets', () => {
     it('should getWallets method return wallets', () => {
-        let data = { name: 'Wallet 1', creationDate: '2022-10-22T09:47:52.595721658Z', id: 1, };
+        const data = { name: 'Wallet 1', creationDate: '2022-10-22T09:47:52.595721658Z', id: 1 };
 
         service.getWallets().subscribe((val: IWalletApiResponse[]) => {
             expect(val).toEqual([data]);
@@ -49,7 +49,7 @@ describe('DomainsWalletsGateway', () => {
 
   describe('createWallet', () => {
     it('should createWallet method return wallet', () => {
-        let data = { name: "Wallet 1" };
+        const data = { name: 'Wallet 1' };
 
         service.createWallet(data).subscribe((val: IWalletApiResponse) => {
             expect(val.name).toEqual(data.name);
@@ -63,7 +63,7 @@ describe('DomainsWalletsGateway', () => {
 
   describe('updateWallet', () => {
     it('should updateWallet method return updated wallet', () => {
-        let data = { name: 'Wallet 1', creationDate: '2022-10-22T09:47:52.595721658Z', id: 1, };
+        const data = { name: 'Wallet 1', creationDate: '2022-10-22T09:47:52.595721658Z', id: 1 };
 
         service.updateWallet(data.id, { name: data.name }).subscribe((val: IWalletApiResponse) => {
             expect(val).toEqual(walletResp);

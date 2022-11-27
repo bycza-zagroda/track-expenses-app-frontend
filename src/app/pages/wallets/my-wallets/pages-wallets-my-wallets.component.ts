@@ -44,35 +44,35 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
     });
   }
 
-  public createWallet({ name }: IWalletModalData) {
+  public createWallet({ name }: IWalletModalData): void {
     this.myWalletsService.createWallet(MyWallet.create({ name })).subscribe( (wallet: MyWallet) => {
         this.myWalletsData.data = [wallet, ...this.myWalletsData.data!]
-    }, (error: any) => {
-        console.log("Info for user xd");
+    }, () => {
+        console.log('Info for user xd');
     });
   }
 
-  public updateWallet({ id }: MyWallet, { name }: IWalletModalData) {
+  public updateWallet({ id }: MyWallet, { name }: IWalletModalData): void {
     this.myWalletsService.updateWallet(MyWallet.create({ id: id!, name })).subscribe( (updatedWallet: MyWallet) => {
-        this.myWalletsData.data = this.myWalletsData?.data!.map(walletItem => {
+        this.myWalletsData.data = this.myWalletsData.data!.map(walletItem => {
             if (walletItem.id === id) {
                 return updatedWallet;
             }
 
             return walletItem;
         });
-    }, (error: any) => {
-        console.log("Info for user xd");
+    }, () => {
+        console.log('Info for user xd');
     });
   }
 
-  public handleWalletCreate() {
+  public handleWalletCreate(): void {
     this.openWalletModal().subscribe( (walletModalData?: IWalletModalData) => {
       if(walletModalData) {
         this.createWallet(walletModalData);
       }
-    }, (error: any) => {
-        console.log("Info for user xd");
+    }, () => {
+        console.log('Info for user xd');
     })
   }
 
@@ -83,8 +83,8 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
       }
 
       this.updateWallet(wallet, walletModalData);
-    }, (error: any) => {
-        console.log("Info for user xd");
+    }, () => {
+        console.log('Info for user xd');
     })
   }
 
