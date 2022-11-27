@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IWalletApiResponse, IWalletPayload } from './domains.wallets.types';
 import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
+import { API_WALLETS_URL } from './domains.wallets.constants';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DomainsWalletsGateway {
-  private apiUrl: string = environment.remotePath + '/api/wallet';
+  private apiUrl: string = API_WALLETS_URL;
 
   public constructor(
     private readonly http: HttpClient,

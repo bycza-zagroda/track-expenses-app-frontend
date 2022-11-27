@@ -7,6 +7,7 @@ import createSpyObj = jasmine.createSpyObj;
 import { Subject } from 'rxjs';
 import { MyWallet } from './pages-wallets-my-wallet.model';
 import { IWalletApiResponse } from '../../../domains/wallets/domains.wallets.types';
+import { WALLET_RESP_MOCK } from 'src/app/domains/wallets/domains.wallets.mocks';
 
 describe('PagesWalletsMyWalletsComponent', () => {
   let component: PagesWalletsMyWalletsComponent;
@@ -19,8 +20,8 @@ describe('PagesWalletsMyWalletsComponent', () => {
   beforeEach(async () => {
     walletsSubject = new Subject<MyWallet[]>();
     walletSubject = new Subject<MyWallet>();
-    walletResp = { creationDate: '2022-10-22T09:47:52.595721658Z', id: 999, name: 'wallet1' };
-    myWalletsServiceMock = createSpyObj(PagesWalletsMyWalletsService.name, ['getMyWallets', 'createWallet', 'updateWallet']);
+    walletResp = WALLET_RESP_MOCK;
+    myWalletsServiceMock = createSpyObj<PagesWalletsMyWalletsService>(PagesWalletsMyWalletsService.name, ['getMyWallets', 'createWallet', 'updateWallet']);
     myWalletsServiceMock.getMyWallets.and.returnValue(walletsSubject.asObservable());
     myWalletsServiceMock.createWallet.and.returnValue(walletSubject.asObservable());
     myWalletsServiceMock.updateWallet.and.returnValue(walletSubject.asObservable());
@@ -53,8 +54,9 @@ describe('PagesWalletsMyWalletsComponent', () => {
 
   describe('createWallet', () => {
     it('should create new wallet', () => {
+       component.myWalletsData.data = [];
+       walletsSubject.next([new MyWallet(walletResp)]);
 
-      walletResp = { creationDate: '2022-10-22T09:47:52.595721658Z', id: 999, name: 'updatedWallet1' };
       component.createWallet({ name: walletResp.name });
       expect(component.myWalletsData.data).toEqual([new MyWallet(walletResp)]);
     });

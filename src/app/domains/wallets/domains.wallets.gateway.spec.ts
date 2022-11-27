@@ -1,18 +1,19 @@
 import { TestBed } from '@angular/core/testing';
 import { DomainsWalletsGateway } from './domains.wallets.gateway';
-import { IWalletApiResponse } from './domains.wallets.types';
+import { IWalletApiResponse, IWalletPayload } from './domains.wallets.types';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
-import { environment } from 'src/environments/environment';
+import { API_WALLETS_URL } from './domains.wallets.constants';
+import { WALLET_RESP_MOCK } from './domains.wallets.mocks';
 
 describe('DomainsWalletsGateway', () => {
   let service: DomainsWalletsGateway;
   let walletResp: IWalletApiResponse;
   let httpTestingController: HttpTestingController;
 
-  const apiUrl: string = environment.remotePath + '/api/wallet';
+  const apiUrl: string = API_WALLETS_URL;
 
   beforeEach(async () => {
-    walletResp = { name: 'Wallet 1', creationDate: '2022-10-22T09:47:52.595721658Z', id: 1 };
+    walletResp = WALLET_RESP_MOCK;
 
     await TestBed.configureTestingModule({
       imports: [
@@ -24,8 +25,8 @@ describe('DomainsWalletsGateway', () => {
       ],
     }).compileComponents();
 
-    httpTestingController = TestBed.get<HttpTestingController>(HttpTestingController);
-    service = TestBed.get<DomainsWalletsGateway>(DomainsWalletsGateway);
+    httpTestingController = TestBed.inject<HttpTestingController>(HttpTestingController);
+    service = TestBed.inject<DomainsWalletsGateway>(DomainsWalletsGateway);
 
   });
 
@@ -34,8 +35,13 @@ describe('DomainsWalletsGateway', () => {
   });
 
   describe('getWallets', () => {
-    it('should getWallets method return wallets', () => {
-        const data = { name: 'Wallet 1', creationDate: '2022-10-22T09:47:52.595721658Z', id: 1 };
+    let data: IWalletApiResponse;
+
+    beforeEach(() => {
+       data = WALLET_RESP_MOCK;
+    });
+
+    it('should call proper api url and return wallets data', () => {
 
         service.getWallets().subscribe((val: IWalletApiResponse[]) => {
             expect(val).toEqual([data]);
@@ -48,9 +54,13 @@ describe('DomainsWalletsGateway', () => {
   });
 
   describe('createWallet', () => {
-    it('should createWallet method return wallet', () => {
-        const data = { name: 'Wallet 1' };
+    let data: IWalletPayload;
 
+    beforeEach(() => {
+       data = { name: 'Wallet 1' };
+    });
+
+    it('should call proper api url and return created wallet', () => {
         service.createWallet(data).subscribe((val: IWalletApiResponse) => {
             expect(val.name).toEqual(data.name);
         });
@@ -62,9 +72,13 @@ describe('DomainsWalletsGateway', () => {
   });
 
   describe('updateWallet', () => {
-    it('should updateWallet method return updated wallet', () => {
-        const data = { name: 'Wallet 1', creationDate: '2022-10-22T09:47:52.595721658Z', id: 1 };
+    let data: IWalletApiResponse;
 
+    beforeEach(() => {
+       data = WALLET_RESP_MOCK;
+    });
+
+    it('should call proper api url and return updated wallet', () => {
         service.updateWallet(data.id, { name: data.name }).subscribe((val: IWalletApiResponse) => {
             expect(val).toEqual(walletResp);
         });
