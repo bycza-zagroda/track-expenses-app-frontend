@@ -6,6 +6,7 @@ import createSpyObj = jasmine.createSpyObj;
 import { of } from 'rxjs';
 import { MyWallet } from './pages-wallets-my-wallet.model';
 import { IWalletApiResponse } from '../../../domains/wallets/domains.wallets.types';
+import { WALLET_RESP_MOCK } from 'src/app/domains/wallets/domains.wallets.mocks';
 
 describe('PagesWalletsMyWalletsService', () => {
   let service: PagesWalletsMyWalletsService;
@@ -13,10 +14,12 @@ describe('PagesWalletsMyWalletsService', () => {
   let walletResp: IWalletApiResponse;
 
   beforeEach(async () => {
-    walletResp = { creationDate: '2022-10-22T09:47:52.595721658Z', id: 12, name: 'wallet1' };
-    gatewayMock = createSpyObj<DomainsWalletsGateway>(DomainsWalletsGateway.name, ['getWallets']);
+    walletResp = WALLET_RESP_MOCK;
+    gatewayMock = createSpyObj<DomainsWalletsGateway>(DomainsWalletsGateway.name, ['getWallets', 'createWallet', 'updateWallet']);
 
     gatewayMock.getWallets.and.returnValue(of([walletResp]));
+    gatewayMock.createWallet.and.returnValue(of(walletResp));
+    gatewayMock.updateWallet.and.returnValue(of(walletResp));
 
     await TestBed.configureTestingModule({
       providers: [
@@ -34,7 +37,41 @@ describe('PagesWalletsMyWalletsService', () => {
         expect(val).toEqual([new MyWallet(walletResp)]);
 
         done();
-      });
+      })
+    });
+  });
+
+  describe('createWallet', () => {
+    let createdWalletFromPayload: MyWallet;
+    let walletCreatePayload: Partial<IWalletApiResponse>;
+
+    beforeEach(() => {
+        walletCreatePayload = { id: 15, name: 'Wallet 5' };
+        createdWalletFromPayload = MyWallet.create(walletCreatePayload);
+    });
+
+    it('should create new wallet', (done) => {
+      service.createWallet(createdWalletFromPayload).subscribe((val: MyWallet) => {
+        expect(val).toEqual(new MyWallet(walletResp));
+
+        done();
+      })
+    });
+  });
+
+  describe('updateWallet', () => {
+    let updatedWalletFromPayload: MyWallet;
+
+    beforeEach(() => {
+        updatedWalletFromPayload = MyWallet.create(walletResp);
+    });
+
+    it('should update my wallet', (done) => {
+      service.updateWallet(updatedWalletFromPayload).subscribe(val => {
+        expect(val).toEqual(new MyWallet(walletResp));
+
+        done();
+      })
     });
   });
 });

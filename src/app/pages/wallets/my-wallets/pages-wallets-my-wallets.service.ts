@@ -17,14 +17,14 @@ export class PagesWalletsMyWalletsService {
     );
   }
 
-  public addNewWallet(wallet: MyWallet): Observable<MyWallet> {
-    return this.gateway.addNewWallet(wallet.toPayload()).pipe(
+  public createWallet(wallet: MyWallet): Observable<MyWallet> {
+    return this.gateway.createWallet(wallet.toPayload()).pipe(
       map(walletsResp => new MyWallet(walletsResp)),
     );
   }
 
-  public updateNewWallet(wallet: MyWallet): Observable<MyWallet> {
-    return this.gateway.updateNewWallet(wallet.id!, wallet.toPayload()).pipe(
+  public updateWallet(wallet: MyWallet): Observable<MyWallet> {
+    return this.gateway.updateWallet(wallet.id!, wallet.toPayload()).pipe(
         map(response => new MyWallet(response)),
     );
   }

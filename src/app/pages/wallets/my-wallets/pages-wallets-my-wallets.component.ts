@@ -44,14 +44,14 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
     });
   }
 
-  public addNewWallet({ name }: IWalletModalData): void {
-    this.myWalletsService.addNewWallet(MyWallet.create({ name })).subscribe( (wallet: MyWallet) => {
+  public createWallet({ name }: IWalletModalData): void {
+    this.myWalletsService.createWallet(MyWallet.create({ name })).subscribe( (wallet: MyWallet) => {
         this.myWalletsData.data = [wallet, ...this.myWalletsData.data!]
     });
   }
 
   public updateWallet({ id }: MyWallet, { name }: IWalletModalData): void {
-    this.myWalletsService.updateNewWallet(MyWallet.create({ id: id!, name })).subscribe( (updatedWallet: MyWallet) => {
+    this.myWalletsService.updateWallet(MyWallet.create({ id: id!, name })).subscribe( (updatedWallet: MyWallet) => {
         this.myWalletsData.data = this.myWalletsData.data!.map(walletItem => {
             if (walletItem.id === id) {
                 return updatedWallet;
@@ -64,12 +64,10 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
 
   public handleWalletCreate(): void {
     this.openWalletModal().subscribe( (walletModalData?: IWalletModalData) => {
-      if (walletModalData === undefined) {
-        return;
+      if(walletModalData) {
+        this.createWallet(walletModalData);
       }
-
-      this.addNewWallet(walletModalData);
-    })
+    });
   }
 
   public handleWalletEdit(wallet: MyWallet): void {
@@ -79,7 +77,7 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
       }
 
       this.updateWallet(wallet, walletModalData);
-    })
+    });
   }
 
   private openWalletModal(wallet?: MyWallet): Observable<IWalletModalData | undefined> {
