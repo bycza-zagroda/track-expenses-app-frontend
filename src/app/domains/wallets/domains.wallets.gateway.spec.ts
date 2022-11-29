@@ -3,17 +3,17 @@ import { DomainsWalletsGateway } from './domains.wallets.gateway';
 import { IWalletApiResponse, IWalletPayload } from './domains.wallets.types';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import { API_WALLETS_URL } from './domains.wallets.constants';
-import { WALLET_RESP_MOCK } from './domains.wallets.mocks';
+import { WALLET_PAYLOAD_MOCK, WALLET_RESP_MOCK } from './domains.wallets.mocks';
 
 describe('DomainsWalletsGateway', () => {
   let service: DomainsWalletsGateway;
   let walletResp: IWalletApiResponse;
   let httpTestingController: HttpTestingController;
-
-  const apiUrl: string = API_WALLETS_URL;
+  let apiUrl: string;
 
   beforeEach(async () => {
     walletResp = WALLET_RESP_MOCK;
+    apiUrl = API_WALLETS_URL;
 
     await TestBed.configureTestingModule({
       imports: [
@@ -35,21 +35,15 @@ describe('DomainsWalletsGateway', () => {
   });
 
   describe('getWallets', () => {
-    let data: IWalletApiResponse;
-
-    beforeEach(() => {
-       data = WALLET_RESP_MOCK;
-    });
-
     it('should call proper api url and return wallets data', () => {
 
         service.getWallets().subscribe((val: IWalletApiResponse[]) => {
-            expect(val).toEqual([data]);
+            expect(val).toEqual([walletResp]);
         });
 
         const req = httpTestingController.expectOne(apiUrl);
         expect(req.request.method).toEqual('GET');
-        req.flush([data]);
+        req.flush([walletResp]);
     });
   });
 
@@ -57,7 +51,7 @@ describe('DomainsWalletsGateway', () => {
     let data: IWalletPayload;
 
     beforeEach(() => {
-       data = { name: 'Wallet 1' };
+       data = WALLET_PAYLOAD_MOCK;
     });
 
     it('should call proper api url and return created wallet', () => {
@@ -72,20 +66,14 @@ describe('DomainsWalletsGateway', () => {
   });
 
   describe('updateWallet', () => {
-    let data: IWalletApiResponse;
-
-    beforeEach(() => {
-       data = WALLET_RESP_MOCK;
-    });
-
     it('should call proper api url and return updated wallet', () => {
-        service.updateWallet(data.id, { name: data.name }).subscribe((val: IWalletApiResponse) => {
+        service.updateWallet(walletResp.id, { name: walletResp.name }).subscribe((val: IWalletApiResponse) => {
             expect(val).toEqual(walletResp);
         });
 
         const req = httpTestingController.expectOne(apiUrl);
         expect(req.request.method).toEqual('PUT');
-        req.flush(data);
+        req.flush(walletResp);
     });
   });
 

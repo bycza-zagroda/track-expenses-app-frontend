@@ -8,21 +8,19 @@ import { API_WALLETS_URL } from './domains.wallets.constants';
   providedIn: 'root',
 })
 export class DomainsWalletsGateway {
-  private apiUrl: string = API_WALLETS_URL;
-
   public constructor(
     private readonly http: HttpClient,
   ) {}
 
   public getWallets(): Observable<IWalletApiResponse[]> {
-    return this.http.get<IWalletApiResponse[]>(this.apiUrl);
+    return this.http.get<IWalletApiResponse[]>(API_WALLETS_URL);
   }
 
   public createWallet({ name }: IWalletPayload): Observable<IWalletApiResponse> {
-    return this.http.post<IWalletApiResponse>(this.apiUrl, { name });
+    return this.http.post<IWalletApiResponse>(API_WALLETS_URL, { name });
   }
 
   public updateWallet(id: number, { name }: IWalletPayload): Observable<IWalletApiResponse> {
-    return this.http.put<IWalletApiResponse>(this.apiUrl, { id, name });
+    return this.http.put<IWalletApiResponse>(API_WALLETS_URL, { id, name });
   }
 }
