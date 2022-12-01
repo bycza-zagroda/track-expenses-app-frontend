@@ -3,7 +3,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { INotification } from 'src/app/domains/wallets/domains.wallets.types';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SystemNotificationsService {
 
