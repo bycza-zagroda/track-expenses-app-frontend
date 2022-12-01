@@ -8,6 +8,7 @@ import { MaterialModule } from '../../material.module';
 import { PagesWalletsMyWalletsAddNewWalletComponent } from './my-wallets/add-new-wallet/pages-wallets-my-wallets-add-new-wallet.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { WalletFormModalComponent } from './my-wallets/wallet-form-modal/wallet-form-modal.component';
+import { CommonComponentsModule } from 'src/app/common/components/common-components.module';
 
 const routes: Routes = [
   {
@@ -29,6 +30,7 @@ const routes: Routes = [
     DomainsWalletsModule,
     MaterialModule,
     ReactiveFormsModule,
+    CommonComponentsModule,
   ],
   exports: [
     RouterModule,

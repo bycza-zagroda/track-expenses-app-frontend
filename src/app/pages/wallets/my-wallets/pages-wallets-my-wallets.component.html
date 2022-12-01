@@ -4,7 +4,7 @@
   </div>
 
   <div *ngIf="myWalletsData.hasError">
-    ERROR - We need to implement some fancy error component
+    <app-system-message type="error" text="Something went wrong ;(" description="Some server error occured"></app-system-message>
   </div>
 
   <div class="my-wallets" *ngIf="myWalletsData.data">
