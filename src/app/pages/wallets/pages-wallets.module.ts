@@ -8,6 +8,7 @@ import { MaterialModule } from '../../material.module';
 import { PagesWalletsMyWalletsAddNewWalletComponent } from './my-wallets/add-new-wallet/pages-wallets-my-wallets-add-new-wallet.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { WalletFormModalComponent } from './my-wallets/wallet-form-modal/wallet-form-modal.component';
+import { SystemMessageComponent } from 'src/app/common/errors/system-message/system-message.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,7 @@ const routes: Routes = [
     PagesWalletsMyWalletsMyWalletComponent,
     PagesWalletsMyWalletsAddNewWalletComponent,
     WalletFormModalComponent,
+    SystemMessageComponent,
   ],
   imports: [
     RouterModule.forChild(routes),
