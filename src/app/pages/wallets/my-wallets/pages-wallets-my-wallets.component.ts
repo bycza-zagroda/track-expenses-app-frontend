@@ -6,8 +6,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { IWalletModalData } from 'src/app/pages/wallets/my-wallets/wallet-form-modal/pages-wallets-my-wallets-wallet-form-modal';
 import { Observable } from 'rxjs';
 import { WalletFormModalComponent } from './wallet-form-modal/wallet-form-modal.component';
-import { SystemNotificationsService } from 'src/app/common/utils/system-notifications.service';
-import { NotificationType } from 'src/app/domains/wallets/domains.wallets.enums';
+import { SystemNotificationsService } from 'src/app/common/utils/system-notifications/system-notifications.service';
+import { NotificationType } from 'src/app/common/utils/system-notifications/system-notifications.enums';
 
 @Component({
   selector: 'app-my-wallets',

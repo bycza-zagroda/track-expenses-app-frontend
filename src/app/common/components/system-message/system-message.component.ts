@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { NotificationType } from 'src/app/common/utils/system-notifications/system-notifications.enums';
 
 @Component({
   selector: 'app-system-message',
@@ -6,10 +7,7 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./system-message.component.scss'],
 })
 export class SystemMessageComponent {
-
-    @Input() public type!: string;
+    @Input() public type: string = NotificationType.Success;
     @Input() public text!: string;
-    @Input() public description?: string = '';
-
-    public getBackgroundColor = (): string => this.type;
+    @Input() public description?: string;
 }
