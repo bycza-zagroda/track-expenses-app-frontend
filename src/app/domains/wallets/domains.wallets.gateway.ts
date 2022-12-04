@@ -44,7 +44,7 @@ export class DomainsWalletsGateway {
     });
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/no-unused-vars
   public deleteWallet(id: number): void {
 
   }
