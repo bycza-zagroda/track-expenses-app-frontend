@@ -3,7 +3,6 @@ import {Observable} from 'rxjs';
 import {IWalletApiResponse, IWalletPayload} from './domains.wallets.types';
 import {fakeRequest} from '../../common/http/common.http.fake-request';
 import {getRandomNumber} from 'src/app/common/utils/common.utils.random';
-import {MyWallet} from '../../pages/wallets/my-wallets/pages-wallets-my-wallet.model';
 
 @Injectable({
   providedIn: 'root',
@@ -45,11 +44,8 @@ export class DomainsWalletsGateway {
     });
   }
 
-  public deleteWallet(id: number, {name}: IWalletPayload): Observable<IWalletApiResponse> {
-    return fakeRequest({
-      name: name,
-      creationDate: '2022-10-23T09:47:52.595721658Z',
-      id: id,
-    });
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  public deleteWallet(id: number): void {
+
   }
 }

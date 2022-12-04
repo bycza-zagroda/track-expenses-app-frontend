@@ -30,9 +30,7 @@ export class PagesWalletsMyWalletsService {
     );
   }
 
-  public deleteWallet(wallet: MyWallet): Observable<MyWallet> {
-    return this.gateway.deleteWallet(wallet.id!, wallet.toPayload()).pipe(
-      map(response => new MyWallet(response)),
-    );
+  public deleteWallet(wallet: MyWallet): void {
+    this.gateway.deleteWallet(wallet.id!);
   }
 }
