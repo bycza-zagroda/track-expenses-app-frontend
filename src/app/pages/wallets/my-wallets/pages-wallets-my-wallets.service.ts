@@ -30,7 +30,7 @@ export class PagesWalletsMyWalletsService {
     );
   }
 
-  public deleteWallet(wallet: MyWallet): void {
-    this.gateway.deleteWallet(wallet.id!);
+  public deleteWallet(wallet: MyWallet): Observable<void> {
+    return this.gateway.deleteWallet(wallet.id!);
   }
 }

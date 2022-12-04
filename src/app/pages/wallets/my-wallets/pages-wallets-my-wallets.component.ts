@@ -111,7 +111,8 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
   }
 
   private deleteWallet(wallet: MyWallet): void {
-    this.myWalletsService.deleteWallet(wallet);
-    this.myWalletsData.data = this.myWalletsData.data!.filter(data => data.id !== wallet.id);
+    this.myWalletsService.deleteWallet(wallet).subscribe(() => {
+      this.myWalletsData.data = this.myWalletsData.data!.filter(data => data.id !== wallet.id);
+    })
   }
 }
