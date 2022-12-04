@@ -1,6 +1,8 @@
 <h1 mat-dialog-title>{{data.headerText}}</h1>
 <div mat-dialog-content>{{data.confirmationText}}</div>
 <div mat-dialog-actions>
-  <button mat-button [mat-dialog-close]="false">{{data.denyBtnText}}</button>
-  <button mat-button [mat-dialog-close]="true">{{data.confirmBtnText}}</button>
+  <button mat-button
+          [mat-dialog-close]="false">{{data.denyBtnText === undefined ? "No" : data.denyBtnText}}</button>
+  <button mat-button
+          [mat-dialog-close]="true">{{data.confirmBtnText === undefined ? "Yes" : data.confirmationText}}</button>
 </div>

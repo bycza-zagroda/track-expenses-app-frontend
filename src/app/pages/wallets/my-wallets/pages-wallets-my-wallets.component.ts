@@ -100,8 +100,6 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
     this.confirmDialogService.openConfirmModal({
       headerText: `Deleting ${wallet.name} wallet`,
       confirmationText: `Are you sure you want to delete ${wallet.name} wallet and all related data?`,
-      confirmBtnText: 'Yes',
-      denyBtnText: 'No',
     }).afterClosed()
       .subscribe((result: boolean | undefined) => {
         if (result) {
