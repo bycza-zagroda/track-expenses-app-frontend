@@ -102,11 +102,11 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
       confirmationText: `Are you sure you want to delete ${wallet.name} wallet and all related data?`,
     }).afterClosed()
       .subscribe((result: boolean | undefined) => {
-        if (result) {
-          this.deleteWallet(wallet);
-        } else {
+        if (!result) {
           return;
         }
+        this.deleteWallet(wallet);
+
       });
   }
 
