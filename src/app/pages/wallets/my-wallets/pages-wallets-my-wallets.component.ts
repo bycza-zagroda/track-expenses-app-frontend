@@ -8,7 +8,7 @@ import {
 } from 'src/app/pages/wallets/my-wallets/wallet-form-modal/pages-wallets-my-wallets-wallet-form-modal';
 import {Observable} from 'rxjs';
 import {WalletFormModalComponent} from './wallet-form-modal/wallet-form-modal.component';
-import {ConfirmDialogService} from '../../../common/services/confirm-dialog.service';
+import {ConfirmDialogService} from '../../../common/confirmation-modal/confirm-dialog.service';
 
 @Component({
   selector: 'app-my-wallets',
