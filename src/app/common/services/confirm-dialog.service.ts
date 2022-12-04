@@ -7,14 +7,12 @@ import {IConfirmationModalData} from '../model/confirmation-modal-data';
   providedIn: 'root',
 })
 export class ConfirmDialogService {
-
   public constructor(private readonly dialog: MatDialog) {
   }
 
-  public openConfirmModal(message: IConfirmationModalData): MatDialogRef<ConfirmationModalComponent, boolean> {
+  public openConfirmModal(config: IConfirmationModalData): MatDialogRef<ConfirmationModalComponent, boolean> {
     return this.dialog.open(ConfirmationModalComponent, {
-      data: message,
+      data: config,
     });
   }
-
 }
