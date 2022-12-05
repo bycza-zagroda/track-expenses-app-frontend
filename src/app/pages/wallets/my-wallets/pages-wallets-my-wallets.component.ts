@@ -9,6 +9,7 @@ import {
 import {Observable} from 'rxjs';
 import {WalletFormModalComponent} from './wallet-form-modal/wallet-form-modal.component';
 import {ConfirmDialogService} from '../../../common/confirmation-modal/confirm-dialog.service';
+import {LoadingDialogService} from '../../../common/loading-modal/loading-dialog.service'
 
 @Component({
   selector: 'app-my-wallets',
@@ -26,6 +27,7 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
   public constructor(
     private readonly myWalletsService: PagesWalletsMyWalletsService,
     private readonly confirmDialogService: ConfirmDialogService,
+    private readonly loadingDialogService: LoadingDialogService,
     private readonly dialog: MatDialog,
   ) {
   }
@@ -111,7 +113,9 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
   }
 
   private deleteWallet(wallet: MyWallet): void {
+    this.loadingDialogService.startLoading('Deleting wallet')
     this.myWalletsService.deleteWallet(wallet).subscribe(() => {
+      this.loadingDialogService.stopLoading();
       this.myWalletsData.data = this.myWalletsData.data!.filter(data => data.id !== wallet.id);
     })
   }
