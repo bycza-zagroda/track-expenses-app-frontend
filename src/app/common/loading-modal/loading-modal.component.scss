@@ -1,0 +1,9 @@
+.snackbar {
+  display: flex;
+  font-size: 32px;
+  align-items: center;
+
+  > mat-spinner {
+    margin-right: 50px;
+  }
+}
