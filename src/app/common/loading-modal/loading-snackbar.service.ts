@@ -10,13 +10,16 @@ export class LoadingSnackbarService {
   public constructor(private snackBar: MatSnackBar) {
   }
 
-  private snackBarRef!: MatSnackBarRef<LoadingModalComponent>;
+  private snackBarRef: MatSnackBarRef<LoadingModalComponent> | undefined;
 
-  public startLoading(message: string): void {
+  public show(message: string): void {
     this.snackBarRef = this.snackBar.openFromComponent(LoadingModalComponent, {data: message});
   }
 
-  public stopLoading(): void {
+  public hide(): void {
+    if (this.snackBarRef === undefined) {
+      throw new Error('hide() called before showing loading indicator');
+    }
     this.snackBarRef.dismiss();
   }
 }
