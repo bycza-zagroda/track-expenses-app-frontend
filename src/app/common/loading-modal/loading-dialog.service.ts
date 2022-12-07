@@ -1,6 +1,6 @@
-import {Injectable} from '@angular/core';
-import {MatSnackBar, MatSnackBarRef} from '@angular/material/snack-bar';
-import {LoadingModalComponent} from './loading-modal.component';
+import { Injectable } from '@angular/core';
+import { MatSnackBar, MatSnackBarRef } from '@angular/material/snack-bar';
+import { LoadingModalComponent } from './loading-modal.component';
 
 @Injectable({
   providedIn: 'root',

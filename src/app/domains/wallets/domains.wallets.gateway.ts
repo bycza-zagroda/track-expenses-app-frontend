@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {IWalletApiResponse, IWalletPayload} from './domains.wallets.types';
-import {fakeRequest} from '../../common/http/common.http.fake-request';
-import {getRandomNumber} from 'src/app/common/utils/common.utils.random';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { IWalletApiResponse, IWalletPayload } from './domains.wallets.types';
+import { fakeRequest } from '../../common/http/common.http.fake-request';
+import { getRandomNumber } from 'src/app/common/utils/common.utils.random';
 
 @Injectable({
   providedIn: 'root',

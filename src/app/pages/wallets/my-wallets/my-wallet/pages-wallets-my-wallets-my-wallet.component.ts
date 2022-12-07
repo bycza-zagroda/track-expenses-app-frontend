@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {MyWallet} from '../pages-wallets-my-wallet.model';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { MyWallet } from '../pages-wallets-my-wallet.model';
 
 @Component({
   selector: 'app-my-wallet',

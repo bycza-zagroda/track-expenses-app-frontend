@@ -1,4 +1,4 @@
-export interface IConfirmationModalData{
+export interface IConfirmationModalData {
   headerText: string
   confirmationText: string,
   confirmBtnText?: string,

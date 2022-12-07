@@ -1,15 +1,15 @@
-import {Component, OnInit} from '@angular/core';
-import {PagesWalletsMyWalletsService} from './pages-wallets-my-wallets.service';
-import {MyWallet} from './pages-wallets-my-wallet.model';
-import {TDataState} from '../../../common/http/common.http.types';
-import {MatDialog} from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
+import { PagesWalletsMyWalletsService } from './pages-wallets-my-wallets.service';
+import { MyWallet } from './pages-wallets-my-wallet.model';
+import { TDataState } from '../../../common/http/common.http.types';
+import { MatDialog } from '@angular/material/dialog';
 import {
   IWalletModalData,
 } from 'src/app/pages/wallets/my-wallets/wallet-form-modal/pages-wallets-my-wallets-wallet-form-modal';
-import {Observable} from 'rxjs';
-import {WalletFormModalComponent} from './wallet-form-modal/wallet-form-modal.component';
-import {ConfirmDialogService} from '../../../common/confirmation-modal/confirm-dialog.service';
-import {LoadingDialogService} from '../../../common/loading-modal/loading-dialog.service'
+import { Observable } from 'rxjs';
+import { WalletFormModalComponent } from './wallet-form-modal/wallet-form-modal.component';
+import { ConfirmDialogService } from '../../../common/confirmation-modal/confirm-dialog.service';
+import { LoadingDialogService } from '../../../common/loading-modal/loading-dialog.service'
 
 @Component({
   selector: 'app-my-wallets',
@@ -25,10 +25,10 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
   };
 
   public constructor(
-    private readonly myWalletsService: PagesWalletsMyWalletsService,
-    private readonly confirmDialogService: ConfirmDialogService,
-    private readonly loadingDialogService: LoadingDialogService,
-    private readonly dialog: MatDialog,
+      private readonly myWalletsService: PagesWalletsMyWalletsService,
+      private readonly confirmDialogService: ConfirmDialogService,
+      private readonly loadingDialogService: LoadingDialogService,
+      private readonly dialog: MatDialog,
   ) {
   }
 
@@ -103,13 +103,13 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
       headerText: `Deleting ${wallet.name} wallet`,
       confirmationText: `Are you sure you want to delete ${wallet.name} wallet and all related data?`,
     }).afterClosed()
-      .subscribe((result: boolean | undefined) => {
-        if (!result) {
-          return;
-        }
-        this.deleteWallet(wallet);
+        .subscribe((result: boolean | undefined) => {
+          if (!result) {
+            return;
+          }
+          this.deleteWallet(wallet);
 
-      });
+        });
   }
 
   private deleteWallet(wallet: MyWallet): void {
