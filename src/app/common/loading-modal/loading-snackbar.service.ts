@@ -5,7 +5,7 @@ import { LoadingModalComponent } from './loading-modal.component';
 @Injectable({
   providedIn: 'root',
 })
-export class LoadingDialogService {
+export class LoadingSnackbarService {
 
   public constructor(private snackBar: MatSnackBar) {
   }

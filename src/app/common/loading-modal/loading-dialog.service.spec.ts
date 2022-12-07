@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { LoadingDialogService } from './loading-dialog.service';
+import { LoadingSnackbarService } from './loading-snackbar.service';
 
 describe('LoadingDialogService', () => {
-  let service: LoadingDialogService;
+  let service: LoadingSnackbarService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(LoadingDialogService);
+    service = TestBed.inject(LoadingSnackbarService);
   });
 
   it('should be created', () => {

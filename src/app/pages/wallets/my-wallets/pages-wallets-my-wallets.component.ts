@@ -9,7 +9,7 @@ import {
 import { Observable } from 'rxjs';
 import { WalletFormModalComponent } from './wallet-form-modal/wallet-form-modal.component';
 import { ConfirmDialogService } from '../../../common/confirmation-modal/confirm-dialog.service';
-import { LoadingDialogService } from '../../../common/loading-modal/loading-dialog.service'
+import { LoadingSnackbarService } from '../../../common/loading-modal/loading-snackbar.service'
 
 @Component({
   selector: 'app-my-wallets',
@@ -27,7 +27,7 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
   public constructor(
       private readonly myWalletsService: PagesWalletsMyWalletsService,
       private readonly confirmDialogService: ConfirmDialogService,
-      private readonly loadingDialogService: LoadingDialogService,
+      private readonly loadingDialogService: LoadingSnackbarService,
       private readonly dialog: MatDialog,
   ) {
   }
