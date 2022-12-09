@@ -1,17 +1,17 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flushMicrotasks, TestBed } from '@angular/core/testing';
 import { PagesWalletsMyWalletsComponent } from './pages-wallets-my-wallets.component';
 import { MaterialModule } from '../../../material.module';
 import { PagesWalletsMyWalletsService } from './pages-wallets-my-wallets.service';
 import SpyObj = jasmine.SpyObj;
+import createSpy = jasmine.createSpy;
 import createSpyObj = jasmine.createSpyObj;
-import { Subject } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { MyWallet } from './pages-wallets-my-wallet.model';
 import { IWalletApiResponse } from '../../../domains/wallets/domains.wallets.types';
-import { WALLET_PAYLOAD_MOCK, WALLET_RESP_MOCK } from 'src/app/domains/wallets/domains.wallets.mocks';
+import { WALLET_INSTANCE_MOCK, WALLET_RESP_MOCK } from 'src/app/domains/wallets/domains.wallets.mocks';
 import { SystemNotificationsService } from 'src/app/common/utils/system-notifications/system-notifications.service';
 import { By } from '@angular/platform-browser';
-import { IWalletModalData } from './wallet-form-modal/pages-wallets-my-wallets-wallet-form-modal';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 describe('PagesWalletsMyWalletsComponent', () => {
   let component: PagesWalletsMyWalletsComponent;
@@ -22,32 +22,23 @@ describe('PagesWalletsMyWalletsComponent', () => {
   let walletResp: IWalletApiResponse;
   let walletsSubject: Subject<MyWallet[]>;
   let walletSubject: Subject<MyWallet>;
-//   let walletModalData: IWalletModalData;
-//   let walletModalSubject: Subject<IWalletModalData>;
+  let walletInstance: MyWallet;
+  let dialogAfterClosedSpy: jasmine.Spy;
 
   beforeEach(async () => {
     walletsSubject = new Subject<MyWallet[]>();
     walletSubject = new Subject<MyWallet>();
     walletResp = WALLET_RESP_MOCK;
+    walletInstance = WALLET_INSTANCE_MOCK;
+
     myWalletsServiceMock = createSpyObj<PagesWalletsMyWalletsService>(PagesWalletsMyWalletsService.name, ['getMyWallets', 'createWallet', 'updateWallet']);
     myWalletsServiceMock.getMyWallets.and.returnValue(walletsSubject.asObservable());
     myWalletsServiceMock.createWallet.and.returnValue(walletSubject.asObservable());
     myWalletsServiceMock.updateWallet.and.returnValue(walletSubject.asObservable());
 
-
-
-    // walletModalSubject = new Subject<IWalletModalData>();
-    // walletModalData = WALLET_PAYLOAD_MOCK;
-    // systemNotificationsServiceMock = createSpyObj<SystemNotificationsService>(SystemNotificationsService.name, ['showNotification']);
-    // systemNotificationsServiceMock.showNotification.and.returnValue(walletModalSubject.asObservable());
-
-    // matDialogMock = createSpyObj<MatDialog>(MatDialog.name, ['open']);
-    // matDialogMock.open.and.returnValue('');
-
-
-
-
-
+    dialogAfterClosedSpy = createSpy('afterClosed');
+    matDialogMock = createSpyObj<MatDialog>(MatDialog.name, ['open']);
+    matDialogMock.open.and.returnValue({ afterClosed: dialogAfterClosedSpy } as unknown as MatDialogRef<any, any>);
 
     await TestBed.configureTestingModule({
       declarations: [ PagesWalletsMyWalletsComponent ],
@@ -77,7 +68,7 @@ describe('PagesWalletsMyWalletsComponent', () => {
 
       describe('error', () => {
         it('should set error state to false when get my wallets throws fail', () => {
-          walletsSubject.error("error");
+          walletsSubject.error('error');
 
           expect(component.myWalletsData.data).toEqual(null);
           expect(component.myWalletsData.hasError).toEqual(true);
@@ -85,7 +76,7 @@ describe('PagesWalletsMyWalletsComponent', () => {
 
         it('should display notification container when get my wallets throws fail', () => {
             const debugElement = fixture.debugElement;
-            walletsSubject.error("error");
+            walletsSubject.error('error');
 
             fixture.detectChanges();
 
@@ -98,56 +89,100 @@ describe('PagesWalletsMyWalletsComponent', () => {
 
   describe('createWallet', () => {
     it('success', () => {
-       component.myWalletsData.data = [];
-       walletsSubject.next([new MyWallet(walletResp)]);
+      component.myWalletsData.data = [];
 
+      walletsSubject.next([new MyWallet(walletResp)]);
       component.createWallet({ name: walletResp.name });
+
       expect(component.myWalletsData.data).toEqual([new MyWallet(walletResp)]);
     });
 
     it('error', () => {
-        component.myWalletsData.data = [];
-        component.createWallet({ name: walletResp.name });
-        walletsSubject.error("error");
+      component.myWalletsData.data = [];
+      component.createWallet({ name: walletResp.name });
+      walletsSubject.error('error');
 
-
-      // czemu component.myWalletsData.data = null ? :(
-       expect(component.myWalletsData.data.length).toEqual(0);
-     });
+      expect(component.myWalletsData.data).toBeNull();
+    });
   });
 
   describe('updateWallet', () => {
     it('success', () => {
-       component.myWalletsData.data = [];
-       walletsSubject.next([new MyWallet(walletResp)]);
+      component.myWalletsData.data = [];
 
+      walletsSubject.next([new MyWallet(walletResp)]);
       component.updateWallet(new MyWallet(walletResp), { name: walletResp.name });
+
       expect(component.myWalletsData.data).toEqual([new MyWallet(walletResp)]);
     });
 
     it('error', () => {
-        component.myWalletsData.data = [];
-        component.updateWallet(new MyWallet(walletResp), { name: walletResp.name });
-        walletsSubject.error("error");
+      component.myWalletsData.data = [];
+      component.updateWallet(new MyWallet(walletResp), { name: walletResp.name });
+      walletsSubject.error('error');
 
-        debugger
-      // czemu component.myWalletsData.data = null ? :(
-       expect(component.myWalletsData.data.length).toEqual(0);
-     });
+      expect(component.myWalletsData.data).toBeNull();
+    });
   });
 
   describe('handleWalletCreate', () => {
-    it('success', () => {
-       // nie wiem co tu zrobic. Zamockowac openModalWallet() ? :D
+    describe('modal was closed', () => {
+      beforeEach(() => {
+        dialogAfterClosedSpy.and.returnValue(of({ name: 'some wallet name' }));
+      });
+
+      it('should call createWallet method of the service', fakeAsync(() => {
+        component.handleWalletCreate();
+
+        flushMicrotasks();
+
+        expect(myWalletsServiceMock.createWallet).toHaveBeenCalledWith(MyWallet.create({ name: 'some wallet name' }));
+      }));
     });
 
+    describe('modal was canceled', () => {
+      beforeEach(() => {
+        dialogAfterClosedSpy.and.returnValue(of(undefined));
+      });
 
+      it('should not call createWallet method of the service', fakeAsync(() => {
+        component.handleWalletCreate();
+
+        flushMicrotasks();
+
+        expect(myWalletsServiceMock.createWallet).not.toHaveBeenCalled();
+      }));
+    });
   });
 
+  describe('handleWalletEdit', () => {
+    describe('modal was closed', () => {
+      beforeEach(() => {
+        dialogAfterClosedSpy.and.returnValue(of({ name: 'some wallet name' }));
+      });
 
+      it('should call createWallet method of the service', fakeAsync(() => {
+        component.handleWalletEdit(walletInstance);
 
+        flushMicrotasks();
 
+        expect(myWalletsServiceMock.updateWallet).toHaveBeenCalledWith(MyWallet.create({ id: walletInstance.id!, name: 'some wallet name' }));
+      }));
+    });
 
+    describe('modal was canceled', () => {
+      beforeEach(() => {
+        dialogAfterClosedSpy.and.returnValue(of(undefined));
+      });
 
+      it('should not call updateWallet method of the service', fakeAsync(() => {
+        component.handleWalletEdit(walletInstance);
+
+        flushMicrotasks();
+
+        expect(myWalletsServiceMock.createWallet).not.toHaveBeenCalled();
+      }));
+    });
+  });
 
 });

@@ -75,30 +75,22 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
   }
 
   public handleWalletCreate(): void {
-    this.openWalletModal().subscribe({
-        next: (walletModalData?: IWalletModalData) => {
+    this.openWalletModal().subscribe( (walletModalData?: IWalletModalData) => {
             if(walletModalData) {
                 this.createWallet(walletModalData);
             }
         },
-        error: () => {
-            this.systemNotificationsService.showNotification({ message: 'Some modal error during creating', type: NotificationType.Error });
-        },
-    });
+    );
   }
 
   public handleWalletEdit(wallet: MyWallet): void {
-    this.openWalletModal(wallet).subscribe({
-        next: (walletModalData?: IWalletModalData) => {
+    this.openWalletModal(wallet).subscribe( (walletModalData?: IWalletModalData) => {
             if (walletModalData === undefined) {
               return;
             }
             this.updateWallet(wallet, walletModalData);
         },
-        error: () => {
-            this.systemNotificationsService.showNotification({ message: 'Some modal error during ypdating', type: NotificationType.Error });
-        },
-    });
+    );
   }
 
   private openWalletModal(wallet?: MyWallet): Observable<IWalletModalData | undefined> {

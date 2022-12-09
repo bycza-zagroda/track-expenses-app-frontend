@@ -1,15 +1,48 @@
-// import { TestBed } from '@angular/core/testing';
-// import { SystemNotificationsService } from './system-notifications.service';
+import { TestBed } from '@angular/core/testing';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificationType } from './system-notifications.enums';
+import { SystemNotificationsService } from './system-notifications.service';
+import createSpyObj = jasmine.createSpyObj;
 
-// describe('SystemNotificationsService', () => {
-//   let service: SystemNotificationsService;
+describe('SystemNotificationsService', () => {
+  let systemNotificationsService: SystemNotificationsService;
+  let matSnackMock: MatSnackBar;
 
-//   beforeEach(() => {
-//     TestBed.configureTestingModule({});
-//     service = TestBed.inject(SystemNotificationsService);
-//   });
+  beforeEach(() => {
+    matSnackMock = createSpyObj<MatSnackBar>(MatSnackBar.name, ['open']);
 
-//   it('should be created', () => {
-//     expect(service).toBeTruthy();
-//   });
-// });
+    TestBed.configureTestingModule({
+      providers: [
+        SystemNotificationsService,
+        { provide: MatSnackBar, useValue: matSnackMock },
+      ],
+    });
+    systemNotificationsService = TestBed.inject<SystemNotificationsService>(SystemNotificationsService);
+  });
+
+  describe('showNotification', () => {
+    let message: string;
+    let type: NotificationType;
+
+    beforeEach(() => {
+        message = 'Success happened';
+        type = NotificationType.Success;
+    });
+
+    it('should invoke Snackbar.open method with default dismiss value', () => {
+      systemNotificationsService.showNotification({ type, message });
+
+      expect(matSnackMock.open).toHaveBeenCalledWith(message, 'OK', {
+        panelClass: type,
+      });
+    });
+
+    it('should invoke Snackbar.open method with dismiss value', () => {
+      systemNotificationsService.showNotification({ type, message, dismiss: 'NOT OK' });
+
+      expect(matSnackMock.open).toHaveBeenCalledWith(message, 'NOT OK', {
+        panelClass: type,
+      });
+    });
+  })
+});
