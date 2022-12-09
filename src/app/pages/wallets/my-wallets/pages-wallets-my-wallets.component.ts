@@ -51,14 +51,14 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
     });
   }
 
-  public addNewWallet({name}: IWalletModalData): void {
-    this.myWalletsService.addNewWallet(MyWallet.create({name})).subscribe((wallet: MyWallet) => {
+  public addNewWallet({ name }: IWalletModalData): void {
+    this.myWalletsService.addNewWallet(MyWallet.create({ name })).subscribe((wallet: MyWallet) => {
       this.myWalletsData.data = [wallet, ...this.myWalletsData.data!]
     });
   }
 
-  public updateWallet({id}: MyWallet, {name}: IWalletModalData): void {
-    this.myWalletsService.updateNewWallet(MyWallet.create({id: id!, name})).subscribe((updatedWallet: MyWallet) => {
+  public updateWallet({ id }: MyWallet, { name }: IWalletModalData): void {
+    this.myWalletsService.updateNewWallet(MyWallet.create({ id: id!, name })).subscribe((updatedWallet: MyWallet) => {
       this.myWalletsData.data = this.myWalletsData.data!.map(walletItem => {
         if (walletItem.id === id) {
           return updatedWallet;
@@ -101,7 +101,8 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
     this.confirmDialogService.openConfirmModal({
       headerText: `Deleting ${wallet.name} wallet`,
       confirmationText: `Are you sure you want to delete ${wallet.name} wallet and all related data?`,
-    }).subscribe((result: boolean | undefined) => {
+    }).subscribe((result: boolean) => {
+      console.log(result)
       if (!result) {
         return;
       }
