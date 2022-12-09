@@ -98,7 +98,6 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
   }
 
   public handleWalletDelete(wallet: MyWallet): void {
-
     this.confirmDialogService.openConfirmModal({
       headerText: `Deleting ${wallet.name} wallet`,
       confirmationText: `Are you sure you want to delete ${wallet.name} wallet and all related data?`,
@@ -107,7 +106,6 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
         return;
       }
       this.deleteWallet(wallet);
-
     });
   }
 
