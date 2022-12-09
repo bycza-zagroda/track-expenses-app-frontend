@@ -12,6 +12,7 @@ import { WALLET_INSTANCE_MOCK, WALLET_RESP_MOCK } from 'src/app/domains/wallets/
 import { SystemNotificationsService } from 'src/app/common/utils/system-notifications/system-notifications.service';
 import { By } from '@angular/platform-browser';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { WalletFormModalComponent } from './wallet-form-modal/wallet-form-modal.component';
 
 describe('PagesWalletsMyWalletsComponent', () => {
   let component: PagesWalletsMyWalletsComponent;
@@ -23,7 +24,7 @@ describe('PagesWalletsMyWalletsComponent', () => {
   let walletsSubject: Subject<MyWallet[]>;
   let walletSubject: Subject<MyWallet>;
   let walletInstance: MyWallet;
-  let dialogAfterClosedSpy: jasmine.Spy;
+  let matDialogRef: SpyObj<MatDialogRef<unknown, unknown>>;
 
   beforeEach(async () => {
     walletsSubject = new Subject<MyWallet[]>();
@@ -36,9 +37,11 @@ describe('PagesWalletsMyWalletsComponent', () => {
     myWalletsServiceMock.createWallet.and.returnValue(walletSubject.asObservable());
     myWalletsServiceMock.updateWallet.and.returnValue(walletSubject.asObservable());
 
-    dialogAfterClosedSpy = createSpy('afterClosed');
+    matDialogRef = createSpyObj<MatDialogRef<WalletFormModalComponent>>(MatDialogRef.name, ['afterClosed']);
     matDialogMock = createSpyObj<MatDialog>(MatDialog.name, ['open']);
-    matDialogMock.open.and.returnValue({ afterClosed: dialogAfterClosedSpy } as unknown as MatDialogRef<any, any>);
+    matDialogMock.open.and.returnValue(matDialogRef);
+
+    //matDialogMock.open.and.returnValue({ afterClosed: matDialogMock });
 
     await TestBed.configureTestingModule({
       declarations: [ PagesWalletsMyWalletsComponent ],
@@ -128,7 +131,7 @@ describe('PagesWalletsMyWalletsComponent', () => {
   describe('handleWalletCreate', () => {
     describe('modal was closed', () => {
       beforeEach(() => {
-        dialogAfterClosedSpy.and.returnValue(of({ name: 'some wallet name' }));
+        matDialogRef.afterClosed.and.returnValue(of({ name: 'some wallet name' }));
       });
 
       it('should call createWallet method of the service', fakeAsync(() => {
@@ -142,7 +145,7 @@ describe('PagesWalletsMyWalletsComponent', () => {
 
     describe('modal was canceled', () => {
       beforeEach(() => {
-        dialogAfterClosedSpy.and.returnValue(of(undefined));
+        matDialogRef.afterClosed.and.returnValue(of(undefined));
       });
 
       it('should not call createWallet method of the service', fakeAsync(() => {
@@ -158,7 +161,7 @@ describe('PagesWalletsMyWalletsComponent', () => {
   describe('handleWalletEdit', () => {
     describe('modal was closed', () => {
       beforeEach(() => {
-        dialogAfterClosedSpy.and.returnValue(of({ name: 'some wallet name' }));
+        matDialogRef.afterClosed.and.returnValue(of({ name: 'some wallet name' }));
       });
 
       it('should call createWallet method of the service', fakeAsync(() => {
@@ -172,7 +175,7 @@ describe('PagesWalletsMyWalletsComponent', () => {
 
     describe('modal was canceled', () => {
       beforeEach(() => {
-        dialogAfterClosedSpy.and.returnValue(of(undefined));
+        matDialogRef.afterClosed.and.returnValue(of(undefined));
       });
 
       it('should not call updateWallet method of the service', fakeAsync(() => {

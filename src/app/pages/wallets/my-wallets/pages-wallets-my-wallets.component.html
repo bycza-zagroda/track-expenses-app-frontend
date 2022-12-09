@@ -4,7 +4,7 @@
   </div>
 
   <div id="notificationContainer" *ngIf="myWalletsData.hasError">
-    <app-system-message type="error" text="Something went wrong. We were not able to get your wallets" description="Please try refreshing your browser"></app-system-message>
+    <app-system-message [type]="notificationTypes.Error" text="Something went wrong. We were not able to get your wallets" description="Please try refreshing your browser"></app-system-message>
   </div>
 
   <div class="my-wallets" *ngIf="myWalletsData.data">

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { NotificationType } from './system-notifications.enums';
+import { NotificationType } from './system.notifications.constants';
 import { SystemNotificationsService } from './system-notifications.service';
 import createSpyObj = jasmine.createSpyObj;
 
@@ -32,17 +32,13 @@ describe('SystemNotificationsService', () => {
     it('should invoke Snackbar.open method with default dismiss value', () => {
       systemNotificationsService.showNotification({ type, message });
 
-      expect(matSnackMock.open).toHaveBeenCalledWith(message, 'OK', {
-        panelClass: type,
-      });
+      expect(matSnackMock.open).toHaveBeenCalledWith(message, 'OK');
     });
 
     it('should invoke Snackbar.open method with dismiss value', () => {
-      systemNotificationsService.showNotification({ type, message, dismiss: 'NOT OK' });
+      systemNotificationsService.showNotification({ type, message, dismissBtnText: 'NOT OK' });
 
-      expect(matSnackMock.open).toHaveBeenCalledWith(message, 'NOT OK', {
-        panelClass: type,
-      });
+      expect(matSnackMock.open).toHaveBeenCalledWith(message, 'NOT OK');
     });
   })
 });

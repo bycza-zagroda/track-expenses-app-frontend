@@ -18,3 +18,7 @@
   align-items: center;
   height: calc(100vh - #{sizes.$navbar-height});
 }
+
+#notificationContainer {
+  margin-top: 20px;
+}

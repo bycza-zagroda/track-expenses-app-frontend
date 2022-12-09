@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { IShowNotificationConfig } from './system-notifications.enums';
+import { IShowNotificationConfig } from './system.notifications.types';
 
 @Injectable({
   providedIn: 'root',
@@ -10,9 +10,7 @@ export class SystemNotificationsService {
         private readonly snackBar: MatSnackBar,
       ) { }
 
-      public showNotification({ type, message, dismiss = 'OK' }: IShowNotificationConfig): void {
-        this.snackBar.open(message, dismiss, {
-            panelClass: type,
-        });
+      public showNotification({ type, message, dismissBtnText = 'OK' }: IShowNotificationConfig): void {
+        this.snackBar.open(message, dismissBtnText);
       }
 }

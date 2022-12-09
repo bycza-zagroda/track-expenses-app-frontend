@@ -5,11 +5,20 @@ div {
     line-height: 1.5;
     border-radius: 0.5rem;
     width: 100%;
-    margin: auto;
 
     &.error {
         color: colors.$error-text;
         background-color: colors.$error-background;
+    }
+
+    &.warning {
+        color: colors.$warning-text;
+        background-color: colors.$warning-background;
+    }
+
+    &.success {
+        color: colors.$success-text;
+        background-color: colors.$success-background;
     }
 
     h2 {

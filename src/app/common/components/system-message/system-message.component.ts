@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { NotificationType } from 'src/app/common/utils/system-notifications/system-notifications.enums';
+import { NotificationType } from '../../utils/system-notifications/system.notifications.constants';
 
 @Component({
   selector: 'app-system-message',
@@ -7,7 +7,7 @@ import { NotificationType } from 'src/app/common/utils/system-notifications/syst
   styleUrls: ['./system-message.component.scss'],
 })
 export class SystemMessageComponent {
-    @Input() public type: string = NotificationType.Success;
+    @Input() public type: NotificationType = NotificationType.Success;
     @Input() public text!: string;
     @Input() public description?: string;
 }

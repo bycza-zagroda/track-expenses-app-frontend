@@ -7,7 +7,7 @@ import { IWalletModalData } from 'src/app/pages/wallets/my-wallets/wallet-form-m
 import { Observable } from 'rxjs';
 import { WalletFormModalComponent } from './wallet-form-modal/wallet-form-modal.component';
 import { SystemNotificationsService } from 'src/app/common/utils/system-notifications/system-notifications.service';
-import { NotificationType } from 'src/app/common/utils/system-notifications/system-notifications.enums';
+import { NotificationType } from 'src/app/common/utils/system-notifications/system.notifications.constants';
 
 @Component({
   selector: 'app-my-wallets',
@@ -15,6 +15,7 @@ import { NotificationType } from 'src/app/common/utils/system-notifications/syst
   styleUrls: ['./pages-wallets-my-wallets.component.scss'],
 })
 export class PagesWalletsMyWalletsComponent implements OnInit {
+  public notificationTypes: typeof NotificationType = NotificationType;
 
   public myWalletsData: TDataState<MyWallet[]> = {
     isLoading: true,
