@@ -102,7 +102,6 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
       headerText: `Deleting ${wallet.name} wallet`,
       confirmationText: `Are you sure you want to delete ${wallet.name} wallet and all related data?`,
     }).subscribe((result: boolean) => {
-      console.log(result)
       if (!result) {
         return;
       }
@@ -112,9 +111,15 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
 
   private deleteWallet(wallet: MyWallet): void {
     this.loadingDialogService.show('Deleting wallet')
-    this.myWalletsService.deleteWallet(wallet).subscribe(() => {
-      this.loadingDialogService.hide();
-      this.myWalletsData.data = this.myWalletsData.data!.filter(data => data.id !== wallet.id);
-    })
+    this.myWalletsService.deleteWallet(wallet).subscribe({
+          next: () => {
+            this.loadingDialogService.hide();
+            this.myWalletsData.data = this.myWalletsData.data!.filter(data => data.id !== wallet.id);
+          },
+          error: () => {
+            this.loadingDialogService.hide();
+          },
+        },
+    )
   }
 }
