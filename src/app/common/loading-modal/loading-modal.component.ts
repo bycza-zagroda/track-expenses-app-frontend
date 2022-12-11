@@ -7,6 +7,6 @@ import { MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
   styleUrls: ['./loading-modal.component.scss']
 })
 export class LoadingModalComponent {
-  public constructor(@Inject(MAT_SNACK_BAR_DATA) public data: string) {
+  public constructor(@Inject(MAT_SNACK_BAR_DATA) public message: string) {
   }
 }

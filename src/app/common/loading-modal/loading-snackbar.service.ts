@@ -6,7 +6,6 @@ import { LoadingModalComponent } from './loading-modal.component';
   providedIn: 'root',
 })
 export class LoadingSnackbarService {
-
   public constructor(private snackBar: MatSnackBar) {
   }
 
@@ -20,6 +19,7 @@ export class LoadingSnackbarService {
     if (this.snackBarRef === undefined) {
       throw new Error('hide() called before showing loading indicator');
     }
+
     this.snackBarRef.dismiss();
   }
 }
