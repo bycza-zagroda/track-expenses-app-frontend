@@ -8,6 +8,8 @@ import {
 } from 'src/app/pages/wallets/my-wallets/wallet-form-modal/pages-wallets-my-wallets-wallet-form-modal';
 import { Observable } from 'rxjs';
 import { WalletFormModalComponent } from './wallet-form-modal/wallet-form-modal.component';
+import { SystemNotificationsService } from 'src/app/common/utils/system-notifications/system-notifications.service';
+import { NotificationType } from 'src/app/common/utils/system-notifications/system.notifications.constants';
 import { ConfirmDialogService } from '../../../common/confirmation-modal/confirm-dialog.service';
 import { LoadingSnackbarService } from '../../../common/loading-modal/loading-snackbar.service'
 
@@ -17,6 +19,7 @@ import { LoadingSnackbarService } from '../../../common/loading-modal/loading-sn
   styleUrls: ['./pages-wallets-my-wallets.component.scss'],
 })
 export class PagesWalletsMyWalletsComponent implements OnInit {
+  public notificationTypes: typeof NotificationType = NotificationType;
 
   public myWalletsData: TDataState<MyWallet[]> = {
     isLoading: true,
@@ -28,6 +31,7 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
       private readonly myWalletsService: PagesWalletsMyWalletsService,
       private readonly confirmDialogService: ConfirmDialogService,
       private readonly loadingDialogService: LoadingSnackbarService,
+      private readonly systemNotificationsService: SystemNotificationsService,
       private readonly dialog: MatDialog,
   ) {
   }
@@ -51,42 +55,50 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
     });
   }
 
-  public addNewWallet({ name }: IWalletModalData): void {
-    this.myWalletsService.addNewWallet(MyWallet.create({ name })).subscribe((wallet: MyWallet) => {
-      this.myWalletsData.data = [wallet, ...this.myWalletsData.data!]
+  public createWallet({ name }: IWalletModalData): void {
+    this.myWalletsService.createWallet(MyWallet.create({ name })).subscribe({
+        next: (wallet: MyWallet) => {
+            this.myWalletsData.data = [wallet, ...this.myWalletsData.data!];
+        },
+        error: () => {
+            this.systemNotificationsService.showNotification({ message: 'Some server error during creating' });
+        },
     });
   }
 
   public updateWallet({ id }: MyWallet, { name }: IWalletModalData): void {
-    this.myWalletsService.updateNewWallet(MyWallet.create({ id: id!, name })).subscribe((updatedWallet: MyWallet) => {
-      this.myWalletsData.data = this.myWalletsData.data!.map(walletItem => {
-        if (walletItem.id === id) {
-          return updatedWallet;
-        }
-
-        return walletItem;
-      });
+    this.myWalletsService.updateWallet(MyWallet.create({ id: id!, name })).subscribe({
+        next: (updatedWallet: MyWallet) => {
+            this.myWalletsData.data = this.myWalletsData.data!.map(walletItem => {
+                if (walletItem.id === id) {
+                    return updatedWallet;
+                }
+                return walletItem;
+            });
+        },
+        error: () => {
+            this.systemNotificationsService.showNotification({ message: 'Some server error during updating' });
+        },
     });
   }
 
   public handleWalletCreate(): void {
-    this.openWalletModal().subscribe((walletModalData?: IWalletModalData) => {
-      if (walletModalData === undefined) {
-        return;
-      }
-
-      this.addNewWallet(walletModalData);
-    })
+    this.openWalletModal().subscribe( (walletModalData?: IWalletModalData) => {
+            if(walletModalData) {
+                this.createWallet(walletModalData);
+            }
+        },
+    );
   }
 
   public handleWalletEdit(wallet: MyWallet): void {
-    this.openWalletModal(wallet).subscribe((walletModalData?: IWalletModalData) => {
-      if (walletModalData === undefined) {
-        return;
-      }
-
-      this.updateWallet(wallet, walletModalData);
-    })
+    this.openWalletModal(wallet).subscribe( (walletModalData?: IWalletModalData) => {
+            if (walletModalData === undefined) {
+              return;
+            }
+            this.updateWallet(wallet, walletModalData);
+        },
+    );
   }
 
   private openWalletModal(wallet?: MyWallet): Observable<IWalletModalData | undefined> {

@@ -1,47 +1,28 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IWalletApiResponse, IWalletPayload } from './domains.wallets.types';
+import { HttpClient } from '@angular/common/http';
 import { fakeRequest } from '../../common/http/common.http.fake-request';
-import { getRandomNumber } from 'src/app/common/utils/common.utils.random';
+import { API_WALLETS_URL } from './domains.wallets.constants';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DomainsWalletsGateway {
+  public constructor(
+    private readonly http: HttpClient,
+  ) {}
+
   public getWallets(): Observable<IWalletApiResponse[]> {
-    return fakeRequest([
-      {
-        name: 'Wallet 1',
-        creationDate: '2022-10-22T09:47:52.595721658Z',
-        id: 1,
-      },
-      {
-        name: 'Wallet 2',
-        creationDate: '2022-10-23T09:47:52.595721658Z',
-        id: 2,
-      },
-      {
-        name: 'Wallet 3',
-        creationDate: '2022-10-24T09:47:52.595721658Z',
-        id: 3,
-      },
-    ])
+    return this.http.get<IWalletApiResponse[]>(API_WALLETS_URL);
   }
 
-  public addNewWallet({name}: IWalletPayload): Observable<IWalletApiResponse> {
-    return fakeRequest({
-      name: name,
-      creationDate: '2022-10-22T09:47:52.595721658Z',
-      id: getRandomNumber(100, 10000),
-    });
+  public createWallet({ name }: IWalletPayload): Observable<IWalletApiResponse> {
+    return this.http.post<IWalletApiResponse>(API_WALLETS_URL, { name });
   }
 
-  public updateNewWallet(id: number, {name}: IWalletPayload): Observable<IWalletApiResponse> {
-    return fakeRequest({
-      name: name,
-      creationDate: '2022-10-23T09:47:52.595721658Z',
-      id: id,
-    });
+  public updateWallet(id: number, { name }: IWalletPayload): Observable<IWalletApiResponse> {
+    return this.http.put<IWalletApiResponse>(API_WALLETS_URL, { id, name });
   }
 
   public deleteWallet(id: number): Observable<void> {
