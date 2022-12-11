@@ -10,7 +10,7 @@ export class SystemNotificationsService {
         private readonly snackBar: MatSnackBar,
       ) { }
 
-      public showNotification({ type, message, dismissBtnText = 'OK' }: IShowNotificationConfig): void {
+      public showNotification({ message, dismissBtnText = 'OK' }: IShowNotificationConfig): void {
         this.snackBar.open(message, dismissBtnText);
       }
 }

@@ -54,7 +54,7 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
             this.myWalletsData.data = [wallet, ...this.myWalletsData.data!];
         },
         error: () => {
-            this.systemNotificationsService.showNotification({ message: 'Some server error during creating', type: NotificationType.Error });
+            this.systemNotificationsService.showNotification({ message: 'Some server error during creating' });
         },
     });
   }
@@ -70,7 +70,7 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
             });
         },
         error: () => {
-            this.systemNotificationsService.showNotification({ message: 'Some server error during updating', type: NotificationType.Error });
+            this.systemNotificationsService.showNotification({ message: 'Some server error during updating' });
         },
     });
   }

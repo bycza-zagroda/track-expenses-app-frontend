@@ -3,7 +3,6 @@ import { PagesWalletsMyWalletsComponent } from './pages-wallets-my-wallets.compo
 import { MaterialModule } from '../../../material.module';
 import { PagesWalletsMyWalletsService } from './pages-wallets-my-wallets.service';
 import SpyObj = jasmine.SpyObj;
-import createSpy = jasmine.createSpy;
 import createSpyObj = jasmine.createSpyObj;
 import { of, Subject } from 'rxjs';
 import { MyWallet } from './pages-wallets-my-wallet.model';
@@ -24,7 +23,7 @@ describe('PagesWalletsMyWalletsComponent', () => {
   let walletsSubject: Subject<MyWallet[]>;
   let walletSubject: Subject<MyWallet>;
   let walletInstance: MyWallet;
-  let matDialogRef: SpyObj<MatDialogRef<unknown, unknown>>;
+  let matDialogRef: SpyObj<MatDialogRef<WalletFormModalComponent>>;
 
   beforeEach(async () => {
     walletsSubject = new Subject<MyWallet[]>();
@@ -40,8 +39,6 @@ describe('PagesWalletsMyWalletsComponent', () => {
     matDialogRef = createSpyObj<MatDialogRef<WalletFormModalComponent>>(MatDialogRef.name, ['afterClosed']);
     matDialogMock = createSpyObj<MatDialog>(MatDialog.name, ['open']);
     matDialogMock.open.and.returnValue(matDialogRef);
-
-    //matDialogMock.open.and.returnValue({ afterClosed: matDialogMock });
 
     await TestBed.configureTestingModule({
       declarations: [ PagesWalletsMyWalletsComponent ],
@@ -91,9 +88,11 @@ describe('PagesWalletsMyWalletsComponent', () => {
   });
 
   describe('createWallet', () => {
-    it('success', () => {
+    beforeEach(() => {
       component.myWalletsData.data = [];
+    })
 
+    it('success', () => {
       walletsSubject.next([new MyWallet(walletResp)]);
       component.createWallet({ name: walletResp.name });
 
@@ -101,7 +100,6 @@ describe('PagesWalletsMyWalletsComponent', () => {
     });
 
     it('error', () => {
-      component.myWalletsData.data = [];
       component.createWallet({ name: walletResp.name });
       walletsSubject.error('error');
 
@@ -110,9 +108,11 @@ describe('PagesWalletsMyWalletsComponent', () => {
   });
 
   describe('updateWallet', () => {
-    it('success', () => {
-      component.myWalletsData.data = [];
+    beforeEach(() => {
+        component.myWalletsData.data = [];
+    })
 
+    it('success', () => {
       walletsSubject.next([new MyWallet(walletResp)]);
       component.updateWallet(new MyWallet(walletResp), { name: walletResp.name });
 
@@ -120,7 +120,6 @@ describe('PagesWalletsMyWalletsComponent', () => {
     });
 
     it('error', () => {
-      component.myWalletsData.data = [];
       component.updateWallet(new MyWallet(walletResp), { name: walletResp.name });
       walletsSubject.error('error');
 
