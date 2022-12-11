@@ -12,6 +12,7 @@ import { SystemNotificationsService } from 'src/app/common/utils/system-notifica
 import { By } from '@angular/platform-browser';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { WalletFormModalComponent } from './wallet-form-modal/wallet-form-modal.component';
+import { SystemMessageComponent } from 'src/app/common/components/system-message/system-message.component';
 
 describe('PagesWalletsMyWalletsComponent', () => {
   let component: PagesWalletsMyWalletsComponent;
@@ -41,7 +42,10 @@ describe('PagesWalletsMyWalletsComponent', () => {
     matDialogMock.open.and.returnValue(matDialogRef);
 
     await TestBed.configureTestingModule({
-      declarations: [ PagesWalletsMyWalletsComponent ],
+      declarations: [
+        PagesWalletsMyWalletsComponent,
+        SystemMessageComponent,
+      ],
       imports: [ MaterialModule ],
       providers: [
         { provide: PagesWalletsMyWalletsService, useValue: myWalletsServiceMock },
