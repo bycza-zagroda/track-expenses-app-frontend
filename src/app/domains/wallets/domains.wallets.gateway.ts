@@ -10,8 +10,9 @@ import { API_WALLETS_URL } from './domains.wallets.constants';
 })
 export class DomainsWalletsGateway {
   public constructor(
-    private readonly http: HttpClient,
-  ) {}
+      private readonly http: HttpClient,
+  ) {
+  }
 
   public getWallets(): Observable<IWalletApiResponse[]> {
     return this.http.get<IWalletApiResponse[]>(API_WALLETS_URL);
@@ -26,6 +27,6 @@ export class DomainsWalletsGateway {
   }
 
   public deleteWallet(id: number): Observable<void> {
-    return fakeRequest(undefined);
+    return this.http.delete<void>(API_WALLETS_URL+`/${id}`);
   }
 }
