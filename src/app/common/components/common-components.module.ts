@@ -4,13 +4,16 @@ import { CommonComponentsNavbarComponent } from './navbar/common-components-navb
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from 'src/app/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SystemMessageComponent } from './system-message/system-message.component';
 
 @NgModule({
   declarations: [
     CommonComponentsNavbarComponent,
+    SystemMessageComponent,
   ],
   exports: [
     CommonComponentsNavbarComponent,
+    SystemMessageComponent,
   ],
   imports: [
     CommonModule,
