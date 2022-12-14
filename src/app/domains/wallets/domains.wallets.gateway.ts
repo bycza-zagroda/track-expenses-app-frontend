@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IWalletApiResponse, IWalletPayload } from './domains.wallets.types';
 import { HttpClient } from '@angular/common/http';
-import { fakeRequest } from '../../common/http/common.http.fake-request';
 import { API_WALLETS_URL } from './domains.wallets.constants';
 
 @Injectable({
@@ -27,6 +26,6 @@ export class DomainsWalletsGateway {
   }
 
   public deleteWallet(id: number): Observable<void> {
-    return this.http.delete<void>(API_WALLETS_URL+`/${id}`);
+    return this.http.delete<void>(API_WALLETS_URL + `/${id}`);
   }
 }

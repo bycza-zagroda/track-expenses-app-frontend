@@ -1,10 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConfirmationModalComponent } from './confirmation-modal.component';
-import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../../material.module';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 describe('ConfirmationModalComponent', () => {
   let component: ConfirmationModalComponent;
