@@ -39,7 +39,6 @@ describe('LoadingDialogService', () => {
     service.show('')
     service.hide()
     expect(snackBarRefMock.dismiss).toHaveBeenCalled()
-
   });
 
   it('should be created', () => {

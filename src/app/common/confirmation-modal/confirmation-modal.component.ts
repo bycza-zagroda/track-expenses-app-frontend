@@ -8,8 +8,6 @@ import { IConfirmationModalData } from './confirmation-modal.types';
   styleUrls: ['./confirmation-modal.component.scss'],
 })
 export class ConfirmationModalComponent {
-
   public constructor(@Inject(MAT_DIALOG_DATA) public data: IConfirmationModalData) {
   }
-
 }
