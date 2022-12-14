@@ -3,11 +3,15 @@ import { PagesWalletsMyWalletsService } from './pages-wallets-my-wallets.service
 import { MyWallet } from './pages-wallets-my-wallet.model';
 import { TDataState } from '../../../common/http/common.http.types';
 import { MatDialog } from '@angular/material/dialog';
-import { IWalletModalData } from 'src/app/pages/wallets/my-wallets/wallet-form-modal/pages-wallets-my-wallets-wallet-form-modal';
+import {
+  IWalletModalData,
+} from 'src/app/pages/wallets/my-wallets/wallet-form-modal/pages-wallets-my-wallets-wallet-form-modal';
 import { Observable } from 'rxjs';
 import { WalletFormModalComponent } from './wallet-form-modal/wallet-form-modal.component';
 import { SystemNotificationsService } from 'src/app/common/utils/system-notifications/system-notifications.service';
 import { NotificationType } from 'src/app/common/utils/system-notifications/system.notifications.constants';
+import { ConfirmDialogService } from '../../../common/confirmation-modal/confirm-dialog.service';
+import { LoadingSnackbarService } from '../../../common/loading-modal/loading-snackbar.service'
 
 @Component({
   selector: 'app-my-wallets',
@@ -24,10 +28,13 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
   };
 
   public constructor(
-    private readonly myWalletsService: PagesWalletsMyWalletsService,
-    private readonly dialog: MatDialog,
-    private readonly systemNotificationsService: SystemNotificationsService,
-  ) {}
+      private readonly myWalletsService: PagesWalletsMyWalletsService,
+      private readonly confirmDialogService: ConfirmDialogService,
+      private readonly loadingDialogService: LoadingSnackbarService,
+      private readonly systemNotificationsService: SystemNotificationsService,
+      private readonly dialog: MatDialog,
+  ) {
+  }
 
   public ngOnInit(): void {
     this.myWalletsService.getMyWallets().subscribe({
@@ -100,5 +107,31 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
     });
 
     return dialogRef.afterClosed();
+  }
+
+  public handleWalletDelete(wallet: MyWallet): void {
+    this.confirmDialogService.openConfirmModal({
+      headerText: `Deleting ${wallet.name} wallet`,
+      confirmationText: `Are you sure you want to delete ${wallet.name} wallet and all related data?`,
+    }).subscribe((result: boolean) => {
+      if (!result) {
+        return;
+      }
+      this.deleteWallet(wallet);
+    });
+  }
+
+  private deleteWallet(wallet: MyWallet): void {
+    this.loadingDialogService.show('Deleting wallet')
+    this.myWalletsService.deleteWallet(wallet).subscribe({
+          next: () => {
+            this.loadingDialogService.hide();
+            this.myWalletsData.data = this.myWalletsData.data!.filter(data => data.id !== wallet.id);
+          },
+          error: () => {
+            this.loadingDialogService.hide();
+          },
+        },
+    )
   }
 }

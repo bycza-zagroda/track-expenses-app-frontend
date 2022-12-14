@@ -8,12 +8,13 @@ import { MyWallet } from './pages-wallets-my-wallet.model';
 })
 export class PagesWalletsMyWalletsService {
   public constructor(
-    private readonly gateway: DomainsWalletsGateway,
-  ) {}
+      private readonly gateway: DomainsWalletsGateway,
+  ) {
+  }
 
   public getMyWallets(): Observable<MyWallet[]> {
     return this.gateway.getWallets().pipe(
-      map(walletsResp => walletsResp.map(resp => new MyWallet(resp))),
+        map(walletsResp => walletsResp.map(resp => new MyWallet(resp))),
     );
   }
 
@@ -27,5 +28,9 @@ export class PagesWalletsMyWalletsService {
     return this.gateway.updateWallet(wallet.id!, wallet.toPayload()).pipe(
         map(response => new MyWallet(response)),
     );
+  }
+
+  public deleteWallet(wallet: MyWallet): Observable<void> {
+    return this.gateway.deleteWallet(wallet.id!);
   }
 }

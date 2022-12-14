@@ -1,21 +1,23 @@
 import { TestBed } from '@angular/core/testing';
 import { PagesWalletsMyWalletsService } from './pages-wallets-my-wallets.service';
-import SpyObj = jasmine.SpyObj;
 import { DomainsWalletsGateway } from '../../../domains/wallets/domains.wallets.gateway';
-import createSpyObj = jasmine.createSpyObj;
 import { of } from 'rxjs';
 import { MyWallet } from './pages-wallets-my-wallet.model';
 import { IWalletApiResponse } from '../../../domains/wallets/domains.wallets.types';
 import { WALLET_RESP_MOCK } from 'src/app/domains/wallets/domains.wallets.mocks';
+import SpyObj = jasmine.SpyObj;
+import createSpyObj = jasmine.createSpyObj;
 
 describe('PagesWalletsMyWalletsService', () => {
   let service: PagesWalletsMyWalletsService;
   let gatewayMock: SpyObj<DomainsWalletsGateway>;
   let walletResp: IWalletApiResponse;
 
+  const wallet = new MyWallet({ creationDate: '2022-10-22T09:47:52.595721658Z', id: 12, name: 'wallet1' })
+
   beforeEach(async () => {
     walletResp = WALLET_RESP_MOCK;
-    gatewayMock = createSpyObj<DomainsWalletsGateway>(DomainsWalletsGateway.name, ['getWallets', 'createWallet', 'updateWallet']);
+    gatewayMock = createSpyObj<DomainsWalletsGateway>(DomainsWalletsGateway.name, ['getWallets', 'createWallet', 'updateWallet','deleteWallet']);
 
     gatewayMock.getWallets.and.returnValue(of([walletResp]));
     gatewayMock.createWallet.and.returnValue(of(walletResp));
@@ -72,6 +74,14 @@ describe('PagesWalletsMyWalletsService', () => {
 
         done();
       })
+    });
+  });
+
+  describe('deleteWallet', () => {
+    it('should call gateway.deleteWallet()', () => {
+
+      service.deleteWallet(wallet);
+      expect(gatewayMock.deleteWallet).toHaveBeenCalledWith(wallet.id!)
     });
   });
 });

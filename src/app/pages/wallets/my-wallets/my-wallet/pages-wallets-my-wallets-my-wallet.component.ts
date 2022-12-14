@@ -11,7 +11,13 @@ export class PagesWalletsMyWalletsMyWalletComponent {
 
   @Output() public walletEdit = new EventEmitter<MyWallet>();
 
+  @Output() public walletDelete = new EventEmitter<MyWallet>();
+
   public editWallet(): void {
     this.walletEdit.emit(this.wallet);
+  }
+
+  public deleteWallet(): void {
+    this.walletDelete.emit(this.wallet);
   }
 }

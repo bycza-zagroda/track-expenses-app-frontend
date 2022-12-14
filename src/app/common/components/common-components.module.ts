@@ -4,11 +4,15 @@ import { CommonComponentsNavbarComponent } from './navbar/common-components-navb
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from 'src/app/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
+import { LoadingModalComponent } from '../loading-modal/loading-modal.component';
 import { SystemMessageComponent } from './system-message/system-message.component';
 
 @NgModule({
   declarations: [
     CommonComponentsNavbarComponent,
+    ConfirmationModalComponent,
+    LoadingModalComponent,
     SystemMessageComponent,
   ],
   exports: [
