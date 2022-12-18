@@ -10,6 +10,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --watch",
+    "start:local": "ng serve --watch --proxy-config proxy.conf.json --configuration local",
     "build": "ng build",
     "build:gh": "ng build --configuration production --base-href https://bycza-zagroda.github.io/track-expenses-app-frontend/",
     "build:prod": "ng build --configuration production",
