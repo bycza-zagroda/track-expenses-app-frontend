@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA }  from '@angular/material/dialog';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MyWallet } from '../pages-wallets-my-wallet.model';
 import { IWalletModalFormType } from './pages-wallets-my-wallets-wallet-form-modal';
 
@@ -17,15 +17,24 @@ export class WalletFormModalComponent {
         @Inject(MAT_DIALOG_DATA) public data: MyWallet | undefined,
     ) {
         this.form = new FormGroup<IWalletModalFormType>({
-            name: new FormControl(this.data?.name ?? '', { nonNullable: true }),
+            name: new FormControl(this.data?.name ?? '', { validators: Validators.required, nonNullable: true }),
         });
     }
 
+    get formName() { return this.form.get('name'); }
+
+    public showNameError() {
+      return this.formName?.invalid && this.formName?.touched;
+    }
+
     public save(): void {
-        this.dialogRef.close(this.form.value);
+        if(this.form.valid) {
+          this.dialogRef.close(this.form.value);
+        }
     }
 
     public cancel(): void {
         this.dialogRef.close(null);
     }
+
 }
