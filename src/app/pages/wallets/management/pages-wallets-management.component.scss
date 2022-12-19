@@ -1,6 +1,6 @@
 @use 'sizes';
 
-.my-wallets {
+.wallets-management {
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr;
@@ -19,6 +19,6 @@
   height: calc(100vh - #{sizes.$navbar-height});
 }
 
-#notificationContainer {
+.message-container {
   margin-top: 20px;
 }

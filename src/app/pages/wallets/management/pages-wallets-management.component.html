@@ -3,16 +3,16 @@
     <mat-spinner></mat-spinner>
   </div>
 
-  <div id="notificationContainer" *ngIf="myWalletsData.hasError">
+  <div class="message-container" *ngIf="myWalletsData.hasError">
     <app-system-message [type]="notificationTypes.Error" text="Something went wrong. We were not able to get your wallets" description="Please try refreshing your browser"></app-system-message>
   </div>
 
-  <div class="my-wallets" *ngIf="myWalletsData.data">
+  <div class="wallets-management" *ngIf="myWalletsData.data">
     <app-my-wallet *ngFor="let wallet of myWalletsData.data"
                    [wallet]="wallet"
                    (walletEdit)="handleWalletEdit($event)"
                    (walletDelete)="handleWalletDelete($event)">
     </app-my-wallet>
-    <app-add-new-wallet (click)="handleWalletCreate();"></app-add-new-wallet>
+    <app-add-new-wallet (click)="handleWalletCreate()"></app-add-new-wallet>
   </div>
 </div>

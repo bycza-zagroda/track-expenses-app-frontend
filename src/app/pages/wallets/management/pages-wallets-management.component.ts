@@ -1,34 +1,34 @@
 import { Component, OnInit } from '@angular/core';
-import { PagesWalletsMyWalletsService } from './pages-wallets-my-wallets.service';
-import { MyWallet } from './pages-wallets-my-wallet.model';
+import { PagesWalletsManagementService } from './pages-wallets-management.service';
+import { WalletsManagementItem } from './pages-wallets-wallets-management-item.model';
 import { TDataState } from '../../../common/http/common.http.types';
 import { MatDialog } from '@angular/material/dialog';
 import {
   IWalletModalData,
-} from 'src/app/pages/wallets/my-wallets/wallet-form-modal/pages-wallets-my-wallets-wallet-form-modal';
+} from 'src/app/pages/wallets/management/wallet-editor/pages-wallets-management-editor.types';
 import { Observable } from 'rxjs';
-import { WalletFormModalComponent } from './wallet-form-modal/wallet-form-modal.component';
+import { PagesWalletsManagementEditorComponent } from './wallet-editor/pages-wallets-management-editor.component';
 import { SystemNotificationsService } from 'src/app/common/utils/system-notifications/system-notifications.service';
 import { NotificationType } from 'src/app/common/utils/system-notifications/system.notifications.constants';
 import { ConfirmDialogService } from '../../../common/confirmation-modal/confirm-dialog.service';
 import { LoadingSnackbarService } from '../../../common/loading-modal/loading-snackbar.service'
 
 @Component({
-  selector: 'app-my-wallets',
-  templateUrl: './pages-wallets-my-wallets.component.html',
-  styleUrls: ['./pages-wallets-my-wallets.component.scss'],
+  selector: 'app-wallets-management',
+  templateUrl: './pages-wallets-management.component.html',
+  styleUrls: ['./pages-wallets-management.component.scss'],
 })
-export class PagesWalletsMyWalletsComponent implements OnInit {
+export class PagesWalletsManagementComponent implements OnInit {
   public notificationTypes: typeof NotificationType = NotificationType;
 
-  public myWalletsData: TDataState<MyWallet[]> = {
+  public myWalletsData: TDataState<WalletsManagementItem[]> = {
     isLoading: true,
     data: null,
     hasError: false,
   };
 
   public constructor(
-      private readonly myWalletsService: PagesWalletsMyWalletsService,
+      private readonly myWalletsService: PagesWalletsManagementService,
       private readonly confirmDialogService: ConfirmDialogService,
       private readonly loadingDialogService: LoadingSnackbarService,
       private readonly systemNotificationsService: SystemNotificationsService,
@@ -37,7 +37,7 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.myWalletsService.getMyWallets().subscribe({
+    this.myWalletsService.getWallets().subscribe({
       next: (data) => {
         this.myWalletsData = {
           data,
@@ -56,19 +56,20 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
   }
 
   public createWallet({ name }: IWalletModalData): void {
-    this.myWalletsService.createWallet(MyWallet.create({ name })).subscribe({
-        next: (wallet: MyWallet) => {
-            this.myWalletsData.data = [wallet, ...this.myWalletsData.data!];
+    this.myWalletsService.createWallet(WalletsManagementItem.create({ name })).subscribe({
+        next: (wallet: WalletsManagementItem) => {
+          this.myWalletsData.data = [wallet, ...this.myWalletsData.data!];
+          this.systemNotificationsService.showNotification({ message: 'Congratulations! Your wallet was created successfully.' });
         },
         error: () => {
-            this.systemNotificationsService.showNotification({ message: 'Some server error during creating' });
+          this.systemNotificationsService.showNotification({ message: 'Sorry. Something went wrong and your wallet was not saved. Contact administrator.' });
         },
     });
   }
 
-  public updateWallet({ id }: MyWallet, { name }: IWalletModalData): void {
-    this.myWalletsService.updateWallet(MyWallet.create({ id: id!, name })).subscribe({
-        next: (updatedWallet: MyWallet) => {
+  public updateWallet({ id }: WalletsManagementItem, { name }: IWalletModalData): void {
+    this.myWalletsService.updateWallet(WalletsManagementItem.create({ id: id!, name })).subscribe({
+        next: (updatedWallet: WalletsManagementItem) => {
             this.myWalletsData.data = this.myWalletsData.data!.map(walletItem => {
                 if (walletItem.id === id) {
                     return updatedWallet;
@@ -91,7 +92,7 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
     );
   }
 
-  public handleWalletEdit(wallet: MyWallet): void {
+  public handleWalletEdit(wallet: WalletsManagementItem): void {
     this.openWalletModal(wallet).subscribe( (walletModalData?: IWalletModalData) => {
             if (walletModalData === undefined) {
               return;
@@ -101,15 +102,15 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
     );
   }
 
-  private openWalletModal(wallet?: MyWallet): Observable<IWalletModalData | undefined> {
-    const dialogRef = this.dialog.open<WalletFormModalComponent, MyWallet | undefined, IWalletModalData>(WalletFormModalComponent, {
+  private openWalletModal(wallet?: WalletsManagementItem): Observable<IWalletModalData | undefined> {
+    const dialogRef = this.dialog.open<PagesWalletsManagementEditorComponent, WalletsManagementItem | undefined, IWalletModalData>(PagesWalletsManagementEditorComponent, {
       data: wallet,
     });
 
     return dialogRef.afterClosed();
   }
 
-  public handleWalletDelete(wallet: MyWallet): void {
+  public handleWalletDelete(wallet: WalletsManagementItem): void {
     this.confirmDialogService.openConfirmModal({
       headerText: `Deleting ${wallet.name} wallet`,
       confirmationText: `Are you sure you want to delete ${wallet.name} wallet and all related data?`,
@@ -121,8 +122,9 @@ export class PagesWalletsMyWalletsComponent implements OnInit {
     });
   }
 
-  private deleteWallet(wallet: MyWallet): void {
+  private deleteWallet(wallet: WalletsManagementItem): void {
     this.loadingDialogService.show('Deleting wallet')
+
     this.myWalletsService.deleteWallet(wallet).subscribe({
           next: () => {
             this.loadingDialogService.hide();

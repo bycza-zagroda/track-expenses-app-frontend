@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { WalletFormModalComponent } from './wallet-form-modal.component';
+import { PagesWalletsManagementEditorComponent } from './pages-wallets-management-editor.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../../../../material.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-describe('WalletFormModalComponent', () => {
-  let component: WalletFormModalComponent;
-  let fixture: ComponentFixture<WalletFormModalComponent>;
+describe('PagesWalletsManagementEditorComponent', () => {
+  let component: PagesWalletsManagementEditorComponent;
+  let fixture: ComponentFixture<PagesWalletsManagementEditorComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ WalletFormModalComponent ],
+      declarations: [ PagesWalletsManagementEditorComponent ],
       imports: [
         ReactiveFormsModule,
         MaterialModule,
@@ -25,7 +25,7 @@ describe('WalletFormModalComponent', () => {
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(WalletFormModalComponent);
+    fixture = TestBed.createComponent(PagesWalletsManagementEditorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
