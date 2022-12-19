@@ -84,7 +84,7 @@ describe('PagesWalletsManagementComponent', () => {
 
             fixture.detectChanges();
 
-            const notificationContainer = debugElement.query(By.css('#notificationContainer'));
+            const notificationContainer = debugElement.query(By.css('.message-container'));
             expect(notificationContainer.nativeElement).toBeTruthy();
           });
       });
