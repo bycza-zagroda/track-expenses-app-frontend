@@ -21,7 +21,7 @@ export class WalletFormModalComponent {
         });
     }
 
-    public showNameError() {
+    public showNameError(): boolean | undefined {
       return this.form.get('name')?.invalid && this.form.get('name')?.touched;
     }
 
