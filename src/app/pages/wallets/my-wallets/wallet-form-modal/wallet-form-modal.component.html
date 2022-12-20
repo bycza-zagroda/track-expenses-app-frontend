@@ -6,6 +6,9 @@
         <mat-error *ngIf="showNameError()">
           Name is required
         </mat-error>
+        <mat-error *ngIf="showMaxLengthError()">
+          Name can't have more than 20 characters
+        </mat-error>
     </mat-form-field>
     <div mat-dialog-actions>
         <button mat-button (click)="cancel()">Cancel</button>
