@@ -21,16 +21,16 @@ export class WalletFormModalComponent {
         });
     }
 
-    get formName() { return this.form.get('name'); }
-
     public showNameError() {
-      return this.formName?.invalid && this.formName?.touched;
+      return this.form.get('name')?.invalid && this.form.get('name')?.touched;
     }
 
     public save(): void {
         if(this.form.valid) {
-          this.dialogRef.close(this.form.value);
+          return;
         }
+
+        this.dialogRef.close(this.form.value);
     }
 
     public cancel(): void {
