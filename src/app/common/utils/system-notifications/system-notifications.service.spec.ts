@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SystemNotificationsService } from './system-notifications.service';
+import { SNACKBAR_DURATION_SECONDS } from './system.notifications.consts';
 import createSpyObj = jasmine.createSpyObj;
 
 describe('SystemNotificationsService', () => {
@@ -21,21 +22,30 @@ describe('SystemNotificationsService', () => {
 
   describe('showNotification', () => {
     let message: string;
+    let durationTime: number;
 
     beforeEach(() => {
         message = 'Success happened';
+        durationTime = SNACKBAR_DURATION_SECONDS * 1000;
     });
 
-    it('should invoke Snackbar.open method with default dismiss value', () => {
+    it('should invoke Snackbar.open method with default dismiss value', (done) => {
       systemNotificationsService.showNotification({ message });
 
-      expect(matSnackMock.open).toHaveBeenCalledWith(message, 'OK');
+      setTimeout(() => {
+        expect(matSnackMock.open).toHaveBeenCalledWith(message, 'OK', { duration: durationTime });
+        done();
+      }, durationTime);
     });
 
-    it('should invoke Snackbar.open method with dismiss value', () => {
+    it('should invoke Snackbar.open method with dismiss value', (done) => {
       systemNotificationsService.showNotification({ message, dismissBtnText: 'NOT OK' });
 
-      expect(matSnackMock.open).toHaveBeenCalledWith(message, 'NOT OK');
+      setTimeout(() => {
+        expect(matSnackMock.open).toHaveBeenCalledWith(message, 'NOT OK', { duration: durationTime });
+        done();
+      }, durationTime);
+
     });
   })
 });
