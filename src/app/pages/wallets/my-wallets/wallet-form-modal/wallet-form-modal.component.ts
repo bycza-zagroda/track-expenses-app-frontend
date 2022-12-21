@@ -27,21 +27,24 @@ export class WalletFormModalComponent {
         });
     }
 
-    public showNameError(): boolean {
-      return this.form.get('name')?.invalid && this.form.get('name')?.touched && this.form.get('name')?.errors?.['required'];
+    public get nameValidator(): boolean {
+      return this.hasInputError('name', 'required');
     }
 
-    public showMaxLengthError(): boolean {
-      return this.form.get('name')?.invalid && this.form.get('name')?.touched && this.form.get('name')?.errors?.['maxlength'];
+    public get maxLengthValidator(): boolean {
+      return this.hasInputError('name', 'maxlength');
+    }
+
+    public hasInputError(inputName: string, errorType: string): boolean {
+      return this.form.get(inputName)?.invalid && this.form.get(inputName)?.touched && this.form.get(inputName)?.errors?.[errorType];
     }
 
     public save(): void {
-      console.log(this.form.get('name'))
-        if(this.form.invalid) {
-          return;
-        }
+      if(this.form.invalid) {
+        return;
+      }
 
-        this.dialogRef.close(this.form.value);
+      this.dialogRef.close(this.form.value);
     }
 
     public cancel(): void {
