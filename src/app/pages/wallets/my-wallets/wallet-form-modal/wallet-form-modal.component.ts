@@ -36,7 +36,7 @@ export class WalletFormModalComponent {
     }
 
     public hasInputError(inputName: string, errorType: string): boolean {
-      return this.form.get(inputName)?.invalid && this.form.get(inputName)?.touched && this.form.get(inputName)?.errors?.[errorType];
+      return !!(this.form.get(inputName)?.invalid && this.form.get(inputName)?.touched && this.form.get(inputName)?.errors?.[errorType]);
     }
 
     public save(): void {

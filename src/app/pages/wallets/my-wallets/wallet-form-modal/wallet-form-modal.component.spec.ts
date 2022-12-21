@@ -5,7 +5,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../../../../material.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
 
 describe('WalletFormModalComponent', () => {
   let component: WalletFormModalComponent;
@@ -50,8 +49,10 @@ describe('WalletFormModalComponent', () => {
       fixture.detectChanges();
 
       const errorMessageDiv = fixture.debugElement.query(By.css('.mat-error'));
-      const errorMessageText: HTMLDivElement = errorMessageDiv.nativeElement;
-      expect(errorMessageText.textContent!.trim()).toBe(ERROR_MESSAGE_REQUIRED);
+      if (errorMessageDiv instanceof HTMLDivElement) {
+        const errorMessageText: HTMLDivElement = errorMessageDiv.nativeElement as HTMLDivElement;
+        expect(errorMessageText.textContent!.trim()).toBe(ERROR_MESSAGE_REQUIRED);
+      }
     });
 
     it('Name with more than 20 characters', () => {
@@ -61,7 +62,7 @@ describe('WalletFormModalComponent', () => {
       fixture.detectChanges();
 
       const errorMessageDiv = fixture.debugElement.query(By.css('.mat-error'));
-      const errorMessageText: HTMLDivElement = errorMessageDiv.nativeElement;
+      const errorMessageText: HTMLDivElement = errorMessageDiv.nativeElement as HTMLDivElement;
       expect(errorMessageText.textContent!.trim()).toBe(ERROR_MESSAGE_MAXLENGTH);
     });
   })
