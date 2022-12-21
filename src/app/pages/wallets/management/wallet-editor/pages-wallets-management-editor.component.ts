@@ -1,20 +1,20 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA }  from '@angular/material/dialog';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MyWallet } from '../pages-wallets-my-wallet.model';
-import { IWalletModalFormType } from './pages-wallets-my-wallets-wallet-form-modal';
+import { WalletsManagementItem } from '../pages-wallets-wallets-management-item.model';
+import { IWalletModalFormType } from './pages-wallets-management-editor.types';
 
 @Component({
   selector: 'app-wallet-form-modal',
-  templateUrl: './wallet-form-modal.component.html',
-  styleUrls: ['./wallet-form-modal.component.scss'],
+  templateUrl: './pages-wallets-management-editor.component.html',
+  styleUrls: ['./pages-wallets-management-editor.component.scss'],
 })
-export class WalletFormModalComponent {
+export class PagesWalletsManagementEditorComponent {
     public form!: FormGroup<IWalletModalFormType>;
 
     public constructor(
-        private readonly dialogRef: MatDialogRef<WalletFormModalComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: MyWallet | undefined,
+        private readonly dialogRef: MatDialogRef<PagesWalletsManagementEditorComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: WalletsManagementItem | undefined,
     ) {
         this.form = new FormGroup<IWalletModalFormType>({
             name: new FormControl(this.data?.name ?? '', { nonNullable: true }),

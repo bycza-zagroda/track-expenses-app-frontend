@@ -1,6 +1,6 @@
 import { IWalletApiResponse, IWalletPayload } from '../../../domains/wallets/domains.wallets.types';
 
-export class MyWallet {
+export class WalletsManagementItem {
   public readonly id: number | null;
   public readonly createdAt: Date;
   public readonly name: string;
@@ -15,8 +15,8 @@ export class MyWallet {
     return { name: this.name }
   }
 
-  public static create(data: Partial<IWalletApiResponse>): MyWallet {
-    return new MyWallet({
+  public static create(data: Partial<IWalletApiResponse>): WalletsManagementItem {
+    return new WalletsManagementItem({
         id: data.id ?? 0,
         name: data.name ?? '',
         creationDate: data.creationDate ?? new Date().toString(),
