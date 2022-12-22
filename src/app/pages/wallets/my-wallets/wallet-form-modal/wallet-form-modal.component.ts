@@ -27,15 +27,15 @@ export class WalletFormModalComponent {
         });
     }
 
-    public get nameValidator(): boolean {
-      return this.hasInputError('name', 'required');
+    public get nameIsNotProvided(): boolean {
+      return this.checkInputError('name', 'required');
     }
 
-    public get maxLengthValidator(): boolean {
-      return this.hasInputError('name', 'maxlength');
+    public get nameHasMoreThan20Characters(): boolean {
+      return this.checkInputError('name', 'maxlength');
     }
 
-    public hasInputError(inputName: string, errorType: string): boolean {
+    public checkInputError(inputName: string, errorType: string): boolean {
       return !!(this.form.get(inputName)?.invalid && this.form.get(inputName)?.touched && this.form.get(inputName)?.errors?.[errorType]);
     }
 
@@ -50,5 +50,4 @@ export class WalletFormModalComponent {
     public cancel(): void {
         this.dialogRef.close(null);
     }
-
 }

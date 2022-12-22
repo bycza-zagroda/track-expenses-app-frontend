@@ -3,10 +3,10 @@
     <mat-form-field appearance="fill">
         <mat-label>Wallet Name</mat-label>
         <input matInput [formControl]='form.controls["name"]'>
-        <mat-error *ngIf="nameValidator">
+        <mat-error *ngIf="nameIsNotProvided">
           Name is required
         </mat-error>
-        <mat-error *ngIf="maxLengthValidator">
+        <mat-error *ngIf="nameHasMoreThan20Characters">
           Name can't have more than 20 characters
         </mat-error>
     </mat-form-field>

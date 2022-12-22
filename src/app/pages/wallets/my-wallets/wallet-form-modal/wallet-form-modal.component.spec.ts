@@ -36,26 +36,24 @@ describe('WalletFormModalComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('Should display error message when invalid data is provided', () => {
+  describe('form validation', () => {
     beforeEach(() => {
       ERROR_MESSAGE_REQUIRED = 'Name is required'
       ERROR_MESSAGE_MAXLENGTH = 'Name can\'t have more than 20 characters'
     })
 
-    it('Empty name', () => {
+    it('should show validation error if name input is empty', () => {
       component.form.get('name')?.setValue('');
       component.form.get('name')?.markAsTouched();
 
       fixture.detectChanges();
 
       const errorMessageDiv = fixture.debugElement.query(By.css('.mat-error'));
-      if (errorMessageDiv instanceof HTMLDivElement) {
-        const errorMessageText: HTMLDivElement = errorMessageDiv.nativeElement as HTMLDivElement;
-        expect(errorMessageText.textContent!.trim()).toBe(ERROR_MESSAGE_REQUIRED);
-      }
+      const errorMessageText: HTMLDivElement = errorMessageDiv.nativeElement as HTMLDivElement;
+      expect(errorMessageText.textContent!.trim()).toBe(ERROR_MESSAGE_REQUIRED);
     });
 
-    it('Name with more than 20 characters', () => {
+    it('should show validation error if name input has more than 20 characters', () => {
       component.form.get('name')?.setValue('Text have more than twenty characters for sure');
       component.form.get('name')?.markAsTouched();
 
