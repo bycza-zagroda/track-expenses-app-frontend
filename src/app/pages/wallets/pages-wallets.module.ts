@@ -1,28 +1,28 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PagesWalletsMyWalletsComponent } from './my-wallets/pages-wallets-my-wallets.component';
+import { PagesWalletsManagementComponent } from './management/pages-wallets-management.component';
 import { RouterModule, Routes } from '@angular/router';
 import { DomainsWalletsModule } from '../../domains/wallets/domains.wallets.module';
-import { PagesWalletsMyWalletsMyWalletComponent } from './my-wallets/my-wallet/pages-wallets-my-wallets-my-wallet.component';
+import { PagesWalletsManagementItemComponent } from './management/wallets-management-item/pages-wallets-management-item.component';
 import { MaterialModule } from '../../material.module';
-import { PagesWalletsMyWalletsAddNewWalletComponent } from './my-wallets/add-new-wallet/pages-wallets-my-wallets-add-new-wallet.component';
+import { PagesWalletsManagementAddNewWalletComponent } from './management/add-new-wallet/pages-wallets-management-add-new-wallet.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { WalletFormModalComponent } from './my-wallets/wallet-form-modal/wallet-form-modal.component';
+import { PagesWalletsManagementEditorComponent } from './management/wallet-editor/pages-wallets-management-editor.component';
 import { CommonComponentsModule } from 'src/app/common/components/common-components.module';
 
 const routes: Routes = [
   {
-    path: 'my',
-    component: PagesWalletsMyWalletsComponent,
+    path: 'management',
+    component: PagesWalletsManagementComponent,
   },
 ];
 
 @NgModule({
   declarations: [
-    PagesWalletsMyWalletsComponent,
-    PagesWalletsMyWalletsMyWalletComponent,
-    PagesWalletsMyWalletsAddNewWalletComponent,
-    WalletFormModalComponent,
+    PagesWalletsManagementComponent,
+    PagesWalletsManagementItemComponent,
+    PagesWalletsManagementAddNewWalletComponent,
+    PagesWalletsManagementEditorComponent,
   ],
   imports: [
     RouterModule.forChild(routes),

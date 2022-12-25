@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { WalletFormModalComponent } from './wallet-form-modal.component';
+import { PagesWalletsManagementEditorComponent } from './pages-wallets-management-editor.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../../../../material.module';
@@ -7,14 +7,14 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 
 describe('WalletFormModalComponent', () => {
-  let component: WalletFormModalComponent;
-  let fixture: ComponentFixture<WalletFormModalComponent>;
+  let component: PagesWalletsManagementEditorComponent;
+  let fixture: ComponentFixture<PagesWalletsManagementEditorComponent>;
   let ERROR_MESSAGE_REQUIRED: string;
   let ERROR_MESSAGE_MAXLENGTH: string;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ WalletFormModalComponent ],
+      declarations: [PagesWalletsManagementEditorComponent],
       imports: [
         ReactiveFormsModule,
         MaterialModule,
@@ -25,9 +25,9 @@ describe('WalletFormModalComponent', () => {
         { provide: MAT_DIALOG_DATA, useValue: undefined },
       ],
     })
-    .compileComponents();
+      .compileComponents();
 
-    fixture = TestBed.createComponent(WalletFormModalComponent);
+    fixture = TestBed.createComponent(PagesWalletsManagementEditorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -64,5 +64,4 @@ describe('WalletFormModalComponent', () => {
       expect(errorMessageText.textContent!.trim()).toBe(ERROR_MESSAGE_MAXLENGTH);
     });
   })
-
 });

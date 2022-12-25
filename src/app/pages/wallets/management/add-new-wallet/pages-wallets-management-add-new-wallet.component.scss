@@ -1,11 +1,12 @@
 @use 'colors';
 
 .add-new-wallet {
-  height: 100%;
-  border: 1px solid colors.$primary;
+  height: 200px;
+  border: 1px solid colors.$border-secondary;
   border-radius: 12px;
   padding: 25px;
-  color: transparentize(colors.$primary, .6);
+  color: colors.$border-secondary;
+  background: transparentize(colors.$border-primary, .7);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,7 +24,6 @@
   }
 
   &:hover {
-    color: colors.$primary;
     cursor: pointer;
   }
 }

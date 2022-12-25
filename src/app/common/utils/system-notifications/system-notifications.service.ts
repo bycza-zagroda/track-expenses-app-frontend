@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SNACKBAR_DURATION_SECONDS } from './system.notifications.consts';
 import { IShowNotificationConfig } from './system.notifications.types';
 
 @Injectable({
@@ -11,6 +12,8 @@ export class SystemNotificationsService {
       ) { }
 
       public showNotification({ message, dismissBtnText = 'OK' }: IShowNotificationConfig): void {
-        this.snackBar.open(message, dismissBtnText);
+        this.snackBar.open(message, dismissBtnText, {
+          duration: 1000 * SNACKBAR_DURATION_SECONDS,
+        });
       }
 }
