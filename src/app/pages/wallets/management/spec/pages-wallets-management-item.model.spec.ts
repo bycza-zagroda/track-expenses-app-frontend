@@ -1,14 +1,14 @@
 import { WALLET_PAYLOAD_MOCK, WALLET_RESP_MOCK } from 'src/app/domains/wallets/domains.wallets.mocks';
 import { IWalletApiResponse, IWalletPayload } from 'src/app/domains/wallets/domains.wallets.types';
-import { MyWallet } from './pages-wallets-my-wallet.model';
+import { WalletsManagementItem } from '../pages-wallets-wallets-management-item.model';
 
-describe('MyWallet', () => {
+describe('WalletsManagementItem', () => {
 
   describe('toPayload', () => {
-    let wallet: MyWallet;
+    let wallet: WalletsManagementItem;
 
     beforeEach(() => {
-      wallet = new MyWallet(WALLET_RESP_MOCK);
+      wallet = new WalletsManagementItem(WALLET_RESP_MOCK);
     });
 
     it('should return IWalletPayload', () => {
@@ -25,7 +25,7 @@ describe('MyWallet', () => {
     it('should create wallet when the data is provided', () => {
       walletPayload = WALLET_PAYLOAD_MOCK;
 
-      const payload = MyWallet.create(walletPayload);
+      const payload = WalletsManagementItem.create(walletPayload);
 
       expect(payload.id).toEqual(null);
       expect(payload.name).toEqual(walletPayload.name);
@@ -34,7 +34,7 @@ describe('MyWallet', () => {
     it('should update wallet with data provided', () => {
         wallet = { id: 999, name: 'Wallet 6' };
 
-        const payload = MyWallet.create(wallet);
+        const payload = WalletsManagementItem.create(wallet);
 
         expect(payload.id).toEqual(wallet.id!);
         expect(payload.name).toEqual(wallet.name!);
