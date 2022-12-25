@@ -7,13 +7,13 @@ import { IShowNotificationConfig } from './system.notifications.types';
   providedIn: 'root',
 })
 export class SystemNotificationsService {
-    public constructor(
-        private readonly snackBar: MatSnackBar,
-      ) { }
+  public constructor(
+    private readonly snackBar: MatSnackBar,
+  ) { }
 
-      public showNotification({ message, dismissBtnText = 'OK' }: IShowNotificationConfig): void {
-        this.snackBar.open(message, dismissBtnText, {
-          duration: 1000 * SNACKBAR_DURATION_SECONDS,
-        });
-      }
+  public showNotification({ message, dismissBtnText = 'OK' }: IShowNotificationConfig): void {
+    this.snackBar.open(message, dismissBtnText, {
+      duration: 1000 * SNACKBAR_DURATION_SECONDS,
+    });
+  }
 }
