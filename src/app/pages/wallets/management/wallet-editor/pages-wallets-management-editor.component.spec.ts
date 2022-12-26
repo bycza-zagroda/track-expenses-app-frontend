@@ -6,7 +6,7 @@ import { MaterialModule } from '../../../../material.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
 
-describe('WalletFormModalComponent', () => {
+describe('PagesWalletsManagementEditorComponent', () => {
   let component: PagesWalletsManagementEditorComponent;
   let fixture: ComponentFixture<PagesWalletsManagementEditorComponent>;
   let ERROR_MESSAGE_REQUIRED: string;
