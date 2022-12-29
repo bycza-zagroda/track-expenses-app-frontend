@@ -21,12 +21,6 @@ export class PagesWalletDetailsComponent implements OnInit {
 
   public walletTransactionType: typeof WalletTransactionType = WalletTransactionType;
 
-  public transactionsTypes: string[] = [
-    'allTransactions',
-    'incomes',
-    'expences',
-  ];
-
   public selectedTransactionType: WalletTransactionType = WalletTransactionType.allTransaction;
 
   public displayedColumns: string[] = ['id', 'date', 'description', 'amount', 'actions'];
