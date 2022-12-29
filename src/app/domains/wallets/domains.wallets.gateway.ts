@@ -4,6 +4,7 @@ import { IWalletApiResponse, IWalletDetailsApiResponse, IWalletPayload } from '.
 import { HttpClient } from '@angular/common/http';
 import { API_WALLETS_URL } from './domains.wallets.constants';
 import { fakeRequest } from 'src/app/common/http/common.http.fake-request';
+import { WALLET_DETAILS_API_RESPONSE_MOCK, GET_WALLETS_API_RESPONSE_MOCK } from './domains.wallets.mocks';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,8 @@ export class DomainsWalletsGateway {
   }
 
   public getWallets(): Observable<IWalletApiResponse[]> {
-    return this.http.get<IWalletApiResponse[]>(API_WALLETS_URL);
+    return fakeRequest(GET_WALLETS_API_RESPONSE_MOCK());
+    //return this.http.get<IWalletApiResponse[]>(API_WALLETS_URL); // TE ZMIANY SA CHWILOWE, BO MI DALEJ BACKEND NIE DZIALA
   }
 
   public createWallet({ name }: IWalletPayload): Observable<IWalletApiResponse> {
@@ -23,7 +25,8 @@ export class DomainsWalletsGateway {
   }
 
   public updateWallet(id: number, { name }: IWalletPayload): Observable<IWalletApiResponse> {
-    return this.http.put<IWalletApiResponse>(API_WALLETS_URL, { id, name });
+    return fakeRequest({id: 1, creationDate: new Date().toString(), name})
+    return this.http.put<IWalletApiResponse>(API_WALLETS_URL, { id, name }); // TE ZMIANY SA CHWILOWE, BO MI DALEJ BACKEND NIE DZIALA
   }
 
   public deleteWallet(id: number): Observable<void> {
@@ -31,15 +34,6 @@ export class DomainsWalletsGateway {
   }
 
   public getWalletsDetails(id: number): Observable<IWalletDetailsApiResponse> {
-    return fakeRequest({
-      id,
-      name: 'wallet1',
-      creationDate: '',
-      transactions: [
-        { id: 1, date: 'dat1', description: '1x', amount: 3},
-        { id: 2, date: 'date2', description: '2x', amount: 5},
-        { id: 3, date: 'date3', description: '3x', amount: 3},
-      ],
-    });
+    return fakeRequest(WALLET_DETAILS_API_RESPONSE_MOCK(id));
   }
 }

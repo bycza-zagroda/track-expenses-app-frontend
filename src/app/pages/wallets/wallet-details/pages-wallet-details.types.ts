@@ -10,3 +10,9 @@ export interface WalletTransactionDetails {
   description: string;
   amount: number;
 }
+
+export enum WalletTransactionType {
+  allTransaction = "allTransactions",
+  incomes = "incomes",
+  expences = "expences",
+}

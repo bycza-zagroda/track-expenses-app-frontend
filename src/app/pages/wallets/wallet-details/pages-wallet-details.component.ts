@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSelectChange } from '@angular/material/select';
+import { Observable } from 'rxjs';
 import { TDataState } from 'src/app/common/http/common.http.types';
+import { SystemNotificationsService } from 'src/app/common/utils/system-notifications/system-notifications.service';
+import { PagesWalletsManagementService } from '../management/pages-wallets-management.service';
+import { WalletsManagementItem } from '../management/pages-wallets-wallets-management-item.model';
+import { PagesWalletsManagementEditorComponent } from '../management/wallet-editor/pages-wallets-management-editor.component';
+import { IWalletModalData } from '../management/wallet-editor/pages-wallets-management-editor.types';
 import { WalletDetailsItem } from './pages-wallet-details-item.model';
 import { PagesWalletDetailsService } from './pages-wallet-details.service';
-import {FormControl, FormGroupDirective, NgForm, Validators} from '@angular/forms';
-import {ErrorStateMatcher} from '@angular/material/core';
-
-export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-    const isSubmitted = form && form.submitted;
-    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
-  }
-}
+import { WalletTransactionType } from './pages-wallet-details.types';
 
 @Component({
   selector: 'app-pages-wallet-details',
@@ -19,9 +19,15 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 export class PagesWalletDetailsComponent implements OnInit {
 
-  selected = new FormControl('valid', [Validators.required, Validators.pattern('valid')]);
+  public walletTransactionType: typeof WalletTransactionType = WalletTransactionType;
 
-  matcher = new MyErrorStateMatcher();
+  public transactionsTypes: string[] = [
+    'allTransactions',
+    'incomes',
+    'expences',
+  ];
+
+  public selectedTransactionType: WalletTransactionType = WalletTransactionType.allTransaction;
 
   public displayedColumns: string[] = ['id', 'date', 'description', 'amount', 'actions'];
 
@@ -33,6 +39,9 @@ export class PagesWalletDetailsComponent implements OnInit {
 
   public constructor(
     private pagesWalletDetailsService: PagesWalletDetailsService,
+    private readonly myWalletsService: PagesWalletsManagementService,
+    private readonly systemNotificationsService: SystemNotificationsService,
+    private readonly dialog: MatDialog,
   ) { }
 
   public ngOnInit(): void {
@@ -53,5 +62,44 @@ export class PagesWalletDetailsComponent implements OnInit {
       },
     })
   }
+
+  private openWalletModal(wallet?: WalletDetailsItem): Observable<IWalletModalData | undefined> {
+    const dialogRef = this.dialog.open<PagesWalletsManagementEditorComponent, WalletDetailsItem | undefined, IWalletModalData>(PagesWalletsManagementEditorComponent, {
+      data: wallet,
+    });
+
+    return dialogRef.afterClosed();
+  }
+
+  public handleWalletEdit(wallet: WalletDetailsItem): void {
+    this.openWalletModal(wallet).subscribe((walletModalData?: IWalletModalData) => {
+      if (walletModalData === undefined) {
+        return;
+      }
+      this.updateWallet(wallet, walletModalData);
+    });
+  }
+
+  public updateWallet({ id }: WalletDetailsItem, { name }: IWalletModalData): void {
+    this.myWalletsService.updateWallet(WalletsManagementItem.create({ id: id!, name })).subscribe({
+      next: (updatedWallet: WalletsManagementItem) => {
+        this.walletsDetailsData.data = WalletDetailsItem.updateWalletDetailsItemName(this.walletsDetailsData.data!, updatedWallet.name);
+      },
+      error: () => {
+        this.systemNotificationsService.showNotification({ message: 'Some server error during updating' });
+      },
+    });
+  }
+
+
+  public onTransactionTypeChange(event: MatSelectChange): void {
+    this.selectedTransactionType = event.value as WalletTransactionType;
+  }
+
+
+  //TOCHECK w template czy tutaj?
+  // public setAmountColor = (amount: number): string => {
+  //   return amount < 0 ? 'red' : 'green';
+  // }
 
 }

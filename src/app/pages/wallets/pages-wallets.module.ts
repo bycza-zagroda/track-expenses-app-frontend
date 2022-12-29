@@ -10,6 +10,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { PagesWalletsManagementEditorComponent } from './management/wallet-editor/pages-wallets-management-editor.component';
 import { CommonComponentsModule } from 'src/app/common/components/common-components.module';
 import { PagesWalletDetailsComponent } from './wallet-details/pages-wallet-details.component';
+import { TransactionAmountPipe } from 'src/app/common/utils/pipes/transaction-amount.pipe';
+import { TransactionsTypeFilterPipe } from 'src/app/common/utils/pipes/transactions-type-filter.pipe';
 
 const routes: Routes = [
   {
@@ -30,6 +32,8 @@ const routes: Routes = [
     PagesWalletsManagementEditorComponent,
     PagesWalletDetailsComponent,
     PagesWalletDetailsComponent,
+    TransactionAmountPipe,
+    TransactionsTypeFilterPipe,
   ],
   imports: [
     RouterModule.forChild(routes),
