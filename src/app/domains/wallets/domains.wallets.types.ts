@@ -10,3 +10,17 @@ export interface IWalletApiResponse {
 export interface IWalletPayload {
   name: string;
 }
+
+export interface IWalletDetailsApiResponse {
+  id: TServerEntityId;
+  name: string;
+  creationDate: TServerDateTime;
+  transactions: IWalletDetailsTransactionApiResponse[];
+}
+
+export interface IWalletDetailsTransactionApiResponse {
+  id: TServerEntityId;
+  date: TServerDateTime;
+  description: string;
+  amount: number;
+}

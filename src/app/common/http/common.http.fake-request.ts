@@ -7,7 +7,7 @@ export function fakeRequest<T>(data: T): Observable<T> {
   setTimeout(() => {
     subject.next(data);
     subject.complete();
-  }, getRandomNumber(300, 1500));
+  }, getRandomNumber(300, 500));
 
   return subject.asObservable();
 }

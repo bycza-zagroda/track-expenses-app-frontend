@@ -9,11 +9,16 @@ import { PagesWalletsManagementAddNewWalletComponent } from './management/add-ne
 import { ReactiveFormsModule } from '@angular/forms';
 import { PagesWalletsManagementEditorComponent } from './management/wallet-editor/pages-wallets-management-editor.component';
 import { CommonComponentsModule } from 'src/app/common/components/common-components.module';
+import { PagesWalletDetailsComponent } from './wallet-details/pages-wallet-details.component';
 
 const routes: Routes = [
   {
     path: 'management',
     component: PagesWalletsManagementComponent,
+  },
+  {
+    path: ':id',
+    component: PagesWalletDetailsComponent,
   },
 ];
 
@@ -23,6 +28,8 @@ const routes: Routes = [
     PagesWalletsManagementItemComponent,
     PagesWalletsManagementAddNewWalletComponent,
     PagesWalletsManagementEditorComponent,
+    PagesWalletDetailsComponent,
+    PagesWalletDetailsComponent,
   ],
   imports: [
     RouterModule.forChild(routes),

@@ -1,0 +1,31 @@
+table {
+  width: 100%;
+
+  .mat-column-actions {
+    .mat-stroked-button {
+      margin-right: 10px;
+    }
+  }
+}
+
+.wallet__description {
+  margin: 20px 10px;
+  display: flex;
+  justify-content: space-between;
+
+  .name {
+    display: flex;
+    align-items: baseline;
+
+    .name__name {
+      margin-right: 10px;
+      font-weight: bold;
+      font-size: 16px;
+    }
+  }
+}
+
+.example-additional-selection {
+  opacity: 0.75;
+  font-size: 0.75em;
+}
