@@ -12,7 +12,7 @@ export interface WalletTransactionDetails {
 }
 
 export enum WalletTransactionType {
-  allTransaction = "allTransactions",
-  incomes = "incomes",
-  expences = "expences",
+  AllTransaction = "ALL_TRANSACTIONS",
+  Incomes = "INCOMES",
+  Expences = "EXPENCES",
 }

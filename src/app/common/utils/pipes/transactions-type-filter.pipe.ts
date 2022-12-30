@@ -8,11 +8,11 @@ import { WalletTransactionType } from 'src/app/pages/wallets/wallet-details/page
 export class TransactionsTypeFilterPipe implements PipeTransform {
 
   transform(value: WalletsDetailsTransaction[], walletTransactionType: WalletTransactionType): WalletsDetailsTransaction[] {
-    if(walletTransactionType == WalletTransactionType.expences) {
+    if(walletTransactionType == WalletTransactionType.Expences) {
       return value.filter( (item: WalletsDetailsTransaction) => item.amount < 0);
     }
 
-    if(walletTransactionType == WalletTransactionType.incomes) {
+    if(walletTransactionType == WalletTransactionType.Incomes) {
       return value.filter( (item: WalletsDetailsTransaction) => item.amount >= 0);
     }
 

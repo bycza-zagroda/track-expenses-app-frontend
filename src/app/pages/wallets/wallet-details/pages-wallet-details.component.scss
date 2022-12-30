@@ -1,3 +1,5 @@
+@use 'colors';
+
 .walletDetailsContainer {
   margin-top: 15px;
 
@@ -11,7 +13,8 @@
     }
 
     .mat-column-amount {
-      font-weight: bold;
+      &.amount--income { color: colors.$amount-income; }
+      &.amount--expence { color: colors.$amount-expence; }
     }
   }
 

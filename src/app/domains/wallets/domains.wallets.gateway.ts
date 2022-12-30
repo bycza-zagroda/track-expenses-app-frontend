@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IWalletApiResponse, IWalletDetailsApiResponse, IWalletPayload } from './domains.wallets.types';
+import { IWalletApiResponse, IWalletPayload, IWalletTransactionApiResponse } from './domains.wallets.types';
 import { HttpClient } from '@angular/common/http';
 import { API_WALLETS_URL } from './domains.wallets.constants';
 import { fakeRequest } from 'src/app/common/http/common.http.fake-request';
@@ -33,7 +33,7 @@ export class DomainsWalletsGateway {
     return this.http.delete<void>(API_WALLETS_URL + `/${id}`);
   }
 
-  public getWalletsDetails(id: number): Observable<IWalletDetailsApiResponse> {
+  public getWalletsDetails(id: number): Observable<IWalletTransactionApiResponse[]> {
     return fakeRequest(WALLET_DETAILS_API_RESPONSE_MOCK(id));
   }
 }

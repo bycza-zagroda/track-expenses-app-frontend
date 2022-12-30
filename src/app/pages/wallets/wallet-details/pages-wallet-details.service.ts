@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/internal/operators/map';
 import { DomainsWalletsGateway } from 'src/app/domains/wallets/domains.wallets.gateway';
-import { WalletDetailsItem } from './pages-wallet-details-item.model';
+import { IWalletTransactionApiResponse } from 'src/app/domains/wallets/domains.wallets.types';
+import { WalletsDetailsTransaction } from './pages-wallet-details-item.model';
 
 @Injectable({
   providedIn: 'root',
@@ -13,9 +14,9 @@ export class PagesWalletDetailsService {
     private readonly gateway: DomainsWalletsGateway,
   ) { }
 
-  public getWalletsDetails(id: number): Observable<WalletDetailsItem> {
+  public getWalletsDetails(id: number): Observable<WalletsDetailsTransaction[]> {
     return this.gateway.getWalletsDetails(id).pipe(
-      map(walletsResp => new WalletDetailsItem(walletsResp)),
+      map(walletsResp => walletsResp.map((item: IWalletTransactionApiResponse) => new WalletsDetailsTransaction(item))),
     );
   }
 }

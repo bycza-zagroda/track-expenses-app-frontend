@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelectChange } from '@angular/material/select';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { TDataState } from 'src/app/common/http/common.http.types';
 import { SystemNotificationsService } from 'src/app/common/utils/system-notifications/system-notifications.service';
@@ -8,7 +10,7 @@ import { PagesWalletsManagementService } from '../management/pages-wallets-manag
 import { WalletsManagementItem } from '../management/pages-wallets-wallets-management-item.model';
 import { PagesWalletsManagementEditorComponent } from '../management/wallet-editor/pages-wallets-management-editor.component';
 import { IWalletModalData } from '../management/wallet-editor/pages-wallets-management-editor.types';
-import { WalletDetailsItem } from './pages-wallet-details-item.model';
+import { WalletsDetailsTransaction } from './pages-wallet-details-item.model';
 import { PagesWalletDetailsService } from './pages-wallet-details.service';
 import { WalletTransactionType } from './pages-wallet-details.types';
 
@@ -19,28 +21,48 @@ import { WalletTransactionType } from './pages-wallet-details.types';
 })
 export class PagesWalletDetailsComponent implements OnInit {
 
+  toppings = new FormControl('');
+
   public walletTransactionType: typeof WalletTransactionType = WalletTransactionType;
 
-  public selectedTransactionType: WalletTransactionType = WalletTransactionType.allTransaction;
+  public selectedTransactionType: WalletTransactionType = WalletTransactionType.AllTransaction;
 
-  public displayedColumns: string[] = ['id', 'date', 'description', 'amount', 'actions'];
+  public displayedColumns: string[] = ['date', 'description', 'amount', 'actions'];
 
-  public walletsDetailsData: TDataState<WalletDetailsItem> = {
+  public walletsManagementItem?: WalletsManagementItem;
+
+  public displayedTransactions: WalletsDetailsTransaction[] = [];
+
+  public walletsDetailsData: TDataState<WalletsDetailsTransaction[]> = {
     data: null,
     hasError: false,
     isLoading: true,
   }
 
   public constructor(
-    private pagesWalletDetailsService: PagesWalletDetailsService,
+    private readonly pagesWalletDetailsService: PagesWalletDetailsService,
     private readonly myWalletsService: PagesWalletsManagementService,
     private readonly systemNotificationsService: SystemNotificationsService,
     private readonly dialog: MatDialog,
+    private readonly activatedRoute: ActivatedRoute,
   ) { }
 
   public ngOnInit(): void {
-    this.pagesWalletDetailsService.getWalletsDetails(1).subscribe({
+    this.activatedRoute.data.subscribe( ({ wallet }) => {
+      this.walletsManagementItem = wallet;
+      this.initWalletDetails(wallet);
+    });
+
+    this.toppings.valueChanges.subscribe((data) => {
+      console.log(data);
+      this.filterTransactions(data as WalletTransactionType);
+    });
+  }
+
+  private initWalletDetails = (wallet: WalletsManagementItem) => {
+    this.pagesWalletDetailsService.getWalletsDetails(wallet.id!).subscribe({
       next: (data) => {
+        this.displayedTransactions = data;
         this.walletsDetailsData = {
           data,
           hasError: false,
@@ -57,27 +79,39 @@ export class PagesWalletDetailsComponent implements OnInit {
     })
   }
 
-  private openWalletModal(wallet?: WalletDetailsItem): Observable<IWalletModalData | undefined> {
-    const dialogRef = this.dialog.open<PagesWalletsManagementEditorComponent, WalletDetailsItem | undefined, IWalletModalData>(PagesWalletsManagementEditorComponent, {
+  private filterTransactions = (type: WalletTransactionType) => {
+    if(type == WalletTransactionType.Expences) {
+      this.displayedTransactions = this.walletsDetailsData.data!.filter( (item: WalletsDetailsTransaction) => item.amount < 0);
+    } else if(type == WalletTransactionType.Incomes) {
+      this.displayedTransactions = this.walletsDetailsData.data!.filter( (item: WalletsDetailsTransaction) => item.amount >= 0);
+    } else {
+      this.displayedTransactions = this.walletsDetailsData.data!;
+    }
+  }
+
+  private openWalletModal(wallet?: WalletsManagementItem): Observable<IWalletModalData | undefined> {
+    const dialogRef = this.dialog.open<PagesWalletsManagementEditorComponent, WalletsManagementItem | undefined, IWalletModalData>(PagesWalletsManagementEditorComponent, {
       data: wallet,
     });
 
     return dialogRef.afterClosed();
   }
 
-  public handleWalletEdit(wallet: WalletDetailsItem): void {
-    this.openWalletModal(wallet).subscribe((walletModalData?: IWalletModalData) => {
+  public handleWalletEdit(): void {
+    this.openWalletModal(this.walletsManagementItem).subscribe((walletModalData?: IWalletModalData) => {
       if (walletModalData === undefined) {
         return;
       }
-      this.updateWallet(wallet, walletModalData);
+      this.updateWallet(walletModalData);
     });
   }
 
-  public updateWallet({ id }: WalletDetailsItem, { name }: IWalletModalData): void {
-    this.myWalletsService.updateWallet(WalletsManagementItem.create({ id: id!, name })).subscribe({
-      next: (updatedWallet: WalletsManagementItem) => {
-        this.walletsDetailsData.data = WalletDetailsItem.updateWalletDetailsItemName(this.walletsDetailsData.data!, updatedWallet.name);
+  public updateWallet({ name }: IWalletModalData): void {
+    const updatedWallet = WalletsManagementItem.create({ id: this.walletsManagementItem!.id!, name, creationDate: this.walletsManagementItem!.createdAt.toString() });
+
+    this.myWalletsService.updateWallet(updatedWallet).subscribe({
+      next: () => {
+        this.walletsManagementItem = updatedWallet;
       },
       error: () => {
         this.systemNotificationsService.showNotification({ message: 'Some server error during updating' });
@@ -85,15 +119,7 @@ export class PagesWalletDetailsComponent implements OnInit {
     });
   }
 
-
   public onTransactionTypeChange(event: MatSelectChange): void {
     this.selectedTransactionType = event.value as WalletTransactionType;
   }
-
-
-  //TOCHECK w template czy tutaj?
-  // public setAmountColor = (amount: number): string => {
-  //   return amount < 0 ? 'red' : 'green';
-  // }
-
 }

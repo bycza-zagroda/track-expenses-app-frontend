@@ -12,6 +12,7 @@ import { CommonComponentsModule } from 'src/app/common/components/common-compone
 import { PagesWalletDetailsComponent } from './wallet-details/pages-wallet-details.component';
 import { TransactionAmountPipe } from 'src/app/common/utils/pipes/transaction-amount.pipe';
 import { TransactionsTypeFilterPipe } from 'src/app/common/utils/pipes/transactions-type-filter.pipe';
+import { PagesWalletDetailsResolver } from 'src/app/common/utils/resolvers/pages-wallet-details.resolver';
 
 const routes: Routes = [
   {
@@ -21,6 +22,7 @@ const routes: Routes = [
   {
     path: ':id',
     component: PagesWalletDetailsComponent,
+    resolve: { wallet: PagesWalletDetailsResolver }
   },
 ];
 

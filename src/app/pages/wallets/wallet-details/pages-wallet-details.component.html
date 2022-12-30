@@ -3,10 +3,10 @@
   <div class="wallet__description">
     <div class="name">
       <div class="name__name">
-        {{ walletsDetailsData.data?.name }}
+        {{ walletsManagementItem?.name }}
       </div>
       <div class="name__edit">
-        <button mat-stroked-button color="primary" (click)="handleWalletEdit(walletsDetailsData.data!)">Edit</button>
+        <button mat-stroked-button color="primary" (click)="handleWalletEdit()">Edit</button>
       </div>
     </div>
 
@@ -17,34 +17,29 @@
 
   <div class="wallet__sort">
     <mat-form-field appearance="fill">
-      <mat-label>All Transactions</mat-label>
-      <mat-select [(value)]="selectedTransactionType" (selectionChange)="onTransactionTypeChange($event)">
+      <mat-label>Choose Transactions</mat-label>
+      <mat-select [formControl]="toppings" (selectionChange)="onTransactionTypeChange($event)">
         <mat-option *ngFor="let transaction of walletTransactionType | keyvalue" [value]="transaction.value">
-          {{ transaction.value }}
+          {{ transaction.key }}
         </mat-option>
       </mat-select>
     </mat-form-field>
   </div>
 
-  <table *ngIf="walletsDetailsData.data" mat-table [dataSource]="(walletsDetailsData.data!.transactions | transactionsTypeFilter : selectedTransactionType) || []" class="mat-elevation-z8">
-
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef> No. </th>
-      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-    </ng-container>
+  <table mat-table [dataSource]="displayedTransactions" class="mat-elevation-z8">
 
     <ng-container matColumnDef="date">
-      <th mat-header-cell *matHeaderCellDef> date </th>
+      <th mat-header-cell *matHeaderCellDef> Date </th>
       <td mat-cell *matCellDef="let element"> {{element.date}} </td>
     </ng-container>
 
     <ng-container matColumnDef="description">
-      <th mat-header-cell *matHeaderCellDef> description </th>
+      <th mat-header-cell *matHeaderCellDef> Description </th>
       <td mat-cell *matCellDef="let element"> {{element.description}} </td>
     </ng-container>
 
     <ng-container matColumnDef="amount">
-      <th mat-header-cell *matHeaderCellDef> amount </th>
+      <th mat-header-cell *matHeaderCellDef> Amount </th>
       <td mat-cell *matCellDef="let element">
         <span [ngStyle]="{'color': element.amount < 0 ? 'red' : 'green'}">
           {{ element.amount | transactionAmount }}
@@ -53,7 +48,7 @@
     </ng-container>
 
     <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef> ACTIONS </th>
+      <th mat-header-cell *matHeaderCellDef> Actions </th>
       <td mat-cell *matCellDef="let element">
         <button mat-stroked-button>Edit</button>
         <button mat-raised-button color="warn">Delete</button>

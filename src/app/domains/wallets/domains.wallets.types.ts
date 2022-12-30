@@ -1,3 +1,4 @@
+import { WalletTransactionType } from 'src/app/pages/wallets/wallet-details/pages-wallet-details.types';
 import { TServerDateTime } from '../../common/date-and-time/common-date-and-time.types';
 import { TServerEntityId } from '../../common/http/common.http.types';
 
@@ -11,16 +12,10 @@ export interface IWalletPayload {
   name: string;
 }
 
-export interface IWalletDetailsApiResponse {
+export interface IWalletTransactionApiResponse {
   id: TServerEntityId;
-  name: string;
-  creationDate: TServerDateTime;
-  transactions: IWalletDetailsTransactionApiResponse[];
-}
-
-export interface IWalletDetailsTransactionApiResponse {
-  id: TServerEntityId;
-  date: TServerDateTime;
-  description: string;
   amount: number;
+  description: string;
+  type: Exclude<WalletTransactionType, WalletTransactionType.AllTransaction>;
+  creationDate: TServerDateTime;
 }
