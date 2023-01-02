@@ -22,7 +22,7 @@ export class DomainsWalletsGateway {
   }
 
   public updateWallet(id: number, { name }: IWalletPayload): Observable<IWalletApiResponse> {
-    return this.http.put<IWalletApiResponse>(API_WALLETS_URL, { id, name });
+    return this.http.patch<IWalletApiResponse>(API_WALLETS_URL + `/${id}`, { name });
   }
 
   public deleteWallet(id: number): Observable<void> {
