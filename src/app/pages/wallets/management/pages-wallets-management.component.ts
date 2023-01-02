@@ -57,47 +57,50 @@ export class PagesWalletsManagementComponent implements OnInit {
 
   public createWallet({ name }: IWalletModalData): void {
     this.myWalletsService.createWallet(WalletsManagementItem.create({ name })).subscribe({
-        next: (wallet: WalletsManagementItem) => {
-          this.myWalletsData.data = [wallet, ...this.myWalletsData.data!];
-          this.systemNotificationsService.showNotification({ message: 'Congratulations! Your wallet was created successfully.' });
-        },
-        error: () => {
-          this.systemNotificationsService.showNotification({ message: 'Sorry. Something went wrong and your wallet was not saved. Contact administrator.' });
-        },
+      next: (wallet: WalletsManagementItem) => {
+        this.myWalletsData.data = [wallet, ...this.myWalletsData.data!];
+        this.myWalletsData.data.sort(
+            (previousWallet, nextWallet) =>
+                previousWallet.name.localeCompare(nextWallet.name));
+        this.systemNotificationsService.showNotification({ message: 'Congratulations! Your wallet was created successfully.' });
+      },
+      error: () => {
+        this.systemNotificationsService.showNotification({ message: 'Sorry. Something went wrong and your wallet was not saved. Contact administrator.' });
+      },
     });
   }
 
   public updateWallet({ id }: WalletsManagementItem, { name }: IWalletModalData): void {
     this.myWalletsService.updateWallet(WalletsManagementItem.create({ id: id!, name })).subscribe({
-        next: (updatedWallet: WalletsManagementItem) => {
-            this.myWalletsData.data = this.myWalletsData.data!.map(walletItem => {
-                if (walletItem.id === id) {
-                    return updatedWallet;
-                }
-                return walletItem;
-            });
-        },
-        error: () => {
-            this.systemNotificationsService.showNotification({ message: 'Some server error during updating' });
-        },
+      next: (updatedWallet: WalletsManagementItem) => {
+        this.myWalletsData.data = this.myWalletsData.data!.map(walletItem => {
+          if (walletItem.id === id) {
+            return updatedWallet;
+          }
+          return walletItem;
+        });
+      },
+      error: () => {
+        this.systemNotificationsService.showNotification({ message: 'Some server error during updating' });
+      },
     });
   }
 
   public handleWalletCreate(): void {
-    this.openWalletModal().subscribe( (walletModalData?: IWalletModalData) => {
-            if(walletModalData) {
-                this.createWallet(walletModalData);
-            }
+    this.openWalletModal().subscribe((walletModalData?: IWalletModalData) => {
+          if (walletModalData) {
+            this.createWallet(walletModalData);
+          }
         },
     );
   }
 
   public handleWalletEdit(wallet: WalletsManagementItem): void {
-    this.openWalletModal(wallet).subscribe( (walletModalData?: IWalletModalData) => {
-            if (walletModalData === undefined) {
-              return;
-            }
-            this.updateWallet(wallet, walletModalData);
+    this.openWalletModal(wallet).subscribe((walletModalData?: IWalletModalData) => {
+          if (walletModalData === undefined) {
+            return;
+          }
+          this.updateWallet(wallet, walletModalData);
         },
     );
   }
