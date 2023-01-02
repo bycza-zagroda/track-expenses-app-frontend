@@ -11,7 +11,6 @@ import { PagesWalletsManagementEditorComponent } from './management/wallet-edito
 import { CommonComponentsModule } from 'src/app/common/components/common-components.module';
 import { PagesWalletDetailsComponent } from './wallet-details/pages-wallet-details.component';
 import { TransactionAmountPipe } from 'src/app/common/utils/pipes/transaction-amount.pipe';
-import { TransactionsTypeFilterPipe } from 'src/app/common/utils/pipes/transactions-type-filter.pipe';
 import { PagesWalletDetailsResolver } from 'src/app/common/utils/resolvers/pages-wallet-details.resolver';
 
 const routes: Routes = [
@@ -35,7 +34,6 @@ const routes: Routes = [
     PagesWalletDetailsComponent,
     PagesWalletDetailsComponent,
     TransactionAmountPipe,
-    TransactionsTypeFilterPipe,
   ],
   imports: [
     RouterModule.forChild(routes),

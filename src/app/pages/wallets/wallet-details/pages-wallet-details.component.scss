@@ -1,6 +1,6 @@
 @use 'colors';
 
-.walletDetailsContainer {
+.transactions__container {
   margin-top: 15px;
 
   table {
@@ -13,8 +13,8 @@
     }
 
     .mat-column-amount {
-      &.amount--income { color: colors.$amount-income; }
-      &.amount--expence { color: colors.$amount-expence; }
+      .amount--income { color: colors.$amount-income; }
+      .amount--expense { color: colors.$amount-expense; }
     }
   }
 

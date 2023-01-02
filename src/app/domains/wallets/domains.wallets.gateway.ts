@@ -17,7 +17,6 @@ export class DomainsWalletsGateway {
 
   public getWallets(): Observable<IWalletApiResponse[]> {
     return fakeRequest(GET_WALLETS_API_RESPONSE_MOCK());
-    //return this.http.get<IWalletApiResponse[]>(API_WALLETS_URL); // TE ZMIANY SA CHWILOWE, BO MI DALEJ BACKEND NIE DZIALA
   }
 
   public createWallet({ name }: IWalletPayload): Observable<IWalletApiResponse> {
@@ -25,15 +24,14 @@ export class DomainsWalletsGateway {
   }
 
   public updateWallet(id: number, { name }: IWalletPayload): Observable<IWalletApiResponse> {
-    return fakeRequest({id: 1, creationDate: new Date().toString(), name})
-    return this.http.put<IWalletApiResponse>(API_WALLETS_URL, { id, name }); // TE ZMIANY SA CHWILOWE, BO MI DALEJ BACKEND NIE DZIALA
+    return fakeRequest({id: 1, creationDate: new Date().toString(), name});
   }
 
   public deleteWallet(id: number): Observable<void> {
     return this.http.delete<void>(API_WALLETS_URL + `/${id}`);
   }
 
-  public getWalletsDetails(id: number): Observable<IWalletTransactionApiResponse[]> {
+  public getWalletTransactions(id: number): Observable<IWalletTransactionApiResponse[]> {
     return fakeRequest(WALLET_DETAILS_API_RESPONSE_MOCK(id));
   }
 }

@@ -14,9 +14,9 @@ export class PagesWalletDetailsService {
     private readonly gateway: DomainsWalletsGateway,
   ) { }
 
-  public getWalletsDetails(id: number): Observable<WalletsDetailsTransaction[]> {
-    return this.gateway.getWalletsDetails(id).pipe(
-      map(walletsResp => walletsResp.map((item: IWalletTransactionApiResponse) => new WalletsDetailsTransaction(item))),
+  public getWalletTransactions(id: number): Observable<WalletsDetailsTransaction[]> {
+    return this.gateway.getWalletTransactions(id).pipe(
+      map(transactionsResp => transactionsResp.map((item: IWalletTransactionApiResponse) => new WalletsDetailsTransaction(item))),
     );
   }
 }

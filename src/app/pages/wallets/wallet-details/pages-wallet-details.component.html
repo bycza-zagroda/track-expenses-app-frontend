@@ -1,4 +1,4 @@
-<div class="container walletDetailsContainer">
+<div class="container transactions__container">
 
   <div class="wallet__description">
     <div class="name">
@@ -10,17 +10,17 @@
       </div>
     </div>
 
-    <div class="newTransaction">
+    <div class="new__transaction">
       <button mat-flat-button color="primary">Add new transaction</button>
     </div>
   </div>
 
   <div class="wallet__sort">
     <mat-form-field appearance="fill">
-      <mat-label>Choose Transactions</mat-label>
-      <mat-select [formControl]="toppings" (selectionChange)="onTransactionTypeChange($event)">
-        <mat-option *ngFor="let transaction of walletTransactionType | keyvalue" [value]="transaction.value">
-          {{ transaction.key }}
+      <mat-label>Select type</mat-label>
+      <mat-select [formControl]="transactionsTypeForm">
+        <mat-option *ngFor="let type of selectTransactionsTypes | keyvalue" [value]="type.value">
+          {{ type.key }}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -41,7 +41,7 @@
     <ng-container matColumnDef="amount">
       <th mat-header-cell *matHeaderCellDef> Amount </th>
       <td mat-cell *matCellDef="let element">
-        <span [ngStyle]="{'color': element.amount < 0 ? 'red' : 'green'}">
+        <span [ngClass]="element.type == walletTransactionType.Expenses ? 'amount--expense' : 'amount--income'">
           {{ element.amount | transactionAmount }}
         </span>
       </td>

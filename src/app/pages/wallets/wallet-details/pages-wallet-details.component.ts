@@ -1,31 +1,38 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSelectChange } from '@angular/material/select';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { TDataState } from 'src/app/common/http/common.http.types';
 import { SystemNotificationsService } from 'src/app/common/utils/system-notifications/system-notifications.service';
+import { WalletTransactionType } from 'src/app/domains/wallets/domains.wallets.types';
 import { PagesWalletsManagementService } from '../management/pages-wallets-management.service';
 import { WalletsManagementItem } from '../management/pages-wallets-wallets-management-item.model';
 import { PagesWalletsManagementEditorComponent } from '../management/wallet-editor/pages-wallets-management-editor.component';
 import { IWalletModalData } from '../management/wallet-editor/pages-wallets-management-editor.types';
 import { WalletsDetailsTransaction } from './pages-wallet-details-item.model';
 import { PagesWalletDetailsService } from './pages-wallet-details.service';
-import { WalletTransactionType } from './pages-wallet-details.types';
 
 @Component({
   selector: 'app-pages-wallet-details',
   templateUrl: './pages-wallet-details.component.html',
   styleUrls: ['./pages-wallet-details.component.scss'],
 })
-export class PagesWalletDetailsComponent implements OnInit {
+export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
 
-  toppings = new FormControl('');
+  public selectTransactionsTypes: Record<string, WalletTransactionType | null> = {
+    'All transactions': null,
+    'Incomes': WalletTransactionType.Incomes,
+    'Expenses': WalletTransactionType.Expenses,
+  }
+
+  public selectedTransactionType: Record<string, WalletTransactionType | null> = this.selectTransactionsTypes;
+
+  public transactionsTypeForm = new FormControl(this.selectedTransactionType);
+
+  private transactionTypeSub?: Subscription;
 
   public walletTransactionType: typeof WalletTransactionType = WalletTransactionType;
-
-  public selectedTransactionType: WalletTransactionType = WalletTransactionType.AllTransaction;
 
   public displayedColumns: string[] = ['date', 'description', 'amount', 'actions'];
 
@@ -53,14 +60,13 @@ export class PagesWalletDetailsComponent implements OnInit {
       this.initWalletDetails(wallet);
     });
 
-    this.toppings.valueChanges.subscribe((data) => {
-      console.log(data);
-      this.filterTransactions(data as WalletTransactionType);
+    this.transactionTypeSub = this.transactionsTypeForm.valueChanges.subscribe((data) => {
+      this.filterTransactions(data as Record<string, WalletTransactionType | null>);
     });
   }
 
-  private initWalletDetails = (wallet: WalletsManagementItem) => {
-    this.pagesWalletDetailsService.getWalletsDetails(wallet.id!).subscribe({
+  private initWalletDetails = (wallet: WalletsManagementItem): void => {
+    this.pagesWalletDetailsService.getWalletTransactions(wallet.id!).subscribe({
       next: (data) => {
         this.displayedTransactions = data;
         this.walletsDetailsData = {
@@ -79,14 +85,8 @@ export class PagesWalletDetailsComponent implements OnInit {
     })
   }
 
-  private filterTransactions = (type: WalletTransactionType) => {
-    if(type == WalletTransactionType.Expences) {
-      this.displayedTransactions = this.walletsDetailsData.data!.filter( (item: WalletsDetailsTransaction) => item.amount < 0);
-    } else if(type == WalletTransactionType.Incomes) {
-      this.displayedTransactions = this.walletsDetailsData.data!.filter( (item: WalletsDetailsTransaction) => item.amount >= 0);
-    } else {
-      this.displayedTransactions = this.walletsDetailsData.data!;
-    }
+  private filterTransactions(type: Record<string, WalletTransactionType | null>): void {
+    this.displayedTransactions = this.walletsDetailsData.data!.filter( (item: WalletsDetailsTransaction) =>  (type == null) ? true : type.toString() == item.type.toString() );
   }
 
   private openWalletModal(wallet?: WalletsManagementItem): Observable<IWalletModalData | undefined> {
@@ -119,7 +119,7 @@ export class PagesWalletDetailsComponent implements OnInit {
     });
   }
 
-  public onTransactionTypeChange(event: MatSelectChange): void {
-    this.selectedTransactionType = event.value as WalletTransactionType;
+  public ngOnDestroy(): void {
+    this.transactionTypeSub?.unsubscribe();
   }
 }
