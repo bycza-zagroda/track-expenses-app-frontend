@@ -58,8 +58,7 @@ export class PagesWalletsManagementComponent implements OnInit {
   public createWallet({ name }: IWalletModalData): void {
     this.myWalletsService.createWallet(WalletsManagementItem.create({ name })).subscribe({
       next: (wallet: WalletsManagementItem) => {
-        this.myWalletsData.data = [wallet, ...this.myWalletsData.data!];
-        this.myWalletsData.data.sort(
+        this.myWalletsData.data = [wallet, ...this.myWalletsData.data!].sort(
             (previousWallet, nextWallet) =>
                 previousWallet.name.localeCompare(nextWallet.name));
         this.systemNotificationsService.showNotification({ message: 'Congratulations! Your wallet was created successfully.' });
@@ -78,7 +77,9 @@ export class PagesWalletsManagementComponent implements OnInit {
             return updatedWallet;
           }
           return walletItem;
-        });
+        }).sort(
+            (previousWallet, nextWallet) =>
+                previousWallet.name.localeCompare(nextWallet.name));
       },
       error: () => {
         this.systemNotificationsService.showNotification({ message: 'Some server error during updating' });
