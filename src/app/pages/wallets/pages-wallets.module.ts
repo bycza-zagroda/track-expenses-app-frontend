@@ -21,7 +21,7 @@ const routes: Routes = [
   {
     path: ':id',
     component: PagesWalletDetailsComponent,
-    resolve: { wallet: PagesWalletDetailsResolver }
+    resolve: { wallet: PagesWalletDetailsResolver },
   },
 ];
 

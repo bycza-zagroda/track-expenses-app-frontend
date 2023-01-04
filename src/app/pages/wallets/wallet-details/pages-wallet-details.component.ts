@@ -20,15 +20,15 @@ import { PagesWalletDetailsService } from './pages-wallet-details.service';
 })
 export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
 
-  public selectTransactionsTypes: Record<string, WalletTransactionType | null> = {
-    'All transactions': null,
+  public selectTransactionsTypes: Record<string, WalletTransactionType | ''> = {
+    'All transactions': '',
     'Incomes': WalletTransactionType.Incomes,
     'Expenses': WalletTransactionType.Expenses,
   }
 
-  public selectedTransactionType: Record<string, WalletTransactionType | null> = this.selectTransactionsTypes;
+  public selectedTransactionType: Record<string, WalletTransactionType | ''> = this.selectTransactionsTypes;
 
-  public transactionsTypeForm = new FormControl(this.selectedTransactionType);
+  public transactionsTypeForm = new FormControl<WalletTransactionType | ''>('');
 
   private transactionTypeSub?: Subscription;
 
@@ -56,16 +56,20 @@ export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.activatedRoute.data.subscribe( ({ wallet }) => {
+      if (!(wallet instanceof WalletsManagementItem)) {
+        return;
+      }
+
       this.walletsManagementItem = wallet;
       this.initWalletDetails(wallet);
     });
 
-    this.transactionTypeSub = this.transactionsTypeForm.valueChanges.subscribe((data) => {
-      this.filterTransactions(data as Record<string, WalletTransactionType | null>);
+    this.transactionTypeSub = this.transactionsTypeForm.valueChanges.subscribe((data: WalletTransactionType | '' | null) => {
+      this.filterTransactions(data ?? '');
     });
   }
 
-  private initWalletDetails = (wallet: WalletsManagementItem): void => {
+  private initWalletDetails(wallet: WalletsManagementItem): void {
     this.pagesWalletDetailsService.getWalletTransactions(wallet.id!).subscribe({
       next: (data) => {
         this.displayedTransactions = data;
@@ -85,8 +89,8 @@ export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
     })
   }
 
-  private filterTransactions(type: Record<string, WalletTransactionType | null>): void {
-    this.displayedTransactions = this.walletsDetailsData.data!.filter( (item: WalletsDetailsTransaction) =>  (type == null) ? true : type.toString() == item.type.toString() );
+  private filterTransactions(type: WalletTransactionType | ''): void {
+    this.displayedTransactions = this.walletsDetailsData.data!.filter( (item: WalletsDetailsTransaction) =>  (type === '') ? true : type.toString() === item.type.toString() );
   }
 
   private openWalletModal(wallet?: WalletsManagementItem): Observable<IWalletModalData | undefined> {

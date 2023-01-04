@@ -6,13 +6,13 @@ import { IWalletApiResponse } from 'src/app/domains/wallets/domains.wallets.type
 import { WalletsManagementItem } from 'src/app/pages/wallets/management/pages-wallets-wallets-management-item.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PagesWalletDetailsResolver implements Resolve<WalletsManagementItem> {
 
-  constructor(private readonly domainsWalletsGateway: DomainsWalletsGateway) {}
+  public constructor(private readonly domainsWalletsGateway: DomainsWalletsGateway) {}
 
-  async resolve(route: ActivatedRouteSnapshot): Promise<WalletsManagementItem> {
+  public async resolve(route: ActivatedRouteSnapshot): Promise<WalletsManagementItem> {
     const wallets = await firstValueFrom(this.domainsWalletsGateway.getWallets());
     const id = route.paramMap.get('id')!;
     const wallet = wallets.find((wallet: IWalletApiResponse) => wallet.id === parseInt(id))!;
