@@ -6,7 +6,7 @@ export class WalletsManagementItem {
   public readonly name: string;
 
   public constructor(data: IWalletApiResponse) {
-    this.id = data.id > 0 ? data.id : null;
+    this.id = data.id ?? null;
     this.createdAt = new Date(data.creationDate);
     this.name = data.name;
   }

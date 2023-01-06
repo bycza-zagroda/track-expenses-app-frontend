@@ -17,7 +17,7 @@ import { PagesWalletDetailsService } from './pages-wallet-details.service';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
 
-fdescribe('PagesWalletDetailsComponent', () => {
+describe('PagesWalletDetailsComponent', () => {
   let component: PagesWalletDetailsComponent;
   let fixture: ComponentFixture<PagesWalletDetailsComponent>;
   let activatedRouteMock: { data: Observable<{ wallet: WalletsManagementItem}> };

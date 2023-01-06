@@ -2,16 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { PagesWalletsManagementService } from './pages-wallets-management.service';
 import { WalletsManagementItem } from './pages-wallets-wallets-management-item.model';
 import { TDataState } from '../../../common/http/common.http.types';
-import { MatDialog } from '@angular/material/dialog';
-import {
-  IWalletModalData,
-} from 'src/app/pages/wallets/management/wallet-editor/pages-wallets-management-editor.types';
-import { Observable } from 'rxjs';
-import { PagesWalletsManagementEditorComponent } from './wallet-editor/pages-wallets-management-editor.component';
-import { SystemNotificationsService } from 'src/app/common/utils/system-notifications/system-notifications.service';
 import { NotificationType } from 'src/app/common/utils/system-notifications/system.notifications.constants';
 import { ConfirmDialogService } from '../../../common/confirmation-modal/confirm-dialog.service';
 import { LoadingSnackbarService } from '../../../common/loading-modal/loading-snackbar.service'
+import { PagesWalletsManagementEditorService } from './wallet-editor/pages-wallets-management-editor.service';
+import { IWalletModalData } from './wallet-editor/pages-wallets-management-editor.types';
 
 @Component({
   selector: 'app-wallets-management',
@@ -31,14 +26,13 @@ export class PagesWalletsManagementComponent implements OnInit {
       private readonly myWalletsService: PagesWalletsManagementService,
       private readonly confirmDialogService: ConfirmDialogService,
       private readonly loadingDialogService: LoadingSnackbarService,
-      private readonly systemNotificationsService: SystemNotificationsService,
-      private readonly dialog: MatDialog,
+      private readonly pagesWalletsManagementEditorService: PagesWalletsManagementEditorService,
   ) {
   }
 
   public ngOnInit(): void {
     this.myWalletsService.getWallets().subscribe({
-      next: (data) => {
+      next: (data: WalletsManagementItem[]) => {
         this.myWalletsData = {
           data,
           isLoading: false,
@@ -55,59 +49,30 @@ export class PagesWalletsManagementComponent implements OnInit {
     });
   }
 
-  public createWallet({ name }: IWalletModalData): void {
-    this.myWalletsService.createWallet(WalletsManagementItem.create({ name })).subscribe({
-        next: (wallet: WalletsManagementItem) => {
-          this.myWalletsData.data = [wallet, ...this.myWalletsData.data!];
-          this.systemNotificationsService.showNotification({ message: 'Congratulations! Your wallet was created successfully.' });
-        },
-        error: () => {
-          this.systemNotificationsService.showNotification({ message: 'Sorry. Something went wrong and your wallet was not saved. Contact administrator.' });
-        },
+  public async handleWalletCreate(): Promise<void> {
+    this.pagesWalletsManagementEditorService.openWalletEditor().subscribe( (createdName: WalletsManagementItem | undefined) => {
+      createdName && this.createWallet(createdName);
+    })
+  }
+
+  private createWallet({ name }: WalletsManagementItem): void {
+    this.myWalletsData.data = [WalletsManagementItem.create({ name }), ...this.myWalletsData.data!];
+  }
+
+  public async handleWalletEdit(wallet: WalletsManagementItem): Promise<void> {
+    this.pagesWalletsManagementEditorService.openWalletEditor(wallet).subscribe( (createdName: WalletsManagementItem | undefined) => {
+      createdName && this.updateWallet(wallet, createdName);
+    })
+  }
+
+  private updateWallet(wallet: WalletsManagementItem, { name }: WalletsManagementItem): void {
+    this.myWalletsData.data = this.myWalletsData.data!.map(walletItem => {
+      if (walletItem.id === wallet.id) {
+          return WalletsManagementItem.create({ id: wallet.id!, name });
+      }
+
+      return walletItem;
     });
-  }
-
-  public updateWallet({ id }: WalletsManagementItem, { name }: IWalletModalData): void {
-    this.myWalletsService.updateWallet(WalletsManagementItem.create({ id: id!, name })).subscribe({
-        next: (updatedWallet: WalletsManagementItem) => {
-            this.myWalletsData.data = this.myWalletsData.data!.map(walletItem => {
-                if (walletItem.id === id) {
-                    return updatedWallet;
-                }
-                return walletItem;
-            });
-        },
-        error: () => {
-            this.systemNotificationsService.showNotification({ message: 'Some server error during updating' });
-        },
-    });
-  }
-
-  public handleWalletCreate(): void {
-    this.openWalletModal().subscribe( (walletModalData?: IWalletModalData) => {
-            if(walletModalData) {
-                this.createWallet(walletModalData);
-            }
-        },
-    );
-  }
-
-  public handleWalletEdit(wallet: WalletsManagementItem): void {
-    this.openWalletModal(wallet).subscribe( (walletModalData?: IWalletModalData) => {
-            if (walletModalData === undefined) {
-              return;
-            }
-            this.updateWallet(wallet, walletModalData);
-        },
-    );
-  }
-
-  private openWalletModal(wallet?: WalletsManagementItem): Observable<IWalletModalData | undefined> {
-    const dialogRef = this.dialog.open<PagesWalletsManagementEditorComponent, WalletsManagementItem | undefined, IWalletModalData>(PagesWalletsManagementEditorComponent, {
-      data: wallet,
-    });
-
-    return dialogRef.afterClosed();
   }
 
   public handleWalletDelete(wallet: WalletsManagementItem): void {
