@@ -6,7 +6,6 @@ import { NotificationType } from 'src/app/common/utils/system-notifications/syst
 import { ConfirmDialogService } from '../../../common/confirmation-modal/confirm-dialog.service';
 import { LoadingSnackbarService } from '../../../common/loading-modal/loading-snackbar.service'
 import { PagesWalletsManagementEditorService } from './wallet-editor/pages-wallets-management-editor.service';
-import { IWalletModalData } from './wallet-editor/pages-wallets-management-editor.types';
 
 @Component({
   selector: 'app-wallets-management',
@@ -49,9 +48,11 @@ export class PagesWalletsManagementComponent implements OnInit {
     });
   }
 
-  public async handleWalletCreate(): Promise<void> {
-    this.pagesWalletsManagementEditorService.openWalletEditor().subscribe( (createdName: WalletsManagementItem | undefined) => {
-      createdName && this.createWallet(createdName);
+  public handleWalletCreate(): void {
+    this.pagesWalletsManagementEditorService.openWalletEditor().subscribe({
+      next: (createdName: WalletsManagementItem | undefined) => {
+        createdName && this.createWallet(createdName);
+      },
     })
   }
 
@@ -59,9 +60,11 @@ export class PagesWalletsManagementComponent implements OnInit {
     this.myWalletsData.data = [WalletsManagementItem.create({ name }), ...this.myWalletsData.data!];
   }
 
-  public async handleWalletEdit(wallet: WalletsManagementItem): Promise<void> {
-    this.pagesWalletsManagementEditorService.openWalletEditor(wallet).subscribe( (createdName: WalletsManagementItem | undefined) => {
-      createdName && this.updateWallet(wallet, createdName);
+  public handleWalletEdit(wallet: WalletsManagementItem): void {
+    this.pagesWalletsManagementEditorService.openWalletEditor(wallet).subscribe({
+      next: (createdName: WalletsManagementItem | undefined) => {
+        createdName && this.updateWallet(wallet, createdName);
+      },
     })
   }
 

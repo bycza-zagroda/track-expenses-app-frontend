@@ -20,6 +20,7 @@ export class DomainsWalletsGateway {
   }
 
   public createWallet({ name }: IWalletPayload): Observable<IWalletApiResponse> {
+    return fakeRequest({id: 2, creationDate: new Date().toString(), name});
     return this.http.post<IWalletApiResponse>(API_WALLETS_URL, { name });
   }
 

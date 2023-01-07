@@ -2,9 +2,13 @@ import { WalletsManagementItem } from 'src/app/pages/wallets/management/pages-wa
 import { WalletsDetailsTransaction } from 'src/app/pages/wallets/wallet-details/pages-wallet-details-item.model';
 import { IWalletApiResponse, IWalletTransactionApiResponse, WalletTransactionType } from './domains.wallets.types';
 
-export const WALLET_RESP_MOCK = { name: 'Wallet Mock 1', creationDate: '2022-10-22T09:47:52.595721658Z', id: 1 } as const;
+export const DATE_EXAMPLE = '2022-10-22T09:47:52.595721658Z';
+
+export const WALLET_RESP_MOCK = { name: 'Wallet Mock 1', creationDate: DATE_EXAMPLE, id: 1 } as const;
+export const UPDATED_WALLET_RESP_MOCK = { name: 'Wallet Mock 1 - changed name', creationDate: DATE_EXAMPLE, id: 1 } as const;
 export const WALLET_PAYLOAD_MOCK = { name: 'Wallet 6' } as const;
 export const WALLET_INSTANCE_MOCK = new WalletsManagementItem(WALLET_RESP_MOCK);
+export const UPDATED_WALLET_INSTANCE_MOCK = new WalletsManagementItem(UPDATED_WALLET_RESP_MOCK);
 
 export function WALLET_DETAILS_API_RESPONSE_MOCK(id: number): IWalletTransactionApiResponse[] {
   if(id === 1) {
