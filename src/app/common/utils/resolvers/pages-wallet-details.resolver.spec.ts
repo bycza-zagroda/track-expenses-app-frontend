@@ -1,7 +1,6 @@
 import { fakeAsync, flushMicrotasks, TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
-import { arMA } from 'date-fns/locale';
-import { Subject } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { DomainsWalletsGateway } from 'src/app/domains/wallets/domains.wallets.gateway';
 import { GET_WALLETS_API_RESPONSE_MOCK, WALLET_INSTANCE_MOCK } from 'src/app/domains/wallets/domains.wallets.mocks';
 import { IWalletApiResponse } from 'src/app/domains/wallets/domains.wallets.types';
@@ -14,20 +13,23 @@ describe('PagesWalletDetailsResolver', () => {
   let domainsWalletsGatewayMock: SpyObj<DomainsWalletsGateway>;
   let walletsSubject: Subject<IWalletApiResponse[]>;
   let activatedRouteSnapshot: any;
+  let walletsApiResponse: IWalletApiResponse[];
+  let testWalletId: number;
 
   beforeEach(() => {
+    walletsApiResponse = GET_WALLETS_API_RESPONSE_MOCK();
     walletsSubject = new Subject<IWalletApiResponse[]>();
+    testWalletId = 1;
     activatedRouteSnapshot = {
-      route: {
-        paramMap: {
-          get: (x: string) => {
-            return '1';
-          }
+      paramMap: {
+        get: (x: string) => {
+          return `${testWalletId}`;
         }
       }
     }
+
     domainsWalletsGatewayMock = createSpyObj<DomainsWalletsGateway>(DomainsWalletsGateway.name, ['getWallets']);
-    domainsWalletsGatewayMock.getWallets.and.returnValue(walletsSubject.asObservable());
+    domainsWalletsGatewayMock.getWallets.and.returnValue(of(walletsApiResponse));
 
     TestBed.configureTestingModule({
       providers: [
@@ -43,21 +45,13 @@ describe('PagesWalletDetailsResolver', () => {
   });
 
   describe('get wallets from DomainsWalletsGateway', () => {
-    beforeEach(() => {
-
-    })
     describe('success', () => {
-      it('should return WalletsManagementItem with proper id', fakeAsync(() => {
-        const resp = resolver.resolve(activatedRouteSnapshot);
-        walletsSubject.next(GET_WALLETS_API_RESPONSE_MOCK());
-        flushMicrotasks();
-        expect(resp).toEqual(new Promise( (resolve, reject) => resolve(WALLET_INSTANCE_MOCK) ));
-      }));
+      it('should return WalletsManagementItem with proper id and name', async () => {
+        const wallet = await resolver.resolve(activatedRouteSnapshot);
+
+        expect(wallet.id).toEqual(testWalletId);
+        expect(wallet.name).toEqual(walletsApiResponse.find(item => item.id === testWalletId)!.name);
+      });
     });
-
   });
-
-
-
-
 });

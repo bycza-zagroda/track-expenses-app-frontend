@@ -1,9 +1,10 @@
+import { Xliff } from '@angular/compiler';
 import { fakeAsync, flushMicrotasks, TestBed } from '@angular/core/testing';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { of, Subject } from 'rxjs';
+import { delay, of, Subject } from 'rxjs';
 import { SystemNotificationsService } from 'src/app/common/utils/system-notifications/system-notifications.service';
-import { WALLET_INSTANCE_MOCK } from 'src/app/domains/wallets/domains.wallets.mocks';
+import { UPDATED_WALLET_INSTANCE_MOCK, WALLET_INSTANCE_MOCK } from 'src/app/domains/wallets/domains.wallets.mocks';
 import { MaterialModule } from 'src/app/material.module';
 import { PagesWalletsManagementService } from '../pages-wallets-management.service';
 import { WalletsManagementItem } from '../pages-wallets-wallets-management-item.model';
@@ -43,38 +44,50 @@ describe('PagesWalletsManagementEditorService', () => {
     service = TestBed.inject(PagesWalletsManagementEditorService);
   });
 
-  describe('handleWalletEdit', () => {
-    beforeEach(() => {
-
-    });
-
+  fdescribe('handleWalletEdit', () => {
     describe('success', () => {
-      it('should update wallet\'s name', fakeAsync(() => {
-        matDialogRef.afterClosed.and.returnValue(of({name: ''}));
-        const x = service.openWalletEditor(WALLET_INSTANCE_MOCK);
+      beforeEach(() => {
+        matDialogRef.afterClosed.and.returnValue(of({name: UPDATED_WALLET_INSTANCE_MOCK.name }));
+      });
+
+      it('update wallet\'s name should invoke showNotification', fakeAsync(() => {
+        service.openWalletEditor(WALLET_INSTANCE_MOCK);
         matEditorSubject.next(WALLET_INSTANCE_MOCK);
 
         flushMicrotasks();
         expect(systemNotificationsServiceMock.showNotification).toHaveBeenCalled();
-
       }));
 
-      it('should update wallet\'s name', (done) => {
-        matDialogRef.afterClosed.and.returnValue(of({name: 'New name'}));
-        matEditorSubject.next(WALLET_INSTANCE_MOCK);
+      it('should return updated wallet', (done) => {
+        service.openWalletEditor(WALLET_INSTANCE_MOCK).subscribe( ( (data: WalletsManagementItem | undefined) => {
 
-        const x = service.openWalletEditor(WALLET_INSTANCE_MOCK);
-
-        x.subscribe( (data => {
-          console.log(data);
-
+          expect(data?.name).toBe(UPDATED_WALLET_INSTANCE_MOCK.name);
           done();
-        }))
+        }));
 
+        matEditorSubject.next(UPDATED_WALLET_INSTANCE_MOCK);
       });
+    });
 
+    describe('canceled', () => {
+      it('cancel updating wallet\'s name should not invoke showNotification', fakeAsync(() => {
+        matDialogRef.afterClosed.and.returnValue(of(undefined));
+        service.openWalletEditor(WALLET_INSTANCE_MOCK);
+
+        flushMicrotasks();
+        expect(systemNotificationsServiceMock.showNotification).not.toHaveBeenCalled();
+      }));
+
+      it('should return undefined', (done) => {
+
+        service.openWalletEditor(WALLET_INSTANCE_MOCK).subscribe( ((data: WalletsManagementItem | undefined) => {
+          expect(data).toBe(undefined);
+          done();
+        }));
+
+        matDialogRef.afterClosed.and.returnValue(of(undefined)); // of(undefined).pipe(delay(10))
+      });
     });
 
   });
-
 });

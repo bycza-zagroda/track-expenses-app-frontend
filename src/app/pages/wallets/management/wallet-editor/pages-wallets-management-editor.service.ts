@@ -23,7 +23,9 @@ export class PagesWalletsManagementEditorService {
   public openWalletEditor(wallet?: WalletsManagementItem): Observable<WalletsManagementItem | undefined> {
     this.subject = new Subject<WalletsManagementItem | undefined>();
 
-    this.openWalletModal({ name: wallet?.name ?? '' }).subscribe( (walletResp: IWalletModalData | undefined) => {
+    this.dialog.open<PagesWalletsManagementEditorComponent, IWalletModalData | undefined, IWalletModalData>(PagesWalletsManagementEditorComponent, {
+      data: { name: wallet?.name ?? '' },
+    }).afterClosed().subscribe( (walletResp: IWalletModalData | undefined) => {
       if(walletResp) {
         this.makeRequest(walletResp, wallet);
       } else {
@@ -55,13 +57,5 @@ export class PagesWalletsManagementEditorService {
     }
 
     this.systemNotificationsService.showNotification({ message: `Congratulations! Your wallet was ${type} successfully.` });
-  }
-
-  private openWalletModal(wallet: IWalletModalData): Observable<IWalletModalData | undefined> {
-    const dialogRef = this.dialog.open<PagesWalletsManagementEditorComponent, IWalletModalData | undefined, IWalletModalData>(PagesWalletsManagementEditorComponent, {
-      data: wallet,
-    });
-
-    return dialogRef.afterClosed();
   }
 }
