@@ -71,8 +71,8 @@ describe('DomainsWalletsGateway', () => {
             expect(val).toEqual(walletResp);
         });
 
-        const req = httpTestingController.expectOne(apiUrl);
-        expect(req.request.method).toEqual('PUT');
+        const req = httpTestingController.expectOne(apiUrl + '/1');
+        expect(req.request.method).toEqual('PATCH');
         req.flush(walletResp);
     });
   });
