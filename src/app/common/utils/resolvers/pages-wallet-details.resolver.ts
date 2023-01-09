@@ -9,7 +9,6 @@ import { WalletsManagementItem } from 'src/app/pages/wallets/management/pages-wa
   providedIn: 'root',
 })
 export class PagesWalletDetailsResolver implements Resolve<WalletsManagementItem> {
-
   public constructor(private readonly domainsWalletsGateway: DomainsWalletsGateway) {}
 
   public async resolve(route: ActivatedRouteSnapshot): Promise<WalletsManagementItem> {

@@ -4,7 +4,7 @@ import { IWalletApiResponse, IWalletPayload, IWalletTransactionApiResponse } fro
 import { HttpClient } from '@angular/common/http';
 import { API_WALLETS_URL } from './domains.wallets.constants';
 import { fakeRequest } from 'src/app/common/http/common.http.fake-request';
-import { WALLET_DETAILS_API_RESPONSE_MOCK, GET_WALLETS_API_RESPONSE_MOCK } from './domains.wallets.mocks';
+import { WALLET_TRANSACTIONS_API_RESPONSE_MOCK, GET_WALLETS_API_RESPONSE_MOCK } from './domains.wallets.mocks';
 import { getRandomNumber } from 'src/app/common/utils/common.utils.random';
 
 @Injectable({
@@ -34,6 +34,6 @@ export class DomainsWalletsGateway {
   }
 
   public getWalletTransactions(id: number): Observable<IWalletTransactionApiResponse[]> {
-    return fakeRequest(WALLET_DETAILS_API_RESPONSE_MOCK(id));
+    return fakeRequest(WALLET_TRANSACTIONS_API_RESPONSE_MOCK(id));
   }
 }

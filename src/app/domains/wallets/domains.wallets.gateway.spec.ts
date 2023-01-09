@@ -10,8 +10,10 @@ describe('DomainsWalletsGateway', () => {
   let walletResp: IWalletApiResponse;
   let httpTestingController: HttpTestingController;
   let apiUrl: string;
+  let walletId: number;
 
   beforeEach(async () => {
+    walletId = 1;
     walletResp = WALLET_RESP_MOCK;
     apiUrl = API_WALLETS_URL;
 
@@ -79,7 +81,7 @@ describe('DomainsWalletsGateway', () => {
 
   describe('getWalletTransactions', () => {
     it('should call fakeRequest and return wallet \'s transactions', (done) => {
-      service.getWalletTransactions(2).subscribe((val: IWalletTransactionApiResponse[]) => {
+      service.getWalletTransactions(walletId).subscribe((val: IWalletTransactionApiResponse[]) => {
 
         expect(val.length).toEqual(3);
         done();

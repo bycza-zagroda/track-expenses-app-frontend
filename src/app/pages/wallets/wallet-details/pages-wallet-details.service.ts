@@ -9,7 +9,6 @@ import { WalletsDetailsTransaction } from './pages-wallet-details-item.model';
   providedIn: 'root',
 })
 export class PagesWalletDetailsService {
-
   public constructor(
     private readonly gateway: DomainsWalletsGateway,
   ) { }

@@ -11,7 +11,7 @@ import createSpyObj = jasmine.createSpyObj;
 describe('PagesWalletDetailsResolver', () => {
   let resolver: PagesWalletDetailsResolver;
   let domainsWalletsGatewayMock: SpyObj<DomainsWalletsGateway>;
-  let activatedRouteSnapshot: any; // { paramMap: { get: (x: string) => string }};
+  let activatedRouteSnapshot: ActivatedRouteSnapshot;
   let walletsApiResponse: IWalletApiResponse[];
   let testWalletId: number;
 
@@ -24,7 +24,7 @@ describe('PagesWalletDetailsResolver', () => {
           return `${testWalletId}`;
         },
       },
-    }
+    } as unknown as ActivatedRouteSnapshot;
 
     domainsWalletsGatewayMock = createSpyObj<DomainsWalletsGateway>(DomainsWalletsGateway.name, ['getWallets']);
     domainsWalletsGatewayMock.getWallets.and.returnValue(of(walletsApiResponse));

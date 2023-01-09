@@ -11,7 +11,6 @@ import { IWalletModalData } from './pages-wallets-management-editor.types';
   providedIn: 'root',
 })
 export class PagesWalletsManagementEditorService {
-
   public constructor(
     private readonly dialog: MatDialog,
     private readonly systemNotificationsService: SystemNotificationsService,

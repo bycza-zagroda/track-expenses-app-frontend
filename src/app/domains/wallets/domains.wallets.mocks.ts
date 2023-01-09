@@ -10,7 +10,7 @@ export const WALLET_PAYLOAD_MOCK = { name: 'Wallet 6' } as const;
 export const WALLET_INSTANCE_MOCK = new WalletsManagementItem(WALLET_RESP_MOCK);
 export const UPDATED_WALLET_INSTANCE_MOCK = new WalletsManagementItem(UPDATED_WALLET_RESP_MOCK);
 
-export function WALLET_DETAILS_API_RESPONSE_MOCK(id: number): IWalletTransactionApiResponse[] {
+export function WALLET_TRANSACTIONS_API_RESPONSE_MOCK(id: number): IWalletTransactionApiResponse[] {
   if(id === 1) {
     return  [
       { id: 1, creationDate: new Date(2020, 7, 12).toLocaleDateString(), description: 'description 1', amount: 300, type: WalletTransactionType.Incomes },
@@ -28,7 +28,7 @@ export function WALLET_DETAILS_API_RESPONSE_MOCK(id: number): IWalletTransaction
 }
 
 export function WALLET_TRANSACTIONS_OBJECTS_MOCK(id: number): WalletsDetailsTransaction[]  {
-  return WALLET_DETAILS_API_RESPONSE_MOCK(id).map( (item: IWalletTransactionApiResponse) => new WalletsDetailsTransaction(item));
+  return WALLET_TRANSACTIONS_API_RESPONSE_MOCK(id).map( (item: IWalletTransactionApiResponse) => new WalletsDetailsTransaction(item));
 }
 
 export function GET_WALLETS_API_RESPONSE_MOCK(): IWalletApiResponse[] {
