@@ -1,8 +1,8 @@
-import { fakeAsync, flushMicrotasks, TestBed } from '@angular/core/testing';
-import { ActivatedRouteSnapshot, convertToParamMap } from '@angular/router';
-import { of, Subject } from 'rxjs';
+import { TestBed } from '@angular/core/testing';
+import { ActivatedRouteSnapshot } from '@angular/router';
+import { of } from 'rxjs';
 import { DomainsWalletsGateway } from 'src/app/domains/wallets/domains.wallets.gateway';
-import { GET_WALLETS_API_RESPONSE_MOCK, WALLET_INSTANCE_MOCK } from 'src/app/domains/wallets/domains.wallets.mocks';
+import { GET_WALLETS_API_RESPONSE_MOCK } from 'src/app/domains/wallets/domains.wallets.mocks';
 import { IWalletApiResponse } from 'src/app/domains/wallets/domains.wallets.types';
 import { PagesWalletDetailsResolver } from './pages-wallet-details.resolver';
 import SpyObj = jasmine.SpyObj;
@@ -11,21 +11,19 @@ import createSpyObj = jasmine.createSpyObj;
 describe('PagesWalletDetailsResolver', () => {
   let resolver: PagesWalletDetailsResolver;
   let domainsWalletsGatewayMock: SpyObj<DomainsWalletsGateway>;
-  let walletsSubject: Subject<IWalletApiResponse[]>;
-  let activatedRouteSnapshot: any;
+  let activatedRouteSnapshot: any; // { paramMap: { get: (x: string) => string }};
   let walletsApiResponse: IWalletApiResponse[];
   let testWalletId: number;
 
   beforeEach(() => {
     walletsApiResponse = GET_WALLETS_API_RESPONSE_MOCK();
-    walletsSubject = new Subject<IWalletApiResponse[]>();
     testWalletId = 1;
     activatedRouteSnapshot = {
       paramMap: {
-        get: (x: string) => {
+        get: (x: string): string => {
           return `${testWalletId}`;
-        }
-      }
+        },
+      },
     }
 
     domainsWalletsGatewayMock = createSpyObj<DomainsWalletsGateway>(DomainsWalletsGateway.name, ['getWallets']);
@@ -35,9 +33,9 @@ describe('PagesWalletDetailsResolver', () => {
       providers: [
         { provide: DomainsWalletsGateway, useValue: domainsWalletsGatewayMock },
         { provide: ActivatedRouteSnapshot, useValue: activatedRouteSnapshot },
-      ]
+      ],
     });
-    resolver = TestBed.inject(PagesWalletDetailsResolver);
+    resolver = TestBed.inject<PagesWalletDetailsResolver>(PagesWalletDetailsResolver);
   });
 
   it('should be created', () => {

@@ -27,7 +27,7 @@ export function WALLET_DETAILS_API_RESPONSE_MOCK(id: number): IWalletTransaction
 
 }
 
-export function WALLET_TRANSACTIONS_OBJECTS_MOCK(id: number) {
+export function WALLET_TRANSACTIONS_OBJECTS_MOCK(id: number): WalletsDetailsTransaction[]  {
   return WALLET_DETAILS_API_RESPONSE_MOCK(id).map( (item: IWalletTransactionApiResponse) => new WalletsDetailsTransaction(item));
 }
 

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { DomainsWalletsGateway } from '../../../domains/wallets/domains.wallets.gateway';
 import { map, Observable } from 'rxjs';
 import { WalletsManagementItem } from './pages-wallets-wallets-management-item.model';
-import { fakeRequest } from 'src/app/common/http/common.http.fake-request';
 
 @Injectable({
   providedIn: 'root',

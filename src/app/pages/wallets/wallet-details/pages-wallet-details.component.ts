@@ -88,14 +88,14 @@ export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
     this.displayedTransactions = this.walletsDetailsData.data!.filter( (item: WalletsDetailsTransaction) =>  (type === '') ? true : type.toString() === item.type.toString() );
   }
 
-  public async handleWalletEdit(): Promise<void> {
-    this.pagesWalletsManagementEditorService.openWalletEditor(this.walletsManagementItem).subscribe( (createdName: WalletsManagementItem | undefined) => {
+  public handleWalletEdit(): void {
+    this.pagesWalletsManagementEditorService.openWalletEditor(this.walletsManagementItem).subscribe( (createdName: WalletsManagementItem | null) => {
       createdName && this.updateWallet(createdName);
     })
   }
 
   private updateWallet({ name }: IWalletModalData): void {
-    this.walletsManagementItem = WalletsManagementItem.create({ id: this.walletsManagementItem!.id!, name, creationDate: this.walletsManagementItem!.createdAt.toString() });;
+    this.walletsManagementItem = WalletsManagementItem.create({ id: this.walletsManagementItem!.id!, name, creationDate: this.walletsManagementItem!.createdAt.toString() });
   }
 
   public ngOnDestroy(): void {

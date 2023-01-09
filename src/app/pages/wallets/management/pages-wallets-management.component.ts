@@ -50,19 +50,19 @@ export class PagesWalletsManagementComponent implements OnInit {
 
   public handleWalletCreate(): void {
     this.pagesWalletsManagementEditorService.openWalletEditor().subscribe({
-      next: (createdName: WalletsManagementItem | undefined) => {
+      next: (createdName: WalletsManagementItem | null) => {
         createdName && this.createWallet(createdName);
       },
     })
   }
 
-  private createWallet({ name }: WalletsManagementItem): void {
-    this.myWalletsData.data = [WalletsManagementItem.create({ name }), ...this.myWalletsData.data!];
+  private createWallet(wallet: WalletsManagementItem): void {
+    this.myWalletsData.data = [wallet, ...this.myWalletsData.data!];
   }
 
   public handleWalletEdit(wallet: WalletsManagementItem): void {
     this.pagesWalletsManagementEditorService.openWalletEditor(wallet).subscribe({
-      next: (createdName: WalletsManagementItem | undefined) => {
+      next: (createdName: WalletsManagementItem | null) => {
         createdName && this.updateWallet(wallet, createdName);
       },
     })

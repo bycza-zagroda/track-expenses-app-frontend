@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { DomainsWalletsGateway } from './domains.wallets.gateway';
-import { IWalletApiResponse, IWalletPayload } from './domains.wallets.types';
+import { IWalletApiResponse, IWalletPayload, IWalletTransactionApiResponse } from './domains.wallets.types';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import { API_WALLETS_URL } from './domains.wallets.constants';
 import { WALLET_PAYLOAD_MOCK, WALLET_RESP_MOCK } from './domains.wallets.mocks';
@@ -74,6 +74,16 @@ describe('DomainsWalletsGateway', () => {
         const req = httpTestingController.expectOne(apiUrl);
         expect(req.request.method).toEqual('PUT');
         req.flush(walletResp);
+    });
+  });
+
+  describe('getWalletTransactions', () => {
+    it('should call fakeRequest and return wallet \'s transactions', (done) => {
+      service.getWalletTransactions(2).subscribe((val: IWalletTransactionApiResponse[]) => {
+
+        expect(val.length).toEqual(3);
+        done();
+      });
     });
   });
 

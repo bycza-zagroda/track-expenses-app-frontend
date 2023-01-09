@@ -7,7 +7,6 @@ import { Observable, of, Subject } from 'rxjs';
 import { TransactionAmountPipe } from 'src/app/common/utils/pipes/transaction-amount.pipe';
 import { UPDATED_WALLET_INSTANCE_MOCK, WALLET_INSTANCE_MOCK, WALLET_TRANSACTIONS_OBJECTS_MOCK } from 'src/app/domains/wallets/domains.wallets.mocks';
 import { MaterialModule } from 'src/app/material.module';
-import { PagesWalletsManagementService } from '../management/pages-wallets-management.service';
 import { WalletsManagementItem } from '../management/pages-wallets-wallets-management-item.model';
 import { PagesWalletsManagementEditorService } from '../management/wallet-editor/pages-wallets-management-editor.service';
 import { PagesWalletDetailsComponent } from './pages-wallet-details.component';
@@ -20,23 +19,17 @@ describe('PagesWalletDetailsComponent', () => {
   let fixture: ComponentFixture<PagesWalletDetailsComponent>;
   let activatedRouteMock: { data: Observable<{ wallet: WalletsManagementItem}> };
   let pagesWalletDetailsServiceMock: SpyObj<PagesWalletDetailsService>;
-  let pagesWalletsManagementServiceMock: SpyObj<PagesWalletsManagementService>;
-  let walletSubject: Subject<WalletsManagementItem>;
   let pagesWalletsManagementEditorServiceMock: SpyObj<PagesWalletsManagementEditorService>;
-  let matEditorSubject: Subject<WalletsManagementItem | undefined>;
-
+  let matEditorSubject: Subject<WalletsManagementItem | null>;
 
   beforeEach(async () => {
     activatedRouteMock = {
-      data: of({ wallet: WALLET_INSTANCE_MOCK })
+      data: of({ wallet: WALLET_INSTANCE_MOCK }),
     }
 
-    matEditorSubject = new Subject<WalletsManagementItem | undefined>();
+    matEditorSubject = new Subject<WalletsManagementItem | null>();
 
-    walletSubject = new Subject<WalletsManagementItem>();
     pagesWalletDetailsServiceMock = createSpyObj<PagesWalletDetailsService>(PagesWalletDetailsService.name, ['getWalletTransactions']);
-    pagesWalletsManagementServiceMock = createSpyObj<PagesWalletsManagementService>(PagesWalletsManagementService.name, ['updateWallet']);
-
     pagesWalletDetailsServiceMock.getWalletTransactions.and.returnValue(of(WALLET_TRANSACTIONS_OBJECTS_MOCK(1)));
 
     pagesWalletsManagementEditorServiceMock = createSpyObj<PagesWalletsManagementEditorService>(PagesWalletsManagementEditorService.name, ['openWalletEditor']);
@@ -56,7 +49,7 @@ describe('PagesWalletDetailsComponent', () => {
         { provide: PagesWalletDetailsService, useValue: pagesWalletDetailsServiceMock },
         { provide: PagesWalletsManagementEditorService, useValue: pagesWalletsManagementEditorServiceMock },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
-      ]
+      ],
     })
     .compileComponents();
 
@@ -84,11 +77,11 @@ describe('PagesWalletDetailsComponent', () => {
 
   describe('filter transactions by Expenses', () => {
     it('selected Expenses on select-box should filter 1 transaction', () => {
-      const matSelect = fixture.debugElement.query(By.css('.mat-select-trigger')).nativeElement;
+      const matSelect: HTMLDivElement = fixture.debugElement.query(By.css('.mat-select-trigger')).nativeElement as HTMLDivElement;
       matSelect.click();
       fixture.detectChanges();
 
-      const expensesOption = fixture.debugElement.queryAll(By.css('.mat-option'))[1].nativeElement;
+      const expensesOption: HTMLDivElement = fixture.debugElement.queryAll(By.css('.mat-option'))[1].nativeElement as HTMLDivElement;
       expensesOption.click();
       fixture.detectChanges();
 
@@ -100,11 +93,11 @@ describe('PagesWalletDetailsComponent', () => {
 
   describe('filter transactions by Incomes', () => {
     it('selected Incomes on select-box should filter 2 transactions', () => {
-      const matSelect = fixture.debugElement.query(By.css('.mat-select-trigger')).nativeElement;
+      const matSelect: HTMLDivElement = fixture.debugElement.query(By.css('.mat-select-trigger')).nativeElement as HTMLDivElement;
       matSelect.click();
       fixture.detectChanges();
 
-      const incomesOption = fixture.debugElement.queryAll(By.css('.mat-option'))[2].nativeElement;
+      const incomesOption: HTMLElement = fixture.debugElement.queryAll(By.css('.mat-option'))[2].nativeElement as HTMLDivElement;
       incomesOption.click();
       fixture.detectChanges();
 
@@ -128,7 +121,7 @@ describe('PagesWalletDetailsComponent', () => {
     describe('success', () => {
       it('should update walletsManagementItem.name', fakeAsync(() => {
         component.handleWalletEdit();
-        matEditorSubject.next(undefined);
+        matEditorSubject.next(null);
         flushMicrotasks();
 
         expect(component.walletsManagementItem?.name).toBe(WALLET_INSTANCE_MOCK.name);

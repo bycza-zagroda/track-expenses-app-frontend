@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Observable, Subject } from 'rxjs';
+import { Observable, of, switchMap, tap } from 'rxjs';
 import { SystemNotificationsService } from 'src/app/common/utils/system-notifications/system-notifications.service';
 import { PagesWalletsManagementService } from '../pages-wallets-management.service';
 import { WalletsManagementItem } from '../pages-wallets-wallets-management-item.model';
@@ -8,11 +8,9 @@ import { PagesWalletsManagementEditorComponent } from './pages-wallets-managemen
 import { IWalletModalData } from './pages-wallets-management-editor.types';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PagesWalletsManagementEditorService {
-
-  private subject?: Subject<WalletsManagementItem | undefined>;
 
   public constructor(
     private readonly dialog: MatDialog,
@@ -20,36 +18,27 @@ export class PagesWalletsManagementEditorService {
     private readonly myWalletsService: PagesWalletsManagementService,
   ) { }
 
-  public openWalletEditor(wallet?: WalletsManagementItem): Observable<WalletsManagementItem | undefined> {
-    this.subject = new Subject<WalletsManagementItem | undefined>();
+  public openWalletEditor(wallet?: WalletsManagementItem): Observable<WalletsManagementItem | null> {
 
-    this.dialog.open<PagesWalletsManagementEditorComponent, IWalletModalData | undefined, IWalletModalData>(PagesWalletsManagementEditorComponent, {
+    return this.dialog.open<PagesWalletsManagementEditorComponent, IWalletModalData | undefined, IWalletModalData>(PagesWalletsManagementEditorComponent, {
       data: { name: wallet?.name ?? '' },
-    }).afterClosed().subscribe( (walletResp: IWalletModalData | undefined) => {
-      if(walletResp) {
-        this.makeRequest(walletResp, wallet);
-      } else {
-        this.subject?.next(undefined);
-        this.subject?.complete();
-      }
-    });
-
-    return this.subject.asObservable();
+    }).afterClosed().pipe(
+      switchMap((walletResp: IWalletModalData | undefined) => {
+        return !!walletResp ? this.makeRequest(walletResp, wallet ?? null) : of(null);
+    }),
+      tap((w: WalletsManagementItem | null) => {
+        w && this.notify(w, wallet ? 'updated' : 'created');
+      }),
+    )
   }
 
-  private makeRequest(walletResp: IWalletModalData, wallet?: WalletsManagementItem): void {
+  private makeRequest(walletResp: IWalletModalData, wallet: WalletsManagementItem | null): Observable<WalletsManagementItem> {
     const walletObject = WalletsManagementItem.create(wallet ? { name: walletResp.name, id: wallet!.id! } : { name: walletResp.name });
-
-    const action = wallet ? this.myWalletsService.updateWallet(walletObject) : this.myWalletsService.createWallet(walletObject);
-    action.subscribe( (walletResp: WalletsManagementItem) => {
-      this.notify(walletResp, wallet ? 'updated' : 'created');
-
-      this.subject?.next(walletResp);
-      this.subject?.complete();
-    });
+    //  36:93  error    This assertion is unnecessary since it does not change the type of the expression ??
+    return (wallet ? this.myWalletsService.updateWallet(walletObject) : this.myWalletsService.createWallet(walletObject));
   }
 
-  private notify(updatedWallet: WalletsManagementItem, type: string): void {
+  private notify(updatedWallet: WalletsManagementItem | null, type: string): void {
 
     if(!updatedWallet) {
       this.systemNotificationsService.showNotification({ message: 'Sorry. Something went wrong and your wallet was not saved. Contact administrator.' });

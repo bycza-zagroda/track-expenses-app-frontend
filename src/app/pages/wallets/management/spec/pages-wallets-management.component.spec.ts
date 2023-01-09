@@ -1,4 +1,4 @@
-import { ComponentFixture, fakeAsync, flushMicrotasks, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flushMicrotasks, TestBed } from '@angular/core/testing';
 import { PagesWalletsManagementComponent } from '../pages-wallets-management.component';
 import { MaterialModule } from '../../../../material.module';
 import { PagesWalletsManagementService } from '../pages-wallets-management.service';
@@ -22,16 +22,14 @@ describe('PagesWalletsManagementComponent', () => {
   let walletResp: IWalletApiResponse;
   let walletsSubject: Subject<WalletsManagementItem[]>;
   let walletSubject: Subject<WalletsManagementItem>;
-  let matEditorSubject: Subject<WalletsManagementItem | undefined>;
-  let walletInstance: WalletsManagementItem;
+  let matEditorSubject: Subject<WalletsManagementItem | null>;
   let pagesWalletsManagementEditorServiceMock: SpyObj<PagesWalletsManagementEditorService>;
 
   beforeEach(async () => {
     walletsSubject = new Subject<WalletsManagementItem[]>();
     walletSubject = new Subject<WalletsManagementItem>();
-    matEditorSubject = new Subject<WalletsManagementItem | undefined>();
+    matEditorSubject = new Subject<WalletsManagementItem | null>();
     walletResp = WALLET_RESP_MOCK;
-    walletInstance = WALLET_INSTANCE_MOCK;
 
     pagesWalletsManagementEditorServiceMock = createSpyObj<PagesWalletsManagementEditorService>(PagesWalletsManagementEditorService.name, ['openWalletEditor']);
     pagesWalletsManagementEditorServiceMock.openWalletEditor.and.returnValue(matEditorSubject.asObservable());
@@ -46,7 +44,7 @@ describe('PagesWalletsManagementComponent', () => {
         PagesWalletsManagementComponent,
         SystemMessageComponent,
       ],
-      imports: [ MaterialModule, BrowserAnimationsModule, ],
+      imports: [ MaterialModule, BrowserAnimationsModule ],
       providers: [
         { provide: PagesWalletsManagementService, useValue: myWalletsServiceMock },
         { provide: SystemNotificationsService, useValue: systemNotificationsServiceMock },
@@ -94,7 +92,7 @@ describe('PagesWalletsManagementComponent', () => {
   describe('handleWalletEdit', () => {
     beforeEach(() => {
       component.myWalletsData.data = [
-        WALLET_INSTANCE_MOCK
+        WALLET_INSTANCE_MOCK,
       ];
     })
     describe('success', () => {
@@ -110,7 +108,7 @@ describe('PagesWalletsManagementComponent', () => {
     describe('canceled', () => {
       it('myWalletsData should stay untouched', fakeAsync(() => {
         component.handleWalletEdit(WALLET_INSTANCE_MOCK);
-        matEditorSubject.next(undefined);
+        matEditorSubject.next(null);
         flushMicrotasks();
 
         expect(component.myWalletsData.data!.length).toBe(1);
@@ -137,7 +135,7 @@ describe('PagesWalletsManagementComponent', () => {
     describe('canceled', () => {
       it('myWalletsData should stay untouched', fakeAsync(() => {
         component.handleWalletCreate();
-        matEditorSubject.next(undefined);
+        matEditorSubject.next(null);
         flushMicrotasks();
 
         expect(component.myWalletsData.data!.length).toBe(0);
