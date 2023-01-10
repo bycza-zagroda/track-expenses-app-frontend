@@ -15,7 +15,7 @@ export class ConfirmDialogService {
     return this.dialog.open<ConfirmationModalComponent, IConfirmationModalData, boolean>(ConfirmationModalComponent, {
       data: config,
     }).afterClosed().pipe(
-        map((val: boolean | undefined) => !!val),
-    )
+      map((val: boolean | undefined) => !!val),
+    );
   }
 }

@@ -11,7 +11,7 @@ describe('PagesWalletsManagementAddNewWalletComponent', () => {
       declarations: [ PagesWalletsManagementAddNewWalletComponent ],
       imports: [ MaterialModule ],
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(PagesWalletsManagementAddNewWalletComponent);
     component = fixture.componentInstance;

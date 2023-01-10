@@ -29,7 +29,6 @@ describe('DomainsWalletsGateway', () => {
 
     httpTestingController = TestBed.inject<HttpTestingController>(HttpTestingController);
     service = TestBed.inject<DomainsWalletsGateway>(DomainsWalletsGateway);
-
   });
 
   afterEach(() => {
@@ -38,14 +37,13 @@ describe('DomainsWalletsGateway', () => {
 
   describe('getWallets', () => {
     it('should call proper api url and return wallets data', () => {
+      service.getWallets().subscribe((val: IWalletApiResponse[]) => {
+        expect(val).toEqual([ walletResp ]);
+      });
 
-        service.getWallets().subscribe((val: IWalletApiResponse[]) => {
-            expect(val).toEqual([walletResp]);
-        });
-
-        const req = httpTestingController.expectOne(apiUrl);
-        expect(req.request.method).toEqual('GET');
-        req.flush([walletResp]);
+      const req = httpTestingController.expectOne(apiUrl);
+      expect(req.request.method).toEqual('GET');
+      req.flush([ walletResp ]);
     });
   });
 
@@ -53,43 +51,41 @@ describe('DomainsWalletsGateway', () => {
     let data: IWalletPayload;
 
     beforeEach(() => {
-       data = WALLET_PAYLOAD_MOCK;
+      data = WALLET_PAYLOAD_MOCK;
     });
 
     it('should call proper api url and return created wallet', () => {
-        service.createWallet(data).subscribe((val: IWalletApiResponse) => {
-            expect(val.name).toEqual(data.name);
-        });
+      service.createWallet(data).subscribe((val: IWalletApiResponse) => {
+        expect(val.name).toEqual(data.name);
+      });
 
-        const req = httpTestingController.expectOne(apiUrl);
-        expect(req.request.method).toEqual('POST');
-        req.flush(data);
+      const req = httpTestingController.expectOne(apiUrl);
+      expect(req.request.method).toEqual('POST');
+      req.flush(data);
     });
   });
 
   describe('updateWallet', () => {
     it('should call proper api url and return updated wallet', () => {
-        service.updateWallet(walletResp.id, { name: walletResp.name }).subscribe((val: IWalletApiResponse) => {
-            console.log(val);
-            console.log(walletResp);
+      service.updateWallet(walletResp.id, { name: walletResp.name }).subscribe((val: IWalletApiResponse) => {
+        console.log(val);
+        console.log(walletResp);
 
-            expect(val).toEqual(walletResp);
-        });
+        expect(val).toEqual(walletResp);
+      });
 
-        const req = httpTestingController.expectOne(apiUrl + '/1');
-        expect(req.request.method).toEqual('PATCH');
-        req.flush(walletResp);
+      const req = httpTestingController.expectOne(apiUrl + '/1');
+      expect(req.request.method).toEqual('PATCH');
+      req.flush(walletResp);
     });
   });
 
   describe('getWalletTransactions', () => {
     it('should call fakeRequest and return wallet \'s transactions', (done) => {
       service.getWalletTransactions(walletId).subscribe((val: IWalletTransactionApiResponse[]) => {
-
         expect(val.length).toEqual(3);
         done();
       });
     });
   });
-
 });

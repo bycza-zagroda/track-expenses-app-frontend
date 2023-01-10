@@ -15,7 +15,7 @@ export class PagesWalletsManagementService {
 
   public getWallets(): Observable<WalletsManagementItem[]> {
     return this.gateway.getWallets().pipe(
-        map(walletsResp => walletsResp.map(resp => new WalletsManagementItem(resp))),
+      map(walletsResp => walletsResp.map(resp => new WalletsManagementItem(resp))),
     );
   }
 
@@ -27,11 +27,11 @@ export class PagesWalletsManagementService {
 
   public updateWallet(wallet: WalletsManagementItem): Observable<WalletsManagementItem> {
     return this.gateway.updateWallet(wallet.id!, wallet.toPayload()).pipe(
-        map(response => new WalletsManagementItem(response)),
+      map(response => new WalletsManagementItem(response)),
     );
   }
 
-  public deleteWallet(wallet: WalletsManagementItem): Observable<void> {
+  public deleteWallet(wallet: WalletsManagementItem): Observable<unknown> {
     return this.gateway.deleteWallet(wallet.id!);
   }
 }

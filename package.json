@@ -17,6 +17,7 @@
     "test:headless": "ng test --watch=false --code-coverage --browsers=ChromeHeadless",
     "watch": "ng build --watch --configuration development",
     "lint": "ng lint",
+    "lintfix": "ng lint --fix",
     "format": "pretty-quick",
     "format:stage": "pretty-quick --staged",
     "format:check": "pretty-quick --check"

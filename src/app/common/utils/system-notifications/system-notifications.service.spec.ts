@@ -9,7 +9,7 @@ describe('SystemNotificationsService', () => {
   let matSnackMock: MatSnackBar;
 
   beforeEach(() => {
-    matSnackMock = createSpyObj<MatSnackBar>(MatSnackBar.name, ['open']);
+    matSnackMock = createSpyObj<MatSnackBar>(MatSnackBar.name, [ 'open' ]);
 
     TestBed.configureTestingModule({
       providers: [
@@ -25,8 +25,8 @@ describe('SystemNotificationsService', () => {
     let durationTime: number;
 
     beforeEach(() => {
-        message = 'Success happened';
-        durationTime = SNACKBAR_DURATION_SECONDS * 1000;
+      message = 'Success happened';
+      durationTime = SNACKBAR_DURATION_SECONDS * 1000;
     });
 
     it('should invoke Snackbar.open method with default dismiss value', (done) => {
@@ -45,7 +45,6 @@ describe('SystemNotificationsService', () => {
         expect(matSnackMock.open).toHaveBeenCalledWith(message, 'NOT OK', { duration: durationTime });
         done();
       }, durationTime);
-
     });
-  })
+  });
 });

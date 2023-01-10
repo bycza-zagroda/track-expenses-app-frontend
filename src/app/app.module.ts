@@ -13,7 +13,7 @@ import { DomainsModule } from './domains/domains.module';
 import { CommonComponentsModule } from './common/components/common-components.module';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [ AppComponent ],
   imports: [
     BrowserModule,
     NoopAnimationsModule,
@@ -26,6 +26,6 @@ import { CommonComponentsModule } from './common/components/common-components.mo
     DomainsModule,
     CommonComponentsModule,
   ],
-  bootstrap: [AppComponent],
+  bootstrap: [ AppComponent ],
 })
 export class AppModule {}
