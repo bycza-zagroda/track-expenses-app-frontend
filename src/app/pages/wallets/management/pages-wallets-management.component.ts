@@ -75,11 +75,10 @@ export class PagesWalletsManagementComponent implements OnInit {
   private updateWallet(wallet: WalletsManagementItem, { name }: WalletsManagementItem): void {
     this.myWalletsData.data = this.myWalletsData.data!.map(walletItem => {
       if (walletItem.id === wallet.id) {
-          return WalletsManagementItem.create({ id: wallet.id!, name });
+        return WalletsManagementItem.create({ id: wallet.id!, name });
       }
-
       return walletItem;
-    });
+    }).sort((previousWallet, nextWallet) => previousWallet.name.localeCompare(nextWallet.name));
   }
 
   public handleWalletDelete(wallet: WalletsManagementItem): void {

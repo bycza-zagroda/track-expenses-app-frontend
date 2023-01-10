@@ -28,7 +28,7 @@ export class DomainsWalletsGateway {
   }
 
   public deleteWallet(id: number): Observable<void> {
-    return this.http.delete<void>(API_WALLETS_URL + `/${id}`);
+    return this.http.delete<void>(`${API_WALLETS_URL}/${id}`);
   }
 
   public getWalletTransactions(id: number): Observable<IWalletTransactionApiResponse[]> {
