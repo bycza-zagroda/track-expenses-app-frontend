@@ -70,11 +70,14 @@ describe('DomainsWalletsGateway', () => {
   describe('updateWallet', () => {
     it('should call proper api url and return updated wallet', () => {
         service.updateWallet(walletResp.id, { name: walletResp.name }).subscribe((val: IWalletApiResponse) => {
+            console.log(val);
+            console.log(walletResp);
+
             expect(val).toEqual(walletResp);
         });
 
-        const req = httpTestingController.expectOne(apiUrl);
-        expect(req.request.method).toEqual('PUT');
+        const req = httpTestingController.expectOne(apiUrl + '/1');
+        expect(req.request.method).toEqual('PATCH');
         req.flush(walletResp);
     });
   });
