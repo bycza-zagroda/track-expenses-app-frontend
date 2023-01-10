@@ -1,0 +1,42 @@
+@use 'colors';
+
+.transactions__container {
+  margin-top: 15px;
+
+  table {
+    width: 100%;
+
+    .mat-column-actions {
+      .mat-stroked-button {
+        margin-right: 10px;
+      }
+    }
+
+    .mat-column-amount {
+      .amount--income { color: colors.$amount-income; }
+      .amount--expense { color: colors.$amount-expense; }
+    }
+  }
+
+  .wallet__description {
+    margin: 30px 15px 60px 15px;
+    display: flex;
+    justify-content: space-between;
+
+    .name {
+      display: flex;
+      align-items: baseline;
+
+      .name__name {
+        margin-right: 10px;
+        font-weight: bold;
+        font-size: 16px;
+      }
+    }
+  }
+
+  .example-additional-selection {
+    opacity: 0.75;
+    font-size: 0.75em;
+  }
+}
