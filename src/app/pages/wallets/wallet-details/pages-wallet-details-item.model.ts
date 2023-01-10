@@ -8,7 +8,7 @@ export class WalletsDetailsTransaction {
   public readonly amount: number;
 
   public constructor(data: IWalletTransactionApiResponse) {
-    this.id = data.id ?? null;
+    this.id = data.id;
     this.date = new Date(data.creationDate);
     this.description = data.description ?? null;
     this.type = data.type;

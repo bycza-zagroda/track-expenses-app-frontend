@@ -90,7 +90,9 @@ export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
 
   public handleWalletEdit(): void {
     this.pagesWalletsManagementEditorService.openWalletEditor(this.walletsManagementItem).subscribe( (createdName: WalletsManagementItem | null) => {
-      createdName && this.updateWallet(createdName);
+      if(createdName) {
+        this.updateWallet(createdName);
+      }
     })
   }
 

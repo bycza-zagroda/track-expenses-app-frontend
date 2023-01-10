@@ -7,6 +7,10 @@ export interface IWalletApiResponse {
   name: string;
 }
 
+export interface IWalletManagementItemData extends Omit<IWalletApiResponse, 'id'> {
+  id: TServerEntityId | null;
+}
+
 export interface IWalletPayload {
   name: string;
 }

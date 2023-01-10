@@ -11,12 +11,13 @@ describe('TransactionAmountPipe', () => {
     expect(pipe).toBeTruthy();
   });
 
-  it('Add minus to negative value', () => {
+  it('adds minus to negative value', () => {
     const transformedValue: string = pipe.transform(-30);
+    debugger
     expect(transformedValue).toBe('- 30');
   });
 
-  it('Add plus to positive value', () => {
+  it('adds plus to positive value', () => {
     const transformedValue: string = pipe.transform(20);
     expect(transformedValue).toBe('+ 20');
   });

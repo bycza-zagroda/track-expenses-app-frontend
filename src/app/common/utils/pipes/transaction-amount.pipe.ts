@@ -10,6 +10,6 @@ export class TransactionAmountPipe implements PipeTransform {
       return value.toString();
     }
 
-    return value < 0 ? '- ' + Math.abs(value).toString() : '+ ' + value.toString();
+    return (value < 0 ? '- ' : '+ ') + Math.abs(value).toString();
   }
 }

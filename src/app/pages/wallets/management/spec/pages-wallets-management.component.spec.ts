@@ -23,7 +23,7 @@ describe('PagesWalletsManagementComponent', () => {
   let walletsSubject: Subject<WalletsManagementItem[]>;
   let walletSubject: Subject<WalletsManagementItem>;
   let matEditorSubject: Subject<WalletsManagementItem | null>;
-  let pagesWalletsManagementEditorServiceMock: SpyObj<PagesWalletsManagementEditorService>;
+  let editorService: SpyObj<PagesWalletsManagementEditorService>;
 
   beforeEach(async () => {
     walletsSubject = new Subject<WalletsManagementItem[]>();
@@ -31,8 +31,8 @@ describe('PagesWalletsManagementComponent', () => {
     matEditorSubject = new Subject<WalletsManagementItem | null>();
     walletResp = WALLET_RESP_MOCK;
 
-    pagesWalletsManagementEditorServiceMock = createSpyObj<PagesWalletsManagementEditorService>(PagesWalletsManagementEditorService.name, ['openWalletEditor']);
-    pagesWalletsManagementEditorServiceMock.openWalletEditor.and.returnValue(matEditorSubject.asObservable());
+    editorService = createSpyObj<PagesWalletsManagementEditorService>(PagesWalletsManagementEditorService.name, ['openWalletEditor']);
+    editorService.openWalletEditor.and.returnValue(matEditorSubject.asObservable());
 
     myWalletsServiceMock = createSpyObj<PagesWalletsManagementService>(PagesWalletsManagementService.name, ['getWallets', 'createWallet', 'updateWallet']);
     myWalletsServiceMock.getWallets.and.returnValue(walletsSubject.asObservable());
@@ -48,7 +48,7 @@ describe('PagesWalletsManagementComponent', () => {
       providers: [
         { provide: PagesWalletsManagementService, useValue: myWalletsServiceMock },
         { provide: SystemNotificationsService, useValue: systemNotificationsServiceMock },
-        { provide: PagesWalletsManagementEditorService, useValue: pagesWalletsManagementEditorServiceMock },
+        { provide: PagesWalletsManagementEditorService, useValue: editorService },
       ],
     })
     .compileComponents();

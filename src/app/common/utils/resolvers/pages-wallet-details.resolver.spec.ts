@@ -20,7 +20,7 @@ describe('PagesWalletDetailsResolver', () => {
     testWalletId = 1;
     activatedRouteSnapshot = {
       paramMap: {
-        get: (x: string): string => {
+        get: (): string => {
           return `${testWalletId}`;
         },
       },

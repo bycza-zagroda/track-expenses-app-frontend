@@ -26,24 +26,25 @@ export class PagesWalletsManagementEditorService {
         return !!walletResp ? this.makeRequest(walletResp, wallet ?? null) : of(null);
     }),
       tap((w: WalletsManagementItem | null) => {
-        w && this.notify(w, wallet ? 'updated' : 'created');
+        if(w) {
+          this.notify(w, wallet ? 'updated' : 'created');
+        }
       }),
     )
   }
 
-  private makeRequest(walletResp: IWalletModalData, wallet: WalletsManagementItem | null): Observable<WalletsManagementItem> {
-    const walletObject = WalletsManagementItem.create(wallet ? { name: walletResp.name, id: wallet!.id! } : { name: walletResp.name });
-    //  36:93  error    This assertion is unnecessary since it does not change the type of the expression ??
-    return (wallet ? this.myWalletsService.updateWallet(walletObject) : this.myWalletsService.createWallet(walletObject));
+  private makeRequest({ name }: IWalletModalData, wallet: WalletsManagementItem | null): Observable<WalletsManagementItem> {
+    return wallet ? this.myWalletsService.updateWallet(WalletsManagementItem.create({ name, id: wallet.id! })) : this.myWalletsService.createWallet({ name });
   }
 
   private notify(updatedWallet: WalletsManagementItem | null, type: string): void {
+    const message = !updatedWallet ? 'Sorry. Something went wrong and your wallet was not saved. Contact administrator.' : `Congratulations! Your wallet was ${type} successfully.`;
 
     if(!updatedWallet) {
-      this.systemNotificationsService.showNotification({ message: 'Sorry. Something went wrong and your wallet was not saved. Contact administrator.' });
+      this.systemNotificationsService.showNotification({ message });
       return;
     }
 
-    this.systemNotificationsService.showNotification({ message: `Congratulations! Your wallet was ${type} successfully.` });
+    this.systemNotificationsService.showNotification({ message });
   }
 }

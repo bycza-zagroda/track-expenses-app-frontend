@@ -50,8 +50,10 @@ export class PagesWalletsManagementComponent implements OnInit {
 
   public handleWalletCreate(): void {
     this.pagesWalletsManagementEditorService.openWalletEditor().subscribe({
-      next: (createdName: WalletsManagementItem | null) => {
-        createdName && this.createWallet(createdName);
+      next: (createdWallet: WalletsManagementItem | null) => {
+        if(createdWallet) {
+          this.createWallet(createdWallet);
+        }
       },
     })
   }
@@ -62,8 +64,10 @@ export class PagesWalletsManagementComponent implements OnInit {
 
   public handleWalletEdit(wallet: WalletsManagementItem): void {
     this.pagesWalletsManagementEditorService.openWalletEditor(wallet).subscribe({
-      next: (createdName: WalletsManagementItem | null) => {
-        createdName && this.updateWallet(wallet, createdName);
+      next: (updatedWallet: WalletsManagementItem | null) => {
+        if(updatedWallet) {
+          this.updateWallet(wallet, updatedWallet);
+        }
       },
     })
   }
