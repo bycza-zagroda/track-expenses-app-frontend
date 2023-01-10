@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { DomainsWalletsGateway } from '../../../domains/wallets/domains.wallets.gateway';
 import { map, Observable } from 'rxjs';
 import { WalletsManagementItem } from './pages-wallets-wallets-management-item.model';
+import { IWalletPayload } from 'src/app/domains/wallets/domains.wallets.types';
 
 @Injectable({
   providedIn: 'root',
@@ -18,8 +19,8 @@ export class PagesWalletsManagementService {
     );
   }
 
-  public createWallet(wallet: WalletsManagementItem): Observable<WalletsManagementItem> {
-    return this.gateway.createWallet(wallet.toPayload()).pipe(
+  public createWallet(wallet: IWalletPayload): Observable<WalletsManagementItem> {
+    return this.gateway.createWallet(wallet).pipe(
       map(walletsResp => new WalletsManagementItem(walletsResp)),
     );
   }

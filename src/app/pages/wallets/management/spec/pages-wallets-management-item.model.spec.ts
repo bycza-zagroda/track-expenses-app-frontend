@@ -22,12 +22,21 @@ describe('WalletsManagementItem', () => {
     let walletPayload: IWalletPayload;
     let wallet: Partial<IWalletApiResponse>;
 
-    it('should create wallet when the data is provided', () => {
+    it('should create wallet with id = null when data with no id is provided', () => {
       walletPayload = WALLET_PAYLOAD_MOCK;
 
       const payload = WalletsManagementItem.create(walletPayload);
 
       expect(payload.id).toEqual(null);
+      expect(payload.name).toEqual(walletPayload.name);
+    });
+
+    it('should create wallet with number id when data with id is provided', () => {
+      walletPayload = WALLET_PAYLOAD_MOCK;
+
+      const payload = WalletsManagementItem.create({...walletPayload, id: 5});
+
+      expect(payload.id).toEqual(5);
       expect(payload.name).toEqual(walletPayload.name);
     });
 

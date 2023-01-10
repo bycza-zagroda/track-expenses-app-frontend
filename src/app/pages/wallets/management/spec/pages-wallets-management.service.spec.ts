@@ -17,7 +17,7 @@ describe('PagesWalletsManagementService', () => {
 
   beforeEach(async () => {
     walletResp = WALLET_RESP_MOCK;
-    gatewayMock = createSpyObj<DomainsWalletsGateway>(DomainsWalletsGateway.name, ['getWallets', 'createWallet', 'updateWallet','deleteWallet']);
+    gatewayMock = createSpyObj<DomainsWalletsGateway>(DomainsWalletsGateway.name, ['getWallets', 'createWallet', 'updateWallet', 'deleteWallet']);
 
     gatewayMock.getWallets.and.returnValue(of([walletResp]));
     gatewayMock.createWallet.and.returnValue(of(walletResp));
