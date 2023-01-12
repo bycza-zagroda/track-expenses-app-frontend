@@ -34,8 +34,4 @@ export class DomainsWalletsGateway {
   public getWalletTransactions(id: number): Observable<IWalletTransactionApiResponse[]> {
     return fakeRequest(WALLET_TRANSACTIONS_API_RESPONSE_MOCK(id));
   }
-
-  public getWalletTransactions(id: number): Observable<IWalletTransactionApiResponse[]> {
-    return fakeRequest(WALLET_TRANSACTIONS_API_RESPONSE_MOCK(id));
-  }
 }
