@@ -1,0 +1,29 @@
+<form [formGroup]='form'>
+  <h1 mat-dialog-title>{{ data ? "Update Transaction" : "Create Transaction" }}</h1>
+  <app-transaction-type-mat-select *ngIf="data?.type" [type]="data!.type!" #transactionTypeMat (setTransactionType)="setTransactionType($event)"></app-transaction-type-mat-select>
+  <mat-form-field *ngIf='form.controls["description"]' appearance="fill">
+    <mat-label>Transaction description(optional)</mat-label>
+    <input matInput [formControl]='form.controls["description"]'>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Transaction amount</mat-label>
+    <input matInput [formControl]='form.controls["amount"]'>
+    <mat-error *ngIf="amountIsNotProvided">
+      Amount is required
+    </mat-error>
+    <mat-error *ngIf="amountIsZeroOrLess">
+      Amount must be bigger than 0
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>Choose a date</mat-label>
+    <input matInput [formControl]='form.controls["date"]' [matDatepicker]="picker">
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+  <div mat-dialog-actions>
+    <button mat-button (click)="cancel()">Cancel</button>
+    <button mat-button (click)="save()" cdkFocusInitial>Save</button>
+  </div>
+</form>

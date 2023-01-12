@@ -1,33 +1,25 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { TransactionTypeMatSelectComponent, WalletSelectionValue } from 'src/app/common/components/mat-controls/transaction-type-mat-select/transaction-type-mat-select.component';
 import { TDataState } from 'src/app/common/http/common.http.types';
+import { ModalEditorService } from 'src/app/common/utils/modal/modal-editor.service';
 import { WalletTransactionType } from 'src/app/domains/wallets/domains.wallets.types';
 import { WalletsManagementItem } from '../management/pages-wallets-wallets-management-item.model';
-import { PagesWalletsManagementEditorService } from '../management/wallet-editor/pages-wallets-management-editor.service';
+import { PagesWalletsManagementEditorComponent } from '../management/wallet-editor/pages-wallets-management-editor.component';
 import { IWalletModalData } from '../management/wallet-editor/pages-wallets-management-editor.types';
 import { WalletsDetailsTransaction } from './pages-wallet-details-item.model';
 import { PagesWalletDetailsService } from './pages-wallet-details.service';
-
-type WalletSelectionValue = WalletTransactionType | '';
+import { PagesWalletTransactionEditorComponent } from './transaction-editor/pages-wallet-transaction-editor.component';
+import { ITransactionModalData } from './transaction-editor/pages-wallet-transaction.editor.types';
 
 @Component({
   selector: 'app-pages-wallet-details',
   templateUrl: './pages-wallet-details.component.html',
   styleUrls: ['./pages-wallet-details.component.scss'],
 })
-export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
+export class PagesWalletDetailsComponent implements OnInit {
 
-  public selectTransactionsTypes: Record<string, WalletSelectionValue> = {
-    'All transactions': '',
-    'Incomes': WalletTransactionType.Incomes,
-    'Expenses': WalletTransactionType.Expenses,
-  }
-
-  public transactionsTypeForm = new FormControl<WalletSelectionValue>('');
-
-  private transactionTypeSub!: Subscription;
+  @ViewChild('transactionTypeMat') transactionTypeMat!: TransactionTypeMatSelectComponent;
 
   public walletTransactionType: typeof WalletTransactionType = WalletTransactionType;
 
@@ -45,8 +37,8 @@ export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
 
   public constructor(
     private readonly pagesWalletDetailsService: PagesWalletDetailsService,
-    private readonly pagesWalletsManagementEditorService: PagesWalletsManagementEditorService,
     private readonly activatedRoute: ActivatedRoute,
+    private readonly modalEditorService: ModalEditorService,
   ) { }
 
   public ngOnInit(): void {
@@ -58,10 +50,10 @@ export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
       this.walletsManagementItem = wallet;
       this.getWalletTransactions(wallet.id!);
     });
+  }
 
-    this.transactionTypeSub = this.transactionsTypeForm.valueChanges.subscribe((data: WalletSelectionValue | null) => {
-      this.filterTransactions(data ?? '');
-    });
+  public setTransactionType(value: WalletSelectionValue) {
+    this.filterTransactions(value ?? '');
   }
 
   private getWalletTransactions(walletId: number): void {
@@ -89,9 +81,11 @@ export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
   }
 
   public handleWalletEdit(): void {
-    this.pagesWalletsManagementEditorService.openWalletEditor(this.walletsManagementItem).subscribe( (createdName: WalletsManagementItem | null) => {
-      if(createdName) {
-        this.updateWallet(createdName);
+    this.modalEditorService.openEditor<IWalletModalData, WalletsManagementItem>(PagesWalletsManagementEditorComponent, {
+      name: this.walletsManagementItem!.name,
+    }, this.walletsManagementItem).subscribe( (data: WalletsManagementItem | null) => {
+      if(data) {
+        this.updateWallet(data);
       }
     })
   }
@@ -100,7 +94,44 @@ export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
     this.walletsManagementItem = WalletsManagementItem.create({ id: this.walletsManagementItem!.id!, name, creationDate: this.walletsManagementItem!.createdAt.toString() });
   }
 
-  public ngOnDestroy(): void {
-    this.transactionTypeSub.unsubscribe();
+  public handleCreateTransaction(type: WalletTransactionType): void {
+    this.modalEditorService.openEditor<ITransactionModalData, WalletsDetailsTransaction>(PagesWalletTransactionEditorComponent, {
+      type: type,
+      amount: 10,
+      date: new Date(),
+    }).subscribe( (data: WalletsDetailsTransaction | null) => {
+      if(data) {
+        this.createTransaction(data);
+      }
+    })
+  }
+
+  private createTransaction(transaction: WalletsDetailsTransaction): void {
+    this.walletsDetailsData.data?.push(transaction);
+    this.filterTransactions(this.transactionTypeMat.transactionsTypeForm.value!);
+  }
+
+  public handleEditTransaction(transaction: WalletsDetailsTransaction): void {
+    this.modalEditorService.openEditor<ITransactionModalData, WalletsDetailsTransaction>(PagesWalletTransactionEditorComponent, {
+      type: transaction.type,
+      amount: transaction.amount,
+      date: transaction.date,
+      description: transaction.description ?? '',
+    }, transaction).subscribe( (data: WalletsDetailsTransaction | null) => {
+      if(data) {
+        this.updateTransaction(data);
+      }
+    })
+  }
+
+  private updateTransaction(transaction: WalletsDetailsTransaction): void {
+    this.walletsDetailsData.data! = this.walletsDetailsData.data!.map( (t: WalletsDetailsTransaction) => {
+      if(t.id == transaction.id) {
+        return transaction;
+      }
+
+      return t;
+    })
+    this.filterTransactions(this.transactionTypeMat.transactionsTypeForm.value!);
   }
 }

@@ -12,6 +12,7 @@ import { CommonComponentsModule } from 'src/app/common/components/common-compone
 import { PagesWalletDetailsComponent } from './wallet-details/pages-wallet-details.component';
 import { TransactionAmountPipe } from 'src/app/common/utils/pipes/transaction-amount.pipe';
 import { PagesWalletDetailsResolver } from 'src/app/common/utils/resolvers/pages-wallet-details.resolver';
+import { PagesWalletTransactionEditorComponent } from './wallet-details/transaction-editor/pages-wallet-transaction-editor.component';
 
 const routes: Routes = [
   {
@@ -34,6 +35,7 @@ const routes: Routes = [
     PagesWalletDetailsComponent,
     PagesWalletDetailsComponent,
     TransactionAmountPipe,
+    PagesWalletTransactionEditorComponent,
   ],
   imports: [
     RouterModule.forChild(routes),

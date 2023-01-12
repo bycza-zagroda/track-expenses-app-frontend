@@ -8,18 +8,19 @@ import { TransactionAmountPipe } from 'src/app/common/utils/pipes/transaction-am
 import { UPDATED_WALLET_INSTANCE_MOCK, WALLET_INSTANCE_MOCK, WALLET_TRANSACTIONS_OBJECTS_MOCK } from 'src/app/domains/wallets/domains.wallets.mocks';
 import { MaterialModule } from 'src/app/material.module';
 import { WalletsManagementItem } from '../management/pages-wallets-wallets-management-item.model';
-import { PagesWalletsManagementEditorService } from '../management/wallet-editor/pages-wallets-management-editor.service';
+import { ModalEditorService } from 'src/app/common/utils/modal/modal-editor.service';
 import { PagesWalletDetailsComponent } from './pages-wallet-details.component';
 import { PagesWalletDetailsService } from './pages-wallet-details.service';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
+import { TransactionTypeMatSelectComponent } from 'src/app/common/components/mat-controls/transaction-type-mat-select/transaction-type-mat-select.component';
 
 describe('PagesWalletDetailsComponent', () => {
   let component: PagesWalletDetailsComponent;
   let fixture: ComponentFixture<PagesWalletDetailsComponent>;
   let activatedRouteMock: { data: Observable<{ wallet: WalletsManagementItem}> };
   let pagesWalletDetailsServiceMock: SpyObj<PagesWalletDetailsService>;
-  let pagesWalletsManagementEditorServiceMock: SpyObj<PagesWalletsManagementEditorService>;
+  let pagesWalletsManagementEditorServiceMock: SpyObj<ModalEditorService>;
   let matEditorSubject: Subject<WalletsManagementItem | null>;
 
   beforeEach(async () => {
@@ -32,13 +33,14 @@ describe('PagesWalletDetailsComponent', () => {
     pagesWalletDetailsServiceMock = createSpyObj<PagesWalletDetailsService>(PagesWalletDetailsService.name, ['getWalletTransactions']);
     pagesWalletDetailsServiceMock.getWalletTransactions.and.returnValue(of(WALLET_TRANSACTIONS_OBJECTS_MOCK(1)));
 
-    pagesWalletsManagementEditorServiceMock = createSpyObj<PagesWalletsManagementEditorService>(PagesWalletsManagementEditorService.name, ['openWalletEditor']);
-    pagesWalletsManagementEditorServiceMock.openWalletEditor.and.returnValue(matEditorSubject.asObservable());
+    pagesWalletsManagementEditorServiceMock = createSpyObj<ModalEditorService>(ModalEditorService.name, ['openEditor']);
+    pagesWalletsManagementEditorServiceMock.openEditor.and.returnValue(matEditorSubject.asObservable());
 
     await TestBed.configureTestingModule({
       declarations: [
         PagesWalletDetailsComponent,
         TransactionAmountPipe,
+        TransactionTypeMatSelectComponent,
       ],
       imports: [
         ReactiveFormsModule,
@@ -47,7 +49,7 @@ describe('PagesWalletDetailsComponent', () => {
       ],
       providers: [
         { provide: PagesWalletDetailsService, useValue: pagesWalletDetailsServiceMock },
-        { provide: PagesWalletsManagementEditorService, useValue: pagesWalletsManagementEditorServiceMock },
+        { provide: ModalEditorService, useValue: pagesWalletsManagementEditorServiceMock },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
       ],
     })

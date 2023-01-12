@@ -1,0 +1,8 @@
+<mat-form-field appearance="fill">
+  <mat-label>Select type</mat-label>
+  <mat-select [formControl]="transactionsTypeForm">
+    <mat-option *ngFor="let type of selectTransactionsTypes | keyvalue" [value]="type.value">
+      {{ type.key }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>

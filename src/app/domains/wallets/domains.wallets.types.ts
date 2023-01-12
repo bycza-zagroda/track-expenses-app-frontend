@@ -23,7 +23,18 @@ export interface IWalletTransactionApiResponse {
   creationDate: TServerDateTime;
 }
 
+export interface IWalletTransactionItemData extends Omit<IWalletTransactionApiResponse, 'id'> {
+  id: TServerEntityId | null;
+}
+
 export enum WalletTransactionType {
   Incomes = 'INCOMES',
   Expenses = 'EXPENSES',
+}
+
+export interface ITransactionPayload {
+  description?: string;
+  amount: number;
+  date: Date;
+  type: WalletTransactionType;
 }

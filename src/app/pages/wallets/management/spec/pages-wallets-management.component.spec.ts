@@ -11,7 +11,7 @@ import { WALLET_INSTANCE_MOCK, UPDATED_WALLET_INSTANCE_MOCK, WALLET_RESP_MOCK } 
 import { SystemNotificationsService } from 'src/app/common/utils/system-notifications/system-notifications.service';
 import { By } from '@angular/platform-browser';
 import { SystemMessageComponent } from 'src/app/common/components/system-message/system-message.component';
-import { PagesWalletsManagementEditorService } from '../wallet-editor/pages-wallets-management-editor.service';
+import { ModalEditorService } from 'src/app/common/utils/modal/modal-editor.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('PagesWalletsManagementComponent', () => {
@@ -23,7 +23,7 @@ describe('PagesWalletsManagementComponent', () => {
   let walletsSubject: Subject<WalletsManagementItem[]>;
   let walletSubject: Subject<WalletsManagementItem>;
   let matEditorSubject: Subject<WalletsManagementItem | null>;
-  let editorService: SpyObj<PagesWalletsManagementEditorService>;
+  let editorService: SpyObj<ModalEditorService>;
 
   beforeEach(async () => {
     walletsSubject = new Subject<WalletsManagementItem[]>();
@@ -31,8 +31,8 @@ describe('PagesWalletsManagementComponent', () => {
     matEditorSubject = new Subject<WalletsManagementItem | null>();
     walletResp = WALLET_RESP_MOCK;
 
-    editorService = createSpyObj<PagesWalletsManagementEditorService>(PagesWalletsManagementEditorService.name, ['openWalletEditor']);
-    editorService.openWalletEditor.and.returnValue(matEditorSubject.asObservable());
+    editorService = createSpyObj<ModalEditorService>(ModalEditorService.name, ['openEditor']);
+    editorService.openEditor.and.returnValue(matEditorSubject.asObservable());
 
     myWalletsServiceMock = createSpyObj<PagesWalletsManagementService>(PagesWalletsManagementService.name, ['getWallets', 'createWallet', 'updateWallet']);
     myWalletsServiceMock.getWallets.and.returnValue(walletsSubject.asObservable());
@@ -48,7 +48,7 @@ describe('PagesWalletsManagementComponent', () => {
       providers: [
         { provide: PagesWalletsManagementService, useValue: myWalletsServiceMock },
         { provide: SystemNotificationsService, useValue: systemNotificationsServiceMock },
-        { provide: PagesWalletsManagementEditorService, useValue: editorService },
+        { provide: ModalEditorService, useValue: editorService },
       ],
     })
     .compileComponents();
