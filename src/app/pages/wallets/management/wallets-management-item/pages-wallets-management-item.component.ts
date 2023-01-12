@@ -4,7 +4,7 @@ import { WalletsManagementItem } from '../pages-wallets-wallets-management-item.
 @Component({
   selector: 'app-my-wallet',
   templateUrl: './pages-wallets-management-item.component.html',
-  styleUrls: ['./pages-wallets-management-item.component.scss'],
+  styleUrls: [ './pages-wallets-management-item.component.scss' ],
 })
 export class PagesWalletsManagementItemComponent {
   @Input() public wallet!: WalletsManagementItem;

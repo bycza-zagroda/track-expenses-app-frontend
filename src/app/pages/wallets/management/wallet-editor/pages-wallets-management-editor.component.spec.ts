@@ -14,7 +14,7 @@ describe('PagesWalletsManagementEditorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [PagesWalletsManagementEditorComponent],
+      declarations: [ PagesWalletsManagementEditorComponent ],
       imports: [
         ReactiveFormsModule,
         MaterialModule,
@@ -38,9 +38,9 @@ describe('PagesWalletsManagementEditorComponent', () => {
 
   describe('form validation', () => {
     beforeEach(() => {
-      ERROR_MESSAGE_REQUIRED = 'Name is required'
-      ERROR_MESSAGE_MAXLENGTH = 'Name can\'t have more than 20 characters'
-    })
+      ERROR_MESSAGE_REQUIRED = 'Name is required';
+      ERROR_MESSAGE_MAXLENGTH = 'Name can\'t have more than 20 characters';
+    });
 
     it('should show validation error if name input is empty', () => {
       component.form.get('name')?.setValue('');
@@ -63,5 +63,5 @@ describe('PagesWalletsManagementEditorComponent', () => {
       const errorMessageText: HTMLDivElement = errorMessageDiv.nativeElement as HTMLDivElement;
       expect(errorMessageText.textContent!.trim()).toBe(ERROR_MESSAGE_MAXLENGTH);
     });
-  })
+  });
 });

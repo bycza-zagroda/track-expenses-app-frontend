@@ -5,7 +5,7 @@ describe('TransactionAmountPipe', () => {
 
   beforeEach(() => {
     pipe = new TransactionAmountPipe();
-  })
+  });
 
   it('create an instance', () => {
     expect(pipe).toBeTruthy();
@@ -25,7 +25,7 @@ describe('TransactionAmountPipe', () => {
 
   it('throw error for value = 0', () => {
     const transformedValue = pipe.transform(0);
-    
+
     expect(transformedValue).toBe('0');
   });
 });

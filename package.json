@@ -10,7 +10,6 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --watch",
-    "start:local": "ng serve --watch --proxy-config proxy.conf.json --configuration local",
     "build": "ng build",
     "build:gh": "ng build --configuration production --base-href https://bycza-zagroda.github.io/track-expenses-app-frontend/",
     "build:prod": "ng build --configuration production",
@@ -18,6 +17,7 @@
     "test:headless": "ng test --watch=false --code-coverage --browsers=ChromeHeadless",
     "watch": "ng build --watch --configuration development",
     "lint": "ng lint",
+    "lintfix": "ng lint --fix",
     "format": "pretty-quick",
     "format:stage": "pretty-quick --staged",
     "format:check": "pretty-quick --check"

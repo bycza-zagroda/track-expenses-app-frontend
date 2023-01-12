@@ -10,7 +10,7 @@ describe('LoadingModalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LoadingModalComponent],
+      declarations: [ LoadingModalComponent ],
       imports: [
         MaterialModule,
       ],

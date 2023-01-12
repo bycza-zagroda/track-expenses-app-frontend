@@ -7,7 +7,11 @@ import createSpyObj = jasmine.createSpyObj;
 import { Subject } from 'rxjs';
 import { WalletsManagementItem } from '../pages-wallets-wallets-management-item.model';
 import { IWalletApiResponse } from '../../../../domains/wallets/domains.wallets.types';
-import { WALLET_INSTANCE_MOCK, UPDATED_WALLET_INSTANCE_MOCK, WALLET_RESP_MOCK } from 'src/app/domains/wallets/domains.wallets.mocks';
+import {
+  WALLET_INSTANCE_MOCK,
+  UPDATED_WALLET_INSTANCE_MOCK,
+  WALLET_RESP_MOCK,
+} from 'src/app/domains/wallets/domains.wallets.mocks';
 import { SystemNotificationsService } from 'src/app/common/utils/system-notifications/system-notifications.service';
 import { By } from '@angular/platform-browser';
 import { SystemMessageComponent } from 'src/app/common/components/system-message/system-message.component';
@@ -31,10 +35,18 @@ describe('PagesWalletsManagementComponent', () => {
     matEditorSubject = new Subject<WalletsManagementItem | null>();
     walletResp = WALLET_RESP_MOCK;
 
-    editorService = createSpyObj<PagesWalletsManagementEditorService>(PagesWalletsManagementEditorService.name, ['openWalletEditor']);
+    editorService = createSpyObj<PagesWalletsManagementEditorService>(PagesWalletsManagementEditorService.name, [
+      'openWalletEditor',
+    ]);
+
     editorService.openWalletEditor.and.returnValue(matEditorSubject.asObservable());
 
-    myWalletsServiceMock = createSpyObj<PagesWalletsManagementService>(PagesWalletsManagementService.name, ['getWallets', 'createWallet', 'updateWallet']);
+    myWalletsServiceMock = createSpyObj<PagesWalletsManagementService>(PagesWalletsManagementService.name, [
+      'getWallets',
+      'createWallet',
+      'updateWallet',
+    ]);
+
     myWalletsServiceMock.getWallets.and.returnValue(walletsSubject.asObservable());
     myWalletsServiceMock.createWallet.and.returnValue(walletSubject.asObservable());
     myWalletsServiceMock.updateWallet.and.returnValue(walletSubject.asObservable());
@@ -51,7 +63,7 @@ describe('PagesWalletsManagementComponent', () => {
         { provide: PagesWalletsManagementEditorService, useValue: editorService },
       ],
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(PagesWalletsManagementComponent);
     component = fixture.componentInstance;
@@ -62,9 +74,9 @@ describe('PagesWalletsManagementComponent', () => {
     describe('getting my wallets', () => {
       describe('success', () => {
         it('should get my wallets', () => {
-          walletsSubject.next([new WalletsManagementItem(walletResp)]);
+          walletsSubject.next([ new WalletsManagementItem(walletResp) ]);
 
-          expect(component.myWalletsData.data).toEqual([new WalletsManagementItem(walletResp)]);
+          expect(component.myWalletsData.data).toEqual([ new WalletsManagementItem(walletResp) ]);
         });
       });
 
@@ -77,14 +89,14 @@ describe('PagesWalletsManagementComponent', () => {
         });
 
         it('should display notification container when get my wallets throws fail', () => {
-            const debugElement = fixture.debugElement;
-            walletsSubject.error('error');
+          const debugElement = fixture.debugElement;
+          walletsSubject.error('error');
 
-            fixture.detectChanges();
+          fixture.detectChanges();
 
-            const notificationContainer = debugElement.query(By.css('.message-container'));
-            expect(notificationContainer.nativeElement).toBeTruthy();
-          });
+          const notificationContainer = debugElement.query(By.css('.message-container'));
+          expect(notificationContainer.nativeElement).toBeTruthy();
+        });
       });
     });
   });
@@ -94,7 +106,8 @@ describe('PagesWalletsManagementComponent', () => {
       component.myWalletsData.data = [
         WALLET_INSTANCE_MOCK,
       ];
-    })
+    });
+
     describe('success', () => {
       it('should update wallet\'s name', fakeAsync(() => {
         component.handleWalletEdit(WALLET_INSTANCE_MOCK);
@@ -120,10 +133,10 @@ describe('PagesWalletsManagementComponent', () => {
   describe('handleWalletCreate', () => {
     beforeEach(() => {
       component.myWalletsData.data = [];
-    })
+    });
+
     describe('success', () => {
       it('should add new wallet to myWalletData.data', fakeAsync(() => {
-
         component.handleWalletCreate();
         matEditorSubject.next(new WalletsManagementItem(WALLET_RESP_MOCK));
         flushMicrotasks();
@@ -141,6 +154,5 @@ describe('PagesWalletsManagementComponent', () => {
         expect(component.myWalletsData.data!.length).toBe(0);
       }));
     });
-
   });
 });

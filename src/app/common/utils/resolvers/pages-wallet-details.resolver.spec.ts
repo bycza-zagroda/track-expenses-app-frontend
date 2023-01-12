@@ -18,6 +18,7 @@ describe('PagesWalletDetailsResolver', () => {
   beforeEach(() => {
     walletsApiResponse = GET_WALLETS_API_RESPONSE_MOCK();
     testWalletId = 1;
+
     activatedRouteSnapshot = {
       paramMap: {
         get: (): string => {
@@ -26,7 +27,7 @@ describe('PagesWalletDetailsResolver', () => {
       },
     } as unknown as ActivatedRouteSnapshot;
 
-    domainsWalletsGatewayMock = createSpyObj<DomainsWalletsGateway>(DomainsWalletsGateway.name, ['getWallets']);
+    domainsWalletsGatewayMock = createSpyObj<DomainsWalletsGateway>(DomainsWalletsGateway.name, [ 'getWallets' ]);
     domainsWalletsGatewayMock.getWallets.and.returnValue(of(walletsApiResponse));
 
     TestBed.configureTestingModule({

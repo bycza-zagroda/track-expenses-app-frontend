@@ -10,7 +10,7 @@ describe('NavbarComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ CommonComponentsNavbarComponent ],
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(CommonComponentsNavbarComponent);
     component = fixture.componentInstance;
