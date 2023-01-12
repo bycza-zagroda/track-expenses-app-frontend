@@ -13,13 +13,19 @@ describe('PagesWalletsManagementService', () => {
   let gatewayMock: SpyObj<DomainsWalletsGateway>;
   let walletResp: IWalletApiResponse;
 
-  const wallet = new WalletsManagementItem({ creationDate: '2022-10-22T09:47:52.595721658Z', id: 12, name: 'wallet1' })
+  const wallet = new WalletsManagementItem({ creationDate: '2022-10-22T09:47:52.595721658Z', id: 12, name: 'wallet1' });
 
   beforeEach(async () => {
     walletResp = WALLET_RESP_MOCK;
-    gatewayMock = createSpyObj<DomainsWalletsGateway>(DomainsWalletsGateway.name, ['getWallets', 'createWallet', 'updateWallet', 'deleteWallet']);
 
-    gatewayMock.getWallets.and.returnValue(of([walletResp]));
+    gatewayMock = createSpyObj<DomainsWalletsGateway>(DomainsWalletsGateway.name, [
+      'getWallets',
+      'createWallet',
+      'updateWallet',
+      'deleteWallet',
+    ]);
+
+    gatewayMock.getWallets.and.returnValue(of([ walletResp ]));
     gatewayMock.createWallet.and.returnValue(of(walletResp));
     gatewayMock.updateWallet.and.returnValue(of(walletResp));
 
@@ -36,10 +42,10 @@ describe('PagesWalletsManagementService', () => {
   describe('getMyWallets', () => {
     it('should return my wallets', (done) => {
       service.getWallets().subscribe(val => {
-        expect(val).toEqual([new WalletsManagementItem(walletResp)]);
+        expect(val).toEqual([ new WalletsManagementItem(walletResp) ]);
 
         done();
-      })
+      });
     });
   });
 
@@ -48,8 +54,8 @@ describe('PagesWalletsManagementService', () => {
     let walletCreatePayload: Partial<IWalletApiResponse>;
 
     beforeEach(() => {
-        walletCreatePayload = { id: 15, name: 'Wallet 5' };
-        createdWalletFromPayload = WalletsManagementItem.create(walletCreatePayload);
+      walletCreatePayload = { id: 15, name: 'Wallet 5' };
+      createdWalletFromPayload = WalletsManagementItem.create(walletCreatePayload);
     });
 
     it('should create new wallet', (done) => {
@@ -57,7 +63,7 @@ describe('PagesWalletsManagementService', () => {
         expect(val).toEqual(new WalletsManagementItem(walletResp));
 
         done();
-      })
+      });
     });
   });
 
@@ -65,7 +71,7 @@ describe('PagesWalletsManagementService', () => {
     let updatedWalletFromPayload: WalletsManagementItem;
 
     beforeEach(() => {
-        updatedWalletFromPayload = WalletsManagementItem.create(walletResp);
+      updatedWalletFromPayload = WalletsManagementItem.create(walletResp);
     });
 
     it('should update my wallet', (done) => {
@@ -73,15 +79,14 @@ describe('PagesWalletsManagementService', () => {
         expect(val).toEqual(new WalletsManagementItem(walletResp));
 
         done();
-      })
+      });
     });
   });
 
   describe('deleteWallet', () => {
     it('should call gateway.deleteWallet()', () => {
-
       service.deleteWallet(wallet);
-      expect(gatewayMock.deleteWallet).toHaveBeenCalledWith(wallet.id!)
+      expect(gatewayMock.deleteWallet).toHaveBeenCalledWith(wallet.id!);
     });
   });
 });

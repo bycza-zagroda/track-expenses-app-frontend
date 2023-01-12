@@ -1,4 +1,8 @@
-import { IWalletApiResponse, IWalletManagementItemData, IWalletPayload } from '../../../domains/wallets/domains.wallets.types';
+import {
+  IWalletApiResponse,
+  IWalletManagementItemData,
+  IWalletPayload,
+} from '../../../domains/wallets/domains.wallets.types';
 
 export class WalletsManagementItem {
   public readonly id: number | null;
@@ -11,15 +15,15 @@ export class WalletsManagementItem {
     this.name = data.name;
   }
 
-  public toPayload(): IWalletPayload {
-    return { name: this.name }
-  }
-
   public static create(data: Partial<IWalletApiResponse>): WalletsManagementItem {
     return new WalletsManagementItem({
-        id: data.id ?? null,
-        name: data.name ?? '',
-        creationDate: data.creationDate ?? new Date().toString(),
+      id: data.id ?? null,
+      name: data.name ?? '',
+      creationDate: data.creationDate ?? new Date().toString(),
     });
+  }
+
+  public toPayload(): IWalletPayload {
+    return { name: this.name };
   }
 }

@@ -4,13 +4,13 @@ import { WalletsManagementItem } from './pages-wallets-wallets-management-item.m
 import { TDataState } from '../../../common/http/common.http.types';
 import { NotificationType } from 'src/app/common/utils/system-notifications/system.notifications.constants';
 import { ConfirmDialogService } from '../../../common/confirmation-modal/confirm-dialog.service';
-import { LoadingSnackbarService } from '../../../common/loading-modal/loading-snackbar.service'
+import { LoadingSnackbarService } from '../../../common/loading-modal/loading-snackbar.service';
 import { PagesWalletsManagementEditorService } from './wallet-editor/pages-wallets-management-editor.service';
 
 @Component({
   selector: 'app-wallets-management',
   templateUrl: './pages-wallets-management.component.html',
-  styleUrls: ['./pages-wallets-management.component.scss'],
+  styleUrls: [ './pages-wallets-management.component.scss' ],
 })
 export class PagesWalletsManagementComponent implements OnInit {
   public notificationTypes: typeof NotificationType = NotificationType;
@@ -55,30 +55,7 @@ export class PagesWalletsManagementComponent implements OnInit {
           this.createWallet(createdWallet);
         }
       },
-    })
-  }
-
-  private createWallet(wallet: WalletsManagementItem): void {
-    this.myWalletsData.data = [wallet, ...this.myWalletsData.data!];
-  }
-
-  public handleWalletEdit(wallet: WalletsManagementItem): void {
-    this.pagesWalletsManagementEditorService.openWalletEditor(wallet).subscribe({
-      next: (updatedWallet: WalletsManagementItem | null) => {
-        if(updatedWallet) {
-          this.updateWallet(wallet, updatedWallet);
-        }
-      },
-    })
-  }
-
-  private updateWallet(wallet: WalletsManagementItem, { name }: WalletsManagementItem): void {
-    this.myWalletsData.data = this.myWalletsData.data!.map(walletItem => {
-      if (walletItem.id === wallet.id) {
-        return WalletsManagementItem.create({ id: wallet.id!, name });
-      }
-      return walletItem;
-    }).sort((previousWallet, nextWallet) => previousWallet.name.localeCompare(nextWallet.name));
+    });
   }
 
   public handleWalletDelete(wallet: WalletsManagementItem): void {
@@ -93,18 +70,42 @@ export class PagesWalletsManagementComponent implements OnInit {
     });
   }
 
+  public handleWalletEdit(wallet: WalletsManagementItem): void {
+    this.pagesWalletsManagementEditorService.openWalletEditor(wallet).subscribe({
+      next: (updatedWallet: WalletsManagementItem | null) => {
+        if(updatedWallet) {
+          this.updateWallet(wallet, updatedWallet);
+        }
+      },
+    });
+  }
+
+  private createWallet(wallet: WalletsManagementItem): void {
+    this.myWalletsData.data = [ wallet, ...this.myWalletsData.data! ];
+  }
+
+  private updateWallet(wallet: WalletsManagementItem, { name }: WalletsManagementItem): void {
+    this.myWalletsData.data = this.myWalletsData.data!.map(walletItem => {
+      if (walletItem.id === wallet.id) {
+        return WalletsManagementItem.create({ id: wallet.id!, name });
+      }
+
+      return walletItem;
+    }).sort((previousWallet, nextWallet) => previousWallet.name.localeCompare(nextWallet.name));
+  }
+
   private deleteWallet(wallet: WalletsManagementItem): void {
-    this.loadingDialogService.show('Deleting wallet')
+    this.loadingDialogService.show('Deleting wallet');
 
     this.myWalletsService.deleteWallet(wallet).subscribe({
-          next: () => {
-            this.loadingDialogService.hide();
-            this.myWalletsData.data = this.myWalletsData.data!.filter(data => data.id !== wallet.id);
-          },
-          error: () => {
-            this.loadingDialogService.hide();
-          },
-        },
-    )
+      next: () => {
+        this.loadingDialogService.hide();
+        this.myWalletsData.data = this.myWalletsData.data!.filter(data => data.id !== wallet.id);
+      },
+      error: () => {
+        this.loadingDialogService.hide();
+      },
+    },
+    );
   }
 }

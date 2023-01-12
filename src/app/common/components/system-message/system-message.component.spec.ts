@@ -10,7 +10,7 @@ describe('SystemMessageComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ SystemMessageComponent ],
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(SystemMessageComponent);
     component = fixture.componentInstance;
