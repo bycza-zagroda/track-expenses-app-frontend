@@ -96,8 +96,8 @@ export class PagesWalletDetailsComponent implements OnInit {
 
   public handleCreateTransaction(type: WalletTransactionType): void {
     this.modalEditorService.openEditor<ITransactionModalData, WalletsDetailsTransaction>(PagesWalletTransactionEditorComponent, {
-      type: type,
-      amount: 10,
+      type,
+      amount: 100,
       date: new Date(),
     }).subscribe( (data: WalletsDetailsTransaction | null) => {
       if(data) {

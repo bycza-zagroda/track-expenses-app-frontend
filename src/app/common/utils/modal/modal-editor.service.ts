@@ -21,7 +21,7 @@ export class ModalEditorService {
     private readonly walletDetailsService: PagesWalletDetailsService,
   ) { }
 
-  public openEditor<TType, TObject>(comp: any, modalData: TType, object?: TObject): Observable<TObject | null> {
+  public openEditor<TType, TObject>(comp: any, modalData: TType | null, object?: TObject): Observable<TObject | null> {
 
     return this.dialog.open<typeof comp, TType | undefined, TType>(comp, { data: modalData }).afterClosed()
       .pipe(

@@ -51,9 +51,7 @@ export class PagesWalletsManagementComponent implements OnInit {
   }
 
   public handleWalletCreate(): void {
-    this.modalEditorService.openEditor<IWalletModalData, WalletsManagementItem>(PagesWalletsManagementEditorComponent, {
-      name: "",
-    }).subscribe( (data: WalletsManagementItem | null) => {
+    this.modalEditorService.openEditor<IWalletModalData, WalletsManagementItem>(PagesWalletsManagementEditorComponent, null).subscribe( (data: WalletsManagementItem | null) => {
       if(data) {
         this.createWallet(data);
       }

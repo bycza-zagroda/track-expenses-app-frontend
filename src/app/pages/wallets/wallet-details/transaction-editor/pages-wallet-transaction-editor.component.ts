@@ -19,7 +19,7 @@ export class PagesWalletTransactionEditorComponent {
     @Inject(MAT_DIALOG_DATA) public data: WalletsDetailsTransaction | undefined,
   ) {
     this.form = new FormGroup<IWalletTransactionModalFormType>({
-      amount: new FormControl(this.data?.amount ?? 10, {
+      amount: new FormControl(this.data?.amount ?? 100, {
         validators: [
           Validators.required,
           Validators.min(1),

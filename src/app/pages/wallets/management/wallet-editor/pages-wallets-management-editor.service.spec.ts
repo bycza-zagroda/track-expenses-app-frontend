@@ -20,7 +20,6 @@ describe('PagesWalletsManagementEditorService', () => {
   let systemNotificationsServiceMock: SpyObj<SystemNotificationsService>;
   let matDialogMock: SpyObj<MatDialog>;
   let matDialogRef: SpyObj<MatDialogRef<PagesWalletsManagementEditorComponent>>;
-  let httpTestingController: HttpTestingController;
 
   beforeEach(() => {
     pagesWalletsManagementServiceMock = createSpyObj<PagesWalletsManagementService>(PagesWalletsManagementService.name, ['updateWallet', 'createWallet']);
@@ -49,7 +48,7 @@ describe('PagesWalletsManagementEditorService', () => {
 
     describe('updating wallet', () => {
 
-      fdescribe('success', () => {
+      describe('success', () => {
 
         beforeEach(() => {
           matDialogRef.afterClosed.and.returnValue(of({name: UPDATED_WALLET_INSTANCE_MOCK.name }));
@@ -102,7 +101,7 @@ describe('PagesWalletsManagementEditorService', () => {
         });
 
         it('created wallet\'s name should invoke showNotification', (done) => {
-          service.openEditor<IWalletModalData, WalletsManagementItem>(PagesWalletsManagementEditorComponent, { name: '' }).subscribe( () => {
+          service.openEditor<IWalletModalData, WalletsManagementItem>(PagesWalletsManagementEditorComponent, null).subscribe( () => {
 
             expect(systemNotificationsServiceMock.showNotification).toHaveBeenCalled();
             done();
@@ -110,7 +109,7 @@ describe('PagesWalletsManagementEditorService', () => {
         });
 
         it('should return created wallet', (done) => {
-          service.openEditor<IWalletModalData, WalletsManagementItem>(PagesWalletsManagementEditorComponent, { name: '' }).subscribe( (data: WalletsManagementItem | null) => {
+          service.openEditor<IWalletModalData, WalletsManagementItem>(PagesWalletsManagementEditorComponent, null).subscribe( (data: WalletsManagementItem | null) => {
 
             expect(data).toBeInstanceOf(WalletsManagementItem);
             expect(data!.name).toBe(WALLET_INSTANCE_MOCK.name);
@@ -125,14 +124,14 @@ describe('PagesWalletsManagementEditorService', () => {
         });
 
         it('canceled updating wallet\'s name should not invoke showNotification', fakeAsync(() => {
-          service.openEditor<IWalletModalData, WalletsManagementItem>(PagesWalletsManagementEditorComponent, { name: '' });
+          service.openEditor<IWalletModalData, WalletsManagementItem>(PagesWalletsManagementEditorComponent, null);
           flushMicrotasks();
 
           expect(systemNotificationsServiceMock.showNotification).not.toHaveBeenCalled();
         }));
 
         it('should return undefined', (done) => {
-          service.openEditor<IWalletModalData, WalletsManagementItem>(PagesWalletsManagementEditorComponent, { name: '' }).subscribe( (data: WalletsManagementItem | null) => {
+          service.openEditor<IWalletModalData, WalletsManagementItem>(PagesWalletsManagementEditorComponent, null).subscribe( (data: WalletsManagementItem | null) => {
 
             expect(data).toBe(null);
             done();
