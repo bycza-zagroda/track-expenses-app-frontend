@@ -5,7 +5,7 @@ import { IConfirmationModalData } from './confirmation-modal.types';
 @Component({
   selector: 'app-confirmation-modal',
   templateUrl: './confirmation-modal.component.html',
-  styleUrls: ['./confirmation-modal.component.scss'],
+  styleUrls: [ './confirmation-modal.component.scss' ],
 })
 export class ConfirmationModalComponent {
   public constructor(@Inject(MAT_DIALOG_DATA) public data: IConfirmationModalData) {

@@ -6,13 +6,13 @@ import { LoadingModalComponent } from './loading-modal.component';
   providedIn: 'root',
 })
 export class LoadingSnackbarService {
+  private snackBarRef: MatSnackBarRef<LoadingModalComponent> | undefined;
+
   public constructor(private snackBar: MatSnackBar) {
   }
 
-  private snackBarRef: MatSnackBarRef<LoadingModalComponent> | undefined;
-
   public show(message: string): void {
-    this.snackBarRef = this.snackBar.openFromComponent(LoadingModalComponent, {data: message});
+    this.snackBarRef = this.snackBar.openFromComponent(LoadingModalComponent, { data: message });
   }
 
   public hide(): void {

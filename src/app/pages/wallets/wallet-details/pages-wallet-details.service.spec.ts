@@ -15,8 +15,9 @@ describe('PagesWalletDetailsService', () => {
 
   beforeEach(() => {
     walletId = 1;
-    domainsWalletsGatewayMock = createSpyObj<DomainsWalletsGateway>(DomainsWalletsGateway.name, ['getWalletTransactions']);
+    domainsWalletsGatewayMock = createSpyObj<DomainsWalletsGateway>(DomainsWalletsGateway.name, [ 'getWalletTransactions' ]);
     domainsWalletsGatewayMock.getWalletTransactions.and.returnValue(of(WALLET_TRANSACTIONS_API_RESPONSE_MOCK(walletId)));
+
     TestBed.configureTestingModule({
       providers: [
         { provide: DomainsWalletsGateway, useValue: domainsWalletsGatewayMock },
@@ -30,14 +31,11 @@ describe('PagesWalletDetailsService', () => {
   });
 
   describe('getWalletTransactions', () => {
-
     it('should return array of WalletsDetailsTransaction instances', (done) => {
       service.getWalletTransactions(walletId).subscribe((transactions: WalletsDetailsTransaction[]) => {
-
         expect(transactions[0]).toBeInstanceOf(WalletsDetailsTransaction);
         done();
-      })
+      });
     });
-
   });
 });

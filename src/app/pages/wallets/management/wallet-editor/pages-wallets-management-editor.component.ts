@@ -7,7 +7,7 @@ import { IWalletModalFormType } from './pages-wallets-management-editor.types';
 @Component({
   selector: 'app-wallet-form-modal',
   templateUrl: './pages-wallets-management-editor.component.html',
-  styleUrls: ['./pages-wallets-management-editor.component.scss'],
+  styleUrls: [ './pages-wallets-management-editor.component.scss' ],
 })
 export class PagesWalletsManagementEditorComponent {
   public form!: FormGroup<IWalletModalFormType>;
@@ -36,7 +36,9 @@ export class PagesWalletsManagementEditorComponent {
   }
 
   public checkInputError(inputName: string, errorType: string): boolean {
-    return !!(this.form.get(inputName)?.invalid && this.form.get(inputName)?.touched && this.form.get(inputName)?.errors?.[errorType]);
+    return !!(this.form.get(inputName)?.invalid &&
+      this.form.get(inputName)?.touched &&
+      this.form.get(inputName)?.errors?.[errorType]);
   }
 
   public save(): void {

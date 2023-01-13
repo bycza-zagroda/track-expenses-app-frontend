@@ -12,7 +12,7 @@ import { PagesWalletsManagementEditorComponent } from './wallet-editor/pages-wal
 @Component({
   selector: 'app-wallets-management',
   templateUrl: './pages-wallets-management.component.html',
-  styleUrls: ['./pages-wallets-management.component.scss'],
+  styleUrls: [ './pages-wallets-management.component.scss' ],
 })
 export class PagesWalletsManagementComponent implements OnInit {
   public notificationTypes: typeof NotificationType = NotificationType;
@@ -59,7 +59,19 @@ export class PagesWalletsManagementComponent implements OnInit {
   }
 
   private createWallet(wallet: WalletsManagementItem): void {
-    this.myWalletsData.data = [wallet, ...this.myWalletsData.data!];
+    this.myWalletsData.data! = [wallet, ...this.myWalletsData.data!];
+  }
+
+  public handleWalletDelete(wallet: WalletsManagementItem): void {
+    this.confirmDialogService.openConfirmModal({
+      headerText: `Deleting ${wallet.name} wallet`,
+      confirmationText: `Are you sure you want to delete ${wallet.name} wallet and all related data?`,
+    }).subscribe((result: boolean) => {
+      if (!result) {
+        return;
+      }
+      this.deleteWallet(wallet);
+    });
   }
 
   public handleWalletEdit(wallet: WalletsManagementItem): void {
@@ -77,34 +89,23 @@ export class PagesWalletsManagementComponent implements OnInit {
       if (walletItem.id === wallet.id) {
         return WalletsManagementItem.create({ id: wallet.id!, name });
       }
+
       return walletItem;
     }).sort((previousWallet, nextWallet) => previousWallet.name.localeCompare(nextWallet.name));
   }
 
-  public handleWalletDelete(wallet: WalletsManagementItem): void {
-    this.confirmDialogService.openConfirmModal({
-      headerText: `Deleting ${wallet.name} wallet`,
-      confirmationText: `Are you sure you want to delete ${wallet.name} wallet and all related data?`,
-    }).subscribe((result: boolean) => {
-      if (!result) {
-        return;
-      }
-      this.deleteWallet(wallet);
-    });
-  }
-
   private deleteWallet(wallet: WalletsManagementItem): void {
-    this.loadingDialogService.show('Deleting wallet')
+    this.loadingDialogService.show('Deleting wallet');
 
     this.myWalletsService.deleteWallet(wallet).subscribe({
-          next: () => {
-            this.loadingDialogService.hide();
-            this.myWalletsData.data = this.myWalletsData.data!.filter(data => data.id !== wallet.id);
-          },
-          error: () => {
-            this.loadingDialogService.hide();
-          },
-        },
-    )
+      next: () => {
+        this.loadingDialogService.hide();
+        this.myWalletsData.data = this.myWalletsData.data!.filter(data => data.id !== wallet.id);
+      },
+      error: () => {
+        this.loadingDialogService.hide();
+      },
+    },
+    );
   }
 }

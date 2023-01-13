@@ -16,16 +16,15 @@ describe('ConfirmDialogService', () => {
     confirmationText: 'confirmationText',
     confirmBtnText: 'confirmBtnText',
     denyBtnText: 'denyBtnText',
-  }
+  };
 
   beforeEach(() => {
-
-    matDialogRef = createSpyObj<MatDialogRef<ConfirmationModalComponent>>(MatDialogRef.name, ['afterClosed']);
-    matDialogMock = createSpyObj<MatDialog>(MatDialog.name, ['open']);
+    matDialogRef = createSpyObj<MatDialogRef<ConfirmationModalComponent>>(MatDialogRef.name, [ 'afterClosed' ]);
+    matDialogMock = createSpyObj<MatDialog>(MatDialog.name, [ 'open' ]);
     matDialogMock.open.and.returnValue(matDialogRef);
 
     TestBed.configureTestingModule({
-      providers: [ConfirmDialogService,
+      providers: [ ConfirmDialogService,
         { provide: MatDialog, useValue: matDialogMock },
       ],
     });
@@ -36,24 +35,24 @@ describe('ConfirmDialogService', () => {
     matDialogRef.afterClosed.and.returnValue(of(undefined));
 
     expect(service.openConfirmModal(confirmationData).subscribe(value => {
-      expect(value).toEqual(false)
-    }))
+      expect(value).toEqual(false);
+    }));
   }));
 
   it('should return false when user click not to delete wallet', fakeAsync(() => {
     matDialogRef.afterClosed.and.returnValue(of(false));
 
     expect(service.openConfirmModal(confirmationData).subscribe(value => {
-      expect(value).toEqual(false)
-    }))
+      expect(value).toEqual(false);
+    }));
   }));
 
   it('should return false when user click confirm to delete wallet', fakeAsync(() => {
     matDialogRef.afterClosed.and.returnValue(of(true));
 
     expect(service.openConfirmModal(confirmationData).subscribe(value => {
-      expect(value).toEqual(true)
-    }))
+      expect(value).toEqual(true);
+    }));
   }));
 
   it('should be created', () => {

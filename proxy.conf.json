@@ -1,8 +1,11 @@
 {
   "/api/*": {
-    "target": "http://localhost:8080",
-    "secure": false,
+    "target": "https://tea-zagrodnicy.koyeb.app/api",
+    "secure": true,
     "logLeveL": "debug",
-    "changeOrigin": true
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api": ""
+    }
   }
 }

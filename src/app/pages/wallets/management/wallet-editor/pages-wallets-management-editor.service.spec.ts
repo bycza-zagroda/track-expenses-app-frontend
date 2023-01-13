@@ -22,14 +22,20 @@ describe('PagesWalletsManagementEditorService', () => {
   let matDialogRef: SpyObj<MatDialogRef<PagesWalletsManagementEditorComponent>>;
 
   beforeEach(() => {
-    pagesWalletsManagementServiceMock = createSpyObj<PagesWalletsManagementService>(PagesWalletsManagementService.name, ['updateWallet', 'createWallet']);
+    pagesWalletsManagementServiceMock = createSpyObj<PagesWalletsManagementService>(PagesWalletsManagementService.name, [
+      'updateWallet',
+      'createWallet',
+    ]);
+
     pagesWalletsManagementServiceMock.updateWallet.and.returnValue(of(UPDATED_WALLET_INSTANCE_MOCK));
     pagesWalletsManagementServiceMock.createWallet.and.returnValue(of(WALLET_INSTANCE_MOCK));
 
-    systemNotificationsServiceMock = createSpyObj<SystemNotificationsService>(SystemNotificationsService.name, ['showNotification']);
+    systemNotificationsServiceMock = createSpyObj<SystemNotificationsService>(SystemNotificationsService.name, [
+      'showNotification',
+    ]);
 
-    matDialogRef = createSpyObj<MatDialogRef<PagesWalletsManagementEditorComponent>>(MatDialogRef.name, ['afterClosed']);
-    matDialogMock = createSpyObj<MatDialog>(MatDialog.name, ['open']);
+    matDialogRef = createSpyObj<MatDialogRef<PagesWalletsManagementEditorComponent>>(MatDialogRef.name, [ 'afterClosed' ]);
+    matDialogMock = createSpyObj<MatDialog>(MatDialog.name, [ 'open' ]);
     matDialogMock.open.and.returnValue(matDialogRef);
 
     TestBed.configureTestingModule({
@@ -44,14 +50,11 @@ describe('PagesWalletsManagementEditorService', () => {
     TestBed.inject<HttpTestingController>(HttpTestingController);
   });
 
-  describe('openEditor', () => {
-
+  describe('openWalletEditor', () => {
     describe('updating wallet', () => {
-
       describe('success', () => {
-
         beforeEach(() => {
-          matDialogRef.afterClosed.and.returnValue(of({name: UPDATED_WALLET_INSTANCE_MOCK.name }));
+          matDialogRef.afterClosed.and.returnValue(of({ name: UPDATED_WALLET_INSTANCE_MOCK.name }));
         });
 
         it('updated wallet\'s name should invoke showNotification', (done) => {
@@ -72,7 +75,6 @@ describe('PagesWalletsManagementEditorService', () => {
       });
 
       describe('canceled', () => {
-
         beforeEach(() => {
           matDialogRef.afterClosed.and.returnValue(of(undefined));
         });
@@ -95,7 +97,6 @@ describe('PagesWalletsManagementEditorService', () => {
 
     describe('creating wallet', () => {
       describe('success', () => {
-
         beforeEach(() => {
           matDialogRef.afterClosed.and.returnValue(of({ name: WALLET_INSTANCE_MOCK.name }));
         });
@@ -139,6 +140,5 @@ describe('PagesWalletsManagementEditorService', () => {
         });
       });
     });
-
   });
 });

@@ -15,25 +15,24 @@ import { ITransactionModalData } from './transaction-editor/pages-wallet-transac
 @Component({
   selector: 'app-pages-wallet-details',
   templateUrl: './pages-wallet-details.component.html',
-  styleUrls: ['./pages-wallet-details.component.scss'],
+  styleUrls: [ './pages-wallet-details.component.scss' ],
 })
 export class PagesWalletDetailsComponent implements OnInit {
 
   @ViewChild('transactionTypeMat') transactionTypeMat!: TransactionTypeMatSelectComponent;
 
   public walletTransactionType: typeof WalletTransactionType = WalletTransactionType;
-
-  public displayedColumns: string[] = ['date', 'description', 'amount', 'actions'];
-
+  public displayedColumns: string[] = [ 'date', 'description', 'amount', 'actions' ];
   public walletsManagementItem?: WalletsManagementItem;
-
   public displayedTransactions: WalletsDetailsTransaction[] = [];
 
   public walletsDetailsData: TDataState<WalletsDetailsTransaction[]> = {
     data: null,
     hasError: false,
     isLoading: true,
-  }
+  };
+
+
 
   public constructor(
     private readonly pagesWalletDetailsService: PagesWalletDetailsService,
@@ -56,15 +55,33 @@ export class PagesWalletDetailsComponent implements OnInit {
     this.filterTransactions(value ?? '');
   }
 
+
+
+
+  // private updateWallet({ name }: IWalletModalData): void {
+  //   this.walletsManagementItem = WalletsManagementItem.create({
+  //     id: this.walletsManagementItem!.id!,
+  //     name,
+  //     creationDate: this.walletsManagementItem!.createdAt.toString(),
+  //   });
+  // }
+
+  // private filterTransactions(type: WalletSelectionValue): void {
+  //   this.displayedTransactions = this.walletsDetailsData.data!.filter(
+  //     (item: WalletsDetailsTransaction) =>  (type === '') ? true : type.toString() === item.type.toString(),
+  //   );
+  // }
+
   private getWalletTransactions(walletId: number): void {
     this.pagesWalletDetailsService.getWalletTransactions(walletId).subscribe({
       next: (data: WalletsDetailsTransaction[]) => {
         this.displayedTransactions = data;
+
         this.walletsDetailsData = {
           data,
           hasError: false,
           isLoading: false,
-        }
+        };
       },
       error: () => {
         this.walletsDetailsData = {

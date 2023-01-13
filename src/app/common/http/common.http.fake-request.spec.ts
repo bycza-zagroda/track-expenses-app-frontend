@@ -6,6 +6,6 @@ describe('fakeRequest', () => {
       expect(val).toBe(99);
 
       done();
-    })
+    });
   });
 });

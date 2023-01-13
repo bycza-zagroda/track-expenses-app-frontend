@@ -15,7 +15,9 @@ export class PagesWalletDetailsService {
 
   public getWalletTransactions(id: number): Observable<WalletsDetailsTransaction[]> {
     return this.gateway.getWalletTransactions(id).pipe(
-      map(transactionsResp => transactionsResp.map((item: IWalletTransactionApiResponse) => new WalletsDetailsTransaction(item))),
+      map(transactionsResp => transactionsResp.map(
+        (item: IWalletTransactionApiResponse) => new WalletsDetailsTransaction(item),
+      )),
     );
   }
 

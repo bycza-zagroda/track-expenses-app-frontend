@@ -3,7 +3,6 @@ import { IWalletApiResponse, IWalletPayload } from 'src/app/domains/wallets/doma
 import { WalletsManagementItem } from '../pages-wallets-wallets-management-item.model';
 
 describe('WalletsManagementItem', () => {
-
   describe('toPayload', () => {
     let wallet: WalletsManagementItem;
 
@@ -34,20 +33,19 @@ describe('WalletsManagementItem', () => {
     it('should create wallet with number id when data with id is provided', () => {
       walletPayload = WALLET_PAYLOAD_MOCK;
 
-      const payload = WalletsManagementItem.create({...walletPayload, id: 5});
+      const payload = WalletsManagementItem.create({ ...walletPayload, id: 5 });
 
       expect(payload.id).toEqual(5);
       expect(payload.name).toEqual(walletPayload.name);
     });
 
     it('should update wallet with data provided', () => {
-        wallet = { id: 999, name: 'Wallet 6' };
+      wallet = { id: 999, name: 'Wallet 6' };
 
-        const payload = WalletsManagementItem.create(wallet);
+      const payload = WalletsManagementItem.create(wallet);
 
-        expect(payload.id).toEqual(wallet.id!);
-        expect(payload.name).toEqual(wallet.name!);
+      expect(payload.id).toEqual(wallet.id!);
+      expect(payload.name).toEqual(wallet.name!);
     });
   });
-
 });

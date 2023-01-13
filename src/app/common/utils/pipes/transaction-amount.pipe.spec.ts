@@ -6,7 +6,7 @@ describe('TransactionAmountPipe', () => {
 
   beforeEach(() => {
     pipe = new TransactionAmountPipe();
-  })
+  });
 
   it('create an instance', () => {
     expect(pipe).toBeTruthy();

@@ -4,7 +4,7 @@ import { NotificationType } from '../../utils/system-notifications/system.notifi
 @Component({
   selector: 'app-system-message',
   templateUrl: './system-message.component.html',
-  styleUrls: ['./system-message.component.scss'],
+  styleUrls: [ './system-message.component.scss' ],
 })
 export class SystemMessageComponent {
     @Input() public type: NotificationType = NotificationType.Success;

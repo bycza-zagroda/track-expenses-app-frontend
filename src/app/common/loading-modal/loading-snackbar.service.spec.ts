@@ -12,8 +12,8 @@ describe('LoadingDialogService', () => {
   let snackBarRefMock: SpyObj<MatSnackBarRef<LoadingModalComponent>>;
 
   beforeEach(() => {
-    matSnackMock = createSpyObj<MatSnackBar>(MatSnackBar.name, ['openFromComponent', 'open']);
-    snackBarRefMock = createSpyObj<MatSnackBarRef<LoadingModalComponent>>(MatSnackBarRef.name, ['dismiss']);
+    matSnackMock = createSpyObj<MatSnackBar>(MatSnackBar.name, [ 'openFromComponent', 'open' ]);
+    snackBarRefMock = createSpyObj<MatSnackBarRef<LoadingModalComponent>>(MatSnackBarRef.name, [ 'dismiss' ]);
     matSnackMock.openFromComponent.and.returnValue(snackBarRefMock);
 
     TestBed.configureTestingModule({
@@ -27,7 +27,7 @@ describe('LoadingDialogService', () => {
 
   it('should throw error if hide() is called before show()', () => {
     expect(() => service.hide())
-        .toThrow(new Error('hide() called before showing loading indicator'))
+      .toThrow(new Error('hide() called before showing loading indicator'));
   });
 
   it('should open loading dialog', () => {
@@ -36,13 +36,12 @@ describe('LoadingDialogService', () => {
   });
 
   it('should hide loading dialog after open it', () => {
-    service.show('')
-    service.hide()
-    expect(snackBarRefMock.dismiss).toHaveBeenCalled()
+    service.show('');
+    service.hide();
+    expect(snackBarRefMock.dismiss).toHaveBeenCalled();
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
-
 });
