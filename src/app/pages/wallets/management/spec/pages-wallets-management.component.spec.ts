@@ -35,7 +35,7 @@ describe('PagesWalletsManagementComponent', () => {
     matEditorSubject = new Subject<WalletsManagementItem | null>();
     walletResp = WALLET_RESP_MOCK;
 
-    editorService = createSpyObj<ModalEditorService>(ModalEditorService.name, ['openEditor']);
+    editorService = createSpyObj<ModalEditorService>(ModalEditorService.name, [ 'openEditor' ]);
     editorService.openEditor.and.returnValue(matEditorSubject.asObservable());
 
     myWalletsServiceMock = createSpyObj<PagesWalletsManagementService>(PagesWalletsManagementService.name, [
@@ -59,8 +59,7 @@ describe('PagesWalletsManagementComponent', () => {
         { provide: SystemNotificationsService, useValue: systemNotificationsServiceMock },
         { provide: ModalEditorService, useValue: editorService },
       ],
-    })
-      .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(PagesWalletsManagementComponent);
     component = fixture.componentInstance;

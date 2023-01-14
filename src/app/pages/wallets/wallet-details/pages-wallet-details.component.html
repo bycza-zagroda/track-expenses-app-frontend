@@ -17,7 +17,10 @@
 
   <div class="wallet__sort__add">
     <div class="wallet__sort">
-      <app-transaction-type-mat-select #transactionTypeMat (setTransactionType)="setTransactionType($event)"></app-transaction-type-mat-select>
+      <app-transaction-type-mat-select
+        #transactionTypeMat
+        (setTransactionType)="setTransactionType($event)">
+      </app-transaction-type-mat-select>
     </div>
 
     <div class="wallet__add">

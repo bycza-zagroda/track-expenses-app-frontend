@@ -6,15 +6,16 @@ import { WalletsManagementItem } from 'src/app/pages/wallets/management/pages-wa
 import { IWalletModalData } from 'src/app/pages/wallets/management/wallet-editor/pages-wallets-management-editor.types';
 import { WalletsDetailsTransaction } from 'src/app/pages/wallets/wallet-details/pages-wallet-details-item.model';
 import { PagesWalletDetailsService } from 'src/app/pages/wallets/wallet-details/pages-wallet-details.service';
-import { ITransactionModalData } from 'src/app/pages/wallets/wallet-details/transaction-editor/pages-wallet-transaction.editor.types';
+import {
+  ITransactionModalData,
+} from 'src/app/pages/wallets/wallet-details/transaction-editor/pages-wallet-transaction.editor.types';
 import { SystemNotificationsService } from '../system-notifications/system-notifications.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ModalEditorService {
-
-  constructor(
+  public constructor(
     private readonly dialog: MatDialog,
     private readonly systemNotificationsService: SystemNotificationsService,
     private readonly myWalletsService: PagesWalletsManagementService,
@@ -22,29 +23,28 @@ export class ModalEditorService {
   ) { }
 
   public openEditor<TType, TObject>(comp: any, modalData: TType | null, object?: TObject): Observable<TObject | null> {
-
     return this.dialog.open<typeof comp, TType | undefined, TType>(comp, { data: modalData }).afterClosed()
       .pipe(
         switchMap((walletResp: TType | undefined) => {
           return !!walletResp ? this.makeRequest<TType, TObject>(walletResp, object ?? null) : of(null);
-      }),
-      tap((object: TObject | null) => {
-        if(object) {
-          this.notify(object, object ? 'updated' : 'created');
-        }
-      }),
-    )
+        }),
+        tap((object: TObject | null) => {
+          if(object) {
+            this.notify(object, object ? 'updated' : 'created');
+          }
+        }),
+      );
   }
 
   private makeRequest<TType, TObject>(modalData: TType, object: TObject | null): Observable<any> {
-
+    //help!
     if(this.isWalletData(modalData as unknown as IWalletModalData)) {
       if(object) {
-        const x = object as unknown as WalletsManagementItem;
+        const wallet = object as unknown as WalletsManagementItem;
         const { name } = modalData as unknown as IWalletModalData;
-        const wallet = this.myWalletsService.updateWallet(WalletsManagementItem.create({ name, id: x.id! }));
+        const walletObs = this.myWalletsService.updateWallet(WalletsManagementItem.create({ name, id: wallet.id! }));
 
-        return wallet;
+        return walletObs;
       } else {
         const { name } = modalData as unknown as IWalletModalData;
         const wallet = this.myWalletsService.createWallet({ name });
@@ -53,35 +53,40 @@ export class ModalEditorService {
       }
     } else if(this.isTransactionData(modalData as unknown as ITransactionModalData)) {
       if(object) {
-        const a = object as unknown as WalletsDetailsTransaction;
-        const b = modalData as unknown as ITransactionModalData;
-        const n = WalletsDetailsTransaction.createFromModalEditorData(a.id!, b);
-        const x = this.walletDetailsService.editWalletTransaction(a.id!, n);
+        const transaction = object as unknown as WalletsDetailsTransaction;
+        const transactionObject = WalletsDetailsTransaction.createFromModalEditorData
+        (transaction.id!, modalData as unknown as ITransactionModalData);
+        const transactionObs = this.walletDetailsService.editWalletTransaction(transaction.id!, transactionObject);
 
-        return x;
+        return transactionObs;
       } else {
-        const b = modalData as unknown as ITransactionModalData;
-        const x = this.walletDetailsService.createWalletTransaction(b);
+        const transaction = modalData as unknown as ITransactionModalData;
+        const transactionObs = this.walletDetailsService.createWalletTransaction(transaction);
 
-        return x;
+        return transactionObs;
       }
     }
+
     return of(null);
   }
 
   private isWalletData(arg: IWalletModalData): arg is IWalletModalData {
-    return (arg as IWalletModalData).name !== undefined;
+    return !!(arg).name;
   }
 
   private isTransactionData(arg: ITransactionModalData): arg is ITransactionModalData {
-    return (arg as ITransactionModalData).amount !== undefined;
+    return !!(arg).amount && !!(arg).type;
   }
 
   private notify<TObject>(updatedWallet: TObject | null, type: string): void {
-    const message = !updatedWallet ? 'Sorry. Something went wrong and your wallet was not saved. Contact administrator.' : `Congratulations! Your wallet was ${type} successfully.`;
+    const message = !updatedWallet ?
+      'Sorry. Something went wrong and your wallet was not saved. Contact administrator.'
+      :
+      `Congratulations! Your wallet was ${type} successfully.`;
 
     if(!updatedWallet) {
       this.systemNotificationsService.showNotification({ message });
+
       return;
     }
 

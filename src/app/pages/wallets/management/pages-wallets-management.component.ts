@@ -4,7 +4,7 @@ import { WalletsManagementItem } from './pages-wallets-wallets-management-item.m
 import { TDataState } from '../../../common/http/common.http.types';
 import { NotificationType } from 'src/app/common/utils/system-notifications/system.notifications.constants';
 import { ConfirmDialogService } from '../../../common/confirmation-modal/confirm-dialog.service';
-import { LoadingSnackbarService } from '../../../common/loading-modal/loading-snackbar.service'
+import { LoadingSnackbarService } from '../../../common/loading-modal/loading-snackbar.service';
 import { ModalEditorService } from 'src/app/common/utils/modal/modal-editor.service';
 import { IWalletModalData } from './wallet-editor/pages-wallets-management-editor.types';
 import { PagesWalletsManagementEditorComponent } from './wallet-editor/pages-wallets-management-editor.component';
@@ -51,15 +51,13 @@ export class PagesWalletsManagementComponent implements OnInit {
   }
 
   public handleWalletCreate(): void {
-    this.modalEditorService.openEditor<IWalletModalData, WalletsManagementItem>(PagesWalletsManagementEditorComponent, null).subscribe( (data: WalletsManagementItem | null) => {
-      if(data) {
-        this.createWallet(data);
-      }
-    })
-  }
-
-  private createWallet(wallet: WalletsManagementItem): void {
-    this.myWalletsData.data! = [wallet, ...this.myWalletsData.data!];
+    this.modalEditorService.openEditor<IWalletModalData, WalletsManagementItem>
+    (PagesWalletsManagementEditorComponent, null)
+      .subscribe( (data: WalletsManagementItem | null) => {
+        if(data) {
+          this.createWallet(data);
+        }
+      });
   }
 
   public handleWalletDelete(wallet: WalletsManagementItem): void {
@@ -75,13 +73,17 @@ export class PagesWalletsManagementComponent implements OnInit {
   }
 
   public handleWalletEdit(wallet: WalletsManagementItem): void {
-    this.modalEditorService.openEditor<IWalletModalData, WalletsManagementItem>(PagesWalletsManagementEditorComponent, {
-      name: wallet.name,
-    }).subscribe( (data: WalletsManagementItem | null) => {
-      if(data) {
-        this.updateWallet(wallet, data);
-      }
-    })
+    this.modalEditorService.openEditor<IWalletModalData, WalletsManagementItem>
+    (PagesWalletsManagementEditorComponent, { name: wallet.name })
+      .subscribe( (data: WalletsManagementItem | null) => {
+        if(data) {
+          this.updateWallet(wallet, data);
+        }
+      });
+  }
+
+  private createWallet(wallet: WalletsManagementItem): void {
+    this.myWalletsData.data = [ wallet, ...this.myWalletsData.data! ];
   }
 
   private updateWallet(wallet: WalletsManagementItem, { name }: WalletsManagementItem): void {

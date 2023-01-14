@@ -1,6 +1,6 @@
 <form [formGroup]='form'>
   <h1 mat-dialog-title>{{ data ? "Update Transaction" : "Create Transaction" }}</h1>
-  <app-transaction-type-mat-select *ngIf="data?.type" [type]="data!.type!" #transactionTypeMat (setTransactionType)="setTransactionType($event)"></app-transaction-type-mat-select>
+  <app-transaction-type-mat-select [type]="data.type!" #transactionTypeMat (setTransactionType)="setTransactionType($event)"></app-transaction-type-mat-select>
   <mat-form-field *ngIf='form.controls["description"]' appearance="fill">
     <mat-label>Transaction description(optional)</mat-label>
     <input matInput [formControl]='form.controls["description"]'>

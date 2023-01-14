@@ -1,4 +1,8 @@
-import { IWalletTransactionApiResponse, IWalletTransactionItemData, WalletTransactionType } from 'src/app/domains/wallets/domains.wallets.types';
+import {
+  IWalletTransactionApiResponse,
+  IWalletTransactionItemData,
+  WalletTransactionType,
+} from 'src/app/domains/wallets/domains.wallets.types';
 import { ITransactionModalData } from './transaction-editor/pages-wallet-transaction.editor.types';
 
 export class WalletsDetailsTransaction {
@@ -16,23 +20,23 @@ export class WalletsDetailsTransaction {
     this.amount = data.amount;
   }
 
-  public static create(data: Partial<IWalletTransactionApiResponse>) {
+  public static create(data: Partial<IWalletTransactionApiResponse>): WalletsDetailsTransaction {
     return new WalletsDetailsTransaction({
       id: data.id ?? null,
       amount: data.amount ?? 0,
       creationDate: data.creationDate ?? '',
       description: data.creationDate ?? '',
       type: data.type ?? WalletTransactionType.Incomes,
-    })
+    });
   }
 
-  public static createFromModalEditorData(id: number, data: ITransactionModalData) {
+  public static createFromModalEditorData(id: number, data: ITransactionModalData): WalletsDetailsTransaction {
     return new WalletsDetailsTransaction({
-      id: id ?? null,
+      id,
       amount: data.amount,
-      creationDate: data.date.toString() ?? '',
+      creationDate: data.date.toString(),
       description: data.description ?? '',
       type: data.type,
-    })
+    });
   }
 }

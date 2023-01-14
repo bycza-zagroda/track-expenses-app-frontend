@@ -7,7 +7,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
 import { LoadingModalComponent } from '../loading-modal/loading-modal.component';
 import { SystemMessageComponent } from './system-message/system-message.component';
-import { TransactionTypeMatSelectComponent } from './mat-controls/transaction-type-mat-select/transaction-type-mat-select.component';
+import {
+  TransactionTypeMatSelectComponent,
+} from './mat-controls/transaction-type-mat-select/transaction-type-mat-select.component';
 
 @NgModule({
   declarations: [

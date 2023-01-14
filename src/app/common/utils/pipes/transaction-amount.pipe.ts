@@ -5,7 +5,6 @@ import { WalletTransactionType } from 'src/app/domains/wallets/domains.wallets.t
   name: 'transactionAmount',
 })
 export class TransactionAmountPipe implements PipeTransform {
-
   public transform(value: number, type?: WalletTransactionType): string {
     if(value === 0) {
       return value.toString();
