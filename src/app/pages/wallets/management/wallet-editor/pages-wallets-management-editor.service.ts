@@ -17,8 +17,8 @@ export class PagesWalletsManagementEditorService {
     private readonly myWalletsService: PagesWalletsManagementService,
   ) { }
 
-  public openWalletEditor(wallet?: WalletsManagementItem): Observable<WalletsManagementItem | null> {
-    return this.dialog.open<PagesWalletsManagementEditorComponent, IWalletModalData | undefined, IWalletModalData>(
+  public openEditor(wallet?: WalletsManagementItem): Observable<WalletsManagementItem | null> {
+    return this.dialog.open<PagesWalletsManagementEditorComponent, IWalletModalData, IWalletModalData>(
       PagesWalletsManagementEditorComponent,
       {
         data: { name: wallet?.name ?? '' },

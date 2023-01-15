@@ -5,8 +5,7 @@ import {
   WalletSelectionValue,
 } from 'src/app/common/components/mat-controls/transaction-type-mat-select/transaction-type-mat-select.component';
 import { WalletTransactionType } from 'src/app/domains/wallets/domains.wallets.types';
-import { WalletsDetailsTransaction } from '../pages-wallet-details-item.model';
-import { IWalletTransactionModalFormType } from './pages-wallet-transaction.editor.types';
+import { ITransactionModalData, IWalletTransactionModalFormType } from './pages-wallet-transaction.editor.types';
 
 @Component({
   selector: 'app-transaction-editor',
@@ -18,7 +17,7 @@ export class PagesWalletTransactionEditorComponent {
 
   public constructor(
     private readonly dialogRef: MatDialogRef<PagesWalletTransactionEditorComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Partial<WalletsDetailsTransaction>,
+    @Inject(MAT_DIALOG_DATA) public data: Partial<ITransactionModalData>,
   ) {
     this.form = new FormGroup<IWalletTransactionModalFormType>({
       amount: new FormControl(this.data.amount ?? 100, {

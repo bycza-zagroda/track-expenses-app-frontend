@@ -8,14 +8,13 @@ import { MaterialModule } from 'src/app/material.module';
 import { PagesWalletsManagementService } from '../pages-wallets-management.service';
 import { WalletsManagementItem } from '../pages-wallets-wallets-management-item.model';
 import { PagesWalletsManagementEditorComponent } from './pages-wallets-management-editor.component';
-import { ModalEditorService } from 'src/app/common/utils/modal/modal-editor.service';
+import { PagesWalletsManagementEditorService } from './pages-wallets-management-editor.service';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
-import { IWalletModalData } from './pages-wallets-management-editor.types';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 describe('PagesWalletsManagementEditorService', () => {
-  let service: ModalEditorService;
+  let service: PagesWalletsManagementEditorService;
   let pagesWalletsManagementServiceMock: SpyObj<PagesWalletsManagementService>;
   let systemNotificationsServiceMock: SpyObj<SystemNotificationsService>;
   let matDialogMock: SpyObj<MatDialog>;
@@ -46,7 +45,7 @@ describe('PagesWalletsManagementEditorService', () => {
         { provide: MatDialog, useValue: matDialogMock },
       ],
     });
-    service = TestBed.inject(ModalEditorService);
+    service = TestBed.inject(PagesWalletsManagementEditorService);
     TestBed.inject<HttpTestingController>(HttpTestingController);
   });
 
@@ -58,8 +57,7 @@ describe('PagesWalletsManagementEditorService', () => {
         });
 
         it('updated wallet\'s name should invoke showNotification', (done) => {
-          service.openEditor<IWalletModalData, WalletsManagementItem>
-          (PagesWalletsManagementEditorComponent, WALLET_INSTANCE_MOCK)
+          service.openEditor(WALLET_INSTANCE_MOCK)
             .subscribe( () => {
               expect(systemNotificationsServiceMock.showNotification).toHaveBeenCalled();
               done();
@@ -67,8 +65,7 @@ describe('PagesWalletsManagementEditorService', () => {
         });
 
         it('should return updated wallet', (done) => {
-          service.openEditor<IWalletModalData, WalletsManagementItem>
-          (PagesWalletsManagementEditorComponent, { name: '' }, WALLET_INSTANCE_MOCK)
+          service.openEditor(WALLET_INSTANCE_MOCK)
             .subscribe( (data: WalletsManagementItem | null) => {
               expect(data!.name).toBe(UPDATED_WALLET_INSTANCE_MOCK.name);
               done();
@@ -82,16 +79,14 @@ describe('PagesWalletsManagementEditorService', () => {
         });
 
         it('canceled updating wallet\'s name should not invoke showNotification', fakeAsync(() => {
-          service.openEditor<WalletsManagementItem, IWalletModalData>
-          (PagesWalletsManagementEditorComponent, WALLET_INSTANCE_MOCK);
+          service.openEditor(WALLET_INSTANCE_MOCK);
           flushMicrotasks();
 
           expect(systemNotificationsServiceMock.showNotification).not.toHaveBeenCalled();
         }));
 
         it('should return undefined', (done) => {
-          service.openEditor<IWalletModalData, WalletsManagementItem>
-          (PagesWalletsManagementEditorComponent, WALLET_INSTANCE_MOCK)
+          service.openEditor(WALLET_INSTANCE_MOCK)
             .subscribe( (data: WalletsManagementItem | null) => {
               expect(data).toBe(null);
               done();
@@ -107,7 +102,7 @@ describe('PagesWalletsManagementEditorService', () => {
         });
 
         it('created wallet\'s name should invoke showNotification', (done) => {
-          service.openEditor<IWalletModalData, WalletsManagementItem>(PagesWalletsManagementEditorComponent, null)
+          service.openEditor()
             .subscribe( () => {
               expect(systemNotificationsServiceMock.showNotification).toHaveBeenCalled();
               done();
@@ -115,7 +110,7 @@ describe('PagesWalletsManagementEditorService', () => {
         });
 
         it('should return created wallet', (done) => {
-          service.openEditor<IWalletModalData, WalletsManagementItem>(PagesWalletsManagementEditorComponent, null)
+          service.openEditor()
             .subscribe( (data: WalletsManagementItem | null) => {
               expect(data).toBeInstanceOf(WalletsManagementItem);
               expect(data!.name).toBe(WALLET_INSTANCE_MOCK.name);
@@ -130,14 +125,14 @@ describe('PagesWalletsManagementEditorService', () => {
         });
 
         it('canceled updating wallet\'s name should not invoke showNotification', fakeAsync(() => {
-          service.openEditor<IWalletModalData, WalletsManagementItem>(PagesWalletsManagementEditorComponent, null);
+          service.openEditor();
           flushMicrotasks();
 
           expect(systemNotificationsServiceMock.showNotification).not.toHaveBeenCalled();
         }));
 
         it('should return undefined', (done) => {
-          service.openEditor<IWalletModalData, WalletsManagementItem>(PagesWalletsManagementEditorComponent, null)
+          service.openEditor()
             .subscribe( (data: WalletsManagementItem | null) => {
               expect(data).toBe(null);
               done();

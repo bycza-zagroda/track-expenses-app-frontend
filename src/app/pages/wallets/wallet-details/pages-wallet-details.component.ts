@@ -5,17 +5,13 @@ import {
   WalletSelectionValue,
 } from 'src/app/common/components/mat-controls/transaction-type-mat-select/transaction-type-mat-select.component';
 import { TDataState } from 'src/app/common/http/common.http.types';
-import { ModalEditorService } from 'src/app/common/utils/modal/modal-editor.service';
 import { WalletTransactionType } from 'src/app/domains/wallets/domains.wallets.types';
 import { WalletsManagementItem } from '../management/pages-wallets-wallets-management-item.model';
-import {
-  PagesWalletsManagementEditorComponent,
-} from '../management/wallet-editor/pages-wallets-management-editor.component';
+import { PagesWalletsManagementEditorService } from '../management/wallet-editor/pages-wallets-management-editor.service';
 import { IWalletModalData } from '../management/wallet-editor/pages-wallets-management-editor.types';
 import { WalletsDetailsTransaction } from './pages-wallet-details-item.model';
 import { PagesWalletDetailsService } from './pages-wallet-details.service';
-import { PagesWalletTransactionEditorComponent } from './transaction-editor/pages-wallet-transaction-editor.component';
-import { ITransactionModalData } from './transaction-editor/pages-wallet-transaction.editor.types';
+import { PagesWalletTransactionEditorService } from './transaction-editor/pages-wallet-transaction-editor.service';
 
 @Component({
   selector: 'app-pages-wallet-details',
@@ -39,7 +35,8 @@ export class PagesWalletDetailsComponent implements OnInit {
   public constructor(
     private readonly pagesWalletDetailsService: PagesWalletDetailsService,
     private readonly activatedRoute: ActivatedRoute,
-    private readonly modalEditorService: ModalEditorService,
+    private readonly pagesWalletTransactionEditorService: PagesWalletTransactionEditorService,
+    private readonly pagesWalletsManagementEditorService: PagesWalletsManagementEditorService,
   ) { }
 
   public ngOnInit(): void {
@@ -58,21 +55,16 @@ export class PagesWalletDetailsComponent implements OnInit {
   }
 
   public handleWalletEdit(): void {
-    this.modalEditorService.openEditor<IWalletModalData, WalletsManagementItem>
-    (PagesWalletsManagementEditorComponent, {
-      name: this.walletsManagementItem!.name,
-    }, this.walletsManagementItem).subscribe( (data: WalletsManagementItem | null) => {
-      if(data) {
-        this.updateWallet(data);
-      }
-    });
+    this.pagesWalletsManagementEditorService.openEditor(this.walletsManagementItem)
+      .subscribe( (data: WalletsManagementItem | null) => {
+        if(data) {
+          this.updateWallet(data);
+        }
+      });
   }
 
   public handleCreateTransaction(type: WalletTransactionType): void {
-    this.modalEditorService.openEditor<Partial<ITransactionModalData>, WalletsDetailsTransaction>
-    (PagesWalletTransactionEditorComponent, {
-      type,
-    }).subscribe( (data: WalletsDetailsTransaction | null) => {
+    this.pagesWalletTransactionEditorService.openEditor({ type }).subscribe( (data: WalletsDetailsTransaction | null) => {
       if(data) {
         this.createTransaction(data);
       }
@@ -80,13 +72,7 @@ export class PagesWalletDetailsComponent implements OnInit {
   }
 
   public handleEditTransaction(transaction: WalletsDetailsTransaction): void {
-    this.modalEditorService.openEditor<ITransactionModalData, WalletsDetailsTransaction>
-    (PagesWalletTransactionEditorComponent, {
-      type: transaction.type,
-      amount: transaction.amount,
-      date: transaction.date,
-      description: transaction.description ?? '',
-    }, transaction).subscribe( (data: WalletsDetailsTransaction | null) => {
+    this.pagesWalletTransactionEditorService.openEditor(transaction).subscribe( (data: WalletsDetailsTransaction | null) => {
       if(data) {
         this.updateTransaction(data);
       }

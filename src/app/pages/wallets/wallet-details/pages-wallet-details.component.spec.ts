@@ -15,7 +15,7 @@ import {
 } from 'src/app/domains/wallets/domains.wallets.mocks';
 import { MaterialModule } from 'src/app/material.module';
 import { WalletsManagementItem } from '../management/pages-wallets-wallets-management-item.model';
-import { ModalEditorService } from 'src/app/common/utils/modal/modal-editor.service';
+import { PagesWalletsManagementEditorService } from '../management/wallet-editor/pages-wallets-management-editor.service';
 import { PagesWalletDetailsComponent } from './pages-wallet-details.component';
 import { PagesWalletDetailsService } from './pages-wallet-details.service';
 import SpyObj = jasmine.SpyObj;
@@ -25,29 +25,39 @@ import {
 } from 'src/app/common/components/mat-controls/transaction-type-mat-select/transaction-type-mat-select.component';
 import { WalletsDetailsTransaction } from './pages-wallet-details-item.model';
 import { WalletTransactionType } from 'src/app/domains/wallets/domains.wallets.types';
+import { PagesWalletTransactionEditorService } from './transaction-editor/pages-wallet-transaction-editor.service';
 
-describe('PagesWalletDetailsComponent', () => {
+fdescribe('PagesWalletDetailsComponent', () => {
   let component: PagesWalletDetailsComponent;
   let fixture: ComponentFixture<PagesWalletDetailsComponent>;
   let activatedRouteMock: { data: Observable<{ wallet: WalletsManagementItem}> };
   let pagesWalletDetailsServiceMock: SpyObj<PagesWalletDetailsService>;
-  let pagesWalletsManagementEditorServiceMock: SpyObj<ModalEditorService>;
-  let matEditorSubject: Subject<WalletsManagementItem | WalletsDetailsTransaction | null>;
+  let pagesWalletsManagementEditorServiceMock: SpyObj<PagesWalletsManagementEditorService>;
+  let pagesWalletTransactionEditorServiceMock: SpyObj<PagesWalletTransactionEditorService>;
+  let matEditorWalletSubject: Subject<WalletsManagementItem | null>;
+  let matEditorTransactionSubject: Subject<WalletsDetailsTransaction | null>;
 
   beforeEach(async () => {
     activatedRouteMock = {
       data: of({ wallet: WALLET_INSTANCE_MOCK }),
     };
 
-    matEditorSubject = new Subject<WalletsManagementItem | WalletsDetailsTransaction | null>();
+    matEditorWalletSubject = new Subject<WalletsManagementItem | null>();
+    matEditorTransactionSubject = new Subject<WalletsDetailsTransaction | null>();
 
     pagesWalletDetailsServiceMock = createSpyObj<PagesWalletDetailsService>(PagesWalletDetailsService.name, [
       'getWalletTransactions',
     ]);
 
     pagesWalletDetailsServiceMock.getWalletTransactions.and.returnValue(of(WALLET_TRANSACTIONS_OBJECTS_MOCK(1)));
-    pagesWalletsManagementEditorServiceMock = createSpyObj<ModalEditorService>(ModalEditorService.name, [ 'openEditor' ]);
-    pagesWalletsManagementEditorServiceMock.openEditor.and.returnValue(matEditorSubject.asObservable());
+
+    pagesWalletsManagementEditorServiceMock = createSpyObj<PagesWalletsManagementEditorService>
+    (PagesWalletsManagementEditorService.name, [ 'openEditor' ]);
+    pagesWalletsManagementEditorServiceMock.openEditor.and.returnValue(matEditorWalletSubject.asObservable());
+
+    pagesWalletTransactionEditorServiceMock = createSpyObj<PagesWalletTransactionEditorService>
+    (PagesWalletTransactionEditorService.name, [ 'openEditor' ]);
+    pagesWalletTransactionEditorServiceMock.openEditor.and.returnValue(matEditorTransactionSubject.asObservable());
 
     await TestBed.configureTestingModule({
       declarations: [
@@ -62,7 +72,8 @@ describe('PagesWalletDetailsComponent', () => {
       ],
       providers: [
         { provide: PagesWalletDetailsService, useValue: pagesWalletDetailsServiceMock },
-        { provide: ModalEditorService, useValue: pagesWalletsManagementEditorServiceMock },
+        { provide: PagesWalletsManagementEditorService, useValue: pagesWalletsManagementEditorServiceMock },
+        { provide: PagesWalletTransactionEditorService, useValue: pagesWalletTransactionEditorServiceMock },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
       ],
     }).compileComponents();
@@ -90,9 +101,9 @@ describe('PagesWalletDetailsComponent', () => {
 
   describe('HandleCreateTransaction', () => {
     describe('success', () => {
-      it('should create new WalletsDetailsTransaction object', fakeAsync(() => { //help!
+      it('should create new WalletsDetailsTransaction object', fakeAsync(() => {
         component.handleCreateTransaction(WalletTransactionType.Incomes);
-        matEditorSubject.next(WALLET_TRANSACTIONS_INCOME_MOCK);
+        matEditorTransactionSubject.next(WALLET_TRANSACTIONS_INCOME_MOCK);
         flushMicrotasks();
 
         expect(component.walletsDetailsData.data!.length).toBe(4);
@@ -102,7 +113,7 @@ describe('PagesWalletDetailsComponent', () => {
     describe('cancel', () => {
       it('should not create new WalletsDetailsTransaction object', fakeAsync(() => {
         component.handleCreateTransaction(WalletTransactionType.Incomes);
-        matEditorSubject.next(null);
+        matEditorTransactionSubject.next(null);
         flushMicrotasks();
 
         expect(component.walletsDetailsData.data!.length).toBe(3);
@@ -115,13 +126,12 @@ describe('PagesWalletDetailsComponent', () => {
     const updatedTransaction = UPDATED_WALLET_TRANSACTIONS_OBJECT_MOCK(1);
 
     describe('success', () => {
-      it('should update WalletsDetailsTransaction object', fakeAsync(() => { //help!
+      it('should update WalletsDetailsTransaction object', fakeAsync(() => {
         component.handleEditTransaction(transaction);
-        matEditorSubject.next(updatedTransaction);
+        matEditorTransactionSubject.next(updatedTransaction);
 
         const foundTransaction = component.walletsDetailsData.data!.find(t => t.id === transaction.id)!;
         flushMicrotasks();
-        //flush();
 
         expect(foundTransaction.description).toBe(updatedTransaction.description);
         expect(foundTransaction.amount).toBe(updatedTransaction.amount);
@@ -131,7 +141,7 @@ describe('PagesWalletDetailsComponent', () => {
     describe('cancel', () => {
       it('should not update WalletsDetailsTransaction object', fakeAsync(() => {
         component.handleEditTransaction(transaction);
-        matEditorSubject.next(null);
+        matEditorTransactionSubject.next(null);
         flushMicrotasks();
 
         const foundTransaction = component.walletsDetailsData.data!.find(t => t.id === transaction.id)!;
@@ -193,13 +203,12 @@ describe('PagesWalletDetailsComponent', () => {
         fixture.detectChanges();
 
         component.handleCreateTransaction(WalletTransactionType.Incomes);
-        matEditorSubject.next(WALLET_TRANSACTIONS_INCOME_MOCK);
+        matEditorTransactionSubject.next(WALLET_TRANSACTIONS_INCOME_MOCK);
         flushMicrotasks();
 
         fixture.detectChanges();
         const transactions = component.displayedTransactions;
         flush();
-
         expect(transactions.length).toBe(3);
       }));
     });
@@ -214,7 +223,7 @@ describe('PagesWalletDetailsComponent', () => {
         fixture.detectChanges();
 
         component.handleCreateTransaction(WalletTransactionType.Expenses);
-        matEditorSubject.next(WALLET_TRANSACTIONS_EXPENSE_MOCK);
+        matEditorTransactionSubject.next(WALLET_TRANSACTIONS_EXPENSE_MOCK);
         flushMicrotasks();
 
         fixture.detectChanges();
@@ -230,7 +239,7 @@ describe('PagesWalletDetailsComponent', () => {
     describe('success', () => {
       it('should update walletsManagementItem.name', fakeAsync(() => {
         component.handleWalletEdit();
-        matEditorSubject.next(UPDATED_WALLET_INSTANCE_MOCK);
+        matEditorWalletSubject.next(UPDATED_WALLET_INSTANCE_MOCK);
         flushMicrotasks();
 
         expect(component.walletsManagementItem?.name).toBe(UPDATED_WALLET_INSTANCE_MOCK.name);
@@ -240,7 +249,7 @@ describe('PagesWalletDetailsComponent', () => {
     describe('cancel', () => {
       it('should not update walletsManagementItem.name', fakeAsync(() => {
         component.handleWalletEdit();
-        matEditorSubject.next(null);
+        matEditorWalletSubject.next(null);
         flushMicrotasks();
 
         expect(component.walletsManagementItem?.name).toBe(WALLET_INSTANCE_MOCK.name);

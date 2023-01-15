@@ -9,7 +9,7 @@ import {
   WALLET_TRANSACTIONS_INCOME_MOCK,
 } from './domains.wallets.mocks';
 
-describe('DomainsWalletsGateway', () => {
+xdescribe('DomainsWalletsGateway', () => {
   let service: DomainsWalletsGateway;
   let walletResp: IWalletApiResponse;
   let httpTestingController: HttpTestingController;

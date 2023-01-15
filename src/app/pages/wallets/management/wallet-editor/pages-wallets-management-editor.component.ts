@@ -1,8 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { WalletsManagementItem } from '../pages-wallets-wallets-management-item.model';
-import { IWalletModalFormType } from './pages-wallets-management-editor.types';
+import { IWalletModalData, IWalletModalFormType } from './pages-wallets-management-editor.types';
 
 @Component({
   selector: 'app-wallet-form-modal',
@@ -14,10 +13,10 @@ export class PagesWalletsManagementEditorComponent {
 
   public constructor(
     private readonly dialogRef: MatDialogRef<PagesWalletsManagementEditorComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: WalletsManagementItem | undefined,
+    @Inject(MAT_DIALOG_DATA) public data: IWalletModalData,
   ) {
     this.form = new FormGroup<IWalletModalFormType>({
-      name: new FormControl(this.data?.name ?? '', {
+      name: new FormControl(this.data.name, {
         validators: [
           Validators.required,
           Validators.maxLength(20),

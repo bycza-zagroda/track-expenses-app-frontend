@@ -15,7 +15,7 @@ import {
 import { SystemNotificationsService } from 'src/app/common/utils/system-notifications/system-notifications.service';
 import { By } from '@angular/platform-browser';
 import { SystemMessageComponent } from 'src/app/common/components/system-message/system-message.component';
-import { ModalEditorService } from 'src/app/common/utils/modal/modal-editor.service';
+import { PagesWalletsManagementEditorService } from '../wallet-editor/pages-wallets-management-editor.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('PagesWalletsManagementComponent', () => {
@@ -27,7 +27,7 @@ describe('PagesWalletsManagementComponent', () => {
   let walletsSubject: Subject<WalletsManagementItem[]>;
   let walletSubject: Subject<WalletsManagementItem>;
   let matEditorSubject: Subject<WalletsManagementItem | null>;
-  let editorService: SpyObj<ModalEditorService>;
+  let editorService: SpyObj<PagesWalletsManagementEditorService>;
 
   beforeEach(async () => {
     walletsSubject = new Subject<WalletsManagementItem[]>();
@@ -35,7 +35,8 @@ describe('PagesWalletsManagementComponent', () => {
     matEditorSubject = new Subject<WalletsManagementItem | null>();
     walletResp = WALLET_RESP_MOCK;
 
-    editorService = createSpyObj<ModalEditorService>(ModalEditorService.name, [ 'openEditor' ]);
+    editorService = createSpyObj<PagesWalletsManagementEditorService>
+    (PagesWalletsManagementEditorService.name, [ 'openEditor' ]);
     editorService.openEditor.and.returnValue(matEditorSubject.asObservable());
 
     myWalletsServiceMock = createSpyObj<PagesWalletsManagementService>(PagesWalletsManagementService.name, [
@@ -57,7 +58,7 @@ describe('PagesWalletsManagementComponent', () => {
       providers: [
         { provide: PagesWalletsManagementService, useValue: myWalletsServiceMock },
         { provide: SystemNotificationsService, useValue: systemNotificationsServiceMock },
-        { provide: ModalEditorService, useValue: editorService },
+        { provide: PagesWalletsManagementEditorService, useValue: editorService },
       ],
     }).compileComponents();
 

@@ -22,7 +22,7 @@ describe('PagesWalletsManagementEditorComponent', () => {
       ],
       providers: [
         { provide: MatDialogRef, useValue: null },
-        { provide: MAT_DIALOG_DATA, useValue: undefined },
+        { provide: MAT_DIALOG_DATA, useValue: { name: 'Wallet Name 1' } },
       ],
     }).compileComponents();
 
