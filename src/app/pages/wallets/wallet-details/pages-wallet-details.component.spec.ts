@@ -27,7 +27,7 @@ import { WalletsDetailsTransaction } from './pages-wallet-details-item.model';
 import { WalletTransactionType } from 'src/app/domains/wallets/domains.wallets.types';
 import { PagesWalletTransactionEditorService } from './transaction-editor/pages-wallet-transaction-editor.service';
 
-fdescribe('PagesWalletDetailsComponent', () => {
+describe('PagesWalletDetailsComponent', () => {
   let component: PagesWalletDetailsComponent;
   let fixture: ComponentFixture<PagesWalletDetailsComponent>;
   let activatedRouteMock: { data: Observable<{ wallet: WalletsManagementItem}> };

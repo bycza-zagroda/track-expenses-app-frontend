@@ -29,9 +29,6 @@ export class PagesWalletTransactionEditorComponent {
       }),
       description: new FormControl(this.data.description ?? ''),
       date: new FormControl(this.data.date ?? new Date(), {
-        validators: [
-          Validators.min(1),
-        ],
         nonNullable: true,
       }),
       type: new FormControl(this.data.type!, {

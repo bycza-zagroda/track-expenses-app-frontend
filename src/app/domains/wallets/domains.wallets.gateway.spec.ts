@@ -9,7 +9,7 @@ import {
   WALLET_TRANSACTIONS_INCOME_MOCK,
 } from './domains.wallets.mocks';
 
-xdescribe('DomainsWalletsGateway', () => {
+describe('DomainsWalletsGateway', () => {
   let service: DomainsWalletsGateway;
   let walletResp: IWalletApiResponse;
   let httpTestingController: HttpTestingController;
@@ -72,9 +72,6 @@ xdescribe('DomainsWalletsGateway', () => {
   describe('updateWallet', () => {
     it('should call proper api url and return updated wallet', () => {
       service.updateWallet(walletResp.id, { name: walletResp.name }).subscribe((val: IWalletApiResponse) => {
-        console.log(val);
-        console.log(walletResp);
-
         expect(val).toEqual(walletResp);
       });
 

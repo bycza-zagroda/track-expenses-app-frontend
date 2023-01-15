@@ -8,6 +8,8 @@ import {
 } from './domains.wallets.types';
 
 export const DATE_EXAMPLE = '2022-10-22T09:47:52.595721658Z';
+export const DATE_EXAMPLE2 = '2022-15-22T09:57:52.595721658Z';
+export const NEW_DATE_EXAMPLE1 = new Date().toString();
 export const WALLET_RESP_MOCK = { name: 'Wallet Mock 1', creationDate: DATE_EXAMPLE, id: 1 } as const;
 export const UPDATED_WALLET_RESP_MOCK = { name: 'Wallet Mock 1 - changed name', creationDate: DATE_EXAMPLE, id: 1 } as const;
 export const WALLET_PAYLOAD_MOCK = { name: 'Wallet 6' } as const;
@@ -65,7 +67,7 @@ export const WALLET_TRANSACTIONS_API_RESPONSE_2 = [
 export const WALLET_TRANSACTIONS_INCOME_MOCK = new WalletsDetailsTransaction({
   id: 10,
   amount: 150,
-  creationDate: new Date().toString(),
+  creationDate: NEW_DATE_EXAMPLE1,
   type: WalletTransactionType.Incomes,
   description: 'Some description 1',
 });
@@ -73,7 +75,7 @@ export const WALLET_TRANSACTIONS_INCOME_MOCK = new WalletsDetailsTransaction({
 export const UPDATED_WALLET_TRANSACTIONS_INCOME_MOCK = new WalletsDetailsTransaction({
   id: 10,
   amount: 250,
-  creationDate: new Date().toString(),
+  creationDate: NEW_DATE_EXAMPLE1,
   type: WalletTransactionType.Incomes,
   description: 'Some updated description 1',
 });
@@ -81,7 +83,7 @@ export const UPDATED_WALLET_TRANSACTIONS_INCOME_MOCK = new WalletsDetailsTransac
 export const WALLET_TRANSACTIONS_EXPENSE_MOCK = new WalletsDetailsTransaction({
   id: 15,
   amount: 50,
-  creationDate: new Date().toString(),
+  creationDate: NEW_DATE_EXAMPLE1,
   type: WalletTransactionType.Expenses,
   description: 'Some description 2',
 });

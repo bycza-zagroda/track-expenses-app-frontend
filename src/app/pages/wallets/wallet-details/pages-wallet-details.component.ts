@@ -64,7 +64,7 @@ export class PagesWalletDetailsComponent implements OnInit {
   }
 
   public handleCreateTransaction(type: WalletTransactionType): void {
-    this.pagesWalletTransactionEditorService.openEditor({ type }).subscribe( (data: WalletsDetailsTransaction | null) => {
+    this.pagesWalletTransactionEditorService.openEditor(type).subscribe( (data: WalletsDetailsTransaction | null) => {
       if(data) {
         this.createTransaction(data);
       }

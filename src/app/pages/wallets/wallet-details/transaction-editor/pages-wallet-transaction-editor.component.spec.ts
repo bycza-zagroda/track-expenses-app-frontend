@@ -19,46 +19,64 @@ describe('TransactionEditorComponent', () => {
   let component: PagesWalletTransactionEditorComponent;
   let fixture: ComponentFixture<PagesWalletTransactionEditorComponent>;
   let ERROR_MESSAGE_MIN_AMOUNT: string;
+  let matDialogMock: SpyObj<MatDialog>;
+  let matDialogRef: SpyObj<MatDialogRef<PagesWalletsManagementEditorComponent>>;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     ERROR_MESSAGE_MIN_AMOUNT = 'Amount must be bigger than 0';
+    matDialogRef = createSpyObj<MatDialogRef<PagesWalletsManagementEditorComponent>>(MatDialogRef.name, [ 'close' ]);
+    matDialogRef.close.and.callThrough();
+    matDialogMock = createSpyObj<MatDialog>(MatDialog.name, [ 'open' ]);
+    matDialogMock.open.and.returnValue(matDialogRef);
+
+    await TestBed.configureTestingModule({
+      declarations: [
+        PagesWalletTransactionEditorComponent,
+        TransactionTypeMatSelectComponent,
+      ],
+      imports: [
+        HttpClientTestingModule,
+        ReactiveFormsModule,
+        MaterialModule,
+        NoopAnimationsModule,
+      ],
+      providers: [
+        { provide: MatDialogRef, useValue: null },
+        { provide: MatDialog, useValue: matDialogMock },
+        { provide: MAT_DIALOG_DATA, useValue: WALLET_TRANSACTIONS_EXPENSE_MOCK },
+      ],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(PagesWalletTransactionEditorComponent);
+    TestBed.inject<HttpTestingController>(HttpTestingController);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   describe('form validation', () => {
-    let matDialogMock: SpyObj<MatDialog>;
-    let matDialogRef: SpyObj<MatDialogRef<PagesWalletsManagementEditorComponent>>;
+    describe('Init form values', () => {
+      it('amount', () => {
+        const x = component.form.get('amount');
+        expect(x!.value).toBe(WALLET_TRANSACTIONS_EXPENSE_MOCK.amount);
+      });
 
-    beforeEach(async () => {
-      matDialogRef = createSpyObj<MatDialogRef<PagesWalletsManagementEditorComponent>>(MatDialogRef.name, [ 'close' ]);
-      matDialogRef.close.and.callThrough();
-      matDialogMock = createSpyObj<MatDialog>(MatDialog.name, [ 'open' ]);
-      matDialogMock.open.and.returnValue(matDialogRef);
+      it('description', () => {
+        const x = component.form.get('description');
+        expect(x!.value).toBe(WALLET_TRANSACTIONS_EXPENSE_MOCK.description);
+      });
 
-      await TestBed.configureTestingModule({
-        declarations: [
-          PagesWalletTransactionEditorComponent,
-          TransactionTypeMatSelectComponent,
-        ],
-        imports: [
-          HttpClientTestingModule,
-          ReactiveFormsModule,
-          MaterialModule,
-          NoopAnimationsModule,
-        ],
-        providers: [
-          { provide: MatDialogRef, useValue: null },
-          { provide: MatDialog, useValue: matDialogMock },
-          { provide: MAT_DIALOG_DATA, useValue: WALLET_TRANSACTIONS_EXPENSE_MOCK },
-        ],
-      }).compileComponents();
+      it('date', () => {
+        const x = component.form.get('date');
+        expect(x!.value).toEqual(WALLET_TRANSACTIONS_EXPENSE_MOCK.date);
+      });
 
-      fixture = TestBed.createComponent(PagesWalletTransactionEditorComponent);
-      TestBed.inject<HttpTestingController>(HttpTestingController);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
+      it('type', () => {
+        const x = component.form.get('type');
+        expect(x!.value).toEqual(WALLET_TRANSACTIONS_EXPENSE_MOCK.type);
+      });
     });
 
-    describe('amount field', () => {
+    describe('amount field validation', () => {
       describe('error', () => {
         it('should show validation error if amount input is 0', () => {
           component.form.get('amount')?.setValue(0);
@@ -96,7 +114,7 @@ describe('TransactionEditorComponent', () => {
       });
     });
 
-    describe('description field', () => {
+    describe('description field validation', () => {
       describe('error', () => {
         it('should show no validation error if description input is empty', () => {
           component.form.get('description')?.setValue('');
@@ -122,19 +140,7 @@ describe('TransactionEditorComponent', () => {
       });
     });
 
-    describe('date field', () => {
-      describe('error', () => {
-        it('should show date error if date input is empty', () => {
-          component.form.get('date')?.setValue(new Date());
-          component.form.get('date')?.markAsTouched();
-
-          fixture.detectChanges();
-
-          const errorMessageDiv = fixture.debugElement.query(By.css('.mat-error'));
-          expect(errorMessageDiv).toBeFalsy();
-        });
-      });
-
+    describe('date field validation', () => {
       describe('success', () => {
         it('should show validation error if description input is filled', () => {
           component.form.get('date')?.setValue(new Date());
@@ -147,112 +153,64 @@ describe('TransactionEditorComponent', () => {
         });
       });
     });
-
-    describe('save method', () => {
-      describe('invalid form', () => {
-        it('should set form as not valid', () => {
-          component.form.get('amount')?.setValue(0);
-          component.form.get('amount')?.markAsTouched();
-          fixture.detectChanges();
-
-          const errorMessageDiv: HTMLButtonElement =
-            fixture.debugElement.query(By.css('.btn__save')).nativeElement as HTMLButtonElement;
-          errorMessageDiv.click();
-          fixture.detectChanges();
-
-          expect(component.form.valid).toBeFalse();
-        });
-
-        it('should not invoke close dialogRef if amount form in invalid', () => {
-          component.form.get('amount')?.setValue(0);
-          component.form.get('amount')?.markAsTouched();
-          fixture.detectChanges();
-
-          const errorMessageDiv: HTMLButtonElement =
-            fixture.debugElement.query(By.css('.btn__save')).nativeElement as HTMLButtonElement;
-          errorMessageDiv.click();
-          fixture.detectChanges();
-
-          expect(matDialogRef.close).not.toHaveBeenCalled();
-        });
-      });
-
-      describe('valid form', () => {
-        it('should set form as valid', () => {
-          component.form.get('amount')?.setValue(10);
-          component.form.get('amount')?.markAsTouched();
-
-          fixture.detectChanges();
-
-          const errorMessageDiv: HTMLButtonElement =
-            fixture.debugElement.query(By.css('.btn__save')).nativeElement as HTMLButtonElement;
-          errorMessageDiv.click();
-
-          fixture.detectChanges();
-
-          expect(component.form.valid).toBeTrue();
-        });
-
-        xit('should invoke close dialogRef if amount form in invalid', () => {
-          component.form.get('amount')?.setValue(10);
-          component.form.get('amount')?.markAsTouched();
-          fixture.detectChanges();
-
-          const errorMessageDiv: HTMLButtonElement =
-            fixture.debugElement.query(By.css('.btn__save')).nativeElement as HTMLButtonElement;
-          errorMessageDiv.click();
-          fixture.detectChanges();
-
-          expect(matDialogRef.close).toHaveBeenCalled(); //help!
-        });
-      });
-    });
   });
 
-  describe('Init form with MAT_DIALOG_DATA set as WalletsManagementItem mock object', () => {
-    beforeEach(async () => {
-      await TestBed.configureTestingModule({
-        declarations: [
-          PagesWalletTransactionEditorComponent,
-          TransactionTypeMatSelectComponent,
-        ],
-        imports: [
-          HttpClientTestingModule,
-          ReactiveFormsModule,
-          MaterialModule,
-          NoopAnimationsModule,
-        ],
-        providers: [
-          { provide: MatDialogRef, useValue: null },
-          { provide: MAT_DIALOG_DATA, useValue: WALLET_TRANSACTIONS_EXPENSE_MOCK },
-        ],
-      }).compileComponents();
+  describe('save method', () => {
+    describe('invalid form', () => {
+      it('should set form as not valid', () => {
+        component.form.get('amount')?.setValue(0);
+        component.form.get('amount')?.markAsTouched();
+        fixture.detectChanges();
 
-      fixture = TestBed.createComponent(PagesWalletTransactionEditorComponent);
-      TestBed.inject<HttpTestingController>(HttpTestingController);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
+        const errorMessageDiv: HTMLButtonElement =
+          fixture.debugElement.query(By.css('.btn__save')).nativeElement as HTMLButtonElement;
+        errorMessageDiv.click();
+        fixture.detectChanges();
+
+        expect(component.form.valid).toBeFalse();
+      });
+
+      it('should not invoke close dialogRef if amount form in invalid', () => {
+        component.form.get('amount')?.setValue(0);
+        component.form.get('amount')?.markAsTouched();
+        fixture.detectChanges();
+
+        const errorMessageDiv: HTMLButtonElement =
+          fixture.debugElement.query(By.css('.btn__save')).nativeElement as HTMLButtonElement;
+        errorMessageDiv.click();
+        fixture.detectChanges();
+
+        expect(matDialogRef.close).not.toHaveBeenCalled();
+      });
     });
 
-    describe('Init form values', () => {
-      it('amount', () => {
-        const x = component.form.get('amount');
-        expect(x!.value).toBe(WALLET_TRANSACTIONS_EXPENSE_MOCK.amount);
+    describe('valid form', () => {
+      it('should set form as valid', () => {
+        component.form.get('amount')?.setValue(10);
+        component.form.get('amount')?.markAsTouched();
+
+        fixture.detectChanges();
+
+        const errorMessageDiv: HTMLButtonElement =
+          fixture.debugElement.query(By.css('.btn__save')).nativeElement as HTMLButtonElement;
+        errorMessageDiv.click();
+
+        fixture.detectChanges();
+
+        expect(component.form.valid).toBeTrue();
       });
 
-      it('description', () => {
-        const x = component.form.get('description');
-        expect(x!.value).toBe(WALLET_TRANSACTIONS_EXPENSE_MOCK.description);
-      });
+      it('should invoke close dialogRef if amount form in valid', () => {
+        component.form.get('amount')?.setValue(10);
+        component.form.get('amount')?.markAsTouched();
+        fixture.detectChanges();
 
-      it('date', () => {
-        const x = component.form.get('date');
-        expect(x!.value).toEqual(WALLET_TRANSACTIONS_EXPENSE_MOCK.date);
-      });
+        const errorMessageDiv: HTMLButtonElement =
+          fixture.debugElement.query(By.css('.btn__save')).nativeElement as HTMLButtonElement;
+        errorMessageDiv.click();
+        fixture.detectChanges();
 
-      it('type', () => {
-        const x = component.form.get('type');
-        expect(x!.value).toEqual(WALLET_TRANSACTIONS_EXPENSE_MOCK.type);
+        expect(matDialogRef.close).toHaveBeenCalled(); //help!
       });
     });
   });
