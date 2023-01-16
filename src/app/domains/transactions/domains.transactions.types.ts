@@ -10,6 +10,8 @@ export enum WalletTransactionType {
   Expenses = 'EXPENSES',
 }
 
+export type WalletSelectionValue = WalletTransactionType | '';
+
 export interface ITransactionPayload {
   description?: string;
   amount: number;

@@ -3,9 +3,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import {
-  TransactionTypeMatSelectComponent,
-} from 'src/app/common/components/mat-controls/transaction-type-mat-select/transaction-type-mat-select.component';
 import { MaterialModule } from 'src/app/material.module';
 import { PagesWalletTransactionEditorComponent } from './pages-wallet-transaction-editor.component';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
@@ -32,7 +29,6 @@ describe('TransactionEditorComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [
         PagesWalletTransactionEditorComponent,
-        TransactionTypeMatSelectComponent,
       ],
       imports: [
         HttpClientTestingModule,

@@ -1,28 +1,21 @@
-import { Component, Inject, OnDestroy } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
 import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.types';
 import { WalletsDetailsTransaction } from '../pages-wallet-details-item.model';
 import { IWalletTransactionModalFormType } from './pages-wallet-transaction.editor.types';
-
-export type WalletSelectionValue = WalletTransactionType | '';
 
 @Component({
   selector: 'app-transaction-editor',
   templateUrl: './pages-wallet-transaction-editor.component.html',
   styleUrls: [ './pages-wallet-transaction-editor.component.scss' ],
 })
-export class PagesWalletTransactionEditorComponent implements OnDestroy {
+export class PagesWalletTransactionEditorComponent {
 
   public selectTransactionsTypes: Record<string, WalletTransactionType> = {
     'Incomes': WalletTransactionType.Incomes,
     'Expenses': WalletTransactionType.Expenses,
   };
-
-  public transactionsTypeForm = new FormControl<WalletTransactionType>(WalletTransactionType.Incomes);
-
-  private transactionTypeSub!: Subscription;
 
   public form!: FormGroup<IWalletTransactionModalFormType>;
 
@@ -31,22 +24,27 @@ export class PagesWalletTransactionEditorComponent implements OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: WalletsDetailsTransaction,
   ) {
     this.form = new FormGroup<IWalletTransactionModalFormType>({
-      amount: new FormControl(this.data.amount, {
+      amount: new FormControl(null, {
         validators: [
           Validators.required,
-          Validators.min(1),
+          Validators.pattern(/[\d]|[\d\.\d\d]|[\d\.\d]/),
         ],
-        nonNullable: true,
+        nonNullable: false,
       }),
       description: new FormControl(this.data.description),
       date: new FormControl(this.data.date, {
+        validators: [
+          Validators.required,
+        ],
         nonNullable: true,
       }),
       type: new FormControl(this.data.type, {
-        nonNullable: true,
+        nonNullable: false,
+        validators: [
+          Validators.required,
+        ],
       }),
     });
-
   }
 
   public checkInputError(inputName: string, errorType: string): boolean {
@@ -78,9 +76,5 @@ export class PagesWalletTransactionEditorComponent implements OnDestroy {
 
   public cancel(): void {
     this.dialogRef.close(null);
-  }
-
-  public ngOnDestroy(): void {
-    this.transactionTypeSub.unsubscribe();
   }
 }

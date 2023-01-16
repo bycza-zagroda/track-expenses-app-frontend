@@ -2,16 +2,14 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { TDataState } from 'src/app/common/http/common.http.types';
-import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.types';
+import { TDataState, TServerEntityId } from 'src/app/common/http/common.http.types';
+import { WalletSelectionValue, WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.types';
 import { WalletsManagementItem } from '../management/pages-wallets-wallets-management-item.model';
 import { PagesWalletsManagementEditorService } from '../management/wallet-editor/pages-wallets-management-editor.service';
 import { IWalletModalData } from '../management/wallet-editor/pages-wallets-management-editor.types';
 import { WalletsDetailsTransaction } from './pages-wallet-details-item.model';
 import { PagesWalletDetailsService } from './pages-wallet-details.service';
 import { PagesWalletTransactionEditorService } from './transaction-editor/pages-wallet-transaction-editor.service';
-
-type WalletSelectionValue = WalletTransactionType | '';
 
 @Component({
   selector: 'app-pages-wallet-details',
@@ -79,7 +77,7 @@ export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
   }
 
   public handleCreateTransaction(type: WalletTransactionType): void {
-    this.pagesWalletTransactionEditorService.openEditor(WalletsDetailsTransaction.create({type, amount: 100})).subscribe( (transaction: WalletsDetailsTransaction | null) => {
+    this.pagesWalletTransactionEditorService.openEditor(WalletsDetailsTransaction.create({ type })).subscribe( (transaction: WalletsDetailsTransaction | null) => {
       if(transaction) {
         this.createTransaction(transaction);
       }
@@ -94,7 +92,7 @@ export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  private getWalletTransactions(walletId: number): void {
+  private getWalletTransactions(walletId: TServerEntityId): void {
     this.pagesWalletDetailsService.getWalletTransactions(walletId).subscribe({
       next: (transactions: WalletsDetailsTransaction[]) => {
         this.displayedTransactions = transactions;

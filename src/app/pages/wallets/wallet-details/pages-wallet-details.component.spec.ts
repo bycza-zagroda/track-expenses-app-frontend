@@ -16,9 +16,6 @@ import { PagesWalletDetailsComponent } from './pages-wallet-details.component';
 import { PagesWalletDetailsService } from './pages-wallet-details.service';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
-import {
-  TransactionTypeMatSelectComponent,
-} from 'src/app/common/components/mat-controls/transaction-type-mat-select/transaction-type-mat-select.component';
 import { WalletsDetailsTransaction } from './pages-wallet-details-item.model';
 import { PagesWalletTransactionEditorService } from './transaction-editor/pages-wallet-transaction-editor.service';
 import { UPDATED_WALLET_TRANSACTIONS_OBJECT_MOCK, WALLET_TRANSACTIONS_EXPENSE_MOCK, WALLET_TRANSACTIONS_INCOME_MOCK, WALLET_TRANSACTIONS_OBJECTS_MOCK } from 'src/app/domains/transactions/domains.transactions.mocks';
@@ -60,7 +57,6 @@ describe('PagesWalletDetailsComponent', () => {
       declarations: [
         PagesWalletDetailsComponent,
         TransactionAmountPipe,
-        TransactionTypeMatSelectComponent,
       ],
       imports: [
         ReactiveFormsModule,
