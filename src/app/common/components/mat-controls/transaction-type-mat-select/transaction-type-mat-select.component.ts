@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { WalletTransactionType } from 'src/app/domains/wallets/domains.wallets.types';
+import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.types';
 
 export type WalletSelectionValue = WalletTransactionType | '';
 
@@ -10,7 +10,7 @@ export type WalletSelectionValue = WalletTransactionType | '';
   templateUrl: './transaction-type-mat-select.component.html',
   styleUrls: [ './transaction-type-mat-select.component.scss' ],
 })
-export class TransactionTypeMatSelectComponent implements OnInit, OnDestroy {
+export class TransactionTypeMatSelectComponent implements OnInit {
   @Output() public setTransactionType = new EventEmitter<WalletSelectionValue>();
 
   @Input() public type?: WalletTransactionType;
@@ -26,14 +26,10 @@ export class TransactionTypeMatSelectComponent implements OnInit, OnDestroy {
   private transactionTypeSub!: Subscription;
 
   public ngOnInit(): void {
-    this.transactionsTypeForm.setValue(this.type ?? '');
 
     this.transactionTypeSub = this.transactionsTypeForm.valueChanges.subscribe(() => {
       this.setTransactionType.emit(this.transactionsTypeForm.value ?? '');
     });
   }
 
-  public ngOnDestroy(): void {
-    this.transactionTypeSub.unsubscribe();
-  }
 }

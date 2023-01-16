@@ -13,7 +13,7 @@ import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
 import { PagesWalletsManagementEditorComponent }
   from '../../management/wallet-editor/pages-wallets-management-editor.component';
-import { WALLET_TRANSACTIONS_EXPENSE_MOCK } from 'src/app/domains/wallets/domains.wallets.mocks';
+import { WALLET_TRANSACTIONS_EXPENSE_MOCK } from 'src/app/domains/transactions/domains.transactions.mocks';
 
 describe('TransactionEditorComponent', () => {
   let component: PagesWalletTransactionEditorComponent;
@@ -23,7 +23,7 @@ describe('TransactionEditorComponent', () => {
   let matDialogRef: SpyObj<MatDialogRef<PagesWalletsManagementEditorComponent>>;
 
   beforeEach(async () => {
-    ERROR_MESSAGE_MIN_AMOUNT = 'Amount must be bigger than 0';
+    ERROR_MESSAGE_MIN_AMOUNT = 'amount must be bigger than 0';
     matDialogRef = createSpyObj<MatDialogRef<PagesWalletsManagementEditorComponent>>(MatDialogRef.name, [ 'close' ]);
     matDialogRef.close.and.callThrough();
     matDialogMock = createSpyObj<MatDialog>(MatDialog.name, [ 'open' ]);

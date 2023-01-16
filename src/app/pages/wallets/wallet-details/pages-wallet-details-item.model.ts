@@ -1,12 +1,12 @@
+import { TServerEntityId } from 'src/app/common/http/common.http.types';
 import {
   IWalletTransactionApiResponse,
   IWalletTransactionItemData,
-  WalletTransactionType,
-} from 'src/app/domains/wallets/domains.wallets.types';
-import { ITransactionModalData } from './transaction-editor/pages-wallet-transaction.editor.types';
+  WalletTransactionType
+} from 'src/app/domains/transactions/domains.transactions.types';
 
 export class WalletsDetailsTransaction {
-  public readonly id: number | null;
+  public readonly id: TServerEntityId | null;
   public readonly date: Date;
   public readonly description: string | null;
   public readonly type: WalletTransactionType;
@@ -25,18 +25,8 @@ export class WalletsDetailsTransaction {
       id: data.id ?? null,
       amount: data.amount ?? 0,
       creationDate: data.creationDate ?? '',
-      description: data.creationDate ?? '',
-      type: data.type ?? WalletTransactionType.Incomes,
-    });
-  }
-
-  public static createFromModalEditorData(id: number, data: ITransactionModalData): WalletsDetailsTransaction {
-    return new WalletsDetailsTransaction({
-      id,
-      amount: data.amount,
-      creationDate: data.date.toString(),
       description: data.description ?? '',
-      type: data.type,
+      type: data.type ?? WalletTransactionType.Incomes,
     });
   }
 }

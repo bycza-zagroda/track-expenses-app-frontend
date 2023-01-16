@@ -1,5 +1,5 @@
 import { FormControl } from '@angular/forms';
-import { WalletTransactionType } from 'src/app/domains/wallets/domains.wallets.types';
+import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.types';
 
 export interface ITransactionModalData {
   amount: number;

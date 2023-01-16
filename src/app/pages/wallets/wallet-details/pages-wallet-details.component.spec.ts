@@ -7,11 +7,7 @@ import { Observable, of, Subject } from 'rxjs';
 import { TransactionAmountPipe } from 'src/app/common/utils/pipes/transaction-amount.pipe';
 import {
   UPDATED_WALLET_INSTANCE_MOCK,
-  UPDATED_WALLET_TRANSACTIONS_OBJECT_MOCK,
   WALLET_INSTANCE_MOCK,
-  WALLET_TRANSACTIONS_EXPENSE_MOCK,
-  WALLET_TRANSACTIONS_INCOME_MOCK,
-  WALLET_TRANSACTIONS_OBJECTS_MOCK,
 } from 'src/app/domains/wallets/domains.wallets.mocks';
 import { MaterialModule } from 'src/app/material.module';
 import { WalletsManagementItem } from '../management/pages-wallets-wallets-management-item.model';
@@ -24,8 +20,9 @@ import {
   TransactionTypeMatSelectComponent,
 } from 'src/app/common/components/mat-controls/transaction-type-mat-select/transaction-type-mat-select.component';
 import { WalletsDetailsTransaction } from './pages-wallet-details-item.model';
-import { WalletTransactionType } from 'src/app/domains/wallets/domains.wallets.types';
 import { PagesWalletTransactionEditorService } from './transaction-editor/pages-wallet-transaction-editor.service';
+import { UPDATED_WALLET_TRANSACTIONS_OBJECT_MOCK, WALLET_TRANSACTIONS_EXPENSE_MOCK, WALLET_TRANSACTIONS_INCOME_MOCK, WALLET_TRANSACTIONS_OBJECTS_MOCK } from 'src/app/domains/transactions/domains.transactions.mocks';
+import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.types';
 
 describe('PagesWalletDetailsComponent', () => {
   let component: PagesWalletDetailsComponent;
@@ -99,7 +96,7 @@ describe('PagesWalletDetailsComponent', () => {
     });
   });
 
-  describe('HandleCreateTransaction', () => {
+  describe('handleCreateTransaction', () => {
     describe('success', () => {
       it('should create new WalletsDetailsTransaction object', fakeAsync(() => {
         component.handleCreateTransaction(WalletTransactionType.Incomes);
@@ -121,7 +118,7 @@ describe('PagesWalletDetailsComponent', () => {
     });
   });
 
-  describe('HandleEditTransaction', () => {
+  describe('handleEditTransaction', () => {
     const transaction = WALLET_TRANSACTIONS_OBJECTS_MOCK(1)[0];
     const updatedTransaction = UPDATED_WALLET_TRANSACTIONS_OBJECT_MOCK(1);
 

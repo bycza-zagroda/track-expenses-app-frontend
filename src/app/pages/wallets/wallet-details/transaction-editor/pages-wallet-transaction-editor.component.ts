@@ -1,40 +1,52 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import {
-  WalletSelectionValue,
-} from 'src/app/common/components/mat-controls/transaction-type-mat-select/transaction-type-mat-select.component';
-import { WalletTransactionType } from 'src/app/domains/wallets/domains.wallets.types';
-import { ITransactionModalData, IWalletTransactionModalFormType } from './pages-wallet-transaction.editor.types';
+import { Subscription } from 'rxjs';
+import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.types';
+import { WalletsDetailsTransaction } from '../pages-wallet-details-item.model';
+import { IWalletTransactionModalFormType } from './pages-wallet-transaction.editor.types';
+
+export type WalletSelectionValue = WalletTransactionType | '';
 
 @Component({
   selector: 'app-transaction-editor',
   templateUrl: './pages-wallet-transaction-editor.component.html',
   styleUrls: [ './pages-wallet-transaction-editor.component.scss' ],
 })
-export class PagesWalletTransactionEditorComponent {
+export class PagesWalletTransactionEditorComponent implements OnDestroy {
+
+  public selectTransactionsTypes: Record<string, WalletTransactionType> = {
+    'Incomes': WalletTransactionType.Incomes,
+    'Expenses': WalletTransactionType.Expenses,
+  };
+
+  public transactionsTypeForm = new FormControl<WalletTransactionType>(WalletTransactionType.Incomes);
+
+  private transactionTypeSub!: Subscription;
+
   public form!: FormGroup<IWalletTransactionModalFormType>;
 
   public constructor(
     private readonly dialogRef: MatDialogRef<PagesWalletTransactionEditorComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Partial<ITransactionModalData>,
+    @Inject(MAT_DIALOG_DATA) public data: WalletsDetailsTransaction,
   ) {
     this.form = new FormGroup<IWalletTransactionModalFormType>({
-      amount: new FormControl(this.data.amount ?? 100, {
+      amount: new FormControl(this.data.amount, {
         validators: [
           Validators.required,
           Validators.min(1),
         ],
         nonNullable: true,
       }),
-      description: new FormControl(this.data.description ?? ''),
-      date: new FormControl(this.data.date ?? new Date(), {
+      description: new FormControl(this.data.description),
+      date: new FormControl(this.data.date, {
         nonNullable: true,
       }),
-      type: new FormControl(this.data.type!, {
+      type: new FormControl(this.data.type, {
         nonNullable: true,
       }),
     });
+
   }
 
   public checkInputError(inputName: string, errorType: string): boolean {
@@ -60,11 +72,15 @@ export class PagesWalletTransactionEditorComponent {
     this.dialogRef.close(this.form.value);
   }
 
-  public setTransactionType(value: WalletSelectionValue): void {
-    this.form.controls.type.setValue(value as WalletTransactionType);
+  public setTransactionType(value: WalletTransactionType): void {
+    this.form.controls.type.setValue(value);
   }
 
   public cancel(): void {
     this.dialogRef.close(null);
+  }
+
+  public ngOnDestroy(): void {
+    this.transactionTypeSub.unsubscribe();
   }
 }

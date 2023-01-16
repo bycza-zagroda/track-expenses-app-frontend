@@ -2,11 +2,10 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, of, switchMap, tap } from 'rxjs';
 import { SystemNotificationsService } from 'src/app/common/utils/system-notifications/system-notifications.service';
-import { WalletTransactionType } from 'src/app/domains/wallets/domains.wallets.types';
+import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.types';
 import { WalletsDetailsTransaction } from '../pages-wallet-details-item.model';
 import { PagesWalletDetailsService } from '../pages-wallet-details.service';
 import { PagesWalletTransactionEditorComponent } from './pages-wallet-transaction-editor.component';
-import { ITransactionModalData } from './pages-wallet-transaction.editor.types';
 
 @Injectable({
   providedIn: 'root',
@@ -18,36 +17,34 @@ export class PagesWalletTransactionEditorService {
     private readonly pagesWalletDetailsService: PagesWalletDetailsService,
   ) { }
 
-  public openEditor(transaction: WalletsDetailsTransaction | WalletTransactionType)
-  : Observable<WalletsDetailsTransaction | null> {
-    const data: Partial<ITransactionModalData> = transaction instanceof WalletsDetailsTransaction ? {
-      amount: transaction.amount,
-      description: transaction.description ?? '',
-      date: transaction.date,
-      type: transaction.type,
-    } : { type: transaction };
-
-    return this.dialog.open<PagesWalletTransactionEditorComponent, Partial<ITransactionModalData>, ITransactionModalData>(
+  public openEditor(transaction: WalletsDetailsTransaction) : Observable<WalletsDetailsTransaction | null> {
+    return this.dialog.open<PagesWalletTransactionEditorComponent, WalletsDetailsTransaction, WalletsDetailsTransaction>(
       PagesWalletTransactionEditorComponent, {
-        data,
+        data: transaction,
       }).afterClosed().pipe(
-      switchMap((transactionResp: ITransactionModalData | undefined) => {
+      switchMap((transactionResp: WalletsDetailsTransaction | undefined) => {
         return !!transactionResp ? this.makeRequest(transactionResp, transaction) : of(null);
       }),
-      tap((w: WalletsDetailsTransaction | null) => {
-        if(w) {
-          this.notify(w, transaction instanceof WalletsDetailsTransaction ? 'updated' : 'created');
+      tap((transaction_: WalletsDetailsTransaction | null) => {
+        if(transaction_) {
+          this.notify(transaction_, transaction instanceof WalletsDetailsTransaction ? 'updated' : 'created');
         }
       }),
     );
   }
 
-  private makeRequest(transactionModalData: ITransactionModalData,
+  private makeRequest({ amount, date, description, type}: WalletsDetailsTransaction,
     transaction: WalletsDetailsTransaction | WalletTransactionType): Observable<WalletsDetailsTransaction> {
+
     return transaction instanceof WalletsDetailsTransaction ?
-      this.pagesWalletDetailsService.editWalletTransaction(transaction.id!,
-        WalletsDetailsTransaction.createFromModalEditorData(transaction.id!, transactionModalData)) :
-      this.pagesWalletDetailsService.createWalletTransaction(transactionModalData);
+      this.pagesWalletDetailsService.editWalletTransaction(transaction.id!, new WalletsDetailsTransaction({
+        id: transaction.id!,
+        amount: amount,
+        creationDate: date.toString(),
+        description: description ?? '',
+        type: type,
+      })) :
+      this.pagesWalletDetailsService.createWalletTransaction({ amount, date, type, description: description ?? '' });
   }
 
   private notify(updatedWallet: WalletsDetailsTransaction | null, type: string): void {

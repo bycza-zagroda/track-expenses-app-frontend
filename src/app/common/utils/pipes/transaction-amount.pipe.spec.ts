@@ -1,4 +1,4 @@
-import { WalletTransactionType } from 'src/app/domains/wallets/domains.wallets.types';
+import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.types';
 import { TransactionAmountPipe } from './transaction-amount.pipe';
 
 describe('TransactionAmountPipe', () => {

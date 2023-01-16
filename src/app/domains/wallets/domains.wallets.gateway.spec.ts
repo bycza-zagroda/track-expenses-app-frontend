@@ -1,12 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { DomainsWalletsGateway } from './domains.wallets.gateway';
-import { IWalletApiResponse, IWalletPayload, IWalletTransactionApiResponse } from './domains.wallets.types';
+import { IWalletApiResponse, IWalletPayload } from './domains.wallets.types';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import { API_WALLETS_URL } from './domains.wallets.constants';
 import {
-  TRANSACTION_PAYLOAD_MOCK,
   WALLET_PAYLOAD_MOCK, WALLET_RESP_MOCK,
-  WALLET_TRANSACTIONS_INCOME_MOCK,
 } from './domains.wallets.mocks';
 
 describe('DomainsWalletsGateway', () => {
@@ -27,7 +25,6 @@ describe('DomainsWalletsGateway', () => {
       ],
       providers: [
         DomainsWalletsGateway,
-
       ],
     }).compileComponents();
 
@@ -78,39 +75,6 @@ describe('DomainsWalletsGateway', () => {
       const req = httpTestingController.expectOne(apiUrl + '/1');
       expect(req.request.method).toEqual('PATCH');
       req.flush(walletResp);
-    });
-  });
-
-  describe('getWalletTransactions', () => {
-    it('should call fakeRequest and return wallet \'s transactions', (done) => {
-      service.getWalletTransactions(walletId).subscribe((val: IWalletTransactionApiResponse[]) => {
-        expect(val.length).toEqual(3);
-        done();
-      });
-    });
-  });
-
-  describe('createWalletTransaction', () => {
-    it('should call fakeRequest and return wallet \'s transaction', (done) => {
-      service.createWalletTransaction(TRANSACTION_PAYLOAD_MOCK).subscribe((val: IWalletTransactionApiResponse) => {
-        expect(val.id).toBeGreaterThan(99);
-        expect(val.amount).toEqual(TRANSACTION_PAYLOAD_MOCK.amount);
-        expect(val.type).toEqual(TRANSACTION_PAYLOAD_MOCK.type);
-        expect(val.description).toEqual(TRANSACTION_PAYLOAD_MOCK.description);
-        done();
-      });
-    });
-  });
-
-  describe('editWalletTransaction', () => {
-    it('should call fakeRequest and return updated wallet \'s transaction', (done) => {
-      service.editWalletTransaction(WALLET_TRANSACTIONS_INCOME_MOCK.id!, WALLET_TRANSACTIONS_INCOME_MOCK)
-        .subscribe((val: IWalletTransactionApiResponse) => {
-          expect(val.id).toEqual(WALLET_TRANSACTIONS_INCOME_MOCK.id!);
-          expect(val.amount).toEqual(WALLET_TRANSACTIONS_INCOME_MOCK.amount);
-          expect(val.type).toEqual(WALLET_TRANSACTIONS_INCOME_MOCK.type);
-          done();
-        });
     });
   });
 });

@@ -30,7 +30,7 @@ describe('TransactionTypeMatSelectComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('Change Transaction Type', () => {
+  describe('change Transaction Type', () => {
     beforeEach(() => {
       const matSelect: HTMLDivElement = fixture.debugElement.query(
         By.css('.mat-select-trigger'),

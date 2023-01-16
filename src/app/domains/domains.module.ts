@@ -8,6 +8,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
   imports: [
     CommonModule,
     DomainsWalletsModule,
+    DomainsWalletsModule,
     HttpClientModule,
     MatSnackBarModule,
   ],
