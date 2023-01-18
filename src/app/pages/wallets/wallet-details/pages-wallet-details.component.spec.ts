@@ -18,7 +18,12 @@ import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
 import { WalletsDetailsTransaction } from './pages-wallet-details-item.model';
 import { PagesWalletTransactionEditorService } from './transaction-editor/pages-wallet-transaction-editor.service';
-import { UPDATED_WALLET_TRANSACTIONS_OBJECT_MOCK, WALLET_TRANSACTIONS_EXPENSE_MOCK, WALLET_TRANSACTIONS_INCOME_MOCK, WALLET_TRANSACTIONS_OBJECTS_MOCK } from 'src/app/domains/transactions/domains.transactions.mocks';
+import {
+  UPDATED_WALLET_TRANSACTIONS_OBJECT_MOCK,
+  WALLET_TRANSACTIONS_EXPENSE_MOCK,
+  WALLET_TRANSACTIONS_INCOME_MOCK,
+  WALLET_TRANSACTIONS_OBJECTS_MOCK,
+} from 'src/app/domains/transactions/domains.transactions.mocks';
 import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.types';
 
 describe('PagesWalletDetailsComponent', () => {

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable, of, switchMap, tap } from 'rxjs';
 import { SystemNotificationsService } from 'src/app/common/utils/system-notifications/system-notifications.service';
-import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.types';
 import { WalletsDetailsTransaction } from '../pages-wallet-details-item.model';
 import { PagesWalletDetailsService } from '../pages-wallet-details.service';
 import { PagesWalletTransactionEditorComponent } from './pages-wallet-transaction-editor.component';
@@ -27,18 +26,17 @@ export class PagesWalletTransactionEditorService {
       }),
       tap((transaction_: WalletsDetailsTransaction | null) => {
         if(transaction_) {
-          this.notify(transaction_, transaction instanceof WalletsDetailsTransaction ? 'updated' : 'created');
+          this.notify(transaction_, transaction.id ? 'updated' : 'created');
         }
       }),
     );
   }
 
-  private makeRequest({ amount, date, description, type}: WalletsDetailsTransaction,
-    transaction: WalletsDetailsTransaction | WalletTransactionType): Observable<WalletsDetailsTransaction> {
-
-    return transaction instanceof WalletsDetailsTransaction ?
-      this.pagesWalletDetailsService.editWalletTransaction(transaction.id!, new WalletsDetailsTransaction({
-        id: transaction.id!,
+  private makeRequest({ amount, date, description, type }: WalletsDetailsTransaction,
+    transaction: WalletsDetailsTransaction): Observable<WalletsDetailsTransaction> {
+    return transaction.id ?
+      this.pagesWalletDetailsService.editWalletTransaction(transaction.id, new WalletsDetailsTransaction({
+        id: transaction.id,
         amount: amount,
         creationDate: date.toString(),
         description: description ?? '',

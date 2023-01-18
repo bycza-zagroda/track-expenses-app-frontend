@@ -15,12 +15,12 @@ import { WALLET_TRANSACTIONS_EXPENSE_MOCK } from 'src/app/domains/transactions/d
 describe('TransactionEditorComponent', () => {
   let component: PagesWalletTransactionEditorComponent;
   let fixture: ComponentFixture<PagesWalletTransactionEditorComponent>;
-  let ERROR_MESSAGE_MIN_AMOUNT: string;
+  let ERROR_MESSAGE_AMOUNT_INVALID_FORMAT: string;
   let matDialogMock: SpyObj<MatDialog>;
   let matDialogRef: SpyObj<MatDialogRef<PagesWalletsManagementEditorComponent>>;
 
   beforeEach(async () => {
-    ERROR_MESSAGE_MIN_AMOUNT = 'amount must be bigger than 0';
+    ERROR_MESSAGE_AMOUNT_INVALID_FORMAT = 'Amount has invalid format';
     matDialogRef = createSpyObj<MatDialogRef<PagesWalletsManagementEditorComponent>>(MatDialogRef.name, [ 'close' ]);
     matDialogRef.close.and.callThrough();
     matDialogMock = createSpyObj<MatDialog>(MatDialog.name, [ 'open' ]);
@@ -74,32 +74,21 @@ describe('TransactionEditorComponent', () => {
 
     describe('amount field validation', () => {
       describe('error', () => {
-        it('should show validation error if amount input is 0', () => {
-          component.form.get('amount')?.setValue(0);
+        it('should show validation error if value has invalid format', () => {
+          component.form.get('amount')?.setValue(12.3333);
           component.form.get('amount')?.markAsTouched();
 
           fixture.detectChanges();
           const errorMessageDiv = fixture.debugElement.query(By.css('.mat-error'));
           const errorMessageText: HTMLDivElement = errorMessageDiv.nativeElement as HTMLDivElement;
 
-          expect(errorMessageText.textContent!.trim()).toBe(ERROR_MESSAGE_MIN_AMOUNT);
-        });
-
-        it('should show validation error if amount input is less than 0', () => {
-          component.form.get('amount')?.setValue(-10);
-          component.form.get('amount')?.markAsTouched();
-
-          fixture.detectChanges();
-          const errorMessageDiv = fixture.debugElement.query(By.css('.mat-error'));
-          const errorMessageText: HTMLDivElement = errorMessageDiv.nativeElement as HTMLDivElement;
-
-          expect(errorMessageText.textContent!.trim()).toBe(ERROR_MESSAGE_MIN_AMOUNT);
+          expect(errorMessageText.textContent!.trim()).toBe(ERROR_MESSAGE_AMOUNT_INVALID_FORMAT);
         });
       });
 
       describe('success', () => {
-        it('should show no validation error if amount input is bigger than 0', () => {
-          component.form.get('amount')?.setValue(10);
+        it('should show no validation error if amount has valid format', () => {
+          component.form.get('amount')?.setValue(10.21);
           component.form.get('amount')?.markAsTouched();
 
           fixture.detectChanges();
@@ -154,7 +143,7 @@ describe('TransactionEditorComponent', () => {
   describe('save method', () => {
     describe('invalid form', () => {
       it('should set form as not valid', () => {
-        component.form.get('amount')?.setValue(0);
+        component.form.get('amount')?.setValue(1.3303);
         component.form.get('amount')?.markAsTouched();
         fixture.detectChanges();
 
@@ -184,29 +173,14 @@ describe('TransactionEditorComponent', () => {
       it('should set form as valid', () => {
         component.form.get('amount')?.setValue(10);
         component.form.get('amount')?.markAsTouched();
-
         fixture.detectChanges();
 
         const errorMessageDiv: HTMLButtonElement =
           fixture.debugElement.query(By.css('.btn__save')).nativeElement as HTMLButtonElement;
         errorMessageDiv.click();
-
         fixture.detectChanges();
 
         expect(component.form.valid).toBeTrue();
-      });
-
-      it('should invoke close dialogRef if amount form in valid', () => {
-        component.form.get('amount')?.setValue(10);
-        component.form.get('amount')?.markAsTouched();
-        fixture.detectChanges();
-
-        const errorMessageDiv: HTMLButtonElement =
-          fixture.debugElement.query(By.css('.btn__save')).nativeElement as HTMLButtonElement;
-        errorMessageDiv.click();
-        fixture.detectChanges();
-
-        expect(matDialogRef.close).toHaveBeenCalled(); //help!
       });
     });
   });

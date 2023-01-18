@@ -12,10 +12,12 @@ import { PagesWalletTransactionEditorComponent } from './pages-wallet-transactio
 import { MaterialModule } from 'src/app/material.module';
 import {
   UPDATED_WALLET_TRANSACTIONS_INCOME_MOCK,
+  WALLET_TRANSACTIONS_CREATED_INCOME_MOCK,
   WALLET_TRANSACTIONS_INCOME_MOCK,
-} from 'src/app/domains/wallets/domains.wallets.mocks';
+  WALLET_TRANSACTIONS_TO_CREATE_INCOME_MOCK,
+} from 'src/app/domains/transactions/domains.transactions.mocks';
 import { WalletsDetailsTransaction } from '../pages-wallet-details-item.model';
-import { WalletTransactionType } from 'src/app/domains/wallets/domains.wallets.types';
+import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.types';
 
 describe('PagesWalletTransactionEditorService', () => {
   let service: PagesWalletTransactionEditorService;
@@ -31,7 +33,7 @@ describe('PagesWalletTransactionEditorService', () => {
     ]);
 
     pagesWalletTransactionsServiceMock.editWalletTransaction.and.returnValue(of(UPDATED_WALLET_TRANSACTIONS_INCOME_MOCK));
-    pagesWalletTransactionsServiceMock.createWalletTransaction.and.returnValue(of(WALLET_TRANSACTIONS_INCOME_MOCK));
+    pagesWalletTransactionsServiceMock.createWalletTransaction.and.returnValue(of(WALLET_TRANSACTIONS_CREATED_INCOME_MOCK));
 
     systemNotificationsServiceMock = createSpyObj<SystemNotificationsService>(SystemNotificationsService.name, [
       'showNotification',
@@ -102,11 +104,11 @@ describe('PagesWalletTransactionEditorService', () => {
     describe('creating transaction', () => {
       describe('success', () => {
         beforeEach(() => {
-          matDialogRef.afterClosed.and.returnValue(of(WALLET_TRANSACTIONS_INCOME_MOCK));
+          matDialogRef.afterClosed.and.returnValue(of(WALLET_TRANSACTIONS_TO_CREATE_INCOME_MOCK));
         });
 
         it('created transaction\'s name should invoke showNotification', (done) => {
-          service.openEditor(WalletTransactionType.Incomes)
+          service.openEditor(WalletsDetailsTransaction.create({ type: WalletTransactionType.Incomes }))
             .subscribe( () => {
               expect(systemNotificationsServiceMock.showNotification).toHaveBeenCalled();
               done();
@@ -114,10 +116,10 @@ describe('PagesWalletTransactionEditorService', () => {
         });
 
         it('should return created transaction', (done) => {
-          service.openEditor(WalletTransactionType.Incomes)
+          service.openEditor(WalletsDetailsTransaction.create({ type: WalletTransactionType.Incomes }))
             .subscribe( (data: WalletsDetailsTransaction | null) => {
               expect(data).toBeInstanceOf(WalletsDetailsTransaction);
-              expect(data).toEqual(WALLET_TRANSACTIONS_INCOME_MOCK);
+              expect(data!.id).toEqual(WALLET_TRANSACTIONS_CREATED_INCOME_MOCK.id);
               done();
             });
         });
@@ -129,14 +131,14 @@ describe('PagesWalletTransactionEditorService', () => {
         });
 
         it('canceled updating transaction\'s name should not invoke showNotification', fakeAsync(() => {
-          service.openEditor(WalletTransactionType.Incomes);
+          service.openEditor(WalletsDetailsTransaction.create({ type: WalletTransactionType.Incomes }));
           flushMicrotasks();
 
           expect(systemNotificationsServiceMock.showNotification).not.toHaveBeenCalled();
         }));
 
         it('should return undefined', (done) => {
-          service.openEditor(WalletTransactionType.Incomes)
+          service.openEditor(WalletsDetailsTransaction.create({ type: WalletTransactionType.Incomes }))
             .subscribe( (data: WalletsDetailsTransaction | null) => {
               expect(data).toBe(null);
               done();

@@ -24,11 +24,6 @@ export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
   };
 
   public transactionsTypeForm = new FormControl<WalletSelectionValue>('');
-
-  private transactionTypeSub!: Subscription;
-
-  public selectedType?: WalletSelectionValue;
-
   public walletTransactionType: typeof WalletTransactionType = WalletTransactionType;
   public displayedColumns: string[] = [ 'date', 'description', 'amount', 'actions' ];
   public walletsManagementItem?: WalletsManagementItem;
@@ -39,6 +34,8 @@ export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
     hasError: false,
     isLoading: true,
   };
+
+  private transactionTypeSub!: Subscription;
 
   public constructor(
     private readonly pagesWalletDetailsService: PagesWalletDetailsService,
@@ -56,15 +53,11 @@ export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
       this.walletsManagementItem = wallet;
       this.getWalletTransactions(wallet.id!);
 
-      this.transactionTypeSub = this.transactionsTypeForm.valueChanges.subscribe((selectedType: WalletSelectionValue | null) => {
-        this.selectedType = selectedType!;
-        this.filterTransactions(this.selectedType!);
-      });
+      this.transactionTypeSub = this.transactionsTypeForm.valueChanges
+        .subscribe(() => {
+          this.filterTransactions();
+        });
     });
-  }
-
-  public setTransactionType(value: WalletSelectionValue): void {
-    this.filterTransactions(value);
   }
 
   public handleWalletEdit(): void {
@@ -77,19 +70,25 @@ export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
   }
 
   public handleCreateTransaction(type: WalletTransactionType): void {
-    this.pagesWalletTransactionEditorService.openEditor(WalletsDetailsTransaction.create({ type })).subscribe( (transaction: WalletsDetailsTransaction | null) => {
-      if(transaction) {
-        this.createTransaction(transaction);
-      }
-    });
+    this.pagesWalletTransactionEditorService.openEditor(WalletsDetailsTransaction.create({ type }))
+      .subscribe( (transaction: WalletsDetailsTransaction | null) => {
+        if(transaction) {
+          this.createTransaction(transaction);
+        }
+      });
   }
 
   public handleEditTransaction(transaction: WalletsDetailsTransaction): void {
-    this.pagesWalletTransactionEditorService.openEditor(transaction).subscribe( (transaction: WalletsDetailsTransaction | null) => {
-      if(transaction) {
-        this.updateTransaction(transaction);
-      }
-    });
+    this.pagesWalletTransactionEditorService.openEditor(transaction)
+      .subscribe( (transaction: WalletsDetailsTransaction | null) => {
+        if(transaction) {
+          this.updateTransaction(transaction);
+        }
+      });
+  }
+
+  public ngOnDestroy(): void {
+    this.transactionTypeSub.unsubscribe();
   }
 
   private getWalletTransactions(walletId: TServerEntityId): void {
@@ -113,16 +112,16 @@ export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  private filterTransactions(type: WalletSelectionValue): void {
+  private filterTransactions(/*type: WalletSelectionValue*/): void {
     this.displayedTransactions = this.walletsDetailsData.data!.filter(
       (item: WalletsDetailsTransaction) =>
-        (type === '') ? true : type.toString() === item.type.toString(),
+        (this.transactionsTypeForm.value === '') ? true : this.transactionsTypeForm.value === item.type.toString(),
     );
   }
 
   private createTransaction(transaction: WalletsDetailsTransaction): void {
     this.walletsDetailsData.data?.push(transaction);
-    this.filterTransactions(this.selectedType!);
+    this.filterTransactions();
   }
 
   private updateWallet({ name }: IWalletModalData): void {
@@ -141,10 +140,6 @@ export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
 
       return transaction_;
     });
-    this.filterTransactions(this.selectedType!);
-  }
-
-  public ngOnDestroy(): void {
-    this.transactionTypeSub.unsubscribe();
+    this.filterTransactions();
   }
 }

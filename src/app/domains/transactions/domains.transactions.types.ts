@@ -1,5 +1,5 @@
-import { TServerDateTime } from "src/app/common/date-and-time/common-date-and-time.types";
-import { TServerEntityId } from "src/app/common/http/common.http.types";
+import { TServerDateTime } from 'src/app/common/date-and-time/common-date-and-time.types';
+import { TServerEntityId } from 'src/app/common/http/common.http.types';
 
 export interface IWalletTransactionItemData extends Omit<IWalletTransactionApiResponse, 'id'> {
   id: TServerEntityId | null;

@@ -18,8 +18,8 @@
     <mat-error *ngIf="amountIsNotProvided">
       Amount is required
     </mat-error>
-    <mat-error *ngIf="amountIsZeroOrLess">
-      Amount must be bigger than 0
+    <mat-error *ngIf="amountHasInvalidFormat">
+      Amount has invalid format
     </mat-error>
   </mat-form-field>
   <mat-form-field class="example-full-width" appearance="fill">

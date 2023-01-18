@@ -1,26 +1,27 @@
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { DomainsWalletsGateway } from 'src/app/domains/wallets/domains.wallets.gateway';
-import { WALLET_TRANSACTIONS_API_RESPONSE_MOCK } from 'src/app/domains/wallets/domains.wallets.mocks';
+import { DomainsTransactionsGateway } from 'src/app/domains/transactions/domains.transactions.gateway';
+import { WALLET_TRANSACTIONS_API_RESPONSE_MOCK } from 'src/app/domains/transactions/domains.transactions.mocks';
 import { WalletsDetailsTransaction } from './pages-wallet-details-item.model';
-
 import { PagesWalletDetailsService } from './pages-wallet-details.service';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
 
 describe('PagesWalletDetailsService', () => {
   let service: PagesWalletDetailsService;
-  let domainsWalletsGatewayMock: SpyObj<DomainsWalletsGateway>;
+  let domainsWalletsGatewayMock: SpyObj<DomainsTransactionsGateway>;
   let walletId: number;
 
   beforeEach(() => {
     walletId = 1;
-    domainsWalletsGatewayMock = createSpyObj<DomainsWalletsGateway>(DomainsWalletsGateway.name, [ 'getWalletTransactions' ]);
+
+    domainsWalletsGatewayMock = createSpyObj<DomainsTransactionsGateway>
+    (DomainsTransactionsGateway.name, [ 'getWalletTransactions' ]);
     domainsWalletsGatewayMock.getWalletTransactions.and.returnValue(of(WALLET_TRANSACTIONS_API_RESPONSE_MOCK(walletId)));
 
     TestBed.configureTestingModule({
       providers: [
-        { provide: DomainsWalletsGateway, useValue: domainsWalletsGatewayMock },
+        { provide: DomainsTransactionsGateway, useValue: domainsWalletsGatewayMock },
       ],
     });
     service = TestBed.inject(PagesWalletDetailsService);

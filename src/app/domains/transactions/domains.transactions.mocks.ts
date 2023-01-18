@@ -1,7 +1,6 @@
-import { WalletsDetailsTransaction } from "src/app/pages/wallets/wallet-details/pages-wallet-details-item.model";
-import { NEW_DATE_EXAMPLE1 } from "../wallets/domains.wallets.mocks";
-import { ITransactionPayload, IWalletTransactionApiResponse, WalletTransactionType } from "./domains.transactions.types";
-
+import { WalletsDetailsTransaction } from 'src/app/pages/wallets/wallet-details/pages-wallet-details-item.model';
+import { NEW_DATE_EXAMPLE1 } from '../wallets/domains.wallets.mocks';
+import { ITransactionPayload, IWalletTransactionApiResponse, WalletTransactionType } from './domains.transactions.types';
 
 export function WALLET_TRANSACTIONS_API_RESPONSE_MOCK(id: number): IWalletTransactionApiResponse[] {
   if(id === 1) {
@@ -81,8 +80,6 @@ export const UPDATED_TRANSACTION_PAYLOAD_MOCK: ITransactionPayload = {
   type: WalletTransactionType.Incomes,
 };
 
-
-
 export const WALLET_TRANSACTIONS_API_RESPONSE_1 = [
   {
     id: 1,
@@ -139,6 +136,22 @@ export const WALLET_TRANSACTIONS_INCOME_MOCK = new WalletsDetailsTransaction({
   description: 'Some description 1',
 });
 
+export const WALLET_TRANSACTIONS_TO_CREATE_INCOME_MOCK = new WalletsDetailsTransaction({
+  id: null,
+  amount: 150,
+  creationDate: NEW_DATE_EXAMPLE1,
+  type: WalletTransactionType.Incomes,
+  description: 'Some description 1',
+});
+
+export const WALLET_TRANSACTIONS_CREATED_INCOME_MOCK = new WalletsDetailsTransaction({
+  id: 200,
+  amount: 150,
+  creationDate: NEW_DATE_EXAMPLE1,
+  type: WalletTransactionType.Incomes,
+  description: 'Some description 1',
+});
+
 export const UPDATED_WALLET_TRANSACTIONS_INCOME_MOCK = new WalletsDetailsTransaction({
   id: 10,
   amount: 250,
@@ -154,22 +167,3 @@ export const WALLET_TRANSACTIONS_EXPENSE_MOCK = new WalletsDetailsTransaction({
   type: WalletTransactionType.Expenses,
   description: 'Some description 2',
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

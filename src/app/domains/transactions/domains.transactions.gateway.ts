@@ -31,7 +31,8 @@ export class DomainsTransactionsGateway {
     });
   }
 
-  public editWalletTransaction(id: TServerEntityId, payload: WalletsDetailsTransaction): Observable<IWalletTransactionApiResponse> {
+  public editWalletTransaction(id: TServerEntityId, payload: WalletsDetailsTransaction)
+  : Observable<IWalletTransactionApiResponse> {
     return fakeRequest({
       id: id,
       creationDate: payload.date.toString(),

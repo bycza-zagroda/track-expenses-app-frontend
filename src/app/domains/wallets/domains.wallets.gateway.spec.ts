@@ -12,10 +12,8 @@ describe('DomainsWalletsGateway', () => {
   let walletResp: IWalletApiResponse;
   let httpTestingController: HttpTestingController;
   let apiUrl: string;
-  let walletId: number;
 
   beforeEach(async () => {
-    walletId = 1;
     walletResp = WALLET_RESP_MOCK;
     apiUrl = API_WALLETS_URL;
 

@@ -5,6 +5,6 @@ import { CommonModule } from '@angular/common';
   declarations: [],
   imports: [
     CommonModule,
-  ]
+  ],
 })
 export class DomainsTransactionsModule { }
