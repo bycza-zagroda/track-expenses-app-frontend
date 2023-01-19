@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IWalletModalData, IWalletModalFormType } from './pages-wallets-management-editor.types';
+import { checkInputError } from 'src/app/common/utils/forms/formUtils';
 
 @Component({
   selector: 'app-wallet-form-modal',
@@ -35,9 +36,7 @@ export class PagesWalletsManagementEditorComponent {
   }
 
   public checkInputError(inputName: string, errorType: string): boolean {
-    return !!(this.form.get(inputName)?.invalid &&
-      this.form.get(inputName)?.touched &&
-      this.form.get(inputName)?.errors?.[errorType]);
+    return checkInputError(this.form, inputName, errorType);
   }
 
   public save(): void {

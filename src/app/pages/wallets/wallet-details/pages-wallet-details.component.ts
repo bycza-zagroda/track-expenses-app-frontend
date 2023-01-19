@@ -3,7 +3,8 @@ import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { TDataState, TServerEntityId } from 'src/app/common/http/common.http.types';
-import { WalletSelectionValue, WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.types';
+import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.constants';
+import { WalletSelectionValue } from 'src/app/domains/transactions/domains.transactions.types';
 import { WalletsManagementItem } from '../management/pages-wallets-wallets-management-item.model';
 import { PagesWalletsManagementEditorService } from '../management/wallet-editor/pages-wallets-management-editor.service';
 import { IWalletModalData } from '../management/wallet-editor/pages-wallets-management-editor.types';
@@ -112,10 +113,10 @@ export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  private filterTransactions(/*type: WalletSelectionValue*/): void {
+  private filterTransactions(): void {
     this.displayedTransactions = this.walletsDetailsData.data!.filter(
-      (item: WalletsDetailsTransaction) =>
-        (this.transactionsTypeForm.value === '') ? true : this.transactionsTypeForm.value === item.type.toString(),
+      (transaction: WalletsDetailsTransaction) =>
+        (this.transactionsTypeForm.value === '') ? true : this.transactionsTypeForm.value === transaction.type.toString(),
     );
   }
 
@@ -133,12 +134,12 @@ export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
   }
 
   private updateTransaction(transaction: WalletsDetailsTransaction): void {
-    this.walletsDetailsData.data = this.walletsDetailsData.data!.map( (transaction_: WalletsDetailsTransaction) => {
-      if(transaction_.id == transaction.id) {
+    this.walletsDetailsData.data = this.walletsDetailsData.data!.map( (transactionItem: WalletsDetailsTransaction) => {
+      if(transactionItem.id == transaction.id) {
         return transaction;
       }
 
-      return transaction_;
+      return transactionItem;
     });
     this.filterTransactions();
   }

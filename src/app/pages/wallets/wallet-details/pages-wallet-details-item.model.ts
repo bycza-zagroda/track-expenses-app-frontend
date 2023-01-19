@@ -1,8 +1,10 @@
 import { TServerEntityId } from 'src/app/common/http/common.http.types';
 import {
+  WalletTransactionType,
+} from 'src/app/domains/transactions/domains.transactions.constants';
+import {
   IWalletTransactionApiResponse,
   IWalletTransactionItemData,
-  WalletTransactionType,
 } from 'src/app/domains/transactions/domains.transactions.types';
 
 export class WalletsDetailsTransaction {

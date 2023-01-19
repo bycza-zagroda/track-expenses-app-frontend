@@ -17,7 +17,7 @@ import {
   WALLET_TRANSACTIONS_TO_CREATE_INCOME_MOCK,
 } from 'src/app/domains/transactions/domains.transactions.mocks';
 import { WalletsDetailsTransaction } from '../pages-wallet-details-item.model';
-import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.types';
+import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.constants';
 
 describe('PagesWalletTransactionEditorService', () => {
   let service: PagesWalletTransactionEditorService;

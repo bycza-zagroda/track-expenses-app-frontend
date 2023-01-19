@@ -1,7 +1,9 @@
 import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.types';
+import { TServerEntityId } from 'src/app/common/http/common.http.types';
+import { checkInputError } from 'src/app/common/utils/forms/formUtils';
+import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.constants';
 import { WalletsDetailsTransaction } from '../pages-wallet-details-item.model';
 import { IWalletTransactionModalFormType } from './pages-wallet-transaction.editor.types';
 
@@ -14,18 +16,22 @@ export const regexAmount = /(^(\d{1,})$)|((^\d{1,})\.\d{1,2}$)/;
 })
 export class PagesWalletTransactionEditorComponent {
   public selectTransactionsTypes: Record<string, WalletTransactionType> = {
-    'Incomes': WalletTransactionType.Incomes,
-    'Expenses': WalletTransactionType.Expenses,
+    'Income': WalletTransactionType.Incomes,
+    'Expense': WalletTransactionType.Expenses,
   };
 
   public form!: FormGroup<IWalletTransactionModalFormType>;
+
+  private transactionId: TServerEntityId | null = null;
 
   public constructor(
     private readonly dialogRef: MatDialogRef<PagesWalletTransactionEditorComponent>,
     @Inject(MAT_DIALOG_DATA) public data: WalletsDetailsTransaction,
   ) {
+    this.transactionId = this.data.id;
+
     this.form = new FormGroup<IWalletTransactionModalFormType>({
-      amount: new FormControl(this.data.amount == 0 ? null : this.data.amount, {
+      amount: new FormControl(this.data.amount === 0 ? null : this.data.amount, {
         validators: [
           Validators.required,
           Validators.pattern(regexAmount),
@@ -49,10 +55,7 @@ export class PagesWalletTransactionEditorComponent {
   }
 
   public checkInputError(inputName: string, errorType: string): boolean {
-    return !!(this.form.get(inputName)?.invalid
-      && this.form.get(inputName)?.touched
-      && this.form.get(inputName)?.errors?.[errorType]
-    );
+    return checkInputError(this.form, inputName, errorType);
   }
 
   public get amountIsNotProvided(): boolean {
@@ -68,7 +71,13 @@ export class PagesWalletTransactionEditorComponent {
       return;
     }
 
-    this.dialogRef.close(this.form.value);
+    this.dialogRef.close(WalletsDetailsTransaction.create({
+      id: this.transactionId ?? undefined,
+      amount: this.form.get('amount')!.value ?? undefined,
+      creationDate: this.form.get('date')!.value.toString(),
+      type: this.form.get('type')!.value ?? undefined,
+      description: this.form.get('description')!.value ?? undefined,
+    }));
   }
 
   public setTransactionType(value: WalletTransactionType): void {

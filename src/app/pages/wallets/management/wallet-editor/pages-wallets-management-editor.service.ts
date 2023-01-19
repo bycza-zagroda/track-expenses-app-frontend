@@ -26,9 +26,9 @@ export class PagesWalletsManagementEditorService {
       switchMap((walletResp: IWalletModalData | undefined) => {
         return !!walletResp ? this.makeRequest(walletResp, wallet ?? null) : of(null);
       }),
-      tap((w: WalletsManagementItem | null) => {
-        if(w) {
-          this.notify(w, wallet ? 'updated' : 'created');
+      tap((walletItem: WalletsManagementItem | null) => {
+        if(walletItem) {
+          this.notify(walletItem, wallet ? 'updated' : 'created');
         }
       }),
     );

@@ -1,6 +1,7 @@
 import { WalletsDetailsTransaction } from 'src/app/pages/wallets/wallet-details/pages-wallet-details-item.model';
 import { NEW_DATE_EXAMPLE1 } from '../wallets/domains.wallets.mocks';
-import { ITransactionPayload, IWalletTransactionApiResponse, WalletTransactionType } from './domains.transactions.types';
+import { WalletTransactionType } from './domains.transactions.constants';
+import { ITransactionPayload, IWalletTransactionApiResponse } from './domains.transactions.types';
 
 export function WALLET_TRANSACTIONS_API_RESPONSE_MOCK(id: number): IWalletTransactionApiResponse[] {
   if(id === 1) {

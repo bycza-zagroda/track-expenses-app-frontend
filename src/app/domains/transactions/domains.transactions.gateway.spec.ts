@@ -46,7 +46,7 @@ describe('DomainsWalletsGateway', () => {
         expect(val.id).toBeGreaterThan(99);
         expect(val.amount).toEqual(TRANSACTION_PAYLOAD_MOCK.amount);
         expect(val.type).toEqual(TRANSACTION_PAYLOAD_MOCK.type);
-        expect(val.description).toEqual(TRANSACTION_PAYLOAD_MOCK.description);
+        expect(val.description).toEqual(TRANSACTION_PAYLOAD_MOCK.description!);
         done();
       });
     });

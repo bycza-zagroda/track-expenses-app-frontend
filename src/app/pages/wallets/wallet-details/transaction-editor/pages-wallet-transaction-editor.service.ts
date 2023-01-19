@@ -22,27 +22,25 @@ export class PagesWalletTransactionEditorService {
         data: transaction,
       }).afterClosed().pipe(
       switchMap((transactionResp: WalletsDetailsTransaction | undefined) => {
-        return !!transactionResp ? this.makeRequest(transactionResp, transaction) : of(null);
+        return !!transactionResp ? this.makeRequest(transactionResp) : of(null);
       }),
-      tap((transaction_: WalletsDetailsTransaction | null) => {
-        if(transaction_) {
-          this.notify(transaction_, transaction.id ? 'updated' : 'created');
+      tap((transactionItem: WalletsDetailsTransaction | null) => {
+        if(transactionItem) {
+          this.notify(transactionItem, transaction.id ? 'updated' : 'created');
         }
       }),
     );
   }
 
-  private makeRequest({ amount, date, description, type }: WalletsDetailsTransaction,
-    transaction: WalletsDetailsTransaction): Observable<WalletsDetailsTransaction> {
+  private makeRequest(transaction: WalletsDetailsTransaction): Observable<WalletsDetailsTransaction> {
     return transaction.id ?
-      this.pagesWalletDetailsService.editWalletTransaction(transaction.id, new WalletsDetailsTransaction({
-        id: transaction.id,
-        amount: amount,
-        creationDate: date.toString(),
-        description: description ?? '',
-        type: type,
-      })) :
-      this.pagesWalletDetailsService.createWalletTransaction({ amount, date, type, description: description ?? '' });
+      this.pagesWalletDetailsService.editWalletTransaction(transaction.id, transaction) :
+      this.pagesWalletDetailsService.createWalletTransaction({
+        amount: transaction.amount,
+        date: transaction.date,
+        type: transaction.type,
+        description: transaction.description === '' ? null : transaction.description,
+      });
   }
 
   private notify(updatedWallet: WalletsDetailsTransaction | null, type: string): void {

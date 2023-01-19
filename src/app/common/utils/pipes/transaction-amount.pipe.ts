@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.types';
+import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.constants';
 
 @Pipe({
   name: 'transactionAmount',

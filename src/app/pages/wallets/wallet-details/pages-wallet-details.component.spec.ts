@@ -24,7 +24,7 @@ import {
   WALLET_TRANSACTIONS_INCOME_MOCK,
   WALLET_TRANSACTIONS_OBJECTS_MOCK,
 } from 'src/app/domains/transactions/domains.transactions.mocks';
-import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.types';
+import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.constants';
 
 describe('PagesWalletDetailsComponent', () => {
   let component: PagesWalletDetailsComponent;
