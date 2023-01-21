@@ -2,12 +2,13 @@ import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TServerEntityId } from 'src/app/common/http/common.http.types';
-import { checkInputError } from 'src/app/common/utils/forms/formUtils';
+import { checkInputError } from 'src/app/common/utils/forms/common-utils-forms-form-utils';
 import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.constants';
 import { WalletsDetailsTransaction } from '../pages-wallet-details-item.model';
 import { IWalletTransactionModalFormType } from './pages-wallet-transaction.editor.types';
 
-export const regexAmount = /(^(\d{1,})$)|((^\d{1,})\.\d{1,2}$)/;
+export const regexAmount = /^\d+(\.\d{1,2})?$/;
+export const regexDate = /\d{2}\/\d{2}\/\d{4}/;
 
 @Component({
   selector: 'app-transaction-editor',
@@ -42,14 +43,15 @@ export class PagesWalletTransactionEditorComponent {
       date: new FormControl(this.data.date, {
         validators: [
           Validators.required,
+          Validators.pattern(regexDate),
         ],
-        nonNullable: true,
+        nonNullable: false,
       }),
       type: new FormControl(this.data.type, {
         validators: [
           Validators.required,
         ],
-        nonNullable: false,
+        nonNullable: true,
       }),
     });
   }
@@ -66,6 +68,14 @@ export class PagesWalletTransactionEditorComponent {
     return this.checkInputError('amount', 'pattern');
   }
 
+  public get dateIsNotProvided(): boolean {
+    return this.checkInputError('date', 'required');
+  }
+
+  public get dateHasInvalidFormat(): boolean {
+    return this.checkInputError('date', 'pattern');
+  }
+
   public save(): void {
     if (this.form.invalid) {
       return;
@@ -74,7 +84,7 @@ export class PagesWalletTransactionEditorComponent {
     this.dialogRef.close(WalletsDetailsTransaction.create({
       id: this.transactionId ?? undefined,
       amount: this.form.get('amount')!.value ?? undefined,
-      creationDate: this.form.get('date')!.value.toString(),
+      creationDate: this.form.get('date')!.value!.toString(),
       type: this.form.get('type')!.value ?? undefined,
       description: this.form.get('description')!.value ?? undefined,
     }));

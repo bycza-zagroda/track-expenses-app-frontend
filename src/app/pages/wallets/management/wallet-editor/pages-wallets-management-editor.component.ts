@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IWalletModalData, IWalletModalFormType } from './pages-wallets-management-editor.types';
-import { checkInputError } from 'src/app/common/utils/forms/formUtils';
+import { checkInputError } from 'src/app/common/utils/forms/common-utils-forms-form-utils';
 
 @Component({
   selector: 'app-wallet-form-modal',

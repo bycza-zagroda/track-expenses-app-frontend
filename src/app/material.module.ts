@@ -10,7 +10,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 
 @NgModule({
   imports: [
@@ -26,6 +26,9 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
+  ],
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }
   ],
   exports: [
     MatButtonModule,

@@ -11,6 +11,6 @@ export interface ITransactionModalData {
 export interface IWalletTransactionModalFormType {
   amount: FormControl<number | null>;
   description?: FormControl<string | null>;
-  date: FormControl<Date>;
+  date: FormControl<Date | null>;
   type: FormControl<WalletTransactionType | null>;
 }
