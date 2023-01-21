@@ -6,6 +6,7 @@ import { NotificationType } from 'src/app/common/utils/system-notifications/syst
 import { ConfirmDialogService } from '../../../common/confirmation-modal/confirm-dialog.service';
 import { LoadingSnackbarService } from '../../../common/loading-modal/loading-snackbar.service';
 import { PagesWalletsManagementEditorService } from './wallet-editor/pages-wallets-management-editor.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-wallets-management',
@@ -22,10 +23,11 @@ export class PagesWalletsManagementComponent implements OnInit {
   };
 
   public constructor(
-      private readonly myWalletsService: PagesWalletsManagementService,
-      private readonly confirmDialogService: ConfirmDialogService,
-      private readonly loadingDialogService: LoadingSnackbarService,
-      private readonly pagesWalletsManagementEditorService: PagesWalletsManagementEditorService,
+  private readonly myWalletsService: PagesWalletsManagementService,
+  private readonly confirmDialogService: ConfirmDialogService,
+  private readonly loadingDialogService: LoadingSnackbarService,
+  private readonly pagesWalletsManagementEditorService: PagesWalletsManagementEditorService,
+  private readonly router: Router,
   ) {
   }
 
@@ -51,7 +53,7 @@ export class PagesWalletsManagementComponent implements OnInit {
   public handleWalletCreate(): void {
     this.pagesWalletsManagementEditorService.openWalletEditor().subscribe({
       next: (createdWallet: WalletsManagementItem | null) => {
-        if(createdWallet) {
+        if (createdWallet) {
           this.createWallet(createdWallet);
         }
       },
@@ -73,11 +75,15 @@ export class PagesWalletsManagementComponent implements OnInit {
   public handleWalletEdit(wallet: WalletsManagementItem): void {
     this.pagesWalletsManagementEditorService.openWalletEditor(wallet).subscribe({
       next: (updatedWallet: WalletsManagementItem | null) => {
-        if(updatedWallet) {
+        if (updatedWallet) {
           this.updateWallet(wallet, updatedWallet);
         }
       },
     });
+  }
+
+  public async goToWalletDetails(wallet: WalletsManagementItem): Promise<void> {
+    await this.router.navigate([ `/wallets/${wallet.id!}` ]);
   }
 
   private createWallet(wallet: WalletsManagementItem): void {
