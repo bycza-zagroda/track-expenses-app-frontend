@@ -22,3 +22,18 @@
 .message-container {
   margin-top: 20px;
 }
+.desktop-button{
+  @media (max-width: 600px) {
+    display: none;
+  }
+}
+
+.mobile-button {
+  position: fixed;
+  bottom: 30px;
+  right: 20px;
+  font-size: 30px;
+  @media (min-width: 600px) {
+    display: none;
+  }
+}
