@@ -10,6 +10,12 @@
   @media only screen and (min-width: 900px) {
     grid-template-columns: 1fr 1fr;
   }
+
+  app-my-wallet:last-of-type {
+    @media (max-width: 1100px) {
+      margin-bottom: 40px;
+    }
+  }
 }
 
 .loading-container {
@@ -22,8 +28,9 @@
 .message-container {
   margin-top: 20px;
 }
-.desktop-button{
-  @media (max-width: 600px) {
+
+.desktop-button {
+  @media (max-width: 1100px) {
     display: none;
   }
 }
@@ -33,7 +40,11 @@
   bottom: 30px;
   right: 20px;
   font-size: 30px;
-  @media (min-width: 600px) {
+  @media (min-width: 1100px) {
     display: none;
   }
+}
+
+app-my-wallet {
+
 }
