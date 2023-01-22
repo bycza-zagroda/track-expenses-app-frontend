@@ -15,6 +15,7 @@
                        (walletDetailsOpen)="goToWalletDetails($event)"
                        (walletDelete)="handleWalletDelete($event)">
         </app-my-wallet>
-        <app-add-new-wallet (click)="handleWalletCreate()"></app-add-new-wallet>
+        <app-add-new-wallet class="desktop-button" (click)="handleWalletCreate()"></app-add-new-wallet>
+        <button class="mobile-button" mat-raised-button color="accent" (click)="handleWalletCreate()">+</button>
     </div>
 </div>
