@@ -51,3 +51,22 @@ body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
+.mat-snack-bar-container{
+  color: white;
+  font-weight: 500;
+  &.success{
+    background-color: #28a745!important;
+  }
+  &.error{
+    background-color: #dc3545!important;
+  }
+  &.info{
+    background-color: #17a2b8!important
+  }
+  &.warning{
+    background-color: #ffc107!important
+  }
+  .mat-button{
+    color: white;
+  }
+}

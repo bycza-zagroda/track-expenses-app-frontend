@@ -11,9 +11,10 @@ export class SystemNotificationsService {
     private readonly snackBar: MatSnackBar,
   ) { }
 
-  public showNotification({ message, dismissBtnText = 'OK' }: IShowNotificationConfig): void {
+  public showNotification({ message, dismissBtnText = 'OK', type="success" }: IShowNotificationConfig): void {
     this.snackBar.open(message, dismissBtnText, {
       duration: 1000 * SNACKBAR_DURATION_SECONDS,
+      panelClass: [type]
     });
   }
 }
