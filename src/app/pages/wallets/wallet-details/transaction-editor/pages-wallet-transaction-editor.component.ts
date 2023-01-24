@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TServerEntityId } from 'src/app/common/http/common.http.types';
 import { checkInputError } from 'src/app/common/utils/forms/common-utils-forms-form-utils';
@@ -43,7 +43,8 @@ export class PagesWalletTransactionEditorComponent {
       date: new FormControl(this.data.date, {
         validators: [
           Validators.required,
-          Validators.pattern(regexDate),
+          this.datePattern(),
+          //Validators.pattern(regexDate),
         ],
         nonNullable: false,
       }),
@@ -56,8 +57,39 @@ export class PagesWalletTransactionEditorComponent {
     });
   }
 
+  public datePattern(): ValidatorFn {
+
+    return (control: AbstractControl) => {debugger
+      const x: Date = control.value as Date;
+
+      if(x == null) {
+
+        const checkPattern = control.value.match(regexDate);
+
+        if(!checkPattern) {
+          return { datePatternError: true };
+        }
+
+        const dateString = (control.value as string).split("/");
+        const newDate = new Date(parseInt(dateString[2]), parseInt(dateString[1]), parseInt(dateString[0]));
+
+        return { datePatternError: true };
+      }
+      return null;
+  }
+
+  }
+
   public checkInputError(inputName: string, errorType: string): boolean {
     return checkInputError(this.form, inputName, errorType);
+  }
+
+  public get datePattern2(): boolean {
+    const a2 = this.form.get('date');
+    const a3 = this.form.get('date')?.errors;
+
+    const a = this.checkInputError('date', 'datePatternError');
+    return a;
   }
 
   public get amountIsNotProvided(): boolean {

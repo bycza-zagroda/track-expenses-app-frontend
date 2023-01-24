@@ -9,8 +9,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { RoutesModule } from './routes/routes.module';
-import { DomainsModule } from './domains/domains.module';
 import { CommonComponentsModule } from './common/components/common-components.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [ AppComponent ],
@@ -23,8 +23,11 @@ import { CommonComponentsModule } from './common/components/common-components.mo
     BrowserAnimationsModule,
     RouterModule,
     RoutesModule,
-    DomainsModule,
+    HttpClientModule,
     CommonComponentsModule,
+    //DateAdapter //OK
+    //MomentDateAdapter
+    //MomentDateModule
   ],
   bootstrap: [ AppComponent ],
 })

@@ -27,9 +27,9 @@ import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
     MatDatepickerModule,
     MatNativeDateModule,
   ],
-  providers: [
-    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' }
-  ],
+  // providers: [
+  //   { provide: MAT_DATE_LOCALE, useValue: 'en-GB' } // useValue: MAT_DATE_LOCALE
+  // ],
   exports: [
     MatButtonModule,
     MatIconModule,

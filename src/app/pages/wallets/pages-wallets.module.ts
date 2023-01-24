@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PagesWalletsManagementComponent } from './management/pages-wallets-management.component';
 import { RouterModule, Routes } from '@angular/router';
-import { DomainsWalletsModule } from '../../domains/wallets/domains.wallets.module';
 import {
   PagesWalletsManagementItemComponent,
 } from './management/wallets-management-item/pages-wallets-management-item.component';
@@ -46,7 +45,6 @@ const routes: Routes = [
   imports: [
     RouterModule.forChild(routes),
     CommonModule,
-    DomainsWalletsModule,
     MaterialModule,
     ReactiveFormsModule,
     CommonComponentsModule,

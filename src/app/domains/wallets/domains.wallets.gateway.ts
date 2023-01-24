@@ -9,6 +9,7 @@ import { API_WALLETS_URL } from './domains.wallets.constants';
 import { fakeRequest } from 'src/app/common/http/common.http.fake-request';
 import { getRandomNumber } from 'src/app/common/utils/common.utils.random';
 import { GET_WALLETS_API_RESPONSE_MOCK } from './domains.wallets.mocks';
+import { TServerEntityId } from 'src/app/common/http/common.http.types';
 
 @Injectable({
   providedIn: 'root',
@@ -29,12 +30,12 @@ export class DomainsWalletsGateway {
     return this.http.post<IWalletApiResponse>(API_WALLETS_URL, { name });
   }
 
-  public updateWallet(id: number, { name }: IWalletPayload): Observable<IWalletApiResponse> {
+  public updateWallet(id: TServerEntityId, { name }: IWalletPayload): Observable<IWalletApiResponse> {
     return fakeRequest({id: id, creationDate: new Date().toString(), name});
     return this.http.patch<IWalletApiResponse>(`${ API_WALLETS_URL }/${ id }`, { name });
   }
 
-  public deleteWallet(id: number): Observable<unknown> {
+  public deleteWallet(id: TServerEntityId): Observable<unknown> {
     return this.http.delete(`${ API_WALLETS_URL }/${ id }`);
   }
 }
