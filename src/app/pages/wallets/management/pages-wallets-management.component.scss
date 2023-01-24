@@ -11,11 +11,10 @@
     grid-template-columns: 1fr 1fr;
   }
 
-  app-my-wallet:last-of-type {
-    @media (max-width: 1100px) {
-      margin-bottom: 40px;
-    }
+  @media (max-width: 1100px) {
+    padding-bottom: 40px;
   }
+
 }
 
 .loading-container {
