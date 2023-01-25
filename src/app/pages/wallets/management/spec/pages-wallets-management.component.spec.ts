@@ -17,6 +17,7 @@ import { By } from '@angular/platform-browser';
 import { SystemMessageComponent } from 'src/app/common/components/system-message/system-message.component';
 import { PagesWalletsManagementEditorService } from '../wallet-editor/pages-wallets-management-editor.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Router } from '@angular/router';
 
 describe('PagesWalletsManagementComponent', () => {
   let component: PagesWalletsManagementComponent;
@@ -28,6 +29,7 @@ describe('PagesWalletsManagementComponent', () => {
   let walletSubject: Subject<WalletsManagementItem>;
   let matEditorSubject: Subject<WalletsManagementItem | null>;
   let editorService: SpyObj<PagesWalletsManagementEditorService>;
+  let routeMock: Router;
 
   beforeEach(async () => {
     walletsSubject = new Subject<WalletsManagementItem[]>();
@@ -47,6 +49,8 @@ describe('PagesWalletsManagementComponent', () => {
       'updateWallet',
     ]);
 
+    routeMock = createSpyObj<Router>(Router.name, [ 'navigate' ]);
+
     myWalletsServiceMock.getWallets.and.returnValue(walletsSubject.asObservable());
     myWalletsServiceMock.createWallet.and.returnValue(walletSubject.asObservable());
     myWalletsServiceMock.updateWallet.and.returnValue(walletSubject.asObservable());
@@ -61,9 +65,9 @@ describe('PagesWalletsManagementComponent', () => {
         { provide: PagesWalletsManagementService, useValue: myWalletsServiceMock },
         { provide: SystemNotificationsService, useValue: systemNotificationsServiceMock },
         { provide: PagesWalletsManagementEditorService, useValue: editorService },
+        { provide: Router, useValue: routeMock },
       ],
-    })
-      .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(PagesWalletsManagementComponent);
     component = fixture.componentInstance;
@@ -153,6 +157,15 @@ describe('PagesWalletsManagementComponent', () => {
 
         expect(component.myWalletsData.data!.length).toBe(0);
       }));
+    });
+  });
+
+  describe('goToWalletDetails', () => {
+    it('should navigate to the wallet details page', async () => {
+      const wallet = new WalletsManagementItem(WALLET_RESP_MOCK);
+      await component.goToWalletDetails(wallet);
+
+      expect(routeMock.navigate).toHaveBeenCalledWith([ `/wallets/${wallet.id!}` ]);
     });
   });
 });
