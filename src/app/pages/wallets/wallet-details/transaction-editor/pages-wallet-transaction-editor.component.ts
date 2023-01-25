@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TServerEntityId } from 'src/app/common/http/common.http.types';
 import { checkInputError } from 'src/app/common/utils/forms/common-utils-forms-form-utils';
@@ -8,7 +8,6 @@ import { WalletsDetailsTransaction } from '../pages-wallet-details-item.model';
 import { IWalletTransactionModalFormType } from './pages-wallet-transaction.editor.types';
 
 export const regexAmount = /^\d+(\.\d{1,2})?$/;
-export const regexDate = /\d{2}\/\d{2}\/\d{4}/;
 
 @Component({
   selector: 'app-transaction-editor',
@@ -43,8 +42,6 @@ export class PagesWalletTransactionEditorComponent {
       date: new FormControl(this.data.date, {
         validators: [
           Validators.required,
-          this.datePattern(),
-          //Validators.pattern(regexDate),
         ],
         nonNullable: false,
       }),
@@ -57,55 +54,16 @@ export class PagesWalletTransactionEditorComponent {
     });
   }
 
-  public datePattern(): ValidatorFn {
-
-    return (control: AbstractControl) => {debugger
-      const x: Date = control.value as Date;
-
-      if(x == null) {
-
-        const checkPattern = control.value.match(regexDate);
-
-        if(!checkPattern) {
-          return { datePatternError: true };
-        }
-
-        const dateString = (control.value as string).split("/");
-        const newDate = new Date(parseInt(dateString[2]), parseInt(dateString[1]), parseInt(dateString[0]));
-
-        return { datePatternError: true };
-      }
-      return null;
-  }
-
-  }
-
-  public checkInputError(inputName: string, errorType: string): boolean {
-    return checkInputError(this.form, inputName, errorType);
-  }
-
-  public get datePattern2(): boolean {
-    const a2 = this.form.get('date');
-    const a3 = this.form.get('date')?.errors;
-
-    const a = this.checkInputError('date', 'datePatternError');
-    return a;
-  }
-
   public get amountIsNotProvided(): boolean {
-    return this.checkInputError('amount', 'required');
+    return checkInputError(this.form, 'amount', 'required');
   }
 
   public get amountHasInvalidFormat(): boolean {
-    return this.checkInputError('amount', 'pattern');
+    return checkInputError(this.form, 'amount', 'pattern');
   }
 
   public get dateIsNotProvided(): boolean {
-    return this.checkInputError('date', 'required');
-  }
-
-  public get dateHasInvalidFormat(): boolean {
-    return this.checkInputError('date', 'pattern');
+    return checkInputError(this.form, 'date', 'required');
   }
 
   public save(): void {

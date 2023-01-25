@@ -28,15 +28,11 @@ export class PagesWalletsManagementEditorComponent {
   }
 
   public get nameIsNotProvided(): boolean {
-    return this.checkInputError('name', 'required');
+    return checkInputError(this.form, 'name', 'required');
   }
 
   public get nameHasMoreThan20Characters(): boolean {
-    return this.checkInputError('name', 'maxlength');
-  }
-
-  public checkInputError(inputName: string, errorType: string): boolean {
-    return checkInputError(this.form, inputName, errorType);
+    return checkInputError(this.form, 'name', 'maxlength');
   }
 
   public save(): void {
