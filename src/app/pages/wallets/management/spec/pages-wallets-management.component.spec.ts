@@ -29,7 +29,7 @@ describe('PagesWalletsManagementComponent', () => {
   let walletSubject: Subject<WalletsManagementItem>;
   let matEditorSubject: Subject<WalletsManagementItem | null>;
   let editorService: SpyObj<PagesWalletsManagementEditorService>;
-  let routeMock: Router;
+  let routeMock: SpyObj<Router>;
 
   beforeEach(async () => {
     walletsSubject = new Subject<WalletsManagementItem[]>();
