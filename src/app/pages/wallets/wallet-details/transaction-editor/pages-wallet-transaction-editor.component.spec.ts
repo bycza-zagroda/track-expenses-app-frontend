@@ -63,7 +63,7 @@ describe('TransactionEditorComponent', () => {
 
       it('date', () => {
         const x = component.form.get('date');
-        expect(x!.value).toEqual(WALLET_TRANSACTIONS_EXPENSE_MOCK.date);
+        expect(x!.value).toEqual(WALLET_TRANSACTIONS_EXPENSE_MOCK.transactionDate);
       });
 
       it('type', () => {
@@ -173,6 +173,10 @@ describe('TransactionEditorComponent', () => {
       it('should set form as valid', () => {
         component.form.get('amount')?.setValue(10);
         component.form.get('amount')?.markAsTouched();
+        fixture.detectChanges();
+
+        component.form.get('date')?.setValue(new Date());
+        component.form.get('date')?.markAsTouched();
         fixture.detectChanges();
 
         const errorMessageDiv: HTMLButtonElement =

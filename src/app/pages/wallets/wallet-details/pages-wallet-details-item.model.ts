@@ -9,14 +9,16 @@ import {
 
 export class WalletsDetailsTransaction {
   public readonly id: TServerEntityId | null;
-  public readonly date: Date;
+  public readonly creationDate: Date;
+  public readonly transactionDate: Date;
   public readonly description: string | null;
   public readonly type: WalletTransactionType;
   public readonly amount: number;
 
   public constructor(data: IWalletTransactionItemData) {
     this.id = data.id;
-    this.date = new Date(data.creationDate);
+    this.creationDate = new Date(data.creationDate);
+    this.transactionDate = new Date(data.transactionDate);
     this.description = data.description ?? null;
     this.type = data.type;
     this.amount = data.amount;
@@ -26,8 +28,9 @@ export class WalletsDetailsTransaction {
     return new WalletsDetailsTransaction({
       id: data.id ?? null,
       amount: data.amount ?? 0,
-      creationDate: data.creationDate ?? '',
-      description: data.description ?? '',
+      creationDate: data.creationDate ?? new Date().toISOString(),
+      transactionDate: data.transactionDate ?? new Date().toISOString(),
+      description: data.description ?? undefined,
       type: data.type ?? WalletTransactionType.Incomes,
     });
   }

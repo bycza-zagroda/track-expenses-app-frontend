@@ -22,15 +22,15 @@ export class PagesWalletDetailsService {
     );
   }
 
-  public createWalletTransaction(data: ITransactionPayload): Observable<WalletsDetailsTransaction> {
-    return this.gateway.createWalletTransaction(data).pipe(
+  public createWalletTransaction(id: TServerEntityId, data: ITransactionPayload): Observable<WalletsDetailsTransaction> {
+    return this.gateway.createWalletTransaction(id, data).pipe(
       map(transactionsResp => new WalletsDetailsTransaction(transactionsResp)),
     );
   }
 
   public editWalletTransaction(id: TServerEntityId, data: WalletsDetailsTransaction): Observable<WalletsDetailsTransaction> {
     return this.gateway.editWalletTransaction(id, data).pipe(
-      map(transactionsResp =>  new WalletsDetailsTransaction(transactionsResp)),
+      map(transactionsResp => new WalletsDetailsTransaction(transactionsResp)),
     );
   }
 }

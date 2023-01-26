@@ -2,16 +2,25 @@ import { TestBed } from '@angular/core/testing';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import { DomainsTransactionsGateway } from './domains.transactions.gateway';
 import { IWalletTransactionApiResponse } from './domains.transactions.types';
-import { TRANSACTION_PAYLOAD_MOCK, WALLET_TRANSACTIONS_INCOME_MOCK } from './domains.transactions.mocks';
+import {
+  TRANSACTION_PAYLOAD_MOCK,
+  UPDATED_WALLET_TRANSACTIONS_OBJECT_MOCK,
+  WALLET_TRANSACTIONS_API_RESPONSE_MOCK,
+} from './domains.transactions.mocks';
 import { TServerEntityId } from 'src/app/common/http/common.http.types';
+import { API_TRANSACTIONS_URL } from './domains.transactions.constants';
 
-describe('DomainsWalletsGateway', () => {
+describe('DomainsTransactionsGateway', () => {
   let service: DomainsTransactionsGateway;
   let httpTestingController: HttpTestingController;
   let walletId: TServerEntityId;
+  let transactionsResp: IWalletTransactionApiResponse[];
+  let apiUrl: string;
 
   beforeEach(async () => {
     walletId = 1;
+    apiUrl = API_TRANSACTIONS_URL;
+    transactionsResp = WALLET_TRANSACTIONS_API_RESPONSE_MOCK(1);
 
     await TestBed.configureTestingModule({
       imports: [
@@ -19,7 +28,6 @@ describe('DomainsWalletsGateway', () => {
       ],
       providers: [
         DomainsTransactionsGateway,
-
       ],
     }).compileComponents();
 
@@ -32,35 +40,41 @@ describe('DomainsWalletsGateway', () => {
   });
 
   describe('getWalletTransactions', () => {
-    it('should call fakeRequest and return wallet \'s transactions', (done) => {
+    it('should call Api and return wallet \'s transactions', () => {
       service.getWalletTransactions(walletId).subscribe((val: IWalletTransactionApiResponse[]) => {
-        expect(val.length).toEqual(3);
-        done();
+        expect(val.length).toBe(3);
       });
+
+      const req = httpTestingController.expectOne(apiUrl + `?walletId=${walletId}`);
+      expect(req.request.method).toEqual('GET');
+      req.flush([ transactionsResp ]);
     });
   });
 
   describe('createWalletTransaction', () => {
-    it('should call fakeRequest and return wallet \'s transaction', (done) => {
-      service.createWalletTransaction(TRANSACTION_PAYLOAD_MOCK).subscribe((val: IWalletTransactionApiResponse) => {
-        expect(val.id).toBeGreaterThan(99);
+    it('should call Api and return wallet \'s transaction', () => {
+      service.createWalletTransaction(walletId, TRANSACTION_PAYLOAD_MOCK).subscribe((val: IWalletTransactionApiResponse) => {
         expect(val.amount).toEqual(TRANSACTION_PAYLOAD_MOCK.amount);
         expect(val.type).toEqual(TRANSACTION_PAYLOAD_MOCK.type);
-        expect(val.description).toEqual(TRANSACTION_PAYLOAD_MOCK.description!);
-        done();
       });
+
+      const req = httpTestingController.expectOne(apiUrl);
+      expect(req.request.method).toEqual('POST');
+      req.flush([ transactionsResp ]);
     });
   });
 
   describe('editWalletTransaction', () => {
-    it('should call fakeRequest and return updated wallet \'s transaction', (done) => {
-      service.editWalletTransaction(WALLET_TRANSACTIONS_INCOME_MOCK.id!, WALLET_TRANSACTIONS_INCOME_MOCK)
+    it('should call Api and return updated wallet \'s transaction', () => {
+      service.editWalletTransaction(walletId, UPDATED_WALLET_TRANSACTIONS_OBJECT_MOCK(1))
         .subscribe((val: IWalletTransactionApiResponse) => {
-          expect(val.id).toEqual(WALLET_TRANSACTIONS_INCOME_MOCK.id!);
-          expect(val.amount).toEqual(WALLET_TRANSACTIONS_INCOME_MOCK.amount);
-          expect(val.type).toEqual(WALLET_TRANSACTIONS_INCOME_MOCK.type);
-          done();
+          expect(val.amount).toEqual(UPDATED_WALLET_TRANSACTIONS_OBJECT_MOCK(1).amount);
+          expect(val.type).toEqual(UPDATED_WALLET_TRANSACTIONS_OBJECT_MOCK(1).type);
         });
+
+      const req = httpTestingController.expectOne(apiUrl + `/${walletId}`);
+      expect(req.request.method).toEqual('PUT');
+      req.flush([ transactionsResp ]);
     });
   });
 });

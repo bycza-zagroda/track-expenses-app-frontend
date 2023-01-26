@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { fakeRequest } from 'src/app/common/http/common.http.fake-request';
-import { getRandomNumber } from 'src/app/common/utils/common.utils.random';
 import { WalletsDetailsTransaction } from 'src/app/pages/wallets/wallet-details/pages-wallet-details-item.model';
 import { ITransactionPayload, IWalletTransactionApiResponse } from './domains.transactions.types';
-import { WALLET_TRANSACTIONS_API_RESPONSE_MOCK } from './domains.transactions.mocks';
 import { TServerEntityId } from 'src/app/common/http/common.http.types';
+import { API_TRANSACTIONS_URL } from './domains.transactions.constants';
 
 @Injectable({
   providedIn: 'root',
@@ -18,27 +16,27 @@ export class DomainsTransactionsGateway {
   }
 
   public getWalletTransactions(id: TServerEntityId): Observable<IWalletTransactionApiResponse[]> {
-    return fakeRequest(WALLET_TRANSACTIONS_API_RESPONSE_MOCK(id));
+    return this.http.get<IWalletTransactionApiResponse[]>(API_TRANSACTIONS_URL + `?walletId=${id}`);
   }
 
-  public createWalletTransaction(payload: ITransactionPayload): Observable<IWalletTransactionApiResponse> {
-    return fakeRequest({
-      id: getRandomNumber(100, 1000),
-      creationDate: new Date().toString(),
-      amount: payload.amount,
-      description: payload.description ?? '',
-      type: payload.type,
+  public createWalletTransaction(id: TServerEntityId, { amount, transactionDate, type, description }: ITransactionPayload)
+  : Observable<IWalletTransactionApiResponse> {
+    return this.http.post<IWalletTransactionApiResponse>(API_TRANSACTIONS_URL, {
+      walletId: id,
+      amount,
+      transactionDate,
+      type,
+      description,
     });
   }
 
-  public editWalletTransaction(id: TServerEntityId, payload: WalletsDetailsTransaction)
-  : Observable<IWalletTransactionApiResponse> {
-    return fakeRequest({
-      id: id,
-      creationDate: payload.date.toString(),
-      amount: payload.amount,
-      description: payload.description ?? '',
-      type: payload.type,
+  public editWalletTransaction(id: TServerEntityId,
+    { amount, transactionDate, type, description }: WalletsDetailsTransaction): Observable<IWalletTransactionApiResponse> {
+    return this.http.put<IWalletTransactionApiResponse>(API_TRANSACTIONS_URL + `/${id}`, {
+      amount,
+      transactionDate,
+      type,
+      description,
     });
   }
 }

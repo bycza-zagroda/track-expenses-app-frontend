@@ -1,5 +1,5 @@
 import { WalletsDetailsTransaction } from 'src/app/pages/wallets/wallet-details/pages-wallet-details-item.model';
-import { NEW_DATE_EXAMPLE1 } from '../wallets/domains.wallets.mocks';
+import { NEW_DATE_EXAMPLE1, NEW_DATE_EXAMPLE2 } from '../wallets/domains.wallets.mocks';
 import { WalletTransactionType } from './domains.transactions.constants';
 import { ITransactionPayload, IWalletTransactionApiResponse } from './domains.transactions.types';
 
@@ -8,21 +8,24 @@ export function WALLET_TRANSACTIONS_API_RESPONSE_MOCK(id: number): IWalletTransa
     return  [
       {
         id: 1,
-        creationDate: new Date(2020, 7, 12).toLocaleDateString(),
+        creationDate: new Date(2020, 7, 12).toISOString(),
+        transactionDate: new Date(2020, 7, 13).toISOString(),
         description: 'description 1',
         amount: 300,
         type: WalletTransactionType.Incomes,
       },
       {
         id: 2,
-        creationDate: new Date(2020, 1, 5).toLocaleDateString(),
+        creationDate: new Date(2020, 1, 5).toISOString(),
+        transactionDate: new Date(2020, 1, 6).toISOString(),
         description: 'description 2',
         amount: 50,
         type: WalletTransactionType.Expenses,
       },
       {
         id: 3,
-        creationDate: new Date(2020, 3, 1).toLocaleDateString(),
+        creationDate: new Date(2020, 3, 1).toISOString(),
+        transactionDate: new Date(2020, 3, 2).toISOString(),
         description: 'description 3',
         amount: 230,
         type: WalletTransactionType.Incomes,
@@ -32,20 +35,24 @@ export function WALLET_TRANSACTIONS_API_RESPONSE_MOCK(id: number): IWalletTransa
 
   return  [
     {
-      id: 4, creationDate: new Date(2018, 7, 12).toLocaleDateString(),
+      id: 4,
+      creationDate: new Date(2018, 7, 12).toISOString(),
+      transactionDate: new Date(2018, 7, 13).toISOString(),
       description: 'description 4',
       amount: 320,
       type: WalletTransactionType.Incomes,
     },
     {
       id: 5,
-      creationDate: new Date(2018, 1, 5).toLocaleDateString(),
+      creationDate: new Date(2018, 1, 5).toISOString(),
+      transactionDate: new Date(2018, 1, 6).toISOString(),
       description: 'description 5', amount: 150,
       type: WalletTransactionType.Expenses,
     },
     {
       id: 6,
-      creationDate: new Date(2018, 3, 1).toLocaleDateString(),
+      creationDate: new Date(2018, 3, 1).toISOString(),
+      transactionDate: new Date(2018, 3, 2).toISOString(),
       description: 'description 6',
       amount: 510,
       type: WalletTransactionType.Incomes,
@@ -70,35 +77,35 @@ export function UPDATED_WALLET_TRANSACTIONS_OBJECT_MOCK(id: number): WalletsDeta
 export const TRANSACTION_PAYLOAD_MOCK: ITransactionPayload = {
   description: 'Desc 1',
   amount: 200,
-  date: new Date(),
+  transactionDate: new Date().toISOString(),
   type: WalletTransactionType.Incomes,
 };
 
 export const UPDATED_TRANSACTION_PAYLOAD_MOCK: ITransactionPayload = {
   description: 'Desc 1',
   amount: 200,
-  date: new Date(),
+  transactionDate: new Date().toISOString(),
   type: WalletTransactionType.Incomes,
 };
 
 export const WALLET_TRANSACTIONS_API_RESPONSE_1 = [
   {
     id: 1,
-    creationDate: new Date(2020, 7, 12).toLocaleDateString(),
+    creationDate: new Date(2020, 7, 12).toISOString(),
     description: 'description 1',
     amount: 300,
     type: WalletTransactionType.Incomes,
   },
   {
     id: 2,
-    creationDate: new Date(2020, 1, 5).toLocaleDateString(),
+    creationDate: new Date(2020, 1, 5).toISOString(),
     description: 'description 2',
     amount: 50,
     type: WalletTransactionType.Expenses,
   },
   {
     id: 3,
-    creationDate: new Date(2020, 3, 1).toLocaleDateString(),
+    creationDate: new Date(2020, 3, 1).toISOString(),
     description: 'description 3',
     amount: 230,
     type: WalletTransactionType.Incomes,
@@ -108,21 +115,21 @@ export const WALLET_TRANSACTIONS_API_RESPONSE_1 = [
 export const WALLET_TRANSACTIONS_API_RESPONSE_2 = [
   {
     id: 4,
-    creationDate: new Date(2018, 7, 12).toLocaleDateString(),
+    creationDate: new Date(2018, 7, 12).toISOString(),
     description: 'description 4',
     amount: 320,
     type: WalletTransactionType.Incomes,
   },
   {
     id: 5,
-    creationDate: new Date(2018, 1, 5).toLocaleDateString(),
+    creationDate: new Date(2018, 1, 5).toISOString(),
     description: 'description 5',
     amount: 150,
     type: WalletTransactionType.Expenses,
   },
   {
     id: 6,
-    creationDate: new Date(2018, 3, 1).toLocaleDateString(),
+    creationDate: new Date(2018, 3, 1).toISOString(),
     description: 'description 6',
     amount: 510,
     type: WalletTransactionType.Incomes,
@@ -133,6 +140,7 @@ export const WALLET_TRANSACTIONS_INCOME_MOCK = new WalletsDetailsTransaction({
   id: 10,
   amount: 150,
   creationDate: NEW_DATE_EXAMPLE1,
+  transactionDate: NEW_DATE_EXAMPLE2,
   type: WalletTransactionType.Incomes,
   description: 'Some description 1',
 });
@@ -141,6 +149,7 @@ export const WALLET_TRANSACTIONS_TO_CREATE_INCOME_MOCK = new WalletsDetailsTrans
   id: null,
   amount: 150,
   creationDate: NEW_DATE_EXAMPLE1,
+  transactionDate: NEW_DATE_EXAMPLE2,
   type: WalletTransactionType.Incomes,
   description: 'Some description 1',
 });
@@ -149,6 +158,7 @@ export const WALLET_TRANSACTIONS_CREATED_INCOME_MOCK = new WalletsDetailsTransac
   id: 200,
   amount: 150,
   creationDate: NEW_DATE_EXAMPLE1,
+  transactionDate: NEW_DATE_EXAMPLE2,
   type: WalletTransactionType.Incomes,
   description: 'Some description 1',
 });
@@ -157,6 +167,7 @@ export const UPDATED_WALLET_TRANSACTIONS_INCOME_MOCK = new WalletsDetailsTransac
   id: 10,
   amount: 250,
   creationDate: NEW_DATE_EXAMPLE1,
+  transactionDate: NEW_DATE_EXAMPLE2,
   type: WalletTransactionType.Incomes,
   description: 'Some updated description 1',
 });
@@ -165,6 +176,7 @@ export const WALLET_TRANSACTIONS_EXPENSE_MOCK = new WalletsDetailsTransaction({
   id: 15,
   amount: 50,
   creationDate: NEW_DATE_EXAMPLE1,
+  transactionDate: NEW_DATE_EXAMPLE2,
   type: WalletTransactionType.Expenses,
   description: 'Some description 2',
 });

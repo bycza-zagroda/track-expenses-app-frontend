@@ -18,17 +18,14 @@ export class DomainsWalletsGateway {
   }
 
   public getWallets(): Observable<IWalletApiResponse[]> {
-    //return fakeRequest(GET_WALLETS_API_RESPONSE_MOCK());
     return this.http.get<IWalletApiResponse[]>(API_WALLETS_URL);
   }
 
   public createWallet({ name }: IWalletPayload): Observable<IWalletApiResponse> {
-    //return fakeRequest({id: Math.round(getRandomNumber(100, 1000)), creationDate: new Date().toString(), name});
     return this.http.post<IWalletApiResponse>(API_WALLETS_URL, { name });
   }
 
   public updateWallet(id: TServerEntityId, { name }: IWalletPayload): Observable<IWalletApiResponse> {
-    //return fakeRequest({id: id, creationDate: new Date().toString(), name});
     return this.http.patch<IWalletApiResponse>(`${ API_WALLETS_URL }/${ id }`, { name });
   }
 

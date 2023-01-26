@@ -25,9 +25,6 @@ import { HttpClientModule } from '@angular/common/http';
     RoutesModule,
     HttpClientModule,
     CommonComponentsModule,
-    //DateAdapter //OK
-    //MomentDateAdapter
-    //MomentDateModule
   ],
   bootstrap: [ AppComponent ],
 })

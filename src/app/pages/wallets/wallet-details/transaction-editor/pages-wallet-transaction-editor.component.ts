@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TServerEntityId } from 'src/app/common/http/common.http.types';
 import { checkInputError } from 'src/app/common/utils/forms/common-utils-forms-form-utils';
@@ -35,11 +35,12 @@ export class PagesWalletTransactionEditorComponent {
         validators: [
           Validators.required,
           Validators.pattern(regexAmount),
+          this.amountBiggerThan0(),
         ],
         nonNullable: false,
       }),
       description: new FormControl(this.data.description),
-      date: new FormControl(this.data.date, {
+      date: new FormControl(this.data.transactionDate, {
         validators: [
           Validators.required,
         ],
@@ -58,6 +59,10 @@ export class PagesWalletTransactionEditorComponent {
     return checkInputError(this.form, 'amount', 'required');
   }
 
+  public get amountIs0(): boolean {
+    return checkInputError(this.form, 'amount', 'amountIs0');
+  }
+
   public get amountHasInvalidFormat(): boolean {
     return checkInputError(this.form, 'amount', 'pattern');
   }
@@ -73,10 +78,10 @@ export class PagesWalletTransactionEditorComponent {
 
     this.dialogRef.close(WalletsDetailsTransaction.create({
       id: this.transactionId ?? undefined,
-      amount: this.form.get('amount')!.value ?? undefined,
+      amount: parseFloat(this.form.get('amount')!.value!.toString()),
       creationDate: this.form.get('date')!.value!.toString(),
-      type: this.form.get('type')!.value ?? undefined,
-      description: this.form.get('description')!.value ?? undefined,
+      type: this.form.get('type')!.value!,
+      description: this.form.get('description')!.value!,
     }));
   }
 
@@ -86,5 +91,17 @@ export class PagesWalletTransactionEditorComponent {
 
   public cancel(): void {
     this.dialogRef.close(null);
+  }
+
+  private amountBiggerThan0(): ValidatorFn {
+    return (control: AbstractControl) => {
+      const value: number = parseFloat(control.value as string);
+
+      if(value && value > 0) {
+        return null;
+      }
+
+      return { amountIs0: true };
+    };
   }
 }
