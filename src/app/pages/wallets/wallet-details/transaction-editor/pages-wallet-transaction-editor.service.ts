@@ -34,12 +34,13 @@ export class PagesWalletTransactionEditorService {
 
   private makeRequest(transaction: WalletsDetailsTransaction): Observable<WalletsDetailsTransaction> {
     return transaction.id ?
-      this.pagesWalletDetailsService.editWalletTransaction(transaction.id, transaction) :
-      this.pagesWalletDetailsService.createWalletTransaction(transaction.id!, {
+      this.pagesWalletDetailsService.editWalletTransaction(transaction) :
+      this.pagesWalletDetailsService.createWalletTransaction({
         amount: transaction.amount,
         transactionDate: transaction.transactionDate.toISOString(),
         type: transaction.type,
         description: transaction.description === '' ? null : transaction.description,
+        walletId: transaction.walletId,
       });
   }
 

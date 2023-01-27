@@ -71,7 +71,8 @@ export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
   }
 
   public handleCreateTransaction(type: WalletTransactionType): void {
-    this.pagesWalletTransactionEditorService.openEditor(WalletsDetailsTransaction.create({ type }))
+    this.pagesWalletTransactionEditorService
+    .openEditor(WalletsDetailsTransaction.create({ type, walletId: this.walletsManagementItem!.id! }))
       .subscribe( (transaction: WalletsDetailsTransaction | null) => {
         if(transaction) {
           this.createTransaction(transaction);

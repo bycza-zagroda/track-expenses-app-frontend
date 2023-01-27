@@ -14,6 +14,7 @@ export class WalletsDetailsTransaction {
   public readonly description: string | null;
   public readonly type: WalletTransactionType;
   public readonly amount: number;
+  public readonly walletId: TServerEntityId;
 
   public constructor(data: IWalletTransactionItemData) {
     this.id = data.id;
@@ -22,6 +23,7 @@ export class WalletsDetailsTransaction {
     this.description = data.description ?? null;
     this.type = data.type;
     this.amount = data.amount;
+    this.walletId = data.walletId;
   }
 
   public static create(data: Partial<IWalletTransactionApiResponse>): WalletsDetailsTransaction {
@@ -30,8 +32,9 @@ export class WalletsDetailsTransaction {
       amount: data.amount ?? 0,
       creationDate: data.creationDate ?? new Date().toISOString(),
       transactionDate: data.transactionDate ?? new Date().toISOString(),
-      description: data.description ?? undefined,
+      description: data.description ?? null,
       type: data.type ?? WalletTransactionType.Incomes,
+      walletId: data.walletId!,
     });
   }
 }

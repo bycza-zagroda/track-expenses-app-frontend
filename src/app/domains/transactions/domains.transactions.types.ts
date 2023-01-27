@@ -13,13 +13,15 @@ export interface ITransactionPayload {
   amount: number;
   transactionDate: TServerDateTime;
   type: WalletTransactionType;
+  walletId: TServerEntityId;
 }
 
 export interface IWalletTransactionApiResponse {
   id: TServerEntityId;
   amount: number;
-  description?: string;
+  description: string | null;
   type: WalletTransactionType;
   creationDate: TServerDateTime;
   transactionDate: TServerDateTime;
+  walletId: TServerEntityId;
 }

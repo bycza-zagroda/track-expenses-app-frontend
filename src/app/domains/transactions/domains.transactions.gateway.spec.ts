@@ -53,7 +53,7 @@ describe('DomainsTransactionsGateway', () => {
 
   describe('createWalletTransaction', () => {
     it('should call Api and return wallet \'s transaction', () => {
-      service.createWalletTransaction(walletId, TRANSACTION_PAYLOAD_MOCK).subscribe((val: IWalletTransactionApiResponse) => {
+      service.createWalletTransaction(TRANSACTION_PAYLOAD_MOCK).subscribe((val: IWalletTransactionApiResponse) => {
         expect(val.amount).toEqual(TRANSACTION_PAYLOAD_MOCK.amount);
         expect(val.type).toEqual(TRANSACTION_PAYLOAD_MOCK.type);
       });
@@ -66,7 +66,7 @@ describe('DomainsTransactionsGateway', () => {
 
   describe('editWalletTransaction', () => {
     it('should call Api and return updated wallet \'s transaction', () => {
-      service.editWalletTransaction(walletId, UPDATED_WALLET_TRANSACTIONS_OBJECT_MOCK(1))
+      service.editWalletTransaction(UPDATED_WALLET_TRANSACTIONS_OBJECT_MOCK(1))
         .subscribe((val: IWalletTransactionApiResponse) => {
           expect(val.amount).toEqual(UPDATED_WALLET_TRANSACTIONS_OBJECT_MOCK(1).amount);
           expect(val.type).toEqual(UPDATED_WALLET_TRANSACTIONS_OBJECT_MOCK(1).type);

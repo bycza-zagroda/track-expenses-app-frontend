@@ -24,18 +24,21 @@ export class PagesWalletTransactionEditorComponent {
 
   private transactionId: TServerEntityId | null = null;
 
+  private walletId: TServerEntityId;
+
   public constructor(
     private readonly dialogRef: MatDialogRef<PagesWalletTransactionEditorComponent>,
     @Inject(MAT_DIALOG_DATA) public data: WalletsDetailsTransaction,
   ) {
     this.transactionId = this.data.id;
+    this.walletId = this.data.walletId;
 
     this.form = new FormGroup<IWalletTransactionModalFormType>({
       amount: new FormControl(this.data.amount === 0 ? null : this.data.amount, {
         validators: [
           Validators.required,
           Validators.pattern(regexAmount),
-          this.amountBiggerThan0(),
+          this.amountBiggerThanZero(),
         ],
         nonNullable: false,
       }),
@@ -59,8 +62,8 @@ export class PagesWalletTransactionEditorComponent {
     return checkInputError(this.form, 'amount', 'required');
   }
 
-  public get amountIs0(): boolean {
-    return checkInputError(this.form, 'amount', 'amountIs0');
+  public get amountIsZero(): boolean {
+    return checkInputError(this.form, 'amount', 'amountIsZero');
   }
 
   public get amountHasInvalidFormat(): boolean {
@@ -71,29 +74,26 @@ export class PagesWalletTransactionEditorComponent {
     return checkInputError(this.form, 'date', 'required');
   }
 
-  public save(): void {
+  public save(): void {debugger;
     if (this.form.invalid) {
       return;
     }
 
     this.dialogRef.close(WalletsDetailsTransaction.create({
       id: this.transactionId ?? undefined,
-      amount: parseFloat(this.form.get('amount')!.value!.toString()),
-      creationDate: this.form.get('date')!.value!.toString(),
-      type: this.form.get('type')!.value!,
-      description: this.form.get('description')!.value!,
+      amount: parseFloat(this.form.controls.amount.value!.toString()),
+      creationDate: this.form.controls.date.value!.toString(),
+      type: this.form.controls.type!.value!,
+      description: this.form.controls.description.value || null,
+      walletId: this.walletId,
     }));
-  }
-
-  public setTransactionType(value: WalletTransactionType): void {
-    this.form.controls.type.setValue(value);
   }
 
   public cancel(): void {
     this.dialogRef.close(null);
   }
 
-  private amountBiggerThan0(): ValidatorFn {
+  private amountBiggerThanZero(): ValidatorFn {
     return (control: AbstractControl) => {
       const value: number = parseFloat(control.value as string);
 
@@ -101,7 +101,7 @@ export class PagesWalletTransactionEditorComponent {
         return null;
       }
 
-      return { amountIs0: true };
+      return { amountIsZero: true };
     };
   }
 }
