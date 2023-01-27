@@ -3,6 +3,7 @@ import {
   WalletTransactionType,
 } from 'src/app/domains/transactions/domains.transactions.constants';
 import {
+  ITransactionPayload,
   IWalletTransactionApiResponse,
   IWalletTransactionItemData,
 } from 'src/app/domains/transactions/domains.transactions.types';
@@ -36,5 +37,15 @@ export class WalletsDetailsTransaction {
       type: data.type ?? WalletTransactionType.Incomes,
       walletId: data.walletId!,
     });
+  }
+
+  public toPayload(): ITransactionPayload {
+    return {
+      amount: this.amount,
+      transactionDate: this.transactionDate.toISOString(),
+      type: this.type,
+      description: this.description,
+      walletId: this.walletId,
+    };
   }
 }

@@ -35,13 +35,7 @@ export class PagesWalletTransactionEditorService {
   private makeRequest(transaction: WalletsDetailsTransaction): Observable<WalletsDetailsTransaction> {
     return transaction.id ?
       this.pagesWalletDetailsService.editWalletTransaction(transaction) :
-      this.pagesWalletDetailsService.createWalletTransaction({
-        amount: transaction.amount,
-        transactionDate: transaction.transactionDate.toISOString(),
-        type: transaction.type,
-        description: transaction.description === '' ? null : transaction.description,
-        walletId: transaction.walletId,
-      });
+      this.pagesWalletDetailsService.createWalletTransaction(transaction.toPayload());
   }
 
   private notify(updatedWallet: WalletsDetailsTransaction | null, type: string): void {

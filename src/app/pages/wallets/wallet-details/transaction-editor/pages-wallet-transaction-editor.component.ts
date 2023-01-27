@@ -74,7 +74,7 @@ export class PagesWalletTransactionEditorComponent {
     return checkInputError(this.form, 'date', 'required');
   }
 
-  public save(): void {debugger;
+  public save(): void {
     if (this.form.invalid) {
       return;
     }
@@ -83,7 +83,7 @@ export class PagesWalletTransactionEditorComponent {
       id: this.transactionId ?? undefined,
       amount: parseFloat(this.form.controls.amount.value!.toString()),
       creationDate: this.form.controls.date.value!.toString(),
-      type: this.form.controls.type!.value!,
+      type: this.form.controls.type.value!,
       description: this.form.controls.description.value || null,
       walletId: this.walletId,
     }));
