@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Observable, of, switchMap, tap } from 'rxjs';
+import { finalize, Observable, of, switchMap, tap } from 'rxjs';
+import { LoadingSnackbarService } from 'src/app/common/loading-modal/loading-snackbar.service';
 import { SystemNotificationsService } from 'src/app/common/utils/system-notifications/system-notifications.service';
 import { PagesWalletsManagementService } from '../pages-wallets-management.service';
 import { WalletsManagementItem } from '../pages-wallets-wallets-management-item.model';
@@ -15,6 +16,7 @@ export class PagesWalletsManagementEditorService {
     private readonly dialog: MatDialog,
     private readonly systemNotificationsService: SystemNotificationsService,
     private readonly myWalletsService: PagesWalletsManagementService,
+    private readonly loadingSnackbarService: LoadingSnackbarService
   ) { }
 
   public openEditor(wallet?: WalletsManagementItem): Observable<WalletsManagementItem | null> {
@@ -23,6 +25,9 @@ export class PagesWalletsManagementEditorService {
       {
         data: { name: wallet?.name ?? '' },
       }).afterClosed().pipe(
+      tap(() => {
+        wallet ? this.loadingSnackbarService.show('Updating wallet') : this.loadingSnackbarService.show('Saving wallet');
+      }),
       switchMap((walletResp: IWalletModalData | undefined) => {
         return !!walletResp ? this.makeRequest(walletResp, wallet ?? null) : of(null);
       }),
@@ -31,6 +36,9 @@ export class PagesWalletsManagementEditorService {
           this.notify(walletItem, wallet ? 'updated' : 'created');
         }
       }),
+      finalize(() => {
+        this.loadingSnackbarService.hide();
+      })
     );
   }
 
