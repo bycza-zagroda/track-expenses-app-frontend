@@ -1,8 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { WalletsManagementItem } from '../pages-wallets-wallets-management-item.model';
-import { IWalletModalFormType } from './pages-wallets-management-editor.types';
+import { IWalletModalData, IWalletModalFormType } from './pages-wallets-management-editor.types';
+import { checkInputError } from 'src/app/common/utils/forms/common-utils-forms-form-utils';
 
 @Component({
   selector: 'app-wallet-form-modal',
@@ -14,10 +14,10 @@ export class PagesWalletsManagementEditorComponent {
 
   public constructor(
     private readonly dialogRef: MatDialogRef<PagesWalletsManagementEditorComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: WalletsManagementItem | undefined,
+    @Inject(MAT_DIALOG_DATA) public data: IWalletModalData,
   ) {
     this.form = new FormGroup<IWalletModalFormType>({
-      name: new FormControl(this.data?.name ?? '', {
+      name: new FormControl(this.data.name, {
         validators: [
           Validators.required,
           Validators.maxLength(20),
@@ -28,17 +28,11 @@ export class PagesWalletsManagementEditorComponent {
   }
 
   public get nameIsNotProvided(): boolean {
-    return this.checkInputError('name', 'required');
+    return checkInputError(this.form, 'name', 'required');
   }
 
   public get nameHasMoreThan20Characters(): boolean {
-    return this.checkInputError('name', 'maxlength');
-  }
-
-  public checkInputError(inputName: string, errorType: string): boolean {
-    return !!(this.form.get(inputName)?.invalid &&
-      this.form.get(inputName)?.touched &&
-      this.form.get(inputName)?.errors?.[errorType]);
+    return checkInputError(this.form, 'name', 'maxlength');
   }
 
   public save(): void {

@@ -23,11 +23,11 @@ export class PagesWalletsManagementComponent implements OnInit {
   };
 
   public constructor(
-  private readonly myWalletsService: PagesWalletsManagementService,
-  private readonly confirmDialogService: ConfirmDialogService,
-  private readonly loadingDialogService: LoadingSnackbarService,
-  private readonly pagesWalletsManagementEditorService: PagesWalletsManagementEditorService,
-  private readonly router: Router,
+    private readonly myWalletsService: PagesWalletsManagementService,
+    private readonly confirmDialogService: ConfirmDialogService,
+    private readonly loadingDialogService: LoadingSnackbarService,
+    private readonly modalEditorService: PagesWalletsManagementEditorService,
+    private readonly router: Router,
   ) {
   }
 
@@ -51,12 +51,10 @@ export class PagesWalletsManagementComponent implements OnInit {
   }
 
   public handleWalletCreate(): void {
-    this.pagesWalletsManagementEditorService.openWalletEditor().subscribe({
-      next: (createdWallet: WalletsManagementItem | null) => {
-        if (createdWallet) {
-          this.createWallet(createdWallet);
-        }
-      },
+    this.modalEditorService.openEditor().subscribe( (data: WalletsManagementItem | null) => {
+      if(data) {
+        this.createWallet(data);
+      }
     });
   }
 
@@ -73,12 +71,10 @@ export class PagesWalletsManagementComponent implements OnInit {
   }
 
   public handleWalletEdit(wallet: WalletsManagementItem): void {
-    this.pagesWalletsManagementEditorService.openWalletEditor(wallet).subscribe({
-      next: (updatedWallet: WalletsManagementItem | null) => {
-        if (updatedWallet) {
-          this.updateWallet(wallet, updatedWallet);
-        }
-      },
+    this.modalEditorService.openEditor(wallet).subscribe( (data: WalletsManagementItem | null) => {
+      if(data) {
+        this.updateWallet(wallet, data);
+      }
     });
   }
 

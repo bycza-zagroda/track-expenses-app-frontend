@@ -9,8 +9,7 @@ describe('PagesWalletsManagementItemComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ PagesWalletsManagementItemComponent ],
-    })
-      .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(PagesWalletsManagementItemComponent);
     component = fixture.componentInstance;

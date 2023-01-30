@@ -37,11 +37,9 @@ describe('PagesWalletsManagementComponent', () => {
     matEditorSubject = new Subject<WalletsManagementItem | null>();
     walletResp = WALLET_RESP_MOCK;
 
-    editorService = createSpyObj<PagesWalletsManagementEditorService>(PagesWalletsManagementEditorService.name, [
-      'openWalletEditor',
-    ]);
-
-    editorService.openWalletEditor.and.returnValue(matEditorSubject.asObservable());
+    editorService = createSpyObj<PagesWalletsManagementEditorService>
+    (PagesWalletsManagementEditorService.name, [ 'openEditor' ]);
+    editorService.openEditor.and.returnValue(matEditorSubject.asObservable());
 
     myWalletsServiceMock = createSpyObj<PagesWalletsManagementService>(PagesWalletsManagementService.name, [
       'getWallets',
