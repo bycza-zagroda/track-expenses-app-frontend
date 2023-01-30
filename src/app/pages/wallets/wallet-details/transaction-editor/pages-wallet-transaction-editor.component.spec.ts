@@ -63,7 +63,7 @@ describe('TransactionEditorComponent', () => {
 
       it('date', () => {
         const x = component.form.get('date');
-        expect(x!.value).toEqual(WALLET_TRANSACTIONS_EXPENSE_MOCK.transactionDate);
+        expect(x!.value).toEqual(WALLET_TRANSACTIONS_EXPENSE_MOCK.date);
       });
 
       it('type', () => {

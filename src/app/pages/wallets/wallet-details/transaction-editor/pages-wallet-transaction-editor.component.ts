@@ -43,7 +43,7 @@ export class PagesWalletTransactionEditorComponent {
         nonNullable: false,
       }),
       description: new FormControl(this.data.description),
-      date: new FormControl(this.data.transactionDate, {
+      date: new FormControl(this.data.date, {
         validators: [
           Validators.required,
         ],
@@ -84,7 +84,7 @@ export class PagesWalletTransactionEditorComponent {
       amount: parseFloat(this.form.controls.amount.value!.toString()),
       creationDate: this.form.controls.date.value!.toString(),
       type: this.form.controls.type.value!,
-      description: this.form.controls.description.value === "" ? null : this.form.controls.description.value,
+      description: this.form.controls.description.value === '' ? null : this.form.controls.description.value,
       walletId: this.walletId,
     }));
   }

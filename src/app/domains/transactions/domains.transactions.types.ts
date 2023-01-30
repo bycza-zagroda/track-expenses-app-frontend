@@ -11,7 +11,7 @@ export type WalletSelectionValue = WalletTransactionType | '';
 export interface ITransactionPayload {
   description: string | null;
   amount: number;
-  transactionDate: TServerDateTime;
+  date: TServerDateTime;
   type: WalletTransactionType;
   walletId: TServerEntityId;
 }
@@ -22,6 +22,6 @@ export interface IWalletTransactionApiResponse {
   description: string | null;
   type: WalletTransactionType;
   creationDate: TServerDateTime;
-  transactionDate: TServerDateTime;
+  date: TServerDateTime;
   walletId: TServerEntityId;
 }

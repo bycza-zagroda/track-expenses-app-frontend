@@ -22,12 +22,12 @@ export class DomainsTransactionsGateway {
     return this.http.get<IWalletTransactionApiResponse[]>(API_TRANSACTIONS_URL, { params: queryParams });
   }
 
-  public createWalletTransaction({ amount, transactionDate, type, description, walletId }: ITransactionPayload)
+  public createWalletTransaction({ amount, date, type, description, walletId }: ITransactionPayload)
   : Observable<IWalletTransactionApiResponse> {
     return this.http.post<IWalletTransactionApiResponse>(API_TRANSACTIONS_URL, {
       walletId,
       amount,
-      transactionDate,
+      date,
       type,
       description,
     });
