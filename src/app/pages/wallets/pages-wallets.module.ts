@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PagesWalletsManagementComponent } from './management/pages-wallets-management.component';
 import { RouterModule, Routes } from '@angular/router';
-import { DomainsWalletsModule } from '../../domains/wallets/domains.wallets.module';
 import {
   PagesWalletsManagementItemComponent,
 } from './management/wallets-management-item/pages-wallets-management-item.component';
@@ -16,6 +15,9 @@ import { CommonComponentsModule } from 'src/app/common/components/common-compone
 import { PagesWalletDetailsComponent } from './wallet-details/pages-wallet-details.component';
 import { TransactionAmountPipe } from 'src/app/common/utils/pipes/transaction-amount.pipe';
 import { PagesWalletDetailsResolver } from 'src/app/common/utils/resolvers/pages-wallet-details.resolver';
+import {
+  PagesWalletTransactionEditorComponent,
+} from './wallet-details/transaction-editor/pages-wallet-transaction-editor.component';
 
 const routes: Routes = [
   {
@@ -38,11 +40,11 @@ const routes: Routes = [
     PagesWalletDetailsComponent,
     PagesWalletDetailsComponent,
     TransactionAmountPipe,
+    PagesWalletTransactionEditorComponent,
   ],
   imports: [
     RouterModule.forChild(routes),
     CommonModule,
-    DomainsWalletsModule,
     MaterialModule,
     ReactiveFormsModule,
     CommonComponentsModule,

@@ -11,6 +11,7 @@ import { PagesWalletsManagementEditorComponent } from './pages-wallets-managemen
 import { PagesWalletsManagementEditorService } from './pages-wallets-management-editor.service';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 describe('PagesWalletsManagementEditorService', () => {
   let service: PagesWalletsManagementEditorService;
@@ -37,7 +38,7 @@ describe('PagesWalletsManagementEditorService', () => {
     matDialogMock.open.and.returnValue(matDialogRef);
 
     TestBed.configureTestingModule({
-      imports: [ MaterialModule, BrowserAnimationsModule ],
+      imports: [ MaterialModule, BrowserAnimationsModule, HttpClientTestingModule ],
       providers: [
         { provide: PagesWalletsManagementService, useValue: pagesWalletsManagementServiceMock },
         { provide: SystemNotificationsService, useValue: systemNotificationsServiceMock },
@@ -45,6 +46,7 @@ describe('PagesWalletsManagementEditorService', () => {
       ],
     });
     service = TestBed.inject(PagesWalletsManagementEditorService);
+    TestBed.inject<HttpTestingController>(HttpTestingController);
   });
 
   describe('openWalletEditor', () => {
@@ -55,17 +57,19 @@ describe('PagesWalletsManagementEditorService', () => {
         });
 
         it('updated wallet\'s name should invoke showNotification', (done) => {
-          service.openWalletEditor(WALLET_INSTANCE_MOCK).subscribe( () => {
-            expect(systemNotificationsServiceMock.showNotification).toHaveBeenCalled();
-            done();
-          });
+          service.openEditor(WALLET_INSTANCE_MOCK)
+            .subscribe( () => {
+              expect(systemNotificationsServiceMock.showNotification).toHaveBeenCalled();
+              done();
+            });
         });
 
         it('should return updated wallet', (done) => {
-          service.openWalletEditor(WALLET_INSTANCE_MOCK).subscribe( (data: WalletsManagementItem | null) => {
-            expect(data?.name).toBe(UPDATED_WALLET_INSTANCE_MOCK.name);
-            done();
-          });
+          service.openEditor(WALLET_INSTANCE_MOCK)
+            .subscribe( (data: WalletsManagementItem | null) => {
+              expect(data!.name).toBe(UPDATED_WALLET_INSTANCE_MOCK.name);
+              done();
+            });
         });
       });
 
@@ -75,17 +79,18 @@ describe('PagesWalletsManagementEditorService', () => {
         });
 
         it('canceled updating wallet\'s name should not invoke showNotification', fakeAsync(() => {
-          service.openWalletEditor(WALLET_INSTANCE_MOCK);
+          service.openEditor(WALLET_INSTANCE_MOCK);
           flushMicrotasks();
 
           expect(systemNotificationsServiceMock.showNotification).not.toHaveBeenCalled();
         }));
 
         it('should return undefined', (done) => {
-          service.openWalletEditor(WALLET_INSTANCE_MOCK).subscribe( (data: WalletsManagementItem | null) => {
-            expect(data).toBe(null);
-            done();
-          });
+          service.openEditor(WALLET_INSTANCE_MOCK)
+            .subscribe( (data: WalletsManagementItem | null) => {
+              expect(data).toBe(null);
+              done();
+            });
         });
       });
     });
@@ -97,18 +102,20 @@ describe('PagesWalletsManagementEditorService', () => {
         });
 
         it('created wallet\'s name should invoke showNotification', (done) => {
-          service.openWalletEditor().subscribe( () => {
-            expect(systemNotificationsServiceMock.showNotification).toHaveBeenCalled();
-            done();
-          });
+          service.openEditor()
+            .subscribe( () => {
+              expect(systemNotificationsServiceMock.showNotification).toHaveBeenCalled();
+              done();
+            });
         });
 
         it('should return created wallet', (done) => {
-          service.openWalletEditor().subscribe( (data: WalletsManagementItem | null) => {
-            expect(data).toBeInstanceOf(WalletsManagementItem);
-            expect(data!.name).toBe(WALLET_INSTANCE_MOCK.name);
-            done();
-          });
+          service.openEditor()
+            .subscribe( (data: WalletsManagementItem | null) => {
+              expect(data).toBeInstanceOf(WalletsManagementItem);
+              expect(data!.name).toBe(WALLET_INSTANCE_MOCK.name);
+              done();
+            });
         });
       });
 
@@ -118,17 +125,18 @@ describe('PagesWalletsManagementEditorService', () => {
         });
 
         it('canceled updating wallet\'s name should not invoke showNotification', fakeAsync(() => {
-          service.openWalletEditor();
+          service.openEditor();
           flushMicrotasks();
 
           expect(systemNotificationsServiceMock.showNotification).not.toHaveBeenCalled();
         }));
 
         it('should return undefined', (done) => {
-          service.openWalletEditor().subscribe( (data: WalletsManagementItem | null) => {
-            expect(data).toBe(null);
-            done();
-          });
+          service.openEditor()
+            .subscribe( (data: WalletsManagementItem | null) => {
+              expect(data).toBe(null);
+              done();
+            });
         });
       });
     });

@@ -1,3 +1,4 @@
+import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.constants';
 import { TransactionAmountPipe } from './transaction-amount.pipe';
 
 describe('TransactionAmountPipe', () => {
@@ -12,13 +13,13 @@ describe('TransactionAmountPipe', () => {
   });
 
   it('adds minus to negative value', () => {
-    const transformedValue: string = pipe.transform(-30);
+    const transformedValue: string = pipe.transform(30, WalletTransactionType.Expenses);
 
     expect(transformedValue).toBe('- 30');
   });
 
   it('adds plus to positive value', () => {
-    const transformedValue: string = pipe.transform(20);
+    const transformedValue: string = pipe.transform(20, WalletTransactionType.Incomes);
 
     expect(transformedValue).toBe('+ 20');
   });

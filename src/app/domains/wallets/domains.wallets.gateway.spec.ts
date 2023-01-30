@@ -1,19 +1,19 @@
 import { TestBed } from '@angular/core/testing';
 import { DomainsWalletsGateway } from './domains.wallets.gateway';
-import { IWalletApiResponse, IWalletPayload, IWalletTransactionApiResponse } from './domains.wallets.types';
+import { IWalletApiResponse, IWalletPayload } from './domains.wallets.types';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import { API_WALLETS_URL } from './domains.wallets.constants';
-import { WALLET_PAYLOAD_MOCK, WALLET_RESP_MOCK } from './domains.wallets.mocks';
+import {
+  WALLET_PAYLOAD_MOCK, WALLET_RESP_MOCK,
+} from './domains.wallets.mocks';
 
 describe('DomainsWalletsGateway', () => {
   let service: DomainsWalletsGateway;
   let walletResp: IWalletApiResponse;
   let httpTestingController: HttpTestingController;
   let apiUrl: string;
-  let walletId: number;
 
   beforeEach(async () => {
-    walletId = 1;
     walletResp = WALLET_RESP_MOCK;
     apiUrl = API_WALLETS_URL;
 
@@ -23,7 +23,6 @@ describe('DomainsWalletsGateway', () => {
       ],
       providers: [
         DomainsWalletsGateway,
-
       ],
     }).compileComponents();
 
@@ -68,24 +67,12 @@ describe('DomainsWalletsGateway', () => {
   describe('updateWallet', () => {
     it('should call proper api url and return updated wallet', () => {
       service.updateWallet(walletResp.id, { name: walletResp.name }).subscribe((val: IWalletApiResponse) => {
-        console.log(val);
-        console.log(walletResp);
-
         expect(val).toEqual(walletResp);
       });
 
       const req = httpTestingController.expectOne(apiUrl + '/1');
       expect(req.request.method).toEqual('PATCH');
       req.flush(walletResp);
-    });
-  });
-
-  describe('getWalletTransactions', () => {
-    it('should call fakeRequest and return wallet \'s transactions', (done) => {
-      service.getWalletTransactions(walletId).subscribe((val: IWalletTransactionApiResponse[]) => {
-        expect(val.length).toEqual(3);
-        done();
-      });
     });
   });
 });

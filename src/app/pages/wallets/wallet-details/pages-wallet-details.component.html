@@ -15,15 +15,26 @@
     </div>
   </div>
 
-  <div class="wallet__sort">
-    <mat-form-field appearance="fill">
-      <mat-label>Select type</mat-label>
-      <mat-select [formControl]="transactionsTypeForm">
-        <mat-option *ngFor="let type of selectTransactionsTypes | keyvalue" [value]="type.value">
-          {{ type.key }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
+  <div class="wallet__sort__add">
+    <div class="wallet__sort">
+      <mat-form-field appearance="fill">
+        <mat-label>Select type</mat-label>
+        <mat-select [formControl]="transactionsTypeForm">
+          <mat-option *ngFor="let type of selectTransactionsTypes | keyvalue" [value]="type.value">
+            {{ type.key }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="wallet__add">
+      <button mat-flat-button color="primary" class="income" (click)="handleCreateTransaction(walletTransactionType.Incomes)">Add income</button>
+    </div>
+
+    <div class="wallet__add">
+      <button mat-flat-button color="primary" class="expense" (click)="handleCreateTransaction(walletTransactionType.Expenses)">Add expense</button>
+    </div>
+
   </div>
 
   <table mat-table [dataSource]="displayedTransactions" class="mat-elevation-z8">
@@ -42,7 +53,7 @@
       <th mat-header-cell *matHeaderCellDef> Amount </th>
       <td mat-cell *matCellDef="let element">
         <span [ngClass]="element.type === walletTransactionType.Expenses ? 'amount--expense' : 'amount--income'">
-          {{ element.amount | transactionAmount }}
+          {{ element.amount | transactionAmount: element.type }}
         </span>
       </td>
     </ng-container>
@@ -50,7 +61,7 @@
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef> Actions </th>
       <td mat-cell *matCellDef="let element">
-        <button mat-stroked-button>Edit</button>
+        <button mat-stroked-button (click)="handleEditTransaction(element)">Edit</button>
         <button mat-raised-button color="warn">Delete</button>
       </td>
     </ng-container>

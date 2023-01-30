@@ -22,10 +22,9 @@ describe('PagesWalletsManagementEditorComponent', () => {
       ],
       providers: [
         { provide: MatDialogRef, useValue: null },
-        { provide: MAT_DIALOG_DATA, useValue: undefined },
+        { provide: MAT_DIALOG_DATA, useValue: { name: 'Wallet Name 1' } },
       ],
-    })
-      .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(PagesWalletsManagementEditorComponent);
     component = fixture.componentInstance;
@@ -50,6 +49,7 @@ describe('PagesWalletsManagementEditorComponent', () => {
 
       const errorMessageDiv = fixture.debugElement.query(By.css('.mat-error'));
       const errorMessageText: HTMLDivElement = errorMessageDiv.nativeElement as HTMLDivElement;
+
       expect(errorMessageText.textContent!.trim()).toBe(ERROR_MESSAGE_REQUIRED);
     });
 
@@ -61,6 +61,7 @@ describe('PagesWalletsManagementEditorComponent', () => {
 
       const errorMessageDiv = fixture.debugElement.query(By.css('.mat-error'));
       const errorMessageText: HTMLDivElement = errorMessageDiv.nativeElement as HTMLDivElement;
+
       expect(errorMessageText.textContent!.trim()).toBe(ERROR_MESSAGE_MAXLENGTH);
     });
   });

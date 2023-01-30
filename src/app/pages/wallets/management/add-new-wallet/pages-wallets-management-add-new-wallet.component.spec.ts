@@ -10,8 +10,7 @@ describe('PagesWalletsManagementAddNewWalletComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ PagesWalletsManagementAddNewWalletComponent ],
       imports: [ MaterialModule ],
-    })
-      .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(PagesWalletsManagementAddNewWalletComponent);
     component = fixture.componentInstance;

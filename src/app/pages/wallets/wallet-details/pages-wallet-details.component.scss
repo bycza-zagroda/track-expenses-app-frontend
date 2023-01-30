@@ -35,6 +35,20 @@
     }
   }
 
+  .wallet__sort__add {
+    display: flex;
+    align-items: baseline;
+
+    .wallet__add {
+      margin-left: 20px;
+
+      button {
+        &.income { background-color: colors.$amount-income; }
+        &.expense { background-color: colors.$amount-expense; }
+      }
+    }
+  }
+
   .example-additional-selection {
     opacity: 0.75;
     font-size: 0.75em;

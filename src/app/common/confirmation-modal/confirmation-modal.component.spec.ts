@@ -24,8 +24,7 @@ describe('ConfirmationModalComponent', () => {
           },
         },
       ],
-    })
-      .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ConfirmationModalComponent);
     component = fixture.componentInstance;

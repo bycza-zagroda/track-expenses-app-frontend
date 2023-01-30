@@ -9,6 +9,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule, MAT_DATE_FORMATS } from '@angular/material/core';
+import { TEAF_DATE_FORMATS } from './common/date-and-time/common-date-and-time-my-date-formats';
 
 @NgModule({
   imports: [
@@ -22,6 +25,11 @@ import { MatSelectModule } from '@angular/material/select';
     MatSnackBarModule,
     MatTableModule,
     MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+  ],
+  providers: [
+    { provide: MAT_DATE_FORMATS, useValue: TEAF_DATE_FORMATS },
   ],
   exports: [
     MatButtonModule,
@@ -33,6 +41,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatSnackBarModule,
     MatTableModule,
     MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
 })
 export class MaterialModule {

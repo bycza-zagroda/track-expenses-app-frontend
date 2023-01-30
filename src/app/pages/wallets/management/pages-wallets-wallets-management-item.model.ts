@@ -1,3 +1,4 @@
+import { TServerEntityId } from 'src/app/common/http/common.http.types';
 import {
   IWalletApiResponse,
   IWalletManagementItemData,
@@ -5,7 +6,7 @@ import {
 } from '../../../domains/wallets/domains.wallets.types';
 
 export class WalletsManagementItem {
-  public readonly id: number | null;
+  public readonly id: TServerEntityId | null;
   public readonly createdAt: Date;
   public readonly name: string;
 
