@@ -37,7 +37,7 @@ describe('TransactionEditorComponent', () => {
         NoopAnimationsModule,
       ],
       providers: [
-        { provide: MatDialogRef, useValue: null },
+        { provide: MatDialogRef, useValue: matDialogRef },
         { provide: MatDialog, useValue: matDialogMock },
         { provide: MAT_DIALOG_DATA, useValue: WALLET_TRANSACTIONS_EXPENSE_MOCK },
       ],
