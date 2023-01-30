@@ -8,7 +8,7 @@ import {
   IWalletTransactionItemData,
 } from 'src/app/domains/transactions/domains.transactions.types';
 
-export class WalletsDetailsTransaction {
+export class WalletTransaction {
   public readonly id: TServerEntityId | null;
   public readonly creationDate: Date;
   public readonly transactionDate: Date;
@@ -27,8 +27,8 @@ export class WalletsDetailsTransaction {
     this.walletId = data.walletId;
   }
 
-  public static create(data: Partial<IWalletTransactionApiResponse>): WalletsDetailsTransaction {
-    return new WalletsDetailsTransaction({
+  public static create(data: Partial<IWalletTransactionApiResponse>): WalletTransaction {
+    return new WalletTransaction({
       id: data.id ?? null,
       amount: data.amount ?? 0,
       creationDate: data.creationDate ?? new Date().toISOString(),

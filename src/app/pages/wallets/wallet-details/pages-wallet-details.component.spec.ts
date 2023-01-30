@@ -16,7 +16,7 @@ import { PagesWalletDetailsComponent } from './pages-wallet-details.component';
 import { PagesWalletDetailsService } from './pages-wallet-details.service';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
-import { WalletsDetailsTransaction } from './pages-wallet-details-item.model';
+import { WalletTransaction } from './pages-wallet-details-item.model';
 import { PagesWalletTransactionEditorService } from './transaction-editor/pages-wallet-transaction-editor.service';
 import {
   UPDATED_WALLET_TRANSACTIONS_OBJECT_MOCK,
@@ -34,7 +34,7 @@ describe('PagesWalletDetailsComponent', () => {
   let pagesWalletsManagementEditorServiceMock: SpyObj<PagesWalletsManagementEditorService>;
   let pagesWalletTransactionEditorServiceMock: SpyObj<PagesWalletTransactionEditorService>;
   let matEditorWalletSubject: Subject<WalletsManagementItem | null>;
-  let matEditorTransactionSubject: Subject<WalletsDetailsTransaction | null>;
+  let matEditorTransactionSubject: Subject<WalletTransaction | null>;
 
   beforeEach(async () => {
     activatedRouteMock = {
@@ -42,7 +42,7 @@ describe('PagesWalletDetailsComponent', () => {
     };
 
     matEditorWalletSubject = new Subject<WalletsManagementItem | null>();
-    matEditorTransactionSubject = new Subject<WalletsDetailsTransaction | null>();
+    matEditorTransactionSubject = new Subject<WalletTransaction | null>();
 
     pagesWalletDetailsServiceMock = createSpyObj<PagesWalletDetailsService>(PagesWalletDetailsService.name, [
       'getWalletTransactions',
@@ -99,7 +99,7 @@ describe('PagesWalletDetailsComponent', () => {
 
   describe('handleCreateTransaction', () => {
     describe('success', () => {
-      it('should create new WalletsDetailsTransaction object', fakeAsync(() => {
+      it('should create new WalletTransaction object', fakeAsync(() => {
         component.handleCreateTransaction(WalletTransactionType.Incomes);
         matEditorTransactionSubject.next(WALLET_TRANSACTIONS_INCOME_MOCK);
         flushMicrotasks();
@@ -109,7 +109,7 @@ describe('PagesWalletDetailsComponent', () => {
     });
 
     describe('cancel', () => {
-      it('should not create new WalletsDetailsTransaction object', fakeAsync(() => {
+      it('should not create new WalletTransaction object', fakeAsync(() => {
         component.handleCreateTransaction(WalletTransactionType.Incomes);
         matEditorTransactionSubject.next(null);
         flushMicrotasks();
@@ -124,7 +124,7 @@ describe('PagesWalletDetailsComponent', () => {
     const updatedTransaction = UPDATED_WALLET_TRANSACTIONS_OBJECT_MOCK(1);
 
     describe('success', () => {
-      it('should update WalletsDetailsTransaction object', fakeAsync(() => {
+      it('should update WalletTransaction object', fakeAsync(() => {
         component.handleEditTransaction(transaction);
         matEditorTransactionSubject.next(updatedTransaction);
 
@@ -137,7 +137,7 @@ describe('PagesWalletDetailsComponent', () => {
     });
 
     describe('cancel', () => {
-      it('should not update WalletsDetailsTransaction object', fakeAsync(() => {
+      it('should not update WalletTransaction object', fakeAsync(() => {
         component.handleEditTransaction(transaction);
         matEditorTransactionSubject.next(null);
         flushMicrotasks();

@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import { DomainsTransactionsGateway } from 'src/app/domains/transactions/domains.transactions.gateway';
 import { WALLET_TRANSACTIONS_API_RESPONSE_MOCK } from 'src/app/domains/transactions/domains.transactions.mocks';
-import { WalletsDetailsTransaction } from './pages-wallet-details-item.model';
+import { WalletTransaction } from './pages-wallet-details-item.model';
 import { PagesWalletDetailsService } from './pages-wallet-details.service';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
@@ -32,9 +32,9 @@ describe('PagesWalletDetailsService', () => {
   });
 
   describe('getWalletTransactions', () => {
-    it('should return array of WalletsDetailsTransaction instances', (done) => {
-      service.getWalletTransactions(walletId).subscribe((transactions: WalletsDetailsTransaction[]) => {
-        expect(transactions[0]).toBeInstanceOf(WalletsDetailsTransaction);
+    it('should return array of WalletTransaction instances', (done) => {
+      service.getWalletTransactions(walletId).subscribe((transactions: WalletTransaction[]) => {
+        expect(transactions[0]).toBeInstanceOf(WalletTransaction);
         done();
       });
     });

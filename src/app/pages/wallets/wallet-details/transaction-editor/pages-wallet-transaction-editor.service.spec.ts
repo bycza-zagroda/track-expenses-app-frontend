@@ -16,7 +16,7 @@ import {
   WALLET_TRANSACTIONS_INCOME_MOCK,
   WALLET_TRANSACTIONS_TO_CREATE_INCOME_MOCK,
 } from 'src/app/domains/transactions/domains.transactions.mocks';
-import { WalletsDetailsTransaction } from '../pages-wallet-details-item.model';
+import { WalletTransaction } from '../pages-wallet-details-item.model';
 import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.constants';
 
 describe('PagesWalletTransactionEditorService', () => {
@@ -72,7 +72,7 @@ describe('PagesWalletTransactionEditorService', () => {
 
         it('should return updated wallet', (done) => {
           service.openEditor(WALLET_TRANSACTIONS_INCOME_MOCK)
-            .subscribe( (data: WalletsDetailsTransaction | null) => {
+            .subscribe( (data: WalletTransaction | null) => {
               expect(data).toEqual(UPDATED_WALLET_TRANSACTIONS_INCOME_MOCK);
               done();
             });
@@ -93,7 +93,7 @@ describe('PagesWalletTransactionEditorService', () => {
 
         it('should return undefined', (done) => {
           service.openEditor(WALLET_TRANSACTIONS_INCOME_MOCK)
-            .subscribe( (data: WalletsDetailsTransaction | null) => {
+            .subscribe( (data: WalletTransaction | null) => {
               expect(data).toBe(null);
               done();
             });
@@ -108,7 +108,7 @@ describe('PagesWalletTransactionEditorService', () => {
         });
 
         it('created transaction\'s name should invoke showNotification', (done) => {
-          service.openEditor(WalletsDetailsTransaction.create({ type: WalletTransactionType.Incomes }))
+          service.openEditor(WalletTransaction.create({ type: WalletTransactionType.Incomes }))
             .subscribe( () => {
               expect(systemNotificationsServiceMock.showNotification).toHaveBeenCalled();
               done();
@@ -116,9 +116,9 @@ describe('PagesWalletTransactionEditorService', () => {
         });
 
         it('should return created transaction', (done) => {
-          service.openEditor(WalletsDetailsTransaction.create({ type: WalletTransactionType.Incomes }))
-            .subscribe( (data: WalletsDetailsTransaction | null) => {
-              expect(data).toBeInstanceOf(WalletsDetailsTransaction);
+          service.openEditor(WalletTransaction.create({ type: WalletTransactionType.Incomes }))
+            .subscribe( (data: WalletTransaction | null) => {
+              expect(data).toBeInstanceOf(WalletTransaction);
               expect(data!.id).toEqual(WALLET_TRANSACTIONS_CREATED_INCOME_MOCK.id);
               done();
             });
@@ -131,15 +131,15 @@ describe('PagesWalletTransactionEditorService', () => {
         });
 
         it('canceled updating transaction\'s name should not invoke showNotification', fakeAsync(() => {
-          service.openEditor(WalletsDetailsTransaction.create({ type: WalletTransactionType.Incomes }));
+          service.openEditor(WalletTransaction.create({ type: WalletTransactionType.Incomes }));
           flushMicrotasks();
 
           expect(systemNotificationsServiceMock.showNotification).not.toHaveBeenCalled();
         }));
 
         it('should return undefined', (done) => {
-          service.openEditor(WalletsDetailsTransaction.create({ type: WalletTransactionType.Incomes }))
-            .subscribe( (data: WalletsDetailsTransaction | null) => {
+          service.openEditor(WalletTransaction.create({ type: WalletTransactionType.Incomes }))
+            .subscribe( (data: WalletTransaction | null) => {
               expect(data).toBe(null);
               done();
             });

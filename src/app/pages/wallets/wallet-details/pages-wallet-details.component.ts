@@ -8,7 +8,7 @@ import { WalletSelectionValue } from 'src/app/domains/transactions/domains.trans
 import { WalletsManagementItem } from '../management/pages-wallets-wallets-management-item.model';
 import { PagesWalletsManagementEditorService } from '../management/wallet-editor/pages-wallets-management-editor.service';
 import { IWalletModalData } from '../management/wallet-editor/pages-wallets-management-editor.types';
-import { WalletsDetailsTransaction } from './pages-wallet-details-item.model';
+import { WalletTransaction } from './pages-wallet-details-item.model';
 import { PagesWalletDetailsService } from './pages-wallet-details.service';
 import { PagesWalletTransactionEditorService } from './transaction-editor/pages-wallet-transaction-editor.service';
 
@@ -28,9 +28,9 @@ export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
   public walletTransactionType: typeof WalletTransactionType = WalletTransactionType;
   public displayedColumns: string[] = [ 'date', 'description', 'amount', 'actions' ];
   public walletsManagementItem?: WalletsManagementItem;
-  public displayedTransactions: WalletsDetailsTransaction[] = [];
+  public displayedTransactions: WalletTransaction[] = [];
 
-  public walletsDetailsData: TDataState<WalletsDetailsTransaction[]> = {
+  public walletsDetailsData: TDataState<WalletTransaction[]> = {
     data: null,
     hasError: false,
     isLoading: true,
@@ -72,17 +72,17 @@ export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
 
   public handleCreateTransaction(type: WalletTransactionType): void {
     this.pagesWalletTransactionEditorService
-      .openEditor(WalletsDetailsTransaction.create({ type, walletId: this.walletsManagementItem!.id! }))
-      .subscribe( (transaction: WalletsDetailsTransaction | null) => {
+      .openEditor(WalletTransaction.create({ type, walletId: this.walletsManagementItem!.id! }))
+      .subscribe( (transaction: WalletTransaction | null) => {
         if(transaction) {
           this.createTransaction(transaction);
         }
       });
   }
 
-  public handleEditTransaction(transaction: WalletsDetailsTransaction): void {
+  public handleEditTransaction(transaction: WalletTransaction): void {
     this.pagesWalletTransactionEditorService.openEditor(transaction)
-      .subscribe( (transaction: WalletsDetailsTransaction | null) => {
+      .subscribe( (transaction: WalletTransaction | null) => {
         if(transaction) {
           this.updateTransaction(transaction);
         }
@@ -95,7 +95,7 @@ export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
 
   private getWalletTransactions(walletId: TServerEntityId): void {
     this.pagesWalletDetailsService.getWalletTransactions(walletId).subscribe({
-      next: (transactions: WalletsDetailsTransaction[]) => {
+      next: (transactions: WalletTransaction[]) => {
         this.displayedTransactions = transactions;
 
         this.walletsDetailsData = {
@@ -116,12 +116,12 @@ export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
 
   private filterTransactions(): void {
     this.displayedTransactions = this.walletsDetailsData.data!.filter(
-      (transaction: WalletsDetailsTransaction) =>
+      (transaction: WalletTransaction) =>
         (this.transactionsTypeForm.value === '') ? true : this.transactionsTypeForm.value === transaction.type.toString(),
     );
   }
 
-  private createTransaction(transaction: WalletsDetailsTransaction): void {
+  private createTransaction(transaction: WalletTransaction): void {
     this.walletsDetailsData.data?.push(transaction);
     this.filterTransactions();
   }
@@ -134,8 +134,8 @@ export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
     });
   }
 
-  private updateTransaction(transaction: WalletsDetailsTransaction): void {
-    this.walletsDetailsData.data = this.walletsDetailsData.data!.map( (transactionItem: WalletsDetailsTransaction) => {
+  private updateTransaction(transaction: WalletTransaction): void {
+    this.walletsDetailsData.data = this.walletsDetailsData.data!.map( (transactionItem: WalletTransaction) => {
       if(transactionItem.id == transaction.id) {
         return transaction;
       }

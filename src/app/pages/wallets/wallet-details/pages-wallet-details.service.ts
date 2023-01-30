@@ -4,7 +4,7 @@ import { map } from 'rxjs/internal/operators/map';
 import { TServerEntityId } from 'src/app/common/http/common.http.types';
 import { DomainsTransactionsGateway } from 'src/app/domains/transactions/domains.transactions.gateway';
 import { ITransactionPayload, IWalletTransactionApiResponse } from 'src/app/domains/transactions/domains.transactions.types';
-import { WalletsDetailsTransaction } from './pages-wallet-details-item.model';
+import { WalletTransaction } from './pages-wallet-details-item.model';
 
 @Injectable({
   providedIn: 'root',
@@ -14,23 +14,23 @@ export class PagesWalletDetailsService {
     private readonly gateway: DomainsTransactionsGateway,
   ) { }
 
-  public getWalletTransactions(id: TServerEntityId): Observable<WalletsDetailsTransaction[]> {
+  public getWalletTransactions(id: TServerEntityId): Observable<WalletTransaction[]> {
     return this.gateway.getWalletTransactions(id).pipe(
       map(transactionsResp => transactionsResp.map(
-        (item: IWalletTransactionApiResponse) => new WalletsDetailsTransaction(item),
+        (item: IWalletTransactionApiResponse) => new WalletTransaction(item),
       )),
     );
   }
 
-  public createWalletTransaction(data: ITransactionPayload): Observable<WalletsDetailsTransaction> {
+  public createWalletTransaction(data: ITransactionPayload): Observable<WalletTransaction> {
     return this.gateway.createWalletTransaction(data).pipe(
-      map(transactionsResp => new WalletsDetailsTransaction(transactionsResp)),
+      map(transactionsResp => new WalletTransaction(transactionsResp)),
     );
   }
 
-  public editWalletTransaction(data: WalletsDetailsTransaction): Observable<WalletsDetailsTransaction> {
+  public editWalletTransaction(data: WalletTransaction): Observable<WalletTransaction> {
     return this.gateway.editWalletTransaction(data).pipe(
-      map(transactionsResp => new WalletsDetailsTransaction(transactionsResp)),
+      map(transactionsResp => new WalletTransaction(transactionsResp)),
     );
   }
 }
