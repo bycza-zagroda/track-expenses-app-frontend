@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { WalletTransaction } from 'src/app/pages/wallets/wallet-details/pages-wallet-details-item.model';
-import { ITransactionPayload, IWalletTransactionApiResponse } from './domains.transactions.types';
+import { IWalletTransactionApiResponse } from './domains.transactions.types';
 import { TServerEntityId } from 'src/app/common/http/common.http.types';
 import { API_TRANSACTIONS_URL } from './domains.transactions.constants';
 
@@ -22,15 +22,9 @@ export class DomainsTransactionsGateway {
     return this.http.get<IWalletTransactionApiResponse[]>(API_TRANSACTIONS_URL, { params: queryParams });
   }
 
-  public createWalletTransaction({ amount, date, type, description, walletId }: ITransactionPayload)
+  public createWalletTransaction(transaction: WalletTransaction)
   : Observable<IWalletTransactionApiResponse> {
-    return this.http.post<IWalletTransactionApiResponse>(API_TRANSACTIONS_URL, {
-      walletId,
-      amount,
-      date,
-      type,
-      description,
-    });
+    return this.http.post<IWalletTransactionApiResponse>(API_TRANSACTIONS_URL, transaction.toPayload());
   }
 
   public editWalletTransaction(transaction: WalletTransaction)

@@ -1,5 +1,4 @@
 import { WalletTransaction } from 'src/app/pages/wallets/wallet-details/pages-wallet-details-item.model';
-import { NEW_DATE_EXAMPLE1, NEW_DATE_EXAMPLE2 } from '../wallets/domains.wallets.mocks';
 import { WalletTransactionType } from './domains.transactions.constants';
 import { ITransactionPayload, IWalletTransactionApiResponse } from './domains.transactions.types';
 
@@ -67,10 +66,14 @@ export function WALLET_TRANSACTIONS_API_RESPONSE_MOCK(id: number): IWalletTransa
 }
 
 export function WALLET_TRANSACTIONS_OBJECTS_MOCK(id: number): WalletTransaction[]  {
+  const object = WALLET_TRANSACTIONS_API_RESPONSE_MOCK(id);
+
   return WALLET_TRANSACTIONS_API_RESPONSE_MOCK(id).map(
     (item: IWalletTransactionApiResponse) => new WalletTransaction(item),
   );
 }
+
+
 
 export function UPDATED_WALLET_TRANSACTIONS_OBJECT_MOCK(id: number): WalletTransaction  {
   const object = WALLET_TRANSACTIONS_API_RESPONSE_MOCK(id)[0];
@@ -147,8 +150,8 @@ export const WALLET_TRANSACTIONS_API_RESPONSE_2 = [
 export const WALLET_TRANSACTIONS_INCOME_MOCK = new WalletTransaction({
   id: 10,
   amount: 150,
-  creationDate: NEW_DATE_EXAMPLE1,
-  date: NEW_DATE_EXAMPLE2,
+  creationDate: new Date(2018, 3, 1).toISOString(),
+  date: new Date(2018, 3, 1).toISOString(),
   type: WalletTransactionType.Incomes,
   description: 'Some description 1',
   walletId: 1,
@@ -157,8 +160,8 @@ export const WALLET_TRANSACTIONS_INCOME_MOCK = new WalletTransaction({
 export const WALLET_TRANSACTIONS_TO_CREATE_INCOME_MOCK = new WalletTransaction({
   id: null,
   amount: 150,
-  creationDate: NEW_DATE_EXAMPLE1,
-  date: NEW_DATE_EXAMPLE2,
+  creationDate: new Date(2018, 3, 1).toISOString(),
+  date: new Date(2018, 3, 1).toISOString(),
   type: WalletTransactionType.Incomes,
   description: 'Some description 1',
   walletId: 1,
@@ -167,8 +170,8 @@ export const WALLET_TRANSACTIONS_TO_CREATE_INCOME_MOCK = new WalletTransaction({
 export const WALLET_TRANSACTIONS_CREATED_INCOME_MOCK = new WalletTransaction({
   id: 200,
   amount: 150,
-  creationDate: NEW_DATE_EXAMPLE1,
-  date: NEW_DATE_EXAMPLE2,
+  creationDate: new Date(2018, 3, 1).toISOString(),
+  date: new Date(2018, 3, 1).toISOString(),
   type: WalletTransactionType.Incomes,
   description: 'Some description 1',
   walletId: 1,
@@ -177,8 +180,8 @@ export const WALLET_TRANSACTIONS_CREATED_INCOME_MOCK = new WalletTransaction({
 export const UPDATED_WALLET_TRANSACTIONS_INCOME_MOCK = new WalletTransaction({
   id: 10,
   amount: 250,
-  creationDate: NEW_DATE_EXAMPLE1,
-  date: NEW_DATE_EXAMPLE2,
+  creationDate: new Date(2018, 3, 1).toISOString(),
+  date: new Date(2018, 3, 1).toISOString(),
   type: WalletTransactionType.Incomes,
   description: 'Some updated description 1',
   walletId: 1,
@@ -187,8 +190,8 @@ export const UPDATED_WALLET_TRANSACTIONS_INCOME_MOCK = new WalletTransaction({
 export const WALLET_TRANSACTIONS_EXPENSE_MOCK = new WalletTransaction({
   id: 15,
   amount: 50,
-  creationDate: NEW_DATE_EXAMPLE1,
-  date: NEW_DATE_EXAMPLE2,
+  creationDate: new Date(2018, 3, 1).toISOString(),
+  date: new Date(2018, 3, 1).toISOString(),
   type: WalletTransactionType.Expenses,
   description: 'Some description 2',
   walletId: 1,

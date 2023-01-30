@@ -3,7 +3,8 @@ import { HttpTestingController, HttpClientTestingModule } from '@angular/common/
 import { DomainsTransactionsGateway } from './domains.transactions.gateway';
 import { IWalletTransactionApiResponse } from './domains.transactions.types';
 import {
-  TRANSACTION_PAYLOAD_MOCK,
+  WALLET_TRANSACTIONS_INCOME_MOCK,
+  WALLET_TRANSACTIONS_OBJECTS_MOCK,
   UPDATED_WALLET_TRANSACTIONS_OBJECT_MOCK,
   WALLET_TRANSACTIONS_API_RESPONSE_MOCK,
 } from './domains.transactions.mocks';
@@ -47,26 +48,26 @@ describe('DomainsTransactionsGateway', () => {
 
       const req = httpTestingController.expectOne(apiUrl + `?walletId=${walletId}`);
       expect(req.request.method).toEqual('GET');
-      req.flush([ transactionsResp ]);
+      req.flush(transactionsResp);
     });
   });
 
   describe('createWalletTransaction', () => {
     it('should call Api and return wallet \'s transaction', () => {
-      service.createWalletTransaction(TRANSACTION_PAYLOAD_MOCK).subscribe((val: IWalletTransactionApiResponse) => {
-        expect(val.amount).toEqual(TRANSACTION_PAYLOAD_MOCK.amount);
-        expect(val.type).toEqual(TRANSACTION_PAYLOAD_MOCK.type);
+      service.createWalletTransaction(WALLET_TRANSACTIONS_INCOME_MOCK).subscribe((val: IWalletTransactionApiResponse) => {
+        expect(val.amount).toEqual(WALLET_TRANSACTIONS_INCOME_MOCK.amount);
+        expect(val.type).toEqual(WALLET_TRANSACTIONS_INCOME_MOCK.type);
       });
 
       const req = httpTestingController.expectOne(apiUrl);
       expect(req.request.method).toEqual('POST');
-      req.flush([ transactionsResp ]);
+      req.flush(WALLET_TRANSACTIONS_INCOME_MOCK);
     });
   });
 
   describe('editWalletTransaction', () => {
     it('should call Api and return updated wallet \'s transaction', () => {
-      service.editWalletTransaction(UPDATED_WALLET_TRANSACTIONS_OBJECT_MOCK(1))
+      service.editWalletTransaction(WALLET_TRANSACTIONS_OBJECTS_MOCK(1)[0])
         .subscribe((val: IWalletTransactionApiResponse) => {
           expect(val.amount).toEqual(UPDATED_WALLET_TRANSACTIONS_OBJECT_MOCK(1).amount);
           expect(val.type).toEqual(UPDATED_WALLET_TRANSACTIONS_OBJECT_MOCK(1).type);
@@ -74,7 +75,7 @@ describe('DomainsTransactionsGateway', () => {
 
       const req = httpTestingController.expectOne(apiUrl + `/${walletId}`);
       expect(req.request.method).toEqual('PUT');
-      req.flush([ transactionsResp ]);
+      req.flush(UPDATED_WALLET_TRANSACTIONS_OBJECT_MOCK(1));
     });
   });
 });

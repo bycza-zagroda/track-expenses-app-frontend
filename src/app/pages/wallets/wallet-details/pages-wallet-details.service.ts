@@ -22,7 +22,7 @@ export class PagesWalletDetailsService {
     );
   }
 
-  public createWalletTransaction(data: ITransactionPayload): Observable<WalletTransaction> {
+  public createWalletTransaction(data: WalletTransaction): Observable<WalletTransaction> {
     return this.gateway.createWalletTransaction(data).pipe(
       map(transactionsResp => new WalletTransaction(transactionsResp)),
     );

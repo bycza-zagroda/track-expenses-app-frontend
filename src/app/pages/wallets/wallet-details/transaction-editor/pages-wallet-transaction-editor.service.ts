@@ -35,7 +35,7 @@ export class PagesWalletTransactionEditorService {
   private makeRequest(transaction: WalletTransaction): Observable<WalletTransaction> {
     return transaction.id ?
       this.pagesWalletDetailsService.editWalletTransaction(transaction) :
-      this.pagesWalletDetailsService.createWalletTransaction(transaction.toPayload());
+      this.pagesWalletDetailsService.createWalletTransaction(transaction);
   }
 
   private notify(updatedWallet: WalletTransaction | null, type: string): void {

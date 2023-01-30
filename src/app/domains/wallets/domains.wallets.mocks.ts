@@ -15,7 +15,7 @@ export const UPDATED_WALLET_INSTANCE_MOCK = new WalletsManagementItem(UPDATED_WA
 
 export function GET_WALLETS_API_RESPONSE_MOCK(): IWalletApiResponse[] {
   return [
-    { id: 1, name: 'wallet1', creationDate: '' },
-    { id: 2, name: 'wallet2', creationDate: '' },
+    { id: 1, name: 'wallet1', creationDate: DATE_EXAMPLE },
+    { id: 2, name: 'wallet2', creationDate: DATE_EXAMPLE },
   ];
 }
