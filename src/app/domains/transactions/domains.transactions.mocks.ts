@@ -66,14 +66,11 @@ export function WALLET_TRANSACTIONS_API_RESPONSE_MOCK(id: number): IWalletTransa
 }
 
 export function WALLET_TRANSACTIONS_OBJECTS_MOCK(id: number): WalletTransaction[]  {
-  const object = WALLET_TRANSACTIONS_API_RESPONSE_MOCK(id);
 
   return WALLET_TRANSACTIONS_API_RESPONSE_MOCK(id).map(
     (item: IWalletTransactionApiResponse) => new WalletTransaction(item),
   );
 }
-
-
 
 export function UPDATED_WALLET_TRANSACTIONS_OBJECT_MOCK(id: number): WalletTransaction  {
   const object = WALLET_TRANSACTIONS_API_RESPONSE_MOCK(id)[0];

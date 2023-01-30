@@ -3,7 +3,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/internal/operators/map';
 import { TServerEntityId } from 'src/app/common/http/common.http.types';
 import { DomainsTransactionsGateway } from 'src/app/domains/transactions/domains.transactions.gateway';
-import { ITransactionPayload, IWalletTransactionApiResponse } from 'src/app/domains/transactions/domains.transactions.types';
+import { IWalletTransactionApiResponse } from 'src/app/domains/transactions/domains.transactions.types';
 import { WalletTransaction } from './pages-wallet-details-item.model';
 
 @Injectable({
