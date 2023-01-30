@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TServerEntityId } from 'src/app/common/http/common.http.types';
 import { checkInputError } from 'src/app/common/utils/forms/common-utils-forms-form-utils';
 import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.constants';
-import { WalletsDetailsTransaction } from '../pages-wallet-details-item.model';
+import { WalletTransaction } from '../pages-wallet-details-item.model';
 import { IWalletTransactionModalFormType } from './pages-wallet-transaction.editor.types';
 
 export const regexAmount = /^\d+(\.\d{1,2})?$/;
@@ -28,7 +28,7 @@ export class PagesWalletTransactionEditorComponent {
 
   public constructor(
     private readonly dialogRef: MatDialogRef<PagesWalletTransactionEditorComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: WalletsDetailsTransaction,
+    @Inject(MAT_DIALOG_DATA) public data: WalletTransaction,
   ) {
     this.transactionId = this.data.id;
     this.walletId = this.data.walletId;
@@ -79,12 +79,12 @@ export class PagesWalletTransactionEditorComponent {
       return;
     }
 
-    this.dialogRef.close(WalletsDetailsTransaction.create({
+    this.dialogRef.close(WalletTransaction.create({
       id: this.transactionId ?? undefined,
       amount: parseFloat(this.form.controls.amount.value!.toString()),
       creationDate: this.form.controls.date.value!.toString(),
       type: this.form.controls.type.value!,
-      description: this.form.controls.description.value || null,
+      description: this.form.controls.description.value === "" ? null : this.form.controls.description.value,
       walletId: this.walletId,
     }));
   }
