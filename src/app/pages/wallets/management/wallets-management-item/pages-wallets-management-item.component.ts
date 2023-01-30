@@ -9,15 +9,15 @@ import { WalletsManagementItem } from '../pages-wallets-wallets-management-item.
 export class PagesWalletsManagementItemComponent {
   @Input() public wallet!: WalletsManagementItem;
 
-  @Output() public walletEdit = new EventEmitter<WalletsManagementItem>();
-
   @Output() public walletDelete = new EventEmitter<WalletsManagementItem>();
 
-  public editWallet(): void {
-    this.walletEdit.emit(this.wallet);
-  }
+  @Output() public walletDetailsOpen = new EventEmitter<WalletsManagementItem>();
 
   public deleteWallet(): void {
     this.walletDelete.emit(this.wallet);
+  }
+
+  public openWalletDetails(): void {
+    this.walletDetailsOpen.emit(this.wallet);
   }
 }

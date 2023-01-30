@@ -10,6 +10,11 @@
   @media only screen and (min-width: 900px) {
     grid-template-columns: 1fr 1fr;
   }
+
+  @media (max-width: 1100px) {
+    padding-bottom: 40px;
+  }
+
 }
 
 .loading-container {
@@ -21,4 +26,21 @@
 
 .message-container {
   margin-top: 20px;
+}
+
+.desktop-button {
+  @media (max-width: 1100px) {
+    display: none;
+  }
+}
+
+.mobile-button {
+  position: fixed;
+  bottom: 30px;
+  right: 20px;
+  font-size: 30px;
+
+  @media (min-width: 1100px) {
+    display: none;
+  }
 }

@@ -26,4 +26,10 @@ describe('PagesWalletsManagementItemComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should emit the current wallet', () => {
+    spyOn(component.walletDetailsOpen, 'emit');
+    component.openWalletDetails();
+    expect(component.walletDetailsOpen.emit).toHaveBeenCalledWith(component.wallet);
+  });
 });

@@ -1,18 +1,21 @@
 <div class="container">
-  <div class="loading-container" *ngIf="myWalletsData.isLoading">
-    <mat-spinner></mat-spinner>
-  </div>
+    <div class="loading-container" *ngIf="myWalletsData.isLoading">
+        <mat-spinner></mat-spinner>
+    </div>
 
-  <div class="message-container" *ngIf="myWalletsData.hasError">
-    <app-system-message [type]="notificationTypes.Error" text="Something went wrong. We were not able to get your wallets" description="Please try refreshing your browser"></app-system-message>
-  </div>
+    <div class="message-container" *ngIf="myWalletsData.hasError">
+        <app-system-message [type]="notificationTypes.Error"
+                            text="Something went wrong. We were not able to get your wallets"
+                            description="Please try refreshing your browser"></app-system-message>
+    </div>
 
-  <div class="wallets-management" *ngIf="myWalletsData.data">
-    <app-my-wallet *ngFor="let wallet of myWalletsData.data"
-                   [wallet]="wallet"
-                   (walletEdit)="handleWalletEdit($event)"
-                   (walletDelete)="handleWalletDelete($event)">
-    </app-my-wallet>
-    <app-add-new-wallet (click)="handleWalletCreate()"></app-add-new-wallet>
-  </div>
+    <div class="wallets-management" *ngIf="myWalletsData.data">
+        <app-my-wallet *ngFor="let wallet of myWalletsData.data"
+                       [wallet]="wallet"
+                       (walletDetailsOpen)="goToWalletDetails($event)"
+                       (walletDelete)="handleWalletDelete($event)">
+        </app-my-wallet>
+        <app-add-new-wallet class="desktop-button" (click)="handleWalletCreate()"></app-add-new-wallet>
+        <button class="mobile-button" mat-fab color="primary" (click)="handleWalletCreate()">+</button>
+    </div>
 </div>
