@@ -168,13 +168,10 @@ export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
     this.pagesWalletDetailsService.removeWalletTransaction(transaction).subscribe({
       next: () => {
         this.walletsDetailsData.data = this.walletsDetailsData.data!.filter( (transactionItem: WalletTransaction) => {
-          if(transactionItem.id === transaction.id) {
-            return false;
-          }
-
-          return true;
+          return transactionItem.id !== transaction.id;
         });
         this.filterTransactions();
+        this.systemNotificationsService.showNotification({ message: 'Transaction removed successfully' });
         this.loadingDialogService.hide();
       },
       error: () => {
