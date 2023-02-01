@@ -33,4 +33,8 @@ export class PagesWalletDetailsService {
       map(transactionsResp => new WalletTransaction(transactionsResp)),
     );
   }
+
+  public removeWalletTransaction(transaction: WalletTransaction): Observable<unknown> {
+    return this.gateway.removeWalletTransaction(transaction);
+  }
 }
