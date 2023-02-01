@@ -25,6 +25,9 @@ import {
   WALLET_TRANSACTIONS_OBJECTS_MOCK,
 } from 'src/app/domains/transactions/domains.transactions.mocks';
 import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.constants';
+import { ConfirmDialogService } from 'src/app/common/confirmation-modal/confirm-dialog.service';
+import { SystemNotificationsService } from 'src/app/common/utils/system-notifications/system-notifications.service';
+import { LoadingModalComponent } from 'src/app/common/loading-modal/loading-modal.component';
 
 describe('PagesWalletDetailsComponent', () => {
   let component: PagesWalletDetailsComponent;
@@ -33,8 +36,11 @@ describe('PagesWalletDetailsComponent', () => {
   let pagesWalletDetailsServiceMock: SpyObj<PagesWalletDetailsService>;
   let pagesWalletsManagementEditorServiceMock: SpyObj<PagesWalletsManagementEditorService>;
   let pagesWalletTransactionEditorServiceMock: SpyObj<PagesWalletTransactionEditorService>;
+  let systemNotificationsServiceMock: SpyObj<SystemNotificationsService>;
+  let confirmDialogServiceMock: SpyObj<ConfirmDialogService>;
   let matEditorWalletSubject: Subject<WalletsManagementItem | null>;
   let matEditorTransactionSubject: Subject<WalletTransaction | null>;
+  let removeTransactionResponseSubject: Subject<number>;
 
   beforeEach(async () => {
     activatedRouteMock = {
@@ -43,12 +49,15 @@ describe('PagesWalletDetailsComponent', () => {
 
     matEditorWalletSubject = new Subject<WalletsManagementItem | null>();
     matEditorTransactionSubject = new Subject<WalletTransaction | null>();
+    removeTransactionResponseSubject = new Subject<number>();
 
     pagesWalletDetailsServiceMock = createSpyObj<PagesWalletDetailsService>(PagesWalletDetailsService.name, [
       'getWalletTransactions',
+      'removeWalletTransaction',
     ]);
 
     pagesWalletDetailsServiceMock.getWalletTransactions.and.returnValue(of(WALLET_TRANSACTIONS_OBJECTS_MOCK(1)));
+    pagesWalletDetailsServiceMock.removeWalletTransaction.and.returnValue(removeTransactionResponseSubject.asObservable());
 
     pagesWalletsManagementEditorServiceMock = createSpyObj<PagesWalletsManagementEditorService>
     (PagesWalletsManagementEditorService.name, [ 'openEditor' ]);
@@ -58,10 +67,16 @@ describe('PagesWalletDetailsComponent', () => {
     (PagesWalletTransactionEditorService.name, [ 'openEditor' ]);
     pagesWalletTransactionEditorServiceMock.openEditor.and.returnValue(matEditorTransactionSubject.asObservable());
 
+    confirmDialogServiceMock = createSpyObj<ConfirmDialogService>(ConfirmDialogService.name, [ 'openConfirmModal' ]);
+
+    systemNotificationsServiceMock = createSpyObj<SystemNotificationsService>
+    (SystemNotificationsService.name, [ 'showNotification' ]);
+
     await TestBed.configureTestingModule({
       declarations: [
         PagesWalletDetailsComponent,
         TransactionAmountPipe,
+        LoadingModalComponent,
       ],
       imports: [
         ReactiveFormsModule,
@@ -73,6 +88,8 @@ describe('PagesWalletDetailsComponent', () => {
         { provide: PagesWalletsManagementEditorService, useValue: pagesWalletsManagementEditorServiceMock },
         { provide: PagesWalletTransactionEditorService, useValue: pagesWalletTransactionEditorServiceMock },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
+        { provide: ConfirmDialogService, useValue: confirmDialogServiceMock },
+        { provide: SystemNotificationsService, useValue: systemNotificationsServiceMock },
       ],
     }).compileComponents();
 
@@ -251,6 +268,52 @@ describe('PagesWalletDetailsComponent', () => {
         flushMicrotasks();
 
         expect(component.walletsManagementItem?.name).toBe(WALLET_INSTANCE_MOCK.name);
+      }));
+    });
+  });
+
+  describe('handleRemoveTransaction', () => {
+    describe('success', () => {
+      it('should remove 1 transaction', fakeAsync(() => {
+        confirmDialogServiceMock.openConfirmModal.and.returnValue(of(true));
+        component.handleRemoveTransaction(WALLET_TRANSACTIONS_OBJECTS_MOCK(1)[0]);
+        removeTransactionResponseSubject.next(1);
+
+        flushMicrotasks();
+
+        expect(component.walletsDetailsData.data!.length).toBe(2);
+      }));
+    });
+
+    describe('cancel', () => {
+      it('should not change transactions', fakeAsync(() => {
+        confirmDialogServiceMock.openConfirmModal.and.returnValue(of(false));
+        pagesWalletDetailsServiceMock.removeWalletTransaction.and.returnValue(of(1));
+        component.handleRemoveTransaction(WALLET_TRANSACTIONS_OBJECTS_MOCK(1)[0]);
+
+        flushMicrotasks();
+
+        expect(component.walletsDetailsData.data!.length).toBe(3);
+      }));
+    });
+
+    describe('error', () => {
+      beforeEach(() => {
+        confirmDialogServiceMock.openConfirmModal.and.returnValue(of(true));
+        component.handleRemoveTransaction(WALLET_TRANSACTIONS_OBJECTS_MOCK(1)[0]);
+        removeTransactionResponseSubject.error('error');
+      });
+
+      it('should not change transactions list', fakeAsync(() => {
+        flushMicrotasks();
+
+        expect(component.walletsDetailsData.data!.length).toBe(3);
+      }));
+
+      it('should invoke error notification', fakeAsync(() => {
+        flushMicrotasks();
+
+        expect(systemNotificationsServiceMock.showNotification).toHaveBeenCalled();
       }));
     });
   });

@@ -78,4 +78,14 @@ describe('DomainsTransactionsGateway', () => {
       req.flush(UPDATED_WALLET_TRANSACTIONS_OBJECT_MOCK(1));
     });
   });
+
+  describe('removeWalletTransaction', () => {
+    it('should call Api and return no content', () => {
+      service.removeWalletTransaction(WALLET_TRANSACTIONS_INCOME_MOCK).subscribe();
+
+      const req = httpTestingController.expectOne(apiUrl + `/${WALLET_TRANSACTIONS_INCOME_MOCK.id!}`);
+
+      expect(req.request.method).toEqual('DELETE');
+    });
+  });
 });

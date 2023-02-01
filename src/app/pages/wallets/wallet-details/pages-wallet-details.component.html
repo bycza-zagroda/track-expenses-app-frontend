@@ -62,7 +62,7 @@
       <th mat-header-cell *matHeaderCellDef> Actions </th>
       <td mat-cell *matCellDef="let element">
         <button mat-stroked-button (click)="handleEditTransaction(element)">Edit</button>
-        <button mat-raised-button color="warn">Delete</button>
+        <button mat-raised-button color="warn" (click)="handleRemoveTransaction(element)">Delete</button>
       </td>
     </ng-container>
 

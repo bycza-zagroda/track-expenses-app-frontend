@@ -2,7 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { ConfirmDialogService } from 'src/app/common/confirmation-modal/confirm-dialog.service';
 import { TDataState, TServerEntityId } from 'src/app/common/http/common.http.types';
+import { LoadingSnackbarService } from 'src/app/common/loading-modal/loading-snackbar.service';
+import { SystemNotificationsService } from 'src/app/common/utils/system-notifications/system-notifications.service';
 import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.constants';
 import { WalletSelectionValue } from 'src/app/domains/transactions/domains.transactions.types';
 import { WalletsManagementItem } from '../management/pages-wallets-wallets-management-item.model';
@@ -43,6 +46,9 @@ export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
     private readonly activatedRoute: ActivatedRoute,
     private readonly pagesWalletTransactionEditorService: PagesWalletTransactionEditorService,
     private readonly pagesWalletsManagementEditorService: PagesWalletsManagementEditorService,
+    private readonly confirmDialogService: ConfirmDialogService,
+    private readonly loadingDialogService: LoadingSnackbarService,
+    private readonly systemNotificationsService: SystemNotificationsService,
   ) { }
 
   public ngOnInit(): void {
@@ -87,6 +93,17 @@ export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
           this.updateTransaction(transaction);
         }
       });
+  }
+
+  public handleRemoveTransaction(transaction: WalletTransaction): void {
+    this.confirmDialogService.openConfirmModal({
+      headerText: 'Remove Transaction',
+      confirmationText: 'Are you sure you want to remove transaction?',
+    }).subscribe( (modalResponse: boolean | null) => {
+      if(modalResponse) {
+        this.removeTransaction(transaction);
+      }
+    });
   }
 
   public ngOnDestroy(): void {
@@ -143,5 +160,27 @@ export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
       return transactionItem;
     });
     this.filterTransactions();
+  }
+
+  private removeTransaction(transaction: WalletTransaction): void {
+    this.loadingDialogService.show('Deleting wallet');
+
+    this.pagesWalletDetailsService.removeWalletTransaction(transaction).subscribe({
+      next: () => {
+        this.walletsDetailsData.data = this.walletsDetailsData.data!.filter( (transactionItem: WalletTransaction) => {
+          if(transactionItem.id === transaction.id) {
+            return false;
+          }
+
+          return true;
+        });
+        this.filterTransactions();
+        this.loadingDialogService.hide();
+      },
+      error: () => {
+        this.systemNotificationsService.showNotification({ message: 'Some server error occured. Contact Administrator' });
+        this.loadingDialogService.hide();
+      },
+    });
   }
 }
