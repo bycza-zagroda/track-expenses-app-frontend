@@ -26,7 +26,7 @@ export class PagesWalletsManagementEditorService {
         data: { name: wallet?.name ?? '' },
       }).afterClosed().pipe(
       tap(() => {
-        wallet ? this.loadingSnackbarService.show('Updating wallet') : this.loadingSnackbarService.show('Saving wallet');
+        this.loadingSnackbarService.show('Saving wallet');
       }),
       switchMap((walletResp: IWalletModalData | undefined) => {
         return !!walletResp ? this.makeRequest(walletResp, wallet ?? null) : of(null);

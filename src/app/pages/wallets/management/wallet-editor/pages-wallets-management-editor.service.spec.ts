@@ -12,6 +12,7 @@ import { PagesWalletsManagementEditorService } from './pages-wallets-management-
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { LoadingSnackbarService } from 'src/app/common/loading-modal/loading-snackbar.service';
 
 describe('PagesWalletsManagementEditorService', () => {
   let service: PagesWalletsManagementEditorService;
@@ -19,6 +20,7 @@ describe('PagesWalletsManagementEditorService', () => {
   let systemNotificationsServiceMock: SpyObj<SystemNotificationsService>;
   let matDialogMock: SpyObj<MatDialog>;
   let matDialogRef: SpyObj<MatDialogRef<PagesWalletsManagementEditorComponent>>;
+  let loadingSnackbarServiceMock: SpyObj<LoadingSnackbarService>;
 
   beforeEach(() => {
     pagesWalletsManagementServiceMock = createSpyObj<PagesWalletsManagementService>(PagesWalletsManagementService.name, [
@@ -37,12 +39,18 @@ describe('PagesWalletsManagementEditorService', () => {
     matDialogMock = createSpyObj<MatDialog>(MatDialog.name, [ 'open' ]);
     matDialogMock.open.and.returnValue(matDialogRef);
 
+    loadingSnackbarServiceMock = createSpyObj<LoadingSnackbarService>(LoadingSnackbarService.name, [
+      'show', 
+      'hide',
+    ]);
+
     TestBed.configureTestingModule({
       imports: [ MaterialModule, BrowserAnimationsModule, HttpClientTestingModule ],
       providers: [
         { provide: PagesWalletsManagementService, useValue: pagesWalletsManagementServiceMock },
         { provide: SystemNotificationsService, useValue: systemNotificationsServiceMock },
         { provide: MatDialog, useValue: matDialogMock },
+        { provide: LoadingSnackbarService, useValue: loadingSnackbarServiceMock },
       ],
     });
     service = TestBed.inject(PagesWalletsManagementEditorService);
@@ -64,6 +72,21 @@ describe('PagesWalletsManagementEditorService', () => {
             });
         });
 
+        it('updated wallet\'s name should invoke show', (done) => {
+          service.openEditor(WALLET_INSTANCE_MOCK)
+            .subscribe(() => {
+              expect(loadingSnackbarServiceMock.show).toHaveBeenCalled();
+              done();
+            })
+        })
+
+        it('updated wallet\'s name should invoke hide', (done) => {
+          service.openEditor(WALLET_INSTANCE_MOCK)
+            .subscribe();
+            expect(loadingSnackbarServiceMock.hide).toHaveBeenCalled();
+            done();
+        });
+
         it('should return updated wallet', (done) => {
           service.openEditor(WALLET_INSTANCE_MOCK)
             .subscribe( (data: WalletsManagementItem | null) => {
@@ -83,6 +106,18 @@ describe('PagesWalletsManagementEditorService', () => {
           flushMicrotasks();
 
           expect(systemNotificationsServiceMock.showNotification).not.toHaveBeenCalled();
+        }));
+
+        it('canceled updating wallet\'s name should NOT invoke show', fakeAsync(() => {
+          service.openEditor(WALLET_INSTANCE_MOCK);
+          flushMicrotasks();
+          expect(loadingSnackbarServiceMock.show).not.toHaveBeenCalled();
+        }));
+
+        it('canceled updating wallet\'s name should NOT invoke hide', fakeAsync(() => {
+          service.openEditor(WALLET_INSTANCE_MOCK);
+          flushMicrotasks();
+          expect(loadingSnackbarServiceMock.hide).not.toHaveBeenCalled();
         }));
 
         it('should return undefined', (done) => {
@@ -109,6 +144,21 @@ describe('PagesWalletsManagementEditorService', () => {
             });
         });
 
+        it('created wallet\'s should invoke show', (done) => {
+          service.openEditor()
+            .subscribe(() => {
+              expect(loadingSnackbarServiceMock.show).toHaveBeenCalled();
+              done();
+            })
+        })
+
+        it('created wallet\'s should invoke hide', (done) => {
+          service.openEditor()
+            .subscribe();
+            expect(loadingSnackbarServiceMock.hide).toHaveBeenCalled();
+            done();
+        });
+
         it('should return created wallet', (done) => {
           service.openEditor()
             .subscribe( (data: WalletsManagementItem | null) => {
@@ -129,6 +179,18 @@ describe('PagesWalletsManagementEditorService', () => {
           flushMicrotasks();
 
           expect(systemNotificationsServiceMock.showNotification).not.toHaveBeenCalled();
+        }));
+
+        it('canceled creating wallet\'s name should NOT invoke show', fakeAsync(() => {
+          service.openEditor();
+          flushMicrotasks();
+          expect(loadingSnackbarServiceMock.show).not.toHaveBeenCalled();
+        }));
+
+        it('canceled creating wallet\'s name should NOT invoke hide', fakeAsync(() => {
+          service.openEditor();
+          flushMicrotasks();
+          expect(loadingSnackbarServiceMock.hide).not.toHaveBeenCalled();
         }));
 
         it('should return undefined', (done) => {
