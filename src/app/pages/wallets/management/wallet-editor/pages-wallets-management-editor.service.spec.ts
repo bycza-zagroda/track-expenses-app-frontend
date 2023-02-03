@@ -77,14 +77,14 @@ describe('PagesWalletsManagementEditorService', () => {
             .subscribe(() => {
               expect(loadingSnackbarServiceMock.show).toHaveBeenCalled();
               done();
-            })
-        })
+            });
+        });
 
         it('updated wallet\'s name should invoke hide', (done) => {
           service.openEditor(WALLET_INSTANCE_MOCK)
             .subscribe();
-            expect(loadingSnackbarServiceMock.hide).toHaveBeenCalled();
-            done();
+          expect(loadingSnackbarServiceMock.hide).toHaveBeenCalled();
+          done();
         });
 
         it('should return updated wallet', (done) => {
@@ -149,14 +149,14 @@ describe('PagesWalletsManagementEditorService', () => {
             .subscribe(() => {
               expect(loadingSnackbarServiceMock.show).toHaveBeenCalled();
               done();
-            })
-        })
+            });
+        });
 
         it('created wallet\'s should invoke hide', (done) => {
           service.openEditor()
             .subscribe();
-            expect(loadingSnackbarServiceMock.hide).toHaveBeenCalled();
-            done();
+          expect(loadingSnackbarServiceMock.hide).toHaveBeenCalled();
+          done();
         });
 
         it('should return created wallet', (done) => {

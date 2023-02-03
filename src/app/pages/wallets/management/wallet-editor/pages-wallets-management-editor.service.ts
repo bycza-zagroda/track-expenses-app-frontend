@@ -16,7 +16,7 @@ export class PagesWalletsManagementEditorService {
     private readonly dialog: MatDialog,
     private readonly systemNotificationsService: SystemNotificationsService,
     private readonly myWalletsService: PagesWalletsManagementService,
-    private readonly loadingSnackbarService: LoadingSnackbarService
+    private readonly loadingSnackbarService: LoadingSnackbarService,
   ) { }
 
   public openEditor(wallet?: WalletsManagementItem): Observable<WalletsManagementItem | null> {
@@ -38,7 +38,7 @@ export class PagesWalletsManagementEditorService {
       }),
       finalize(() => {
         this.loadingSnackbarService.hide();
-      })
+      }),
     );
   }
 
