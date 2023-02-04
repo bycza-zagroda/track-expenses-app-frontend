@@ -1,0 +1,12 @@
+@use 'sizes';
+
+.home-page {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    min-height: calc(100vh - #{sizes.$navbar-height});
+    
+    @media (max-width: 1100px) {
+        flex-direction: column;
+    }
+}
