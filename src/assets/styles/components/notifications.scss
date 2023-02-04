@@ -1,0 +1,28 @@
+@use '../colors';
+
+@mixin notification($bg-color) {
+  background: $bg-color !important;
+  color: colors.$pure-white !important;
+
+  button {
+    color: colors.$pure-white !important;
+  }
+}
+
+.notification {
+  &--success {
+    @include notification(colors.$success-notification-background);
+  }
+
+  &--info {
+    @include notification(colors.$info-notification-background);
+  }
+
+  &--error {
+    @include notification(colors.$error-notification-background);
+  }
+
+  &--warning {
+    @include notification(colors.$warning-notification-background);
+  }
+}

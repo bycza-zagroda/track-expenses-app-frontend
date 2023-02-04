@@ -75,7 +75,7 @@ describe('PagesWalletsManagementService', () => {
     });
 
     it('should update my wallet', (done) => {
-      service.updateWallet(updatedWalletFromPayload).subscribe(val => {
+      service.updateWallet(1, updatedWalletFromPayload).subscribe(val => {
         expect(val).toEqual(new WalletsManagementItem(walletResp));
 
         done();

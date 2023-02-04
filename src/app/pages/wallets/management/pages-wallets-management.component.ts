@@ -7,6 +7,7 @@ import { ConfirmDialogService } from '../../../common/confirmation-modal/confirm
 import { LoadingSnackbarService } from '../../../common/loading-modal/loading-snackbar.service';
 import { PagesWalletsManagementEditorService } from './wallet-editor/pages-wallets-management-editor.service';
 import { Router } from '@angular/router';
+import { SystemNotificationsService } from '../../../common/utils/system-notifications/system-notifications.service';
 
 @Component({
   selector: 'app-wallets-management',
@@ -27,6 +28,7 @@ export class PagesWalletsManagementComponent implements OnInit {
     private readonly confirmDialogService: ConfirmDialogService,
     private readonly loadingDialogService: LoadingSnackbarService,
     private readonly modalEditorService: PagesWalletsManagementEditorService,
+    private readonly notificationService: SystemNotificationsService,
     private readonly router: Router,
   ) {
   }
@@ -51,7 +53,7 @@ export class PagesWalletsManagementComponent implements OnInit {
   }
 
   public handleWalletCreate(): void {
-    this.modalEditorService.openEditor().subscribe( (data: WalletsManagementItem | null) => {
+    this.modalEditorService.openEditor(WalletsManagementItem.create({})).subscribe( (data: WalletsManagementItem | null) => {
       if(data) {
         this.createWallet(data);
       }
@@ -83,7 +85,7 @@ export class PagesWalletsManagementComponent implements OnInit {
   }
 
   private createWallet(wallet: WalletsManagementItem): void {
-    this.myWalletsData.data = [ wallet, ...this.myWalletsData.data! ];
+    this.myWalletsData.data = [ wallet, ...this.myWalletsData.data! ].sort().reverse();
   }
 
   private updateWallet(wallet: WalletsManagementItem, { name }: WalletsManagementItem): void {
@@ -103,9 +105,11 @@ export class PagesWalletsManagementComponent implements OnInit {
       next: () => {
         this.loadingDialogService.hide();
         this.myWalletsData.data = this.myWalletsData.data!.filter(data => data.id !== wallet.id);
+        this.notificationService.showNotification({ message: 'Wallet deleted succesfully', type: NotificationType.Success });
       },
       error: () => {
         this.loadingDialogService.hide();
+        this.notificationService.showNotification({ message: 'Deleting wallet failed', type: NotificationType.Error });
       },
     },
     );

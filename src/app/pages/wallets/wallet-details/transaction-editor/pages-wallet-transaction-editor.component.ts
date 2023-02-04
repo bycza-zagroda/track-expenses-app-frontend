@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TServerEntityId } from 'src/app/common/http/common.http.types';
@@ -14,7 +14,7 @@ export const regexAmount = /^\d+(\.\d{1,2})?$/;
   templateUrl: './pages-wallet-transaction-editor.component.html',
   styleUrls: [ './pages-wallet-transaction-editor.component.scss' ],
 })
-export class PagesWalletTransactionEditorComponent {
+export class PagesWalletTransactionEditorComponent implements OnInit {
   public selectTransactionsTypes: Record<string, WalletTransactionType> = {
     'Income': WalletTransactionType.Incomes,
     'Expense': WalletTransactionType.Expenses,
@@ -23,13 +23,30 @@ export class PagesWalletTransactionEditorComponent {
   public form!: FormGroup<IWalletTransactionModalFormType>;
 
   private transactionId: TServerEntityId | null = null;
-
-  private walletId: TServerEntityId;
+  private walletId!: TServerEntityId;
 
   public constructor(
     private readonly dialogRef: MatDialogRef<PagesWalletTransactionEditorComponent>,
     @Inject(MAT_DIALOG_DATA) public data: WalletTransaction,
-  ) {
+  ) {}
+
+  public get amountIsNotProvided(): boolean {
+    return checkInputError(this.form, 'amount', 'required');
+  }
+
+  public get amountIsZero(): boolean {
+    return checkInputError(this.form, 'amount', 'amountIsZero');
+  }
+
+  public get amountHasInvalidFormat(): boolean {
+    return checkInputError(this.form, 'amount', 'pattern');
+  }
+
+  public get dateIsNotProvided(): boolean {
+    return checkInputError(this.form, 'date', 'required');
+  }
+
+  public ngOnInit(): void {
     this.transactionId = this.data.id;
     this.walletId = this.data.walletId;
 
@@ -56,22 +73,6 @@ export class PagesWalletTransactionEditorComponent {
         nonNullable: true,
       }),
     });
-  }
-
-  public get amountIsNotProvided(): boolean {
-    return checkInputError(this.form, 'amount', 'required');
-  }
-
-  public get amountIsZero(): boolean {
-    return checkInputError(this.form, 'amount', 'amountIsZero');
-  }
-
-  public get amountHasInvalidFormat(): boolean {
-    return checkInputError(this.form, 'amount', 'pattern');
-  }
-
-  public get dateIsNotProvided(): boolean {
-    return checkInputError(this.form, 'date', 'required');
   }
 
   public save(): void {
