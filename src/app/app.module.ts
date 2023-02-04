@@ -11,9 +11,10 @@ import { RouterModule } from '@angular/router';
 import { RoutesModule } from './routes/routes.module';
 import { CommonComponentsModule } from './common/components/common-components.module';
 import { HttpClientModule } from '@angular/common/http';
+import { PagesHomePageComponent } from './pages/common/pages-home-page/pages-home-page.component';
 
 @NgModule({
-  declarations: [ AppComponent ],
+  declarations: [ AppComponent, PagesHomePageComponent ],
   imports: [
     BrowserModule,
     NoopAnimationsModule,
