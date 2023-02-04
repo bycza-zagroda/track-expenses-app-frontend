@@ -14,6 +14,7 @@ import { IWalletModalData } from '../management/wallet-editor/pages-wallets-mana
 import { WalletTransaction } from './pages-wallet-details-item.model';
 import { PagesWalletDetailsService } from './pages-wallet-details.service';
 import { PagesWalletTransactionEditorService } from './transaction-editor/pages-wallet-transaction-editor.service';
+import { NotificationType } from '../../../common/utils/system-notifications/system.notifications.constants';
 
 @Component({
   selector: 'app-pages-wallet-details',
@@ -30,7 +31,7 @@ export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
   public transactionsTypeForm = new FormControl<WalletSelectionValue>('');
   public walletTransactionType: typeof WalletTransactionType = WalletTransactionType;
   public displayedColumns: string[] = [ 'date', 'description', 'amount', 'actions' ];
-  public walletsManagementItem?: WalletsManagementItem;
+  public walletsManagementItem: WalletsManagementItem | null = null;
   public displayedTransactions: WalletTransaction[] = [];
 
   public walletsDetailsData: TDataState<WalletTransaction[]> = {
@@ -68,7 +69,7 @@ export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
   }
 
   public handleWalletEdit(): void {
-    this.pagesWalletsManagementEditorService.openEditor(this.walletsManagementItem)
+    this.pagesWalletsManagementEditorService.openEditor(this.walletsManagementItem!)
       .subscribe( (wallet: WalletsManagementItem | null) => {
         if(wallet) {
           this.updateWallet(wallet);
@@ -163,7 +164,7 @@ export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
   }
 
   private removeTransaction(transaction: WalletTransaction): void {
-    this.loadingDialogService.show('Deleting wallet');
+    this.loadingDialogService.show('Deleting transaction');
 
     this.pagesWalletDetailsService.removeWalletTransaction(transaction).subscribe({
       next: () => {
@@ -171,11 +172,20 @@ export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
           return transactionItem.id !== transaction.id;
         });
         this.filterTransactions();
-        this.systemNotificationsService.showNotification({ message: 'Transaction removed successfully' });
+
+        this.systemNotificationsService.showNotification({
+          message: 'Transaction deleted successfully',
+          type: NotificationType.Success,
+        });
+
         this.loadingDialogService.hide();
       },
       error: () => {
-        this.systemNotificationsService.showNotification({ message: 'Some server error occured. Contact Administrator' });
+        this.systemNotificationsService.showNotification({
+          message: 'Deleting transaction failed',
+          type: NotificationType.Error,
+        });
+
         this.loadingDialogService.hide();
       },
     });

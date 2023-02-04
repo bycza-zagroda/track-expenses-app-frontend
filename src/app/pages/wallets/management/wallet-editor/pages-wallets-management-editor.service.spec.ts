@@ -12,6 +12,7 @@ import { PagesWalletsManagementEditorService } from './pages-wallets-management-
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { LoadingSnackbarService } from '../../../../common/loading-modal/loading-snackbar.service';
 
 describe('PagesWalletsManagementEditorService', () => {
   let service: PagesWalletsManagementEditorService;
@@ -19,12 +20,15 @@ describe('PagesWalletsManagementEditorService', () => {
   let systemNotificationsServiceMock: SpyObj<SystemNotificationsService>;
   let matDialogMock: SpyObj<MatDialog>;
   let matDialogRef: SpyObj<MatDialogRef<PagesWalletsManagementEditorComponent>>;
+  let loadingServiceMock: SpyObj<LoadingSnackbarService>;
 
   beforeEach(() => {
     pagesWalletsManagementServiceMock = createSpyObj<PagesWalletsManagementService>(PagesWalletsManagementService.name, [
       'updateWallet',
       'createWallet',
     ]);
+
+    loadingServiceMock = createSpyObj<LoadingSnackbarService>(LoadingSnackbarService.name, [ 'show', 'hide' ]);
 
     pagesWalletsManagementServiceMock.updateWallet.and.returnValue(of(UPDATED_WALLET_INSTANCE_MOCK));
     pagesWalletsManagementServiceMock.createWallet.and.returnValue(of(WALLET_INSTANCE_MOCK));
@@ -43,6 +47,7 @@ describe('PagesWalletsManagementEditorService', () => {
         { provide: PagesWalletsManagementService, useValue: pagesWalletsManagementServiceMock },
         { provide: SystemNotificationsService, useValue: systemNotificationsServiceMock },
         { provide: MatDialog, useValue: matDialogMock },
+        { provide: LoadingSnackbarService, useValue: loadingServiceMock },
       ],
     });
     service = TestBed.inject(PagesWalletsManagementEditorService);
@@ -53,7 +58,10 @@ describe('PagesWalletsManagementEditorService', () => {
     describe('updating wallet', () => {
       describe('success', () => {
         beforeEach(() => {
-          matDialogRef.afterClosed.and.returnValue(of({ name: UPDATED_WALLET_INSTANCE_MOCK.name }));
+          matDialogRef.afterClosed.and.returnValue(of(WalletsManagementItem.create({
+            id: 12,
+            name: UPDATED_WALLET_INSTANCE_MOCK.name ,
+          } )));
         });
 
         it('updated wallet\'s name should invoke showNotification', (done) => {
@@ -75,7 +83,7 @@ describe('PagesWalletsManagementEditorService', () => {
 
       describe('canceled', () => {
         beforeEach(() => {
-          matDialogRef.afterClosed.and.returnValue(of(undefined));
+          matDialogRef.afterClosed.and.returnValue(of(null));
         });
 
         it('canceled updating wallet\'s name should not invoke showNotification', fakeAsync(() => {
@@ -98,11 +106,11 @@ describe('PagesWalletsManagementEditorService', () => {
     describe('creating wallet', () => {
       describe('success', () => {
         beforeEach(() => {
-          matDialogRef.afterClosed.and.returnValue(of({ name: WALLET_INSTANCE_MOCK.name }));
+          matDialogRef.afterClosed.and.returnValue(of(WalletsManagementItem.create({ name: WALLET_INSTANCE_MOCK.name })));
         });
 
         it('created wallet\'s name should invoke showNotification', (done) => {
-          service.openEditor()
+          service.openEditor(WalletsManagementItem.create({}))
             .subscribe( () => {
               expect(systemNotificationsServiceMock.showNotification).toHaveBeenCalled();
               done();
@@ -110,7 +118,7 @@ describe('PagesWalletsManagementEditorService', () => {
         });
 
         it('should return created wallet', (done) => {
-          service.openEditor()
+          service.openEditor(WalletsManagementItem.create({}))
             .subscribe( (data: WalletsManagementItem | null) => {
               expect(data).toBeInstanceOf(WalletsManagementItem);
               expect(data!.name).toBe(WALLET_INSTANCE_MOCK.name);
@@ -121,18 +129,18 @@ describe('PagesWalletsManagementEditorService', () => {
 
       describe('canceled', () => {
         beforeEach(() => {
-          matDialogRef.afterClosed.and.returnValue(of(undefined));
+          matDialogRef.afterClosed.and.returnValue(of(null));
         });
 
         it('canceled updating wallet\'s name should not invoke showNotification', fakeAsync(() => {
-          service.openEditor();
+          service.openEditor(WalletsManagementItem.create({}));
           flushMicrotasks();
 
           expect(systemNotificationsServiceMock.showNotification).not.toHaveBeenCalled();
         }));
 
-        it('should return undefined', (done) => {
-          service.openEditor()
+        it('should return null', (done) => {
+          service.openEditor(WalletsManagementItem.create({}))
             .subscribe( (data: WalletsManagementItem | null) => {
               expect(data).toBe(null);
               done();

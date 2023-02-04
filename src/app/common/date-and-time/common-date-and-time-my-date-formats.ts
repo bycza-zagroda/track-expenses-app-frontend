@@ -1,6 +1,8 @@
 import { formatDate } from '@angular/common';
 import { MatDateFormats, NativeDateAdapter } from '@angular/material/core';
+import { Injectable } from '@angular/core';
 
+@Injectable()
 export class PickDateAdapter extends NativeDateAdapter {
   public override format(date: Date, displayFormat: unknown): string {
     if (displayFormat === 'input') {

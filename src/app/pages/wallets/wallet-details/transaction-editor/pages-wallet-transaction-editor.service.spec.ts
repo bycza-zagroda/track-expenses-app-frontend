@@ -18,6 +18,7 @@ import {
 } from 'src/app/domains/transactions/domains.transactions.mocks';
 import { WalletTransaction } from '../pages-wallet-details-item.model';
 import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.constants';
+import { LoadingSnackbarService } from '../../../../common/loading-modal/loading-snackbar.service';
 
 describe('PagesWalletTransactionEditorService', () => {
   let service: PagesWalletTransactionEditorService;
@@ -25,6 +26,7 @@ describe('PagesWalletTransactionEditorService', () => {
   let systemNotificationsServiceMock: SpyObj<SystemNotificationsService>;
   let matDialogMock: SpyObj<MatDialog>;
   let matDialogRef: SpyObj<MatDialogRef<PagesWalletTransactionEditorComponent>>;
+  let loadingServiceMock: SpyObj<LoadingSnackbarService>;
 
   beforeEach(() => {
     pagesWalletTransactionsServiceMock = createSpyObj<PagesWalletDetailsService>(PagesWalletDetailsService.name, [
@@ -34,6 +36,8 @@ describe('PagesWalletTransactionEditorService', () => {
 
     pagesWalletTransactionsServiceMock.editWalletTransaction.and.returnValue(of(UPDATED_WALLET_TRANSACTIONS_INCOME_MOCK));
     pagesWalletTransactionsServiceMock.createWalletTransaction.and.returnValue(of(WALLET_TRANSACTIONS_CREATED_INCOME_MOCK));
+
+    loadingServiceMock = createSpyObj<LoadingSnackbarService>(LoadingSnackbarService.name, [ 'show', 'hide' ]);
 
     systemNotificationsServiceMock = createSpyObj<SystemNotificationsService>(SystemNotificationsService.name, [
       'showNotification',
@@ -49,6 +53,7 @@ describe('PagesWalletTransactionEditorService', () => {
         { provide: PagesWalletDetailsService, useValue: pagesWalletTransactionsServiceMock },
         { provide: SystemNotificationsService, useValue: systemNotificationsServiceMock },
         { provide: MatDialog, useValue: matDialogMock },
+        { provide: LoadingSnackbarService, useValue: loadingServiceMock },
       ],
     });
     service = TestBed.inject(PagesWalletTransactionEditorService);

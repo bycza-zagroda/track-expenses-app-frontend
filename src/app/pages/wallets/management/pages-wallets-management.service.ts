@@ -3,6 +3,7 @@ import { DomainsWalletsGateway } from '../../../domains/wallets/domains.wallets.
 import { map, Observable } from 'rxjs';
 import { WalletsManagementItem } from './pages-wallets-wallets-management-item.model';
 import { IWalletPayload } from 'src/app/domains/wallets/domains.wallets.types';
+import { TServerEntityId } from '../../../common/http/common.http.types';
 
 @Injectable({
   providedIn: 'root',
@@ -25,8 +26,8 @@ export class PagesWalletsManagementService {
     );
   }
 
-  public updateWallet(wallet: WalletsManagementItem): Observable<WalletsManagementItem> {
-    return this.gateway.updateWallet(wallet.id!, wallet.toPayload()).pipe(
+  public updateWallet(walletId: TServerEntityId, payload: IWalletPayload): Observable<WalletsManagementItem> {
+    return this.gateway.updateWallet(walletId, payload).pipe(
       map(response => new WalletsManagementItem(response)),
     );
   }

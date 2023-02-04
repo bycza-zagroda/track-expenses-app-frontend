@@ -10,8 +10,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule, MAT_DATE_FORMATS } from '@angular/material/core';
-import { TEAF_DATE_FORMATS } from './common/date-and-time/common-date-and-time-my-date-formats';
+import { MatNativeDateModule, MAT_DATE_FORMATS, DateAdapter } from '@angular/material/core';
+import { PickDateAdapter, TEAF_DATE_FORMATS } from './common/date-and-time/common-date-and-time-my-date-formats';
 
 @NgModule({
   imports: [
@@ -29,6 +29,7 @@ import { TEAF_DATE_FORMATS } from './common/date-and-time/common-date-and-time-m
     MatNativeDateModule,
   ],
   providers: [
+    { provide: DateAdapter, useClass: PickDateAdapter },
     { provide: MAT_DATE_FORMATS, useValue: TEAF_DATE_FORMATS },
   ],
   exports: [
