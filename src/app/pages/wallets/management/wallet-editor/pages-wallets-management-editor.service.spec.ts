@@ -148,7 +148,7 @@ describe('PagesWalletsManagementEditorService', () => {
         });
 
         it('created wallet\'s should invoke show', (done) => {
-          service.openEditor()
+          service.openEditor(WalletsManagementItem.create({}))
             .subscribe(() => {
               expect(loadingSnackbarServiceMock.show).toHaveBeenCalled();
               done();
@@ -156,7 +156,7 @@ describe('PagesWalletsManagementEditorService', () => {
         });
 
         it('created wallet\'s should invoke hide', (done) => {
-          service.openEditor()
+          service.openEditor(WalletsManagementItem.create({}))
             .subscribe();
           expect(loadingSnackbarServiceMock.hide).toHaveBeenCalled();
           done();
@@ -185,13 +185,13 @@ describe('PagesWalletsManagementEditorService', () => {
         }));
         
         it('canceled creating wallet\'s name should NOT invoke show', fakeAsync(() => {
-          service.openEditor();
+          service.openEditor(WALLET_INSTANCE_MOCK);
           flushMicrotasks();
           expect(loadingSnackbarServiceMock.show).not.toHaveBeenCalled();
         }));
 
         it('canceled creating wallet\'s name should NOT invoke hide', fakeAsync(() => {
-          service.openEditor();
+          service.openEditor(WalletsManagementItem.create({}));
           flushMicrotasks();
           expect(loadingSnackbarServiceMock.hide).not.toHaveBeenCalled();
         }));
