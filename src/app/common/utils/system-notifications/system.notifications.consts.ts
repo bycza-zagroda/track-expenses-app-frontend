@@ -1,1 +1,0 @@
-export const SNACKBAR_DURATION_SECONDS = 3;

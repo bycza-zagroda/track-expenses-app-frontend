@@ -1,5 +1,5 @@
 <form [formGroup]='form'>
-    <h1 mat-dialog-title>{{ data ? "Update Wallet" : "Create Wallet" }}</h1>
+    <h1 mat-dialog-title>{{ data.id ? "Update Wallet" : "Create Wallet" }}</h1>
     <mat-form-field appearance="fill">
         <mat-label>Wallet Name</mat-label>
         <input matInput [formControl]='form.controls["name"]'>

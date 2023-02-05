@@ -32,4 +32,8 @@ export class DomainsTransactionsGateway {
     return this.http.put<IWalletTransactionApiResponse>(API_TRANSACTIONS_URL + `/${transaction.id!}`,
       transaction.toPayload());
   }
+
+  public removeWalletTransaction(transaction: WalletTransaction): Observable<unknown> {
+    return this.http.delete(API_TRANSACTIONS_URL + `/${transaction.id!}`);
+  }
 }

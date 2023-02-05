@@ -61,7 +61,10 @@ describe('PagesWalletsManagementEditorService', () => {
     describe('updating wallet', () => {
       describe('success', () => {
         beforeEach(() => {
-          matDialogRef.afterClosed.and.returnValue(of({ name: UPDATED_WALLET_INSTANCE_MOCK.name }));
+          matDialogRef.afterClosed.and.returnValue(of(WalletsManagementItem.create({
+            id: 12,
+            name: UPDATED_WALLET_INSTANCE_MOCK.name ,
+          } )));
         });
 
         it('updated wallet\'s name should invoke showNotification', (done) => {
@@ -98,7 +101,7 @@ describe('PagesWalletsManagementEditorService', () => {
 
       describe('canceled', () => {
         beforeEach(() => {
-          matDialogRef.afterClosed.and.returnValue(of(undefined));
+          matDialogRef.afterClosed.and.returnValue(of(null));
         });
 
         it('canceled updating wallet\'s name should not invoke showNotification', fakeAsync(() => {
@@ -133,11 +136,11 @@ describe('PagesWalletsManagementEditorService', () => {
     describe('creating wallet', () => {
       describe('success', () => {
         beforeEach(() => {
-          matDialogRef.afterClosed.and.returnValue(of({ name: WALLET_INSTANCE_MOCK.name }));
+          matDialogRef.afterClosed.and.returnValue(of(WalletsManagementItem.create({ name: WALLET_INSTANCE_MOCK.name })));
         });
 
         it('created wallet\'s name should invoke showNotification', (done) => {
-          service.openEditor()
+          service.openEditor(WalletsManagementItem.create({}))
             .subscribe( () => {
               expect(systemNotificationsServiceMock.showNotification).toHaveBeenCalled();
               done();
@@ -160,7 +163,7 @@ describe('PagesWalletsManagementEditorService', () => {
         });
 
         it('should return created wallet', (done) => {
-          service.openEditor()
+          service.openEditor(WalletsManagementItem.create({}))
             .subscribe( (data: WalletsManagementItem | null) => {
               expect(data).toBeInstanceOf(WalletsManagementItem);
               expect(data!.name).toBe(WALLET_INSTANCE_MOCK.name);
@@ -171,16 +174,16 @@ describe('PagesWalletsManagementEditorService', () => {
 
       describe('canceled', () => {
         beforeEach(() => {
-          matDialogRef.afterClosed.and.returnValue(of(undefined));
+          matDialogRef.afterClosed.and.returnValue(of(null));
         });
 
         it('canceled updating wallet\'s name should not invoke showNotification', fakeAsync(() => {
-          service.openEditor();
+          service.openEditor(WalletsManagementItem.create({}));
           flushMicrotasks();
 
           expect(systemNotificationsServiceMock.showNotification).not.toHaveBeenCalled();
         }));
-
+        
         it('canceled creating wallet\'s name should NOT invoke show', fakeAsync(() => {
           service.openEditor();
           flushMicrotasks();
@@ -192,9 +195,9 @@ describe('PagesWalletsManagementEditorService', () => {
           flushMicrotasks();
           expect(loadingSnackbarServiceMock.hide).not.toHaveBeenCalled();
         }));
-
-        it('should return undefined', (done) => {
-          service.openEditor()
+        
+        it('should return null', (done) => {
+          service.openEditor(WalletsManagementItem.create({}))
             .subscribe( (data: WalletsManagementItem | null) => {
               expect(data).toBe(null);
               done();

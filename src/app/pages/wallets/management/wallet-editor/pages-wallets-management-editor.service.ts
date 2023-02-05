@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { finalize, Observable, of, switchMap, tap } from 'rxjs';
-import { LoadingSnackbarService } from 'src/app/common/loading-modal/loading-snackbar.service';
+import { catchError, finalize, Observable, of, switchMap, tap } from 'rxjs';
 import { SystemNotificationsService } from 'src/app/common/utils/system-notifications/system-notifications.service';
 import { PagesWalletsManagementService } from '../pages-wallets-management.service';
 import { WalletsManagementItem } from '../pages-wallets-wallets-management-item.model';
 import { PagesWalletsManagementEditorComponent } from './pages-wallets-management-editor.component';
-import { IWalletModalData } from './pages-wallets-management-editor.types';
+import { NotificationType } from '../../../../common/utils/system-notifications/system.notifications.constants';
+import { LoadingSnackbarService } from '../../../../common/loading-modal/loading-snackbar.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,49 +16,47 @@ export class PagesWalletsManagementEditorService {
     private readonly dialog: MatDialog,
     private readonly systemNotificationsService: SystemNotificationsService,
     private readonly myWalletsService: PagesWalletsManagementService,
-    private readonly loadingSnackbarService: LoadingSnackbarService,
+    private readonly loadingService: LoadingSnackbarService,
   ) { }
 
-  public openEditor(wallet?: WalletsManagementItem): Observable<WalletsManagementItem | null> {
-    return this.dialog.open<PagesWalletsManagementEditorComponent, IWalletModalData, IWalletModalData>(
+  public openEditor(wallet: WalletsManagementItem): Observable<WalletsManagementItem | null> {
+    return this.dialog.open<PagesWalletsManagementEditorComponent, WalletsManagementItem, WalletsManagementItem>(
       PagesWalletsManagementEditorComponent,
       {
-        data: { name: wallet?.name ?? '' },
-      }).afterClosed().pipe(
-      tap(() => {
-        this.loadingSnackbarService.show('Saving wallet');
-      }),
-      switchMap((walletResp: IWalletModalData | undefined) => {
-        return !!walletResp ? this.makeRequest(walletResp, wallet ?? null) : of(null);
-      }),
-      tap((walletItem: WalletsManagementItem | null) => {
-        if(walletItem) {
-          this.notify(walletItem, wallet ? 'updated' : 'created');
+        data: wallet,
+      },
+    ).afterClosed().pipe(
+      switchMap(wallet => {
+        if (!wallet) {
+          return of(null);
         }
-      }),
-      finalize(() => {
-        this.loadingSnackbarService.hide();
+
+        return this.makeRequest(wallet).pipe(
+          tap(() => this.systemNotificationsService.showNotification({
+            message: 'Wallet saved successfully',
+            type: NotificationType.Success,
+          })),
+          finalize(() => {
+            this.loadingService.hide();
+          }),
+          catchError(() => {
+            this.systemNotificationsService.showNotification({
+              message: 'Saving wallet failed',
+              type: NotificationType.Error,
+            });
+
+            return of(null);
+          }),
+        );
       }),
     );
   }
 
-  private makeRequest({ name }: IWalletModalData, wallet: WalletsManagementItem | null): Observable<WalletsManagementItem> {
-    return wallet ?
-      this.myWalletsService.updateWallet(WalletsManagementItem.create({ name, id: wallet.id! })) :
-      this.myWalletsService.createWallet({ name });
-  }
+  private makeRequest(wallet: WalletsManagementItem): Observable<WalletsManagementItem> {
+    this.loadingService.show('Saving wallet');
 
-  private notify(updatedWallet: WalletsManagementItem | null, type: string): void {
-    const message = !updatedWallet ?
-      'Sorry. Something went wrong and your wallet was not saved. Contact administrator.' :
-      `Congratulations! Your wallet was ${type} successfully.`;
-
-    if(!updatedWallet) {
-      this.systemNotificationsService.showNotification({ message });
-
-      return;
-    }
-
-    this.systemNotificationsService.showNotification({ message });
+    return wallet.id ?
+      this.myWalletsService.updateWallet(wallet.id , wallet.toPayload()) :
+      this.myWalletsService.createWallet(wallet.toPayload());
   }
 }
