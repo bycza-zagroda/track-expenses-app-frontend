@@ -1,25 +1,27 @@
 @use 'colors';
 
 .transactions__container {
-  margin-top: 15px;
+  padding: 20px;
 
-  table {
-    width: 100%;
+  .table__container {
 
-    .mat-column-actions {
-      .mat-stroked-button {
-        margin-right: 10px;
+    table {
+      width: 100%;
+
+      .mat-column-actions {
+        .mat-stroked-button {
+          margin-right: 10px;
+        }
+      }
+
+      .mat-column-amount {
+        .amount--income { color: colors.$amount-income; }
+        .amount--expense { color: colors.$amount-expense; }
       }
     }
-
-    .mat-column-amount {
-      .amount--income { color: colors.$amount-income; }
-      .amount--expense { color: colors.$amount-expense; }
-    }
   }
-
   .wallet__description {
-    margin: 30px 15px 60px 15px;
+    margin-bottom: 50px;
     display: flex;
     justify-content: space-between;
 
@@ -52,5 +54,64 @@
   .example-additional-selection {
     opacity: 0.75;
     font-size: 0.75em;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .transactions__container {
+    overflow-x: hidden;
+
+    .table__container {
+      overflow: auto;
+
+      .mat-table {
+        overflow-x: scroll;
+      }
+
+      .mat-cell, .mat-header-cell {
+        // word-wrap: initial;
+        // display: table-cell;
+        padding: 0px 10px;
+        line-break: unset;
+        // width: 100%;
+        white-space: nowrap;
+        // overflow: hidden;
+        // vertical-align: middle;
+      }
+
+      // .mat-row, .mat-header-row {
+      //   display: table-row;
+      // }
+
+      // table {
+      //   width: 100%;
+      // }
+    }
+
+    .wallet__sort__add {
+      justify-content: center;
+      flex-direction: column;
+
+      > div {
+        margin-bottom: 7px;
+        width: 100%;
+      }
+
+      .wallet__add {
+        margin-left: 0;
+
+        button {
+          width: 100%;
+        }
+      }
+
+      .wallet__sort {
+        order: 2;
+
+        .mat-form-field {
+          width: 100%;
+        }
+      }
+    }
   }
 }
