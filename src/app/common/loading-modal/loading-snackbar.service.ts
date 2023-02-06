@@ -12,7 +12,9 @@ export class LoadingSnackbarService {
   }
 
   public show(message: string): void {
-    this.snackBarRef = this.snackBar.openFromComponent(LoadingModalComponent, { data: message });
+    this.snackBarRef = this.snackBar.openFromComponent(
+      LoadingModalComponent, 
+      { data: message, panelClass: [ 'custom-snackbar' ] });
   }
 
   public hide(): void {
