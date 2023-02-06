@@ -1,25 +1,9 @@
 @use 'colors';
 
 .transactions__container {
+  overflow-x: hidden;
   padding: 20px;
 
-  .table__container {
-
-    table {
-      width: 100%;
-
-      .mat-column-actions {
-        .mat-stroked-button {
-          margin-right: 10px;
-        }
-      }
-
-      .mat-column-amount {
-        .amount--income { color: colors.$amount-income; }
-        .amount--expense { color: colors.$amount-expense; }
-      }
-    }
-  }
   .wallet__description {
     margin-bottom: 50px;
     display: flex;
@@ -37,68 +21,94 @@
     }
   }
 
+  .table__container {
+    overflow: auto;
+
+    table {
+      width: 100%;
+
+      .mat-column-actions {
+        .mat-stroked-button {
+          margin-right: 10px;
+        }
+      }
+
+      .mat-column-amount {
+        .amount--income { color: colors.$amount-income; }
+        .amount--expense { color: colors.$amount-expense; }
+      }
+    }
+
+    .mat-table {
+      overflow-x: scroll;
+    }
+
+    .mat-cell, .mat-header-cell {
+      padding: 0px 10px;
+      line-break: unset;
+      white-space: nowrap;
+    }
+  }
+
   .wallet__sort__add {
     display: flex;
-    align-items: baseline;
+    justify-content: center;
+    flex-direction: column;
+
+    > div {
+      margin-bottom: 7px;
+      width: 100%;
+    }
 
     .wallet__add {
-      margin-left: 20px;
+      margin-left: 0;
 
       button {
+        width: 100%;
         &.income { background-color: colors.$amount-income; }
         &.expense { background-color: colors.$amount-expense; }
       }
     }
-  }
 
-  .example-additional-selection {
-    opacity: 0.75;
-    font-size: 0.75em;
+    .wallet__sort {
+      order: 2;
+
+      .mat-form-field {
+        width: 100%;
+      }
+    }
   }
 }
 
-@media only screen and (max-width: 500px) {
+@media only screen and (min-width: 500px) {
   .transactions__container {
-    overflow-x: hidden;
-
     .table__container {
-      overflow: auto;
-
-      .mat-table {
-        overflow-x: scroll;
-      }
-
-      .mat-cell, .mat-header-cell {
-        padding: 0px 10px;
-        line-break: unset;
-        white-space: nowrap;
-      }
+      overflow: initial;
     }
 
     .wallet__sort__add {
-      justify-content: center;
-      flex-direction: column;
+      display: flex;
+      align-items: baseline;
+      flex-direction: row;
 
       > div {
         margin-bottom: 7px;
-        width: 100%;
-      }
-
-      .wallet__add {
-        margin-left: 0;
-
-        button {
-          width: 100%;
-        }
+        width: fit-content;
       }
 
       .wallet__sort {
-        order: 2;
-
-        .mat-form-field {
-          width: 100%;
-        }
+        margin-right: auto;
+        order: initial;
       }
+
+      .wallet__add {
+        margin-left: 20px;
+      }
+    }
+
+    .example-additional-selection {
+      opacity: 0.75;
+      font-size: 0.75em;
     }
   }
 }
