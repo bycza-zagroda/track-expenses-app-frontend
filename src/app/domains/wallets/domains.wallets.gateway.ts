@@ -7,8 +7,6 @@ import {
 import { HttpClient } from '@angular/common/http';
 import { API_WALLETS_URL } from './domains.wallets.constants';
 import { TServerEntityId } from 'src/app/common/http/common.http.types';
-import { fakeRequest } from 'src/app/common/http/common.http.fake-request';
-import { GET_WALLETS_API_RESPONSE_MOCK } from './domains.wallets.mocks';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +18,6 @@ export class DomainsWalletsGateway {
   }
 
   public getWallets(): Observable<IWalletApiResponse[]> {
-    return fakeRequest(GET_WALLETS_API_RESPONSE_MOCK());
     return this.http.get<IWalletApiResponse[]>(API_WALLETS_URL);
   }
 
