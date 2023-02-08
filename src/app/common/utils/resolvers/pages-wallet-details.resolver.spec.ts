@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { ActivatedRouteSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { of } from 'rxjs';
 import { DomainsWalletsGateway } from 'src/app/domains/wallets/domains.wallets.gateway';
 import { GET_WALLETS_API_RESPONSE_MOCK } from 'src/app/domains/wallets/domains.wallets.mocks';
@@ -14,6 +14,7 @@ describe('PagesWalletDetailsResolver', () => {
   let activatedRouteSnapshot: ActivatedRouteSnapshot;
   let walletsApiResponse: IWalletApiResponse[];
   let testWalletId: number;
+  let routerMock: SpyObj<Router>;
 
   beforeEach(() => {
     walletsApiResponse = GET_WALLETS_API_RESPONSE_MOCK();
@@ -29,11 +30,13 @@ describe('PagesWalletDetailsResolver', () => {
 
     domainsWalletsGatewayMock = createSpyObj<DomainsWalletsGateway>(DomainsWalletsGateway.name, [ 'getWallets' ]);
     domainsWalletsGatewayMock.getWallets.and.returnValue(of(walletsApiResponse));
+    routerMock = createSpyObj<Router>('Router', [ 'navigate' ] );
 
     TestBed.configureTestingModule({
       providers: [
         { provide: DomainsWalletsGateway, useValue: domainsWalletsGatewayMock },
         { provide: ActivatedRouteSnapshot, useValue: activatedRouteSnapshot },
+        { provide: Router, useValue: routerMock },
       ],
     });
     resolver = TestBed.inject<PagesWalletDetailsResolver>(PagesWalletDetailsResolver);
@@ -50,6 +53,20 @@ describe('PagesWalletDetailsResolver', () => {
 
         expect(wallet.id).toEqual(testWalletId);
         expect(wallet.name).toEqual(walletsApiResponse.find(item => item.id === testWalletId)!.name);
+      });
+    });
+  });
+
+  describe('navigate to 404 error page', () => {
+    describe('success', () => {
+      it('should navigate to /** - error 404 page after passing undefined wallet', () => {
+        resolver.navigateErrorPageIfWalletNotFound(undefined);
+        expect(routerMock.navigate).toHaveBeenCalledWith([ '/**' ], { skipLocationChange: true });
+      });
+
+      it('should NOT navigate to anywhere after passing existing wallet', () => {
+        resolver.navigateErrorPageIfWalletNotFound(walletsApiResponse.find(item => item.id === testWalletId));
+        expect(routerMock.navigate).not.toHaveBeenCalled();
       });
     });
   });
