@@ -117,7 +117,7 @@ describe('PagesWalletDetailsComponent', () => {
   describe('handleCreateTransaction', () => {
     describe('success', () => {
       it('should create new WalletTransaction object', fakeAsync(() => {
-        component.handleCreateTransaction(WalletTransactionType.Incomes);
+        component.handleCreateTransaction(WalletTransactionType.Income);
         matEditorTransactionSubject.next(WALLET_TRANSACTIONS_INCOME_MOCK);
         flushMicrotasks();
 
@@ -127,7 +127,7 @@ describe('PagesWalletDetailsComponent', () => {
 
     describe('cancel', () => {
       it('should not create new WalletTransaction object', fakeAsync(() => {
-        component.handleCreateTransaction(WalletTransactionType.Incomes);
+        component.handleCreateTransaction(WalletTransactionType.Income);
         matEditorTransactionSubject.next(null);
         flushMicrotasks();
 
@@ -217,7 +217,7 @@ describe('PagesWalletDetailsComponent', () => {
         incomesOption.click();
         fixture.detectChanges();
 
-        component.handleCreateTransaction(WalletTransactionType.Incomes);
+        component.handleCreateTransaction(WalletTransactionType.Income);
         matEditorTransactionSubject.next(WALLET_TRANSACTIONS_INCOME_MOCK);
         flushMicrotasks();
 
@@ -237,7 +237,7 @@ describe('PagesWalletDetailsComponent', () => {
         incomesOption.click();
         fixture.detectChanges();
 
-        component.handleCreateTransaction(WalletTransactionType.Expenses);
+        component.handleCreateTransaction(WalletTransactionType.Expense);
         matEditorTransactionSubject.next(WALLET_TRANSACTIONS_EXPENSE_MOCK);
         flushMicrotasks();
 

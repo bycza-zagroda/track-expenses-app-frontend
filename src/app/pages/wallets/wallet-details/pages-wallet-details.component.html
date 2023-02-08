@@ -24,11 +24,11 @@
     </div>
 
     <div class="wallet__add">
-      <button mat-flat-button color="primary" class="income" (click)="handleCreateTransaction(walletTransactionType.Incomes)">Add income</button>
+      <button mat-flat-button color="primary" class="income" (click)="handleCreateTransaction(walletTransactionType.Income)">Add income</button>
     </div>
 
     <div class="wallet__add">
-      <button mat-flat-button color="primary" class="expense" (click)="handleCreateTransaction(walletTransactionType.Expenses)">Add expense</button>
+      <button mat-flat-button color="primary" class="expense" (click)="handleCreateTransaction(walletTransactionType.Expense)">Add expense</button>
     </div>
 
   </div>
@@ -48,7 +48,7 @@
       <ng-container matColumnDef="amount">
         <th mat-header-cell *matHeaderCellDef> Amount </th>
         <td mat-cell *matCellDef="let element">
-          <span [ngClass]="element.type === walletTransactionType.Expenses ? 'amount--expense' : 'amount--income'">
+          <span [ngClass]="element.type === walletTransactionType.Expense ? 'amount--expense' : 'amount--income'">
             {{ element.amount | transactionAmount: element.type }}
           </span>
         </td>

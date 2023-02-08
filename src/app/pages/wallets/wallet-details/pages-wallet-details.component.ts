@@ -24,8 +24,8 @@ import { NotificationType } from '../../../common/utils/system-notifications/sys
 export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
   public selectTransactionsTypes: Record<string, WalletSelectionValue> = {
     'All transactions': '',
-    'Incomes': WalletTransactionType.Incomes,
-    'Expenses': WalletTransactionType.Expenses,
+    'Incomes': WalletTransactionType.Income,
+    'Expenses': WalletTransactionType.Expense,
   };
 
   public transactionsTypeForm = new FormControl<WalletSelectionValue>('');

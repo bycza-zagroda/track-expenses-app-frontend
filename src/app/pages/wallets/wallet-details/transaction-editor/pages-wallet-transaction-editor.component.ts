@@ -16,8 +16,8 @@ export const regexAmount = /^\d+(\.\d{1,2})?$/;
 })
 export class PagesWalletTransactionEditorComponent implements OnInit {
   public selectTransactionsTypes: Record<string, WalletTransactionType> = {
-    'Income': WalletTransactionType.Incomes,
-    'Expense': WalletTransactionType.Expenses,
+    'Income': WalletTransactionType.Income,
+    'Expense': WalletTransactionType.Expense,
   };
 
   public form!: FormGroup<IWalletTransactionModalFormType>;

@@ -34,7 +34,7 @@ export class WalletTransaction {
       creationDate: data.creationDate ?? new Date().toISOString(),
       date: data.date ?? new Date().toISOString(),
       description: data.description ?? null,
-      type: data.type ?? WalletTransactionType.Incomes,
+      type: data.type ?? WalletTransactionType.Income,
       walletId: data.walletId!,
     });
   }

@@ -113,7 +113,7 @@ describe('PagesWalletTransactionEditorService', () => {
         });
 
         it('created transaction\'s name should invoke showNotification', (done) => {
-          service.openEditor(WalletTransaction.create({ type: WalletTransactionType.Incomes }))
+          service.openEditor(WalletTransaction.create({ type: WalletTransactionType.Income }))
             .subscribe( () => {
               expect(systemNotificationsServiceMock.showNotification).toHaveBeenCalled();
               done();
@@ -121,7 +121,7 @@ describe('PagesWalletTransactionEditorService', () => {
         });
 
         it('should return created transaction', (done) => {
-          service.openEditor(WalletTransaction.create({ type: WalletTransactionType.Incomes }))
+          service.openEditor(WalletTransaction.create({ type: WalletTransactionType.Income }))
             .subscribe( (data: WalletTransaction | null) => {
               expect(data).toBeInstanceOf(WalletTransaction);
               expect(data!.id).toEqual(WALLET_TRANSACTIONS_CREATED_INCOME_MOCK.id);
@@ -136,14 +136,14 @@ describe('PagesWalletTransactionEditorService', () => {
         });
 
         it('canceled updating transaction\'s name should not invoke showNotification', fakeAsync(() => {
-          service.openEditor(WalletTransaction.create({ type: WalletTransactionType.Incomes }));
+          service.openEditor(WalletTransaction.create({ type: WalletTransactionType.Income }));
           flushMicrotasks();
 
           expect(systemNotificationsServiceMock.showNotification).not.toHaveBeenCalled();
         }));
 
         it('should return undefined', (done) => {
-          service.openEditor(WalletTransaction.create({ type: WalletTransactionType.Incomes }))
+          service.openEditor(WalletTransaction.create({ type: WalletTransactionType.Income }))
             .subscribe( (data: WalletTransaction | null) => {
               expect(data).toBe(null);
               done();
