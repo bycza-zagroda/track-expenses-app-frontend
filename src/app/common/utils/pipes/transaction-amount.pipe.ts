@@ -10,6 +10,6 @@ export class TransactionAmountPipe implements PipeTransform {
       return value.toString();
     }
 
-    return (type == WalletTransactionType.Expenses ? '- ' : '+ ') + value.toString();
+    return (type == WalletTransactionType.Expense ? '- ' : '+ ') + value.toString();
   }
 }

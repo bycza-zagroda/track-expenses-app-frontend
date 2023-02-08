@@ -13,13 +13,13 @@ describe('TransactionAmountPipe', () => {
   });
 
   it('adds minus to negative value', () => {
-    const transformedValue: string = pipe.transform(30, WalletTransactionType.Expenses);
+    const transformedValue: string = pipe.transform(30, WalletTransactionType.Expense);
 
     expect(transformedValue).toBe('- 30');
   });
 
   it('adds plus to positive value', () => {
-    const transformedValue: string = pipe.transform(20, WalletTransactionType.Incomes);
+    const transformedValue: string = pipe.transform(20, WalletTransactionType.Income);
 
     expect(transformedValue).toBe('+ 20');
   });
