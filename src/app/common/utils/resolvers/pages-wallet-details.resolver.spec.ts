@@ -59,13 +59,25 @@ describe('PagesWalletDetailsResolver', () => {
 
   describe('navigate to 404 error page', () => {
     describe('success', () => {
-      it('should navigate to /** - error 404 page after passing undefined wallet', () => {
-        resolver.navigateErrorPageIfWalletNotFound(undefined);
+      it('should navigate to /** - error 404 page after passing undefined wallet', async () => {
+        const someNotExistingWalletId = 999;
+        const routeSnapshotWithNotExistingId = {
+          paramMap: {
+            get: (): string => {
+              return `${someNotExistingWalletId}`;
+            },
+          },
+        } as unknown as ActivatedRouteSnapshot;
+
+        await resolver.resolve(routeSnapshotWithNotExistingId).catch((err: Error) => {
+          expect(err.message).toBe('Wallet not found!');
+        });
+
         expect(routerMock.navigate).toHaveBeenCalledWith([ '/**' ], { skipLocationChange: true });
       });
 
-      it('should NOT navigate to anywhere after passing existing wallet', () => {
-        resolver.navigateErrorPageIfWalletNotFound(walletsApiResponse.find(item => item.id === testWalletId));
+      it('should NOT navigate to anywhere after passing existing wallet', async () => {
+        await resolver.resolve(activatedRouteSnapshot);
         expect(routerMock.navigate).not.toHaveBeenCalled();
       });
     });

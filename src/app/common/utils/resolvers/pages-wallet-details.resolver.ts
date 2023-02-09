@@ -14,16 +14,13 @@ export class PagesWalletDetailsResolver implements Resolve<WalletsManagementItem
   public async resolve(route: ActivatedRouteSnapshot): Promise<WalletsManagementItem> {
     const wallets = await firstValueFrom(this.domainsWalletsGateway.getWallets());
     const id = route.paramMap.get('id')!;
-    const wallet = wallets.find((wallet: IWalletApiResponse) => wallet.id === parseInt(id))!;
+    const wallet = wallets.find((wallet: IWalletApiResponse) => wallet.id === parseInt(id));
 
-    this.navigateErrorPageIfWalletNotFound(wallet);
-
-    return new WalletsManagementItem(wallet);
-  }
-  
-  public navigateErrorPageIfWalletNotFound(wallet: IWalletApiResponse | undefined): void {
     if(!wallet) {
       void this.router.navigate([ '/**' ], { skipLocationChange: true });
+      throw new Error('Wallet not found!');
     }
+
+    return new WalletsManagementItem(wallet);
   }
 }
