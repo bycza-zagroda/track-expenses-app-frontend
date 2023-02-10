@@ -29,7 +29,7 @@ export class DomainsTransactionsGateway {
 
   public editWalletTransaction(transaction: WalletTransaction)
   : Observable<IWalletTransactionApiResponse> {
-    return this.http.put<IWalletTransactionApiResponse>(API_TRANSACTIONS_URL + `/${transaction.id!}`,
+    return this.http.patch<IWalletTransactionApiResponse>(API_TRANSACTIONS_URL + `/${transaction.id!}`,
       transaction.toPayload());
   }
 
