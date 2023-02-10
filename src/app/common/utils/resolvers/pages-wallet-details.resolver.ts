@@ -17,7 +17,7 @@ export class PagesWalletDetailsResolver implements Resolve<WalletsManagementItem
     const wallet = wallets.find((wallet: IWalletApiResponse) => wallet.id === parseInt(id));
 
     if(!wallet) {
-      void this.router.navigate([ '/**' ], { skipLocationChange: true });
+      await this.router.navigate([ '/**' ], { skipLocationChange: true });
       throw new Error('Wallet not found!');
     }
 

@@ -21,9 +21,14 @@ h1 {
 
 p {
     font-size: 26px;
+    text-align: center;
 }
 
 .app-logo {
-    width: 30%;
+    width: 40%;
     padding-bottom: 50px;
+
+    @media only screen and (min-width: 900px) {
+        width: 30%;
+    }
 }
