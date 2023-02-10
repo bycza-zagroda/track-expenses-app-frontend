@@ -74,7 +74,7 @@ describe('DomainsTransactionsGateway', () => {
         });
 
       const req = httpTestingController.expectOne(apiUrl + `/${walletId}`);
-      expect(req.request.method).toEqual('PUT');
+      expect(req.request.method).toEqual('PATCH');
       req.flush(UPDATED_WALLET_TRANSACTIONS_OBJECT_MOCK(1));
     });
   });
