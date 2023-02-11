@@ -83,7 +83,7 @@ export class PagesWalletTransactionEditorComponent implements OnInit {
     this.dialogRef.close(WalletTransaction.create({
       id: this.transactionId ?? undefined,
       amount: parseFloat(this.form.controls.amount.value!.toString()),
-      creationDate: this.form.controls.date.value!.toString(),
+      date: this.form.controls.date.value!.toString(),
       type: this.form.controls.type.value!,
       description: this.form.controls.description.value === '' ? null : this.form.controls.description.value,
       walletId: this.walletId,
