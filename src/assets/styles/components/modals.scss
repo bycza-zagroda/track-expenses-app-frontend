@@ -1,0 +1,25 @@
+div.mat-dialog-actions {
+    display: flex;
+    padding-top:30px;
+}
+
+div.mat-dialog-actions button, mat-form-field {
+    flex: 1;
+}
+
+mat-dialog-container {
+    min-width: 300px;
+    max-width: 90vw;
+}
+
+div:has( + mat-form-field) {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+mat-form-field {
+    width: 100%;
+}
+
+
