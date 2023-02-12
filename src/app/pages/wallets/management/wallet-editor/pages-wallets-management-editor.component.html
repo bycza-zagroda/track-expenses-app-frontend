@@ -1,6 +1,6 @@
 <form [formGroup]='form'>
     <h1 mat-dialog-title>{{ data.id ? "Update Wallet" : "Create Wallet" }}</h1>
-    <mat-form-field appearance="fill">
+    <mat-form-field>
         <mat-label>Wallet Name</mat-label>
         <input matInput [formControl]='form.controls["name"]'>
         <mat-error *ngIf="nameIsNotProvided">
@@ -11,7 +11,7 @@
         </mat-error>
     </mat-form-field>
     <div mat-dialog-actions>
-        <button mat-button (click)="cancel()">Cancel</button>
-        <button mat-button (click)="save()" cdkFocusInitial>Save</button>
+        <button mat-stroked-button color="primary" (click)="cancel()">Cancel</button>
+        <button mat-raised-button color="primary" (click)="save()" cdkFocusInitial>Save</button>
     </div>
 </form>
