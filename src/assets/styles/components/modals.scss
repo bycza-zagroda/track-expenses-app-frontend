@@ -1,18 +1,13 @@
 div.mat-dialog-actions {
     display: flex;
-    padding-top:30px;
+    padding-top: 20px;
 }
 
 div.mat-dialog-actions button, mat-form-field {
     flex: 1;
 }
 
-mat-dialog-container {
-    min-width: 300px;
-    max-width: 90vw;
-}
-
-div:has( + mat-form-field) {
+div:has(+ mat-form-field) {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
@@ -21,5 +16,3 @@ div:has( + mat-form-field) {
 mat-form-field {
     width: 100%;
 }
-
-
