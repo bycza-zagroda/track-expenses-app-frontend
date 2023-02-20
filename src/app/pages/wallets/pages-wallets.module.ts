@@ -18,6 +18,9 @@ import { PagesWalletDetailsResolver } from 'src/app/common/utils/resolvers/pages
 import {
   PagesWalletTransactionEditorComponent,
 } from './wallet-details/transaction-editor/pages-wallet-transaction-editor.component';
+import { 
+  PagesWalletDetailsEmptyTransactionListComponent, 
+} from './wallet-details/empty-transaction-list/pages-wallet-details-empty-transaction-list.component';
 
 const routes: Routes = [
   {
@@ -41,6 +44,7 @@ const routes: Routes = [
     PagesWalletDetailsComponent,
     TransactionAmountPipe,
     PagesWalletTransactionEditorComponent,
+    PagesWalletDetailsEmptyTransactionListComponent,
   ],
   imports: [
     RouterModule.forChild(routes),
