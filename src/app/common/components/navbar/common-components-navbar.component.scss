@@ -27,6 +27,7 @@
   .navigation-link {
     text-decoration: none;
     color: colors.$pure-black;
+    padding-left: 15px;
 
     &:hover,
     &--active {
