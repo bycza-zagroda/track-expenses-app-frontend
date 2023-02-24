@@ -1,24 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { TDataState } from 'src/app/common/http/common.http.types';
 import { NotificationType } from 'src/app/common/utils/system-notifications/system.notifications.constants';
-import { CategorySelectionValue, TransactionCategory } from 'src/app/domains/categories/domains.transaction-categories.types';
+import { CategorySelectionValue } from 'src/app/domains/categories/domains.transaction-categories.types';
 import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.constants';
+import { TransactionCategory } from '../transaction-category.model';
 import { PagesTransactionCategoriesService } from './pages-transaction-categories.service';
 
 @Component({
   selector: 'app-categories-management',
   templateUrl: './pages-categories-management.component.html',
-  styleUrls: ['./pages-categories-management.component.scss']
+  styleUrls: [ './pages-categories-management.component.scss' ],
 })
-export class PagesCategoriesManagementComponent implements OnInit {
-
+export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
   public selectTransactionCategoriesTypes: Record<string, CategorySelectionValue> = {
     'All Categories': '',
     'Incomes': WalletTransactionType.Income,
     'Expenses': WalletTransactionType.Expense,
   };
+
   public notificationTypes: typeof NotificationType = NotificationType;
   public categoryType: typeof WalletTransactionType = WalletTransactionType;
   public displayedColumns: string[] = [ 'name', 'type', 'actions' ];
@@ -33,19 +34,21 @@ export class PagesCategoriesManagementComponent implements OnInit {
 
   private categoriesTypeSub!: Subscription;
 
-
-  constructor(
+  public constructor(
     private readonly pagesTransactionCategoriesService: PagesTransactionCategoriesService,
   ) { }
 
-  ngOnInit(): void {
-
+  public ngOnInit(): void {
     this.getCategories();
 
     this.categoriesTypeSub = this.categoriesTypeForm.valueChanges
       .subscribe(() => {
         this.filterTransactions();
       });
+  }
+
+  public ngOnDestroy(): void {
+    this.categoriesTypeSub.unsubscribe();
   }
 
   private getCategories(): void {
@@ -74,9 +77,5 @@ export class PagesCategoriesManagementComponent implements OnInit {
       (transaction: TransactionCategory) =>
         (this.categoriesTypeForm.value === '') ? true : this.categoriesTypeForm.value === transaction.type.toString(),
     );
-  }
-
-  public ngOnDestroy(): void {
-    this.categoriesTypeSub.unsubscribe();
   }
 }
