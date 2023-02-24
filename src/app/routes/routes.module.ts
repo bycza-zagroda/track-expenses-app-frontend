@@ -9,6 +9,10 @@ const routes: Routes = [
     path: 'wallets',
     loadChildren: () => import('../pages/wallets/pages-wallets.module').then(m => m.PagesWalletsModule),
   },
+  {
+    path: 'categories',
+    loadChildren: () => import('../pages/categories/pages-categories.module').then(m => m.PagesCategoriesModule),
+  },
   { path: '**', component: PagesNotFoundPageComponent },
 ];
 
