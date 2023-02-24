@@ -1,0 +1,106 @@
+@use 'colors';
+@use 'sizes';
+
+.categories__container {
+  overflow-x: hidden;
+  padding: 20px;
+
+  .categories__sort__add {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+
+    > div {
+      margin-bottom: 7px;
+      width: 100%;
+    }
+
+    .category__add {
+      margin-left: 0;
+
+      button {
+        width: 100%;
+        &.income { background-color: colors.$amount-income; }
+        &.expense { background-color: colors.$amount-expense; }
+      }
+    }
+
+    .categories__sort {
+      order: 2;
+
+      .mat-form-field {
+        width: 100%;
+      }
+    }
+  }
+
+  .table__container {
+    overflow: auto;
+
+    table {
+      width: 100%;
+
+      .mat-column-actions {
+        .mat-stroked-button {
+          margin-right: 10px;
+        }
+      }
+
+      .mat-column-type {
+        .type--income { color: colors.$amount-income; font-weight: bold; }
+        .type--expense { color: colors.$amount-expense; font-weight: bold; }
+      }
+    }
+
+    .mat-table {
+      overflow-x: scroll;
+    }
+
+    .mat-cell, .mat-header-cell {
+      padding: 0px 10px;
+      line-break: unset;
+      white-space: nowrap;
+    }
+  }
+}
+
+
+@media only screen and (min-width: 500px) {
+  .categories__container {
+    .table__container {
+      overflow: initial;
+    }
+
+    .categories__sort__add {
+      display: flex;
+      align-items: baseline;
+      flex-direction: row;
+
+      > div {
+        margin-bottom: 7px;
+        width: fit-content;
+      }
+
+      .categories__sort {
+        margin-right: auto;
+        order: initial;
+      }
+
+      .category__add {
+        margin-left: 20px;
+      }
+    }
+
+    .example-additional-selection {
+      opacity: 0.75;
+      font-size: 0.75em;
+    }
+  }
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - #{sizes.$navbar-height});
+}
