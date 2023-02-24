@@ -6,7 +6,7 @@ import { WalletTransactionType } from '../transactions/domains.transactions.cons
 import { ITransactionCategoryApiResponse } from './domains.transaction-categories.types';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DomainsTransactionCategoriesGateway {
   public constructor(
