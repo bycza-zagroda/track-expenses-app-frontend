@@ -1,0 +1,22 @@
+<form [formGroup]="form" class="form__container">
+  <h1 mat-dialog-title>{{ data.id ? "Update Category" : "Create Category" }}</h1>
+  <mat-form-field>
+    <mat-label>Select type</mat-label>
+    <mat-select [formControl]="form.controls['type']">
+      <mat-option *ngFor="let type of selectTransactionsTypes | keyvalue" [value]="type.value">
+        {{ type.key }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field *ngIf="form.controls['name']">
+    <mat-label>Name</mat-label>
+    <input matInput [formControl]="form.controls['name']">
+    <!-- <mat-error *ngIf="amountHasInvalidFormat">
+      Amount has invalid format
+    </mat-error> -->
+  </mat-form-field>
+  <div mat-dialog-actions>
+    <button mat-stroked-button color="primary" class="btn__cancel" (click)="cancel()">Cancel</button>
+    <button mat-raised-button color="primary" class="btn__save" (click)="save()" cdkFocusInitial>Save</button>
+  </div>
+</form>
