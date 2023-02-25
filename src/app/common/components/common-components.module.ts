@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
 import { LoadingModalComponent } from '../loading-modal/loading-modal.component';
 import { SystemMessageComponent } from './system-message/system-message.component';
+import { NoResultsComponent } from './no-results/no-results.component';
 
 @NgModule({
   declarations: [
@@ -14,10 +15,12 @@ import { SystemMessageComponent } from './system-message/system-message.componen
     ConfirmationModalComponent,
     LoadingModalComponent,
     SystemMessageComponent,
+    NoResultsComponent,
   ],
   exports: [
     CommonComponentsNavbarComponent,
     SystemMessageComponent,
+    NoResultsComponent,
   ],
   imports: [
     CommonModule,
