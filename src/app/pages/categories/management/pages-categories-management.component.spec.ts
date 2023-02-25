@@ -14,7 +14,7 @@ import { PagesTransactionCategoriesService } from './pages-transaction-categorie
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
 
-fdescribe('PagesCategoriesManagementComponent', () => {
+describe('PagesCategoriesManagementComponent', () => {
   let component: PagesCategoriesManagementComponent;
   let fixture: ComponentFixture<PagesCategoriesManagementComponent>;
   let categoriesObjectsMock: TransactionCategory[];
