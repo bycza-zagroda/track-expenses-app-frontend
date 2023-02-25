@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, flushMicrotasks, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
 import {
   DomainsTransactionCategoriesGateway,
@@ -34,11 +34,13 @@ describe('PagesTransactionCategoriesService', () => {
   });
 
   describe('getTransactionCategories', () => {
-    it('should return array of TransactionCategory instances', (done) => {
-      service.getCategories$().subscribe((transactions: TransactionCategory[]) => {
-        expect(transactions).toEqual(transactionCategoriesObjectsMock);
-        done();
+    it('should return array of TransactionCategory instances', fakeAsync(() => {
+      service.getCategories$().subscribe((categories: TransactionCategory[]) => {
+        expect(categories).toEqual(transactionCategoriesObjectsMock);
       });
-    });
+
+      service.getTransactionCategories();
+      flushMicrotasks();
+    }));
   });
 });
