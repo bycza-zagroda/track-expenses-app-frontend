@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-no-results',
@@ -6,4 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: [ './no-results.component.scss' ], 
 })
 export class NoResultsComponent {
+  @Input() public title = 'Ooops!';
+  @Input() public text!: string;
 }

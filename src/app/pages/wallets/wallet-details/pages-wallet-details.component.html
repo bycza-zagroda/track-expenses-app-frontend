@@ -71,7 +71,7 @@
 
       <tr class="mat-row" *matNoDataRow>
         <td class="mat-cell" [attr.colspan]="displayedColumns.length">
-          <app-no-results></app-no-results>
+          <app-no-results [text]="noResultsMessage"></app-no-results>
         </td>
       </tr>
     </table>
