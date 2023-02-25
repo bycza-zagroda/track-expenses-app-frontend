@@ -39,7 +39,8 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
   ) { }
 
   public ngOnInit(): void {
-    this.getCategories();
+    this.initCategories();
+    this.pagesTransactionCategoriesService.getTransactionCategories();
 
     this.categoriesTypeSub = this.categoriesTypeForm.valueChanges
       .subscribe(() => {
@@ -51,10 +52,12 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
     this.categoriesTypeSub.unsubscribe();
   }
 
-  private getCategories(): void {
-    this.pagesTransactionCategoriesService.getTransactionCategories().subscribe({
+  private initCategories(): void {
+    this.pagesTransactionCategoriesService.getCategories$().subscribe({
       next: (transactions: TransactionCategory[]) => {
-        this.displayedCategories = transactions;
+        this.displayedCategories = transactions.sort( (a, b) =>
+          a.name.toLowerCase() < b.name.toLowerCase() ? -1 : a.name.toLowerCase() > b.name.toLowerCase() ? 1 : 0,
+        );
 
         this.transactionCategoriesData = {
           data: transactions,
