@@ -15,6 +15,6 @@ export class DomainsTransactionCategoriesGateway {
 
   public getTransactionCategories(): Observable<ITransactionCategoryApiResponse[]> {
     return fakeRequest(transactionCategoriesMock);
-    //return this.http.get<ITransactionCategoryApiResponse[]>(API_TRANSACTION_CATEGORY_URL);
+    //return this.http.get<ITransactionCategoryApiResponse[]>(API_TRANSACTION_CATEGORIES_URL);
   }
 }
