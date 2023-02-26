@@ -10,5 +10,5 @@ export const transactionCategoriesMock: ITransactionCategoryApiResponse[] = [
 
 export const transactionCategoriesObjectsMock: TransactionCategory[] =
   transactionCategoriesMock.map( (c: ITransactionCategoryApiResponse) =>
-    new TransactionCategory({ id: c.id, name: c.name, type: c.type })
+    new TransactionCategory({ id: c.id, name: c.name, type: c.type }),
   );

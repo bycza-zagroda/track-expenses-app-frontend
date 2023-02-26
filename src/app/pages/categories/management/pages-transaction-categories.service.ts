@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable, tap } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { DomainsTransactionCategoriesGateway } from 'src/app/domains/categories/domains.transaction-categories.gateway';
 import { TransactionCategory } from '../transaction-category.model';
 
@@ -15,14 +15,15 @@ export class PagesTransactionCategoriesService {
 
   public getCategories = (): Observable<TransactionCategory[]> => this.categories$.asObservable();
 
-  public loadCategories(): Observable<TransactionCategory[]> {
+  public loadCategories(): Observable<void> {
     return this.domainsTransactionCategoriesGateway.getTransactionCategories().pipe(
-      map(categories => categories.map(
-        category => new TransactionCategory({ id: category.id, name: category.name, type: category.type }),
-      )),
-      tap( (categories: TransactionCategory[]) => {
-        this.categories$.next(categories);
+      map(categories => {
+        const items = categories.map(
+          category => new TransactionCategory({ id: category.id, name: category.name, type: category.type }),
+        );
+
+        this.categories$.next(items);
       }),
-    )
+    );
   }
 }

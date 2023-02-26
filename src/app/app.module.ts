@@ -15,10 +15,9 @@ import { PagesHomePageComponent } from './pages/home/pages-home-page.component';
 import { PagesNotFoundPageComponent } from './pages/not-found/pages-not-found-page.component';
 import { PagesTransactionCategoriesService } from './pages/categories/management/pages-transaction-categories.service';
 import { Observable } from 'rxjs';
-import { TransactionCategory } from './pages/categories/transaction-category.model';
 
 export function appConfigFactory(appInitService: PagesTransactionCategoriesService) {
-  return (): Observable<TransactionCategory[]> => appInitService.loadCategories();
+  return (): Observable<void> => appInitService.loadCategories();
 }
 
 @NgModule({
@@ -36,11 +35,11 @@ export function appConfigFactory(appInitService: PagesTransactionCategoriesServi
     CommonComponentsModule,
   ],
   bootstrap: [ AppComponent ],
-  providers: [{
+  providers: [ {
     provide: APP_INITIALIZER,
     useFactory: appConfigFactory,
     deps: [ PagesTransactionCategoriesService ],
     multi: true,
-   }],
+  } ],
 })
 export class AppModule {}
