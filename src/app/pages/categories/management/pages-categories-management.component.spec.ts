@@ -14,7 +14,7 @@ import { PagesTransactionCategoriesService } from './pages-transaction-categorie
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
 
-fdescribe('PagesCategoriesManagementComponent', () => {
+describe('PagesCategoriesManagementComponent', () => {
   let component: PagesCategoriesManagementComponent;
   let fixture: ComponentFixture<PagesCategoriesManagementComponent>;
   let categoriesObjectsMock: TransactionCategory[];
@@ -129,25 +129,24 @@ fdescribe('PagesCategoriesManagementComponent', () => {
     }));
 
     describe('filter categories by Expenses', () => {
-      it('selected Expenses on select-box should filter categories with expense type', fakeAsync(() => {
+      it('selected Expenses on select-box should filter categories with expense type', fakeAsync( async () => {
         const expensesOption: HTMLDivElement = fixture.debugElement.queryAll(
           By.css('.mat-option'),
         )[1].nativeElement as HTMLDivElement;
         expensesOption.click();
         fixture.detectChanges();
         flushMicrotasks();
+        flush();
 
+        await fixture.whenStable();
 
-        fixture.whenStable().then(() => {
-          expect(component.displayedCategories.length)
+        expect(component.displayedCategories.length)
           .toBe(categoriesObjectsMock.filter(c => c.type === WalletTransactionType.Expense).length);
-          flush();
-        });
       }));
     });
 
     describe('filter categories by Incomes', () => {
-      it('selected Incomes on select-box should filter categories with incomes type', fakeAsync(() => {
+      it('selected Incomes on select-box should filter categories with incomes type', fakeAsync( async () => {
         const incomesOption: HTMLElement = fixture.debugElement.queryAll(
           By.css('.mat-option'),
         )[2].nativeElement as HTMLDivElement;
@@ -158,10 +157,11 @@ fdescribe('PagesCategoriesManagementComponent', () => {
         flush();
         // test error
         // 1 timer still in the queue
-        fixture.whenStable().then(() => {
-          expect(component.displayedCategories.length)
+
+        await fixture.whenStable();
+
+        expect(component.displayedCategories.length)
           .toBe(categoriesObjectsMock.filter(c => c.type === WalletTransactionType.Income).length);
-        });
       }));
     });
   });
