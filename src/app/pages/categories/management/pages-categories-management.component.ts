@@ -3,10 +3,11 @@ import { FormControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { TDataState } from 'src/app/common/http/common.http.types';
 import { NotificationType } from 'src/app/common/utils/system-notifications/system.notifications.constants';
-import { CategorySelectionValue } from 'src/app/domains/categories/domains.transaction-categories.types';
 import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.constants';
 import { TransactionCategory } from '../transaction-category.model';
-import { PagesTransactionCategoriesService } from './pages-transaction-categories.service';
+import { PagesTransactionCategoriesService } from '../../../pages-transaction-categories.service';
+
+export type CategorySelectionValue = WalletTransactionType | '';
 
 @Component({
   selector: 'app-categories-management',
@@ -40,7 +41,7 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.initCategories();
-    this.pagesTransactionCategoriesService.getTransactionCategories();
+    this.pagesTransactionCategoriesService.loadCategories();
 
     this.categoriesTypeSub = this.categoriesTypeForm.valueChanges
       .subscribe(() => {
@@ -53,7 +54,7 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
   }
 
   private initCategories(): void {
-    this.pagesTransactionCategoriesService.getCategories$().subscribe({
+    this.pagesTransactionCategoriesService.getCategories().subscribe({
       next: (transactions: TransactionCategory[]) => {
         this.displayedCategories = transactions.sort( (a, b) =>
           a.name.toLowerCase() < b.name.toLowerCase() ? -1 : a.name.toLowerCase() > b.name.toLowerCase() ? 1 : 0,

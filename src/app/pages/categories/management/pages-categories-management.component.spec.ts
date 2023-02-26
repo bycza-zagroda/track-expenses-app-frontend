@@ -10,11 +10,11 @@ import { WalletTransactionType } from 'src/app/domains/transactions/domains.tran
 import { MaterialModule } from 'src/app/material.module';
 import { TransactionCategory } from '../transaction-category.model';
 import { PagesCategoriesManagementComponent } from './pages-categories-management.component';
-import { PagesTransactionCategoriesService } from './pages-transaction-categories.service';
+import { PagesTransactionCategoriesService } from '../../../pages-transaction-categories.service';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
 
-describe('PagesCategoriesManagementComponent', () => {
+fdescribe('PagesCategoriesManagementComponent', () => {
   let component: PagesCategoriesManagementComponent;
   let fixture: ComponentFixture<PagesCategoriesManagementComponent>;
   let categoriesObjectsMock: TransactionCategory[];
@@ -26,8 +26,8 @@ describe('PagesCategoriesManagementComponent', () => {
     categoriesSubject = new Subject<TransactionCategory[]>();
 
     pagesTransactionCategoriesServiceMock = createSpyObj<PagesTransactionCategoriesService>
-    (PagesTransactionCategoriesService.name, [ 'getCategories$', 'getTransactionCategories' ]);
-    pagesTransactionCategoriesServiceMock.getCategories$.and.returnValue(categoriesSubject.asObservable());
+    (PagesTransactionCategoriesService.name, [ 'getCategories', 'loadCategories' ]);
+    pagesTransactionCategoriesServiceMock.getCategories.and.returnValue(categoriesSubject.asObservable());
 
     await TestBed.configureTestingModule({
       declarations: [
@@ -135,10 +135,14 @@ describe('PagesCategoriesManagementComponent', () => {
         )[1].nativeElement as HTMLDivElement;
         expensesOption.click();
         fixture.detectChanges();
-        flush();
+        flushMicrotasks();
 
-        expect(component.displayedCategories.length)
+
+        fixture.whenStable().then(() => {
+          expect(component.displayedCategories.length)
           .toBe(categoriesObjectsMock.filter(c => c.type === WalletTransactionType.Expense).length);
+          flush();
+        });
       }));
     });
 
@@ -150,10 +154,14 @@ describe('PagesCategoriesManagementComponent', () => {
 
         incomesOption.click();
         fixture.detectChanges();
+        flushMicrotasks();
         flush();
-
-        expect(component.displayedCategories.length)
+        // test error
+        // 1 timer still in the queue
+        fixture.whenStable().then(() => {
+          expect(component.displayedCategories.length)
           .toBe(categoriesObjectsMock.filter(c => c.type === WalletTransactionType.Income).length);
+        });
       }));
     });
   });

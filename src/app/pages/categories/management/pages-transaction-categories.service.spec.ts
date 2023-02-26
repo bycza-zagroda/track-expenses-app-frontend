@@ -8,7 +8,7 @@ import {
   transactionCategoriesObjectsMock,
 } from 'src/app/domains/categories/domains.transaction-categories.mocks';
 import { TransactionCategory } from '../transaction-category.model';
-import { PagesTransactionCategoriesService } from './pages-transaction-categories.service';
+import { PagesTransactionCategoriesService } from '../../../pages-transaction-categories.service';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
 
@@ -35,11 +35,11 @@ describe('PagesTransactionCategoriesService', () => {
 
   describe('getTransactionCategories', () => {
     it('should return array of TransactionCategory instances', fakeAsync(() => {
-      service.getCategories$().subscribe((categories: TransactionCategory[]) => {
+      service.getCategories().subscribe((categories: TransactionCategory[]) => {
         expect(categories).toEqual(transactionCategoriesObjectsMock);
       });
 
-      service.getTransactionCategories();
+      service.loadCategories();
       flushMicrotasks();
     }));
   });

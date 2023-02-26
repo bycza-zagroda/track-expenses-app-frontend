@@ -8,6 +8,7 @@ export const transactionCategoriesMock: ITransactionCategoryApiResponse[] = [
   { id: 3, name: 'bNic3', type: WalletTransactionType.Expense },
 ];
 
-export const transactionCategoriesObjectsMock: TransactionCategory[] = [
-  ...transactionCategoriesMock.map( (c: ITransactionCategoryApiResponse) => new TransactionCategory(c.id, c.name, c.type) ),
-];
+export const transactionCategoriesObjectsMock: TransactionCategory[] =
+  transactionCategoriesMock.map( (c: ITransactionCategoryApiResponse) =>
+    new TransactionCategory({ id: c.id, name: c.name, type: c.type })
+  );

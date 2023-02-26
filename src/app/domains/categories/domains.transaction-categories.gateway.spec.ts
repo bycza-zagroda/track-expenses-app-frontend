@@ -9,10 +9,8 @@ describe('DomainsTransactionCategoriesGatewayService', () => {
   let service: DomainsTransactionCategoriesGateway;
   let httpTestingController: HttpTestingController;
   let categoriesRespMock: ITransactionCategoryApiResponse[];
-  let apiUrl: string;
 
   beforeEach(async () => {
-    apiUrl = API_TRANSACTIONS_URL;
     categoriesRespMock = transactionCategoriesMock;
 
     await TestBed.configureTestingModule({
@@ -42,7 +40,7 @@ describe('DomainsTransactionCategoriesGatewayService', () => {
         expect(val.length).toBe(categoriesRespMock.length);
       });
 
-      const req = httpTestingController.expectOne(apiUrl);
+      const req = httpTestingController.expectOne(API_TRANSACTIONS_URL);
       expect(req.request.method).toEqual('GET');
       req.flush(categoriesRespMock);
     });

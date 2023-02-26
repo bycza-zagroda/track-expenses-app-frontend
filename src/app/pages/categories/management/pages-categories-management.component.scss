@@ -103,3 +103,7 @@
   align-items: center;
   height: calc(100vh - #{sizes.$navbar-height});
 }
+
+.mat-column-actions {
+  max-width: 25px;
+}
