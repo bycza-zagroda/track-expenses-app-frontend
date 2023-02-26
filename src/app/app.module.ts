@@ -13,11 +13,12 @@ import { CommonComponentsModule } from './common/components/common-components.mo
 import { HttpClientModule } from '@angular/common/http';
 import { PagesHomePageComponent } from './pages/home/pages-home-page.component';
 import { PagesNotFoundPageComponent } from './pages/not-found/pages-not-found-page.component';
-import { PagesTransactionCategoriesService } from './pages-transaction-categories.service';
-import { DomainsTransactionCategoriesGateway } from './domains/categories/domains.transaction-categories.gateway';
+import { PagesTransactionCategoriesService } from './pages/categories/management/pages-transaction-categories.service';
+import { Observable } from 'rxjs';
+import { TransactionCategory } from './pages/categories/transaction-category.model';
 
-export function appConfigFactory(appInitService: PagesTransactionCategoriesService) { console.log(0)
-  return (): void => appInitService.loadCategories();
+export function appConfigFactory(appInitService: PagesTransactionCategoriesService) {
+  return (): Observable<TransactionCategory[]> => appInitService.loadCategories();
 }
 
 @NgModule({
@@ -37,8 +38,8 @@ export function appConfigFactory(appInitService: PagesTransactionCategoriesServi
   bootstrap: [ AppComponent ],
   providers: [{
     provide: APP_INITIALIZER,
-    useFactory: () => appConfigFactory,
-    deps: [PagesTransactionCategoriesService],
+    useFactory: appConfigFactory,
+    deps: [ PagesTransactionCategoriesService ],
     multi: true,
    }],
 })
