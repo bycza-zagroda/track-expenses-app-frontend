@@ -64,7 +64,7 @@
   }
 }
 
-@media only screen and (min-width: 500px) {
+@media only screen and (min-width: 650px) {
   .categories__container {
     .table__container {
       overflow: initial;
@@ -104,6 +104,8 @@
   height: calc(100vh - #{sizes.$navbar-height});
 }
 
-.mat-column-actions {
-  max-width: 25px;
+@media only screen and (min-width: 500px) {
+  .mat-column-actions {
+    max-width: 70px;
+  }
 }
