@@ -40,6 +40,8 @@ export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
     isLoading: true,
   };
 
+  public noResultsMessage = 'You have no transactions yet, please add one :)';
+
   private transactionTypeSub!: Subscription;
 
   public constructor(
