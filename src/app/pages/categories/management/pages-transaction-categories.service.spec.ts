@@ -8,7 +8,7 @@ import {
   transactionCategoriesObjectsMock,
 } from 'src/app/domains/categories/domains.transaction-categories.mocks';
 import { TransactionCategory } from '../transaction-category.model';
-import { PagesTransactionCategoriesService } from './pages-transaction-categories.service';
+import { PagesTransactionCategoriesService } from '../pages-transaction-categories.service';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
 
@@ -39,7 +39,7 @@ describe('PagesTransactionCategoriesService', () => {
         expect(categories).toEqual(transactionCategoriesObjectsMock);
       });
 
-      service.loadCategories();
+      service.getCategories();
       flushMicrotasks();
     }));
   });

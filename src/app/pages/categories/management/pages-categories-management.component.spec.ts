@@ -10,7 +10,7 @@ import { WalletTransactionType } from 'src/app/domains/transactions/domains.tran
 import { MaterialModule } from 'src/app/material.module';
 import { TransactionCategory } from '../transaction-category.model';
 import { PagesCategoriesManagementComponent } from './pages-categories-management.component';
-import { PagesTransactionCategoriesService } from './pages-transaction-categories.service';
+import { PagesTransactionCategoriesService } from '../pages-transaction-categories.service';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
 
@@ -26,7 +26,7 @@ describe('PagesCategoriesManagementComponent', () => {
     categoriesSubject = new Subject<TransactionCategory[]>();
 
     pagesTransactionCategoriesServiceMock = createSpyObj<PagesTransactionCategoriesService>
-    (PagesTransactionCategoriesService.name, [ 'getCategories', 'loadCategories' ]);
+    (PagesTransactionCategoriesService.name, [ 'getCategories' ]);
     pagesTransactionCategoriesServiceMock.getCategories.and.returnValue(categoriesSubject.asObservable());
 
     await TestBed.configureTestingModule({
