@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import {
@@ -13,12 +13,6 @@ import { CommonComponentsModule } from './common/components/common-components.mo
 import { HttpClientModule } from '@angular/common/http';
 import { PagesHomePageComponent } from './pages/home/pages-home-page.component';
 import { PagesNotFoundPageComponent } from './pages/not-found/pages-not-found-page.component';
-import { PagesTransactionCategoriesService } from './pages/categories/management/pages-transaction-categories.service';
-import { Observable } from 'rxjs';
-
-export function appConfigFactory(appInitService: PagesTransactionCategoriesService) {
-  return (): Observable<void> => appInitService.loadCategories();
-}
 
 @NgModule({
   declarations: [ AppComponent, PagesHomePageComponent, PagesNotFoundPageComponent ],
@@ -35,11 +29,5 @@ export function appConfigFactory(appInitService: PagesTransactionCategoriesServi
     CommonComponentsModule,
   ],
   bootstrap: [ AppComponent ],
-  providers: [ {
-    provide: APP_INITIALIZER,
-    useFactory: appConfigFactory,
-    deps: [ PagesTransactionCategoriesService ],
-    multi: true,
-  } ],
 })
 export class AppModule {}

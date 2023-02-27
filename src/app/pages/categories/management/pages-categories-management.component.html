@@ -39,9 +39,8 @@
     </div>
 
     <div class="no-results-message-container" *ngIf=" displayedCategories.length === 0">
-      <app-system-message [type]="notificationTypes.Error"
-                          text="NO RESULTS"
-                          description="Please add first category"></app-system-message>
+      <app-no-results title="NO RESULTS"
+                          text="Please add first category"></app-no-results>
     </div>
 
     <div *ngIf="displayedCategories.length > 0" class="table__container">

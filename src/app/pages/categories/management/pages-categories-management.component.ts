@@ -5,7 +5,7 @@ import { TDataState } from 'src/app/common/http/common.http.types';
 import { NotificationType } from 'src/app/common/utils/system-notifications/system.notifications.constants';
 import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.constants';
 import { TransactionCategory } from '../transaction-category.model';
-import { PagesTransactionCategoriesService } from './pages-transaction-categories.service';
+import { PagesTransactionCategoriesService } from '../pages-transaction-categories.service';
 
 export type CategorySelectionValue = WalletTransactionType | '';
 
