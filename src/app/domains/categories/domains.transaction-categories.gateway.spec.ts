@@ -1,6 +1,6 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { API_TRANSACTIONS_URL } from '../transactions/domains.transactions.constants';
+import { API_TRANSACTION_CATEGORIES_URL } from './domains.transaction-categories.constants';
 import { DomainsTransactionCategoriesGateway } from './domains.transaction-categories.gateway';
 import { transactionCategoriesMock } from './domains.transaction-categories.mocks';
 import { ITransactionCategoryApiResponse } from './domains.transaction-categories.types';
@@ -40,7 +40,7 @@ describe('DomainsTransactionCategoriesGatewayService', () => {
         expect(val.length).toBe(categoriesRespMock.length);
       });
 
-      const req = httpTestingController.expectOne(API_TRANSACTIONS_URL);
+      const req = httpTestingController.expectOne(API_TRANSACTION_CATEGORIES_URL);
       expect(req.request.method).toEqual('GET');
       req.flush(categoriesRespMock);
     });
