@@ -44,7 +44,7 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
 
     this.categoriesTypeSub = this.categoriesTypeForm.valueChanges
       .subscribe(() => {
-        this.filterTransactions();
+        this.filterCategories();
       });
   }
 
@@ -54,13 +54,13 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
 
   private initCategories(): void {
     this.pagesTransactionCategoriesService.getCategories().subscribe({
-      next: (transactions: TransactionCategory[]) => {
-        this.displayedCategories = transactions.sort( (a, b) =>
+      next: (categories: TransactionCategory[]) => {
+        this.displayedCategories = categories.sort( (a, b) =>
           a.name.toLowerCase() < b.name.toLowerCase() ? -1 : a.name.toLowerCase() > b.name.toLowerCase() ? 1 : 0,
         );
 
         this.transactionCategoriesData = {
-          data: transactions,
+          data: categories,
           hasError: false,
           isLoading: false,
         };
@@ -75,10 +75,10 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
     });
   }
 
-  private filterTransactions(): void {
+  private filterCategories(): void {
     this.displayedCategories = this.transactionCategoriesData.data!.filter(
-      (transaction: TransactionCategory) =>
-        (this.categoriesTypeForm.value === '') ? true : this.categoriesTypeForm.value === transaction.type.toString(),
+      (category: TransactionCategory) =>
+        (this.categoriesTypeForm.value === '') ? true : this.categoriesTypeForm.value === category.type.toString(),
     );
   }
 }
