@@ -14,6 +14,7 @@ import { PagesTransactionCategoriesService } from '../pages-transaction-categori
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
 import { NoResultsComponent } from 'src/app/common/components/no-results/no-results.component';
+import { sortAlphabeticallyByProp } from 'src/app/common/utils/sorts/common.util.sort,sortAlphabeticallyByProp';
 
 describe('PagesCategoriesManagementComponent', () => {
   let component: PagesCategoriesManagementComponent;
@@ -81,9 +82,12 @@ describe('PagesCategoriesManagementComponent', () => {
               By.css('.mat-table'),
             ).nativeElement as HTMLDivElement;
 
+            const sortecCategories = sortAlphabeticallyByProp<TransactionCategory, 'name'>
+            (transactionCategoriesObjectsMockFunc(), 'name');
+
             expect(table).toBeTruthy();
             expect(component.transactionCategoriesData.hasError).toBeFalse();
-            expect(component.transactionCategoriesData.data).toEqual(transactionCategoriesObjectsMockFunc());
+            expect(component.transactionCategoriesData.data).toEqual(sortecCategories);
           }));
         });
       });
