@@ -1,4 +1,4 @@
-import { ComponentFixture, fakeAsync, flush, flushMicrotasks, TestBed } from '@angular/core/testing';
+import { ComponentFixture, discardPeriodicTasks, fakeAsync, flush, flushMicrotasks, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -14,7 +14,7 @@ import { PagesTransactionCategoriesService } from '../pages-transaction-categori
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
 import { NoResultsComponent } from 'src/app/common/components/no-results/no-results.component';
-import { sortAlphabeticallyByProp } from 'src/app/common/utils/sorts/common.util.sort,sortAlphabeticallyByProp';
+import { sortAlphabeticallyByProp } from 'src/app/common/utils/sorts/common.util.sort.';
 
 describe('PagesCategoriesManagementComponent', () => {
   let component: PagesCategoriesManagementComponent;
@@ -146,6 +146,9 @@ describe('PagesCategoriesManagementComponent', () => {
 
         expect(component.displayedCategories.length)
           .toBe(transactionCategoriesObjectsMockFunc().filter(c => c.type === WalletTransactionType.Expense).length);
+        
+        discardPeriodicTasks();
+        flush();
       }));
     });
 
@@ -164,6 +167,9 @@ describe('PagesCategoriesManagementComponent', () => {
 
         expect(component.displayedCategories.length)
           .toBe(transactionCategoriesObjectsMockFunc().filter(c => c.type === WalletTransactionType.Income).length);
+
+        discardPeriodicTasks();
+        flush();
       }));
     });
   });

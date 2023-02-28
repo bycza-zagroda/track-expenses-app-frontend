@@ -1,6 +1,6 @@
 import { transactionCategoriesObjectsMockFunc } from 'src/app/domains/categories/domains.transaction-categories.mocks';
 import { TransactionCategory } from 'src/app/pages/categories/transaction-category.model';
-import { sortAlphabeticallyByProp } from './common.util.sort,sortAlphabeticallyByProp';
+import { sortAlphabeticallyByProp } from './common.util.sort.';
 
 describe('utils sorts', () => {
   describe('sortAlphabeticallyByProp', () => {
