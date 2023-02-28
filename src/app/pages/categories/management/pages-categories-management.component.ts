@@ -6,6 +6,7 @@ import { NotificationType } from 'src/app/common/utils/system-notifications/syst
 import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.constants';
 import { TransactionCategory } from '../transaction-category.model';
 import { PagesTransactionCategoriesService } from '../pages-transaction-categories.service';
+import { sortAlphabeticallyByProp } from 'src/app/common/utils/sorts/common.util.sort,sortAlphabeticallyByProp';
 
 export type CategorySelectionValue = WalletTransactionType | '';
 
@@ -55,9 +56,7 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
   private initCategories(): void {
     this.pagesTransactionCategoriesService.getCategories().subscribe({
       next: (categories: TransactionCategory[]) => {
-        this.displayedCategories = categories.sort( (a, b) =>
-          a.name.toLowerCase() < b.name.toLowerCase() ? -1 : a.name.toLowerCase() > b.name.toLowerCase() ? 1 : 0,
-        );
+        this.displayedCategories = sortAlphabeticallyByProp<TransactionCategory, 'name'>(categories, 'name');
 
         this.transactionCategoriesData = {
           data: categories,
@@ -80,5 +79,7 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
       (category: TransactionCategory) =>
         (this.categoriesTypeForm.value === '') ? true : this.categoriesTypeForm.value === category.type.toString(),
     );
+
+    this.displayedCategories = sortAlphabeticallyByProp<TransactionCategory, 'name'>(this.displayedCategories, 'name');
   }
 }

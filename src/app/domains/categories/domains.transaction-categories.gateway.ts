@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { fakeRequest } from 'src/app/common/http/common.http.fake-request';
-import { transactionCategoriesMock } from './domains.transaction-categories.mocks';
+import { transactionCategoriesMockFunc } from './domains.transaction-categories.mocks';
 import { ITransactionCategoryApiResponse } from './domains.transaction-categories.types';
 
 @Injectable({
@@ -14,7 +14,7 @@ export class DomainsTransactionCategoriesGateway {
   ) { }
 
   public getTransactionCategories(): Observable<ITransactionCategoryApiResponse[]> {
-    return fakeRequest(transactionCategoriesMock);
+    return fakeRequest(transactionCategoriesMockFunc());
     //return this.http.get<ITransactionCategoryApiResponse[]>(API_TRANSACTION_CATEGORIES_URL);
   }
 }

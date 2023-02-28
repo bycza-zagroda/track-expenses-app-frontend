@@ -5,7 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
 import { SystemMessageComponent } from 'src/app/common/components/system-message/system-message.component';
 import { LoadingModalComponent } from 'src/app/common/loading-modal/loading-modal.component';
-import { transactionCategoriesObjectsMock } from 'src/app/domains/categories/domains.transaction-categories.mocks';
+import { transactionCategoriesObjectsMockFunc } from 'src/app/domains/categories/domains.transaction-categories.mocks';
 import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.constants';
 import { MaterialModule } from 'src/app/material.module';
 import { TransactionCategory } from '../transaction-category.model';
@@ -13,16 +13,15 @@ import { PagesCategoriesManagementComponent } from './pages-categories-managemen
 import { PagesTransactionCategoriesService } from '../pages-transaction-categories.service';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
+import { NoResultsComponent } from 'src/app/common/components/no-results/no-results.component';
 
 describe('PagesCategoriesManagementComponent', () => {
   let component: PagesCategoriesManagementComponent;
   let fixture: ComponentFixture<PagesCategoriesManagementComponent>;
-  let categoriesObjectsMock: TransactionCategory[];
   let pagesTransactionCategoriesServiceMock: SpyObj<PagesTransactionCategoriesService>;
   let categoriesSubject: Subject<TransactionCategory[]>;
 
   beforeEach(async () => {
-    categoriesObjectsMock = transactionCategoriesObjectsMock;
     categoriesSubject = new Subject<TransactionCategory[]>();
 
     pagesTransactionCategoriesServiceMock = createSpyObj<PagesTransactionCategoriesService>
@@ -34,6 +33,7 @@ describe('PagesCategoriesManagementComponent', () => {
         PagesCategoriesManagementComponent,
         LoadingModalComponent,
         SystemMessageComponent,
+        NoResultsComponent,
       ],
       imports: [
         MaterialModule,
@@ -73,7 +73,7 @@ describe('PagesCategoriesManagementComponent', () => {
 
         describe('not empty table', () => {
           it('should display categories in table', fakeAsync(() => {
-            categoriesSubject.next(categoriesObjectsMock);
+            categoriesSubject.next(transactionCategoriesObjectsMockFunc());
             flushMicrotasks();
             fixture.detectChanges();
 
@@ -83,7 +83,7 @@ describe('PagesCategoriesManagementComponent', () => {
 
             expect(table).toBeTruthy();
             expect(component.transactionCategoriesData.hasError).toBeFalse();
-            expect(component.transactionCategoriesData.data).toEqual(categoriesObjectsMock);
+            expect(component.transactionCategoriesData.data).toEqual(transactionCategoriesObjectsMockFunc());
           }));
         });
       });
@@ -116,7 +116,7 @@ describe('PagesCategoriesManagementComponent', () => {
     let matSelect: HTMLDivElement;
 
     beforeEach( fakeAsync(() => {
-      categoriesSubject.next(categoriesObjectsMock);
+      categoriesSubject.next(transactionCategoriesObjectsMockFunc());
       flushMicrotasks();
       fixture.detectChanges();
 
@@ -141,7 +141,7 @@ describe('PagesCategoriesManagementComponent', () => {
         await fixture.whenStable();
 
         expect(component.displayedCategories.length)
-          .toBe(categoriesObjectsMock.filter(c => c.type === WalletTransactionType.Expense).length);
+          .toBe(transactionCategoriesObjectsMockFunc().filter(c => c.type === WalletTransactionType.Expense).length);
       }));
     });
 
@@ -155,13 +155,11 @@ describe('PagesCategoriesManagementComponent', () => {
         fixture.detectChanges();
         flushMicrotasks();
         flush();
-        // test error
-        // 1 timer still in the queue
 
         await fixture.whenStable();
 
         expect(component.displayedCategories.length)
-          .toBe(categoriesObjectsMock.filter(c => c.type === WalletTransactionType.Income).length);
+          .toBe(transactionCategoriesObjectsMockFunc().filter(c => c.type === WalletTransactionType.Income).length);
       }));
     });
   });
