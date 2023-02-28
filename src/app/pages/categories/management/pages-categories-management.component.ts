@@ -6,7 +6,7 @@ import { NotificationType } from 'src/app/common/utils/system-notifications/syst
 import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.constants';
 import { TransactionCategory } from '../transaction-category.model';
 import { PagesTransactionCategoriesService } from '../pages-transaction-categories.service';
-import { sortAlphabeticallyByProp } from 'src/app/common/utils/sorts/common.util.sort,sortAlphabeticallyByProp';
+import { sortAlphabeticallyByProp } from 'src/app/common/utils/sorts/common.util.sort.';
 
 export type CategorySelectionValue = WalletTransactionType | '';
 
