@@ -1,17 +1,15 @@
-// export function sortAlphabeticallyByProp<T>(array: T, prop: string): any[] {
-//   const newArray = [...array];
-//   const sorted = newArray.sort((a: any, b: any) =>
-//     a[prop].toLowerCase() < b[prop].toLowerCase() ? -1 : a[prop].toLowerCase() > b[prop].toLowerCase() ? 1 : 0,
-//   );
+import { KeysMatching } from '../types.utils';
 
-//   return sorted;
-// }
+export function sortAlphabeticallyByProp<T extends object, K extends KeysMatching<T, string>>(array: T[], prop: K): T[] {
+  return array.sort((a, b) => {
+    // TODO: @purbanski-deftcode figure this out later
+    const propAValue: string = a[prop] as unknown as string;
+    const propBValue: string = b[prop] as unknown as string;
 
-export function sortAlphabeticallyByProp<T extends any, K extends string>(array: T[], prop: K): T[] {
-  const newArray = [ ...array ];
-  const sorted = newArray.sort((a: any, b: any) =>
-    a[ prop ].toLowerCase() < b[ prop ].toLowerCase() ? -1 : a[ prop ].toLowerCase() > b[ prop ].toLowerCase() ? 1 : 0,
-  );
+    if (propAValue.toLowerCase() === propBValue.toLowerCase()) {
+      return 0;
+    }
 
-  return sorted;
+    return propAValue.toLowerCase() < propBValue.toLowerCase() ? -1 : 1;
+  });
 }
