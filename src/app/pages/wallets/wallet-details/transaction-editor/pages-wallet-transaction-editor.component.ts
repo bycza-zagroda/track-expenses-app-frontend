@@ -4,6 +4,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TServerEntityId } from 'src/app/common/http/common.http.types';
 import { checkInputError } from 'src/app/common/utils/forms/common-utils-forms-form-utils';
 import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.constants';
+import { PagesTransactionCategoriesService } from 'src/app/pages/categories/pages-transaction-categories.service';
+import { TransactionCategory } from 'src/app/pages/categories/transaction-category.model';
 import { WalletTransaction } from '../pages-wallet-details-item.model';
 import { IWalletTransactionModalFormType } from './pages-wallet-transaction.editor.types';
 
@@ -24,9 +26,11 @@ export class PagesWalletTransactionEditorComponent implements OnInit {
 
   private transactionId: TServerEntityId | null = null;
   private walletId!: TServerEntityId;
+  public transactionsCategories!: TransactionCategory[];
 
   public constructor(
     private readonly dialogRef: MatDialogRef<PagesWalletTransactionEditorComponent>,
+    private readonly transactionCategories: PagesTransactionCategoriesService,
     @Inject(MAT_DIALOG_DATA) public data: WalletTransaction,
   ) {}
 
@@ -49,6 +53,7 @@ export class PagesWalletTransactionEditorComponent implements OnInit {
   public ngOnInit(): void {
     this.transactionId = this.data.id;
     this.walletId = this.data.walletId;
+    
 
     this.form = new FormGroup<IWalletTransactionModalFormType>({
       amount: new FormControl(this.data.amount === 0 ? null : this.data.amount, {
@@ -72,7 +77,15 @@ export class PagesWalletTransactionEditorComponent implements OnInit {
         ],
         nonNullable: true,
       }),
+      category: new FormControl(this.data.categoryId, {
+        validators: [
+          Validators.required,
+        ],
+        nonNullable: false,
+      }),
     });
+
+    this.getCategories();
   }
 
   public save(): void {
@@ -104,5 +117,21 @@ export class PagesWalletTransactionEditorComponent implements OnInit {
 
       return { amountIsZero: true };
     };
+  }
+
+  private getCategories(): void {
+    let currentlySelectedTransactionType: WalletTransactionType | null;
+    let transactionCategoriesArray: TransactionCategory[];
+    let currentlySelectedCategoryType = this.data.type;
+    console.log(currentlySelectedCategoryType);
+
+    this.form.get("type")!.valueChanges.subscribe(selectedType => {
+      currentlySelectedTransactionType = selectedType;
+      console.log(selectedType);
+      this.transactionCategories.getCategories().subscribe((data) => {
+        transactionCategoriesArray = data;
+        this.transactionsCategories = transactionCategoriesArray.filter(cat => cat.type == currentlySelectedTransactionType);
+      })
+    })
   }
 }
