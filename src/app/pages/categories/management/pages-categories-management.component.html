@@ -24,11 +24,11 @@
       </div>
 
       <div class="category__add">
-        <button mat-flat-button color="primary" class="income">Add income category</button>
+        <button mat-flat-button color="primary" class="income" (click)="handleCreateCategory(categoryType.Income)">Add income category</button>
       </div>
 
       <div class="category__add">
-        <button mat-flat-button color="primary" class="expense">Add expense category</button>
+        <button mat-flat-button color="primary" class="expense" (click)="handleCreateCategory(categoryType.Expense)">Add expense category</button>
       </div>
 
     </div>
@@ -58,7 +58,7 @@
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef> Actions </th>
           <td mat-cell *matCellDef="let element">
-            <button mat-stroked-button>
+            <button mat-stroked-button (click)="handleUpdateCategory(element)" class="updateBtn">
               <mat-icon aria-hidden="false" fontIcon="edit"></mat-icon>
             </button>
             <button mat-raised-button color="warn">

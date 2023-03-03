@@ -12,6 +12,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, MAT_DATE_FORMATS, DateAdapter } from '@angular/material/core';
 import { PickDateAdapter, TEAF_DATE_FORMATS } from './common/date-and-time/common-date-and-time-my-date-formats';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   imports: [
@@ -27,6 +28,7 @@ import { PickDateAdapter, TEAF_DATE_FORMATS } from './common/date-and-time/commo
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatTooltipModule,
   ],
   providers: [
     { provide: DateAdapter, useClass: PickDateAdapter },
@@ -46,6 +48,7 @@ import { PickDateAdapter, TEAF_DATE_FORMATS } from './common/date-and-time/commo
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatTooltipModule,
   ],
 })
 export class MaterialModule {
