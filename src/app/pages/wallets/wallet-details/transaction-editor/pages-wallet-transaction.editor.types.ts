@@ -13,4 +13,5 @@ export interface IWalletTransactionModalFormType {
   description: FormControl<string | null>;
   date: FormControl<Date | null>;
   type: FormControl<WalletTransactionType | null>;
+  category: FormControl<number | null>;
 }

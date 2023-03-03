@@ -16,6 +16,7 @@ export class WalletTransaction {
   public readonly type: WalletTransactionType;
   public readonly amount: number;
   public readonly walletId: TServerEntityId;
+  public readonly categoryId: number | null;
 
   public constructor(data: IWalletTransactionItemData) {
     this.id = data.id;
@@ -25,6 +26,7 @@ export class WalletTransaction {
     this.type = data.type;
     this.amount = data.amount;
     this.walletId = data.walletId;
+    this.categoryId = data.categoryId ?? null;
   }
 
   public static create(data: Partial<IWalletTransactionApiResponse>): WalletTransaction {
@@ -36,6 +38,7 @@ export class WalletTransaction {
       description: data.description ?? null,
       type: data.type ?? WalletTransactionType.Income,
       walletId: data.walletId!,
+      categoryId: data.categoryId ?? null,
     });
   }
 
@@ -46,6 +49,7 @@ export class WalletTransaction {
       type: this.type,
       description: this.description,
       walletId: this.walletId,
+      categoryId: this.categoryId,
     };
   }
 }
