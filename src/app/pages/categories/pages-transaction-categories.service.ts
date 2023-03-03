@@ -18,4 +18,20 @@ export class PagesTransactionCategoriesService {
       )),
     );
   }
+
+  public createTransactionCategory(category: TransactionCategory): Observable<TransactionCategory> {
+    return this.domainsTransactionCategoriesGateway.createTransactionCategory(category.toPayload()).pipe(
+      map(category => TransactionCategory.createFromApiResponse(category)),
+    );
+  }
+
+  public updateTransactionCategory(category: TransactionCategory): Observable<TransactionCategory> {
+    return this.domainsTransactionCategoriesGateway.updateTransactionCategory(category.id!, category.toPayload()).pipe(
+      map(category => TransactionCategory.createFromApiResponse(category)),
+    );
+  }
+
+  public isTransactionCategoryAlreadyUsed(category: TransactionCategory): Observable<boolean> {
+    return this.domainsTransactionCategoriesGateway.isTransactionCategoryAlreadyUsed(category.id!);
+  }
 }

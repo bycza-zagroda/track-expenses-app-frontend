@@ -1,16 +1,23 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { TServerEntityId } from 'src/app/common/http/common.http.types';
 import { DomainsTransactionCategoriesGateway } from './domains.transaction-categories.gateway';
-import { transactionCategoriesMockFunc } from './domains.transaction-categories.mocks';
-import { ITransactionCategoryApiResponse } from './domains.transaction-categories.types';
+import { categoryPayloadMockFunc, transactionCategoriesMockFunc } from './domains.transaction-categories.mocks';
+import { ITransactionCategoryApiResponse, ITransactionCategoryPayload } from './domains.transaction-categories.types';
 
 describe('DomainsTransactionCategoriesGatewayService', () => {
   let service: DomainsTransactionCategoriesGateway;
   let httpTestingController: HttpTestingController;
   //let categoriesRespMock: ITransactionCategoryApiResponse[];
+  let categoryPaylad: ITransactionCategoryPayload;
+  let categoryId: TServerEntityId;
+  //let createdCategoryResponse: ITransactionCategoryApiResponse;
 
   beforeEach(async () => {
     //categoriesRespMock = transactionCategoriesMockFunc();
+    categoryPaylad = categoryPayloadMockFunc();
+    categoryId = 1;
+    //createdCategoryResponse = { id: 5,  name: 'abc', type: WalletTransactionType.Income };
 
     await TestBed.configureTestingModule({
       imports: [
@@ -49,6 +56,60 @@ describe('DomainsTransactionCategoriesGatewayService', () => {
         expect(val).toEqual(transactionCategoriesMockFunc());
         done();
       });
+    });
+  });
+
+  describe('createTransactionCategories', () => {
+    it('should call Api and return created transaction category', (done) => {
+    //   service.createTransactionCategory(categoryPaylad).subscribe((val: ITransactionCategoryApiResponse) => {
+    //     expect(val.name).toBe(categoriesRespMock.name);
+    //   });
+    //   const req = httpTestingController.expectOne
+    //    (API_TRANSACTION_CATEGORIES_URL, { name, type });
+    //   expect(req.request.method).toEqual('POST');
+    //   req.flush(createdCategoryResponse);
+
+      service.createTransactionCategory(categoryPaylad)
+        .subscribe((val: ITransactionCategoryApiResponse) => {
+          expect(val.name).toEqual(categoryPaylad.name);
+          done();
+        });
+    });
+  });
+
+  describe('updateTransactionCategories', () => {
+    it('should call Api and return updated transaction category', (done) => {
+    //   service.updateTransactionCategory(categoryPaylad).subscribe((val: ITransactionCategoryApiResponse) => {
+    //     expect(val.name).toBe(categoriesRespMock.name);
+    //   });
+    //   const req = httpTestingController.expectOne
+    //    (`${ API_TRANSACTION_CATEGORIES_URL }/${ id }`, { name, type });
+    //   expect(req.request.method).toEqual('POST');
+    //   req.flush(createdCategoryResponse);
+
+      service.updateTransactionCategory(categoryId, categoryPaylad)
+        .subscribe((val: ITransactionCategoryApiResponse) => {
+          expect(val.name).toEqual(categoryPaylad.name);
+          done();
+        });
+    });
+  });
+
+  describe('isTransactionCategoryAlreadyUsed', () => {
+    it('should call Api and return info whether category is already used by any transaction', (done) => {
+    //   service.isTransactionCategoryAlreadyUsed(categoryId).subscribe((val: boolean) => {
+    //     expect(val).toBeTrue();
+    //   });
+    //   const req = httpTestingController.expectOne
+    //    (API_TRANSACTION_CATEGORIES_IS_ALREADY_USED_URL(categooryId));
+    //   expect(req.request.method).toEqual('GET');
+    //   req.flush(createdCategoryResponse);
+
+      service.isTransactionCategoryAlreadyUsed(categoryId)
+        .subscribe((val: boolean) => {
+          expect(val).toBeTrue();
+          done();
+        });
     });
   });
 });

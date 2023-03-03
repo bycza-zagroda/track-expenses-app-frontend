@@ -1,0 +1,24 @@
+.form__container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.loading-container {
+  left: 0;
+  top: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 22;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+::ng-deep .mat-tooltip.typeDisabledTooltip {
+  background-color: red !important;
+  color: white !important;
+  font-weight: bold !important;
+  font-size: 15px !important;
+}

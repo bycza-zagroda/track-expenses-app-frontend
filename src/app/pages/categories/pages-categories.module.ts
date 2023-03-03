@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { MaterialModule } from 'src/app/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonComponentsModule } from 'src/app/common/components/common-components.module';
+import { PagesCategoriesEditorComponent } from './management/categories-editor/pages-categories-editor.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     PagesCategoriesManagementComponent,
+    PagesCategoriesEditorComponent,
   ],
   imports: [
     RouterModule.forChild(routes),

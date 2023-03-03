@@ -5,8 +5,9 @@ import { TDataState } from 'src/app/common/http/common.http.types';
 import { NotificationType } from 'src/app/common/utils/system-notifications/system.notifications.constants';
 import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.constants';
 import { TransactionCategory } from '../transaction-category.model';
-import { PagesTransactionCategoriesService } from '../pages-transaction-categories.service';
 import { sortAlphabeticallyByProp } from 'src/app/common/utils/sorts/common.util.sort.';
+import { PagesCategoriesEditorService } from './categories-editor/pages-categories-editor.service';
+import { PagesTransactionCategoriesService } from '../pages-transaction-categories.service';
 
 export type CategorySelectionValue = WalletTransactionType | '';
 
@@ -37,6 +38,7 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
   private categoriesTypeSub!: Subscription;
 
   public constructor(
+    private readonly pagesCategoriesEditorService: PagesCategoriesEditorService,
     private readonly pagesTransactionCategoriesService: PagesTransactionCategoriesService,
   ) { }
 
@@ -51,6 +53,29 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy(): void {
     this.categoriesTypeSub.unsubscribe();
+  }
+
+  public handleCreateCategory(type: WalletTransactionType): void {
+    this.pagesCategoriesEditorService
+      .openEditor(new TransactionCategory({ id: null, name: '', type }))
+      .subscribe({
+        next: (category: TransactionCategory | null) => {
+          if(category) {
+            this.createCategory(category);
+          }
+        },
+      });
+  }
+
+  public handleUpdateCategory(category: TransactionCategory): void {
+    this.pagesCategoriesEditorService.openEditor(category)
+      .subscribe({
+        next: (categoryModal: TransactionCategory | null) => {
+          if(categoryModal) {
+            this.updateCategory(categoryModal);
+          }
+        },
+      });
   }
 
   private initCategories(): void {
@@ -81,5 +106,21 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
     );
 
     this.displayedCategories = sortAlphabeticallyByProp<TransactionCategory, 'name'>(this.displayedCategories, 'name');
+  }
+
+  private createCategory(transaction: TransactionCategory): void {
+    this.transactionCategoriesData.data?.push(transaction);
+    this.filterCategories();
+  }
+
+  private updateCategory(category: TransactionCategory): void {
+    this.transactionCategoriesData.data = this.transactionCategoriesData.data!.map( (categoryItem: TransactionCategory) => {
+      if(categoryItem.id === category.id) {
+        return category;
+      }
+
+      return categoryItem;
+    });
+    this.filterCategories();
   }
 }
