@@ -33,7 +33,7 @@ export class PagesCategoriesEditorService {
 
         return this.makeRequest(category).pipe(
           tap(() => this.systemNotificationsService.showNotification({
-            message: 'category saved successfully',
+            message: 'Category saved successfully',
             type: NotificationType.Success,
           })),
           finalize(() => {

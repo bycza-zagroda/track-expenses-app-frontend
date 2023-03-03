@@ -20,19 +20,6 @@ import createSpyObj = jasmine.createSpyObj;
 
 describe('PagesCategoriesEditorService', () => {
   let service: PagesCategoriesEditorService;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(PagesCategoriesEditorService);
-  });
-
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-});
-
-describe('PagesCategoriesEditorService', () => {
-  let service: PagesCategoriesEditorService;
   let pagesTransactionCategoriesServiceMock: SpyObj<PagesTransactionCategoriesService>;
   let systemNotificationsServiceMock: SpyObj<SystemNotificationsService>;
   let matDialogMock: SpyObj<MatDialog>;
