@@ -21,7 +21,7 @@ describe('PagesCategoriesEditorComponent', () => {
   let isAlreadyUsedMockResponse: Subject<boolean>;
   let categoryObjectMock: TransactionCategory;
 
-  describe('Creating Category', () => {
+  describe('creating category', () => {
     beforeEach(async () => {
       categoryObjectMock =
         new TransactionCategory({ id: null, name: '', type: WalletTransactionType.Income });
@@ -186,7 +186,7 @@ describe('PagesCategoriesEditorComponent', () => {
     });
   });
 
-  describe('Updating Category', () => {
+  describe('updating category', () => {
     beforeEach(async () => {
       categoryObjectMock = new TransactionCategory({ id: 1, name: 'Category Name 1', type: WalletTransactionType.Income });
       isAlreadyUsedMockResponse = new Subject<boolean>();

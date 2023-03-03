@@ -42,7 +42,7 @@ export class DomainsTransactionCategoriesGateway {
 
   public isTransactionCategoryAlreadyUsed(id: TServerEntityId)
   : Observable<boolean> {
-    return fakeRequest( (getRandomNumber(1, 10) > 5 && id > 0) );
+    return fakeRequest( (getRandomNumber(1, 10) > 8 && id > 0) );
     //return this.http.get<boolean>
     //(API_TRANSACTION_CATEGORIES_IS_ALREADY_USED_URL(id));
   }
