@@ -18,6 +18,7 @@ describe('PagesCategoriesEditorComponent', () => {
   let component: PagesCategoriesEditorComponent;
   let fixture: ComponentFixture<PagesCategoriesEditorComponent>;
   let ERROR_MESSAGE_REQUIRED: string;
+  let ERROR_MESSAGE_ALREADY_USED: string;
   let transactionCategoriesServiceMock: SpyObj<PagesTransactionCategoriesService>;
   let ERROR_MESSAGE_MAXLENGTH: string;
   let categoryFullObjectSubjectMockResponse: Subject<TransactionCategoryFull>;
@@ -198,6 +199,7 @@ describe('PagesCategoriesEditorComponent', () => {
       categoryFullObjectSubjectMockResponse = new Subject<TransactionCategoryFull>();
       categoryFullObjectMock_counter0 = categoryFullObjectMockFunc(0);
       categoryFullObjectMock_counter2 = categoryFullObjectMockFunc(2);
+      ERROR_MESSAGE_ALREADY_USED = 'Category is already used by transaction(s)';
 
       transactionCategoriesServiceMock = createSpyObj<PagesTransactionCategoriesService>
       (PagesTransactionCategoriesService.name, [ 'getTransactionCategoryById' ]);
@@ -246,6 +248,17 @@ describe('PagesCategoriesEditorComponent', () => {
         const disabled = component.form.get('type')!.disabled;
 
         expect(disabled).toBeTrue();
+      }));
+
+      it('should display hint when type form control is disabled', fakeAsync(() => {
+        categoryFullObjectSubjectMockResponse.next(categoryFullObjectMock_counter2);
+
+        flushMicrotasks();
+        fixture.detectChanges();
+        const hintFixture = fixture.debugElement.query(By.css('.mat-hint'));
+        const hint: HTMLDivElement = hintFixture.nativeElement as HTMLDivElement;
+
+        expect(hint.textContent?.trim()).toBe(ERROR_MESSAGE_ALREADY_USED);
       }));
 
       it('should enable type form control when api returns info that category is not used already', fakeAsync(() => {
