@@ -41,8 +41,7 @@ export class PagesCategoriesEditorComponent implements OnInit {
   }
 
   public get typeAlreadyUsed(): boolean {
-    return this.fullCategory?.financialTransactionsCounter != null
-      && this.fullCategory.financialTransactionsCounter > 0;
+    return Number(this.fullCategory?.financialTransactionsCounter) > 0;
   }
 
   public ngOnInit(): void {
@@ -86,8 +85,7 @@ export class PagesCategoriesEditorComponent implements OnInit {
           this.transactionTypeDisabledLoading = false;
           this.fullCategory = transactionCategoryFull;
 
-          if(this.fullCategory.financialTransactionsCounter != null
-            && this.fullCategory.financialTransactionsCounter == 0) {
+          if(this.fullCategory.financialTransactionsCounter == 0) {
             this.form.controls.type.enable();
           }
         });
