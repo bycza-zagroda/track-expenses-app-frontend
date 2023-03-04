@@ -17,10 +17,3 @@
   align-items: center;
   justify-content: center;
 }
-
-::ng-deep .mat-tooltip.typeDisabledTooltip {
-  background-color: colors.$error-notification-background !important;
-  color: white !important;
-  font-weight: bold !important;
-  font-size: 13px !important;
-}

@@ -4,6 +4,7 @@ import { catchError, finalize, Observable, of, switchMap, tap } from 'rxjs';
 import { LoadingSnackbarService } from 'src/app/common/loading-modal/loading-snackbar.service';
 import { SystemNotificationsService } from 'src/app/common/utils/system-notifications/system-notifications.service';
 import { NotificationType } from 'src/app/common/utils/system-notifications/system.notifications.constants';
+import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.constants';
 import { PagesTransactionCategoriesService } from '../../pages-transaction-categories.service';
 import { TransactionCategory } from '../../transaction-category.model';
 import { PagesCategoriesEditorComponent } from './pages-categories-editor.component';
@@ -19,11 +20,11 @@ export class PagesCategoriesEditorService {
     private readonly loadingService: LoadingSnackbarService,
   ) { }
 
-  public openEditor(category: TransactionCategory): Observable<TransactionCategory | null> {
+  public openEditor(type: WalletTransactionType, category?: TransactionCategory): Observable<TransactionCategory | null> {
     return this.dialog.open<PagesCategoriesEditorComponent, TransactionCategory, TransactionCategory>(
       PagesCategoriesEditorComponent,
       {
-        data: category,
+        data: category ?? new TransactionCategory({ id: null, name: '', type }),
       },
     ).afterClosed().pipe(
       switchMap(category => {

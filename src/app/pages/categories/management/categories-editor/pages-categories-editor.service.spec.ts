@@ -25,6 +25,7 @@ describe('PagesCategoriesEditorService', () => {
   let matDialogMock: SpyObj<MatDialog>;
   let matDialogRef: SpyObj<MatDialogRef<PagesCategoriesEditorComponent>>;
   let loadingSnackbarServiceMock: SpyObj<LoadingSnackbarService>;
+  let categoryMock: TransactionCategory;
 
   beforeEach(() => {
     pagesTransactionCategoriesServiceMock = createSpyObj<PagesTransactionCategoriesService>
@@ -69,11 +70,12 @@ describe('PagesCategoriesEditorService', () => {
     describe('updating category', () => {
       describe('success', () => {
         beforeEach(() => {
+          categoryMock = transactionCategoryObjectMockFunc();
           matDialogRef.afterClosed.and.returnValue(of(updatedTransactionCategoryObjectMockFunc()));
         });
 
         it('updated category\'s name should invoke showNotification', (done) => {
-          service.openEditor(transactionCategoryObjectMockFunc())
+          service.openEditor(categoryMock.type, categoryMock)
             .subscribe( () => {
               expect(systemNotificationsServiceMock.showNotification).toHaveBeenCalled();
               done();
@@ -81,7 +83,7 @@ describe('PagesCategoriesEditorService', () => {
         });
 
         it('updated category\'s name should invoke loading show', (done) => {
-          service.openEditor(transactionCategoryObjectMockFunc())
+          service.openEditor(categoryMock.type, categoryMock)
             .subscribe(() => {
               expect(loadingSnackbarServiceMock.show).toHaveBeenCalled();
               done();
@@ -89,14 +91,14 @@ describe('PagesCategoriesEditorService', () => {
         });
 
         it('updated category\'s name should invoke hide', (done) => {
-          service.openEditor(transactionCategoryObjectMockFunc())
+          service.openEditor(categoryMock.type, categoryMock)
             .subscribe();
           expect(loadingSnackbarServiceMock.hide).toHaveBeenCalled();
           done();
         });
 
         it('should return updated category', (done) => {
-          service.openEditor(transactionCategoryObjectMockFunc())
+          service.openEditor(categoryMock.type, categoryMock)
             .subscribe( (data: TransactionCategory | null) => {
               expect(data!.name).toBe(updatedTransactionCategoryObjectMockFunc().name);
               done();
@@ -110,26 +112,26 @@ describe('PagesCategoriesEditorService', () => {
         });
 
         it('canceled updating category\'s name should not invoke showNotification', fakeAsync(() => {
-          service.openEditor(transactionCategoryObjectMockFunc());
+          service.openEditor(categoryMock.type, categoryMock);
           flushMicrotasks();
 
           expect(systemNotificationsServiceMock.showNotification).not.toHaveBeenCalled();
         }));
 
         it('canceled updating category\'s name should NOT invoke show', fakeAsync(() => {
-          service.openEditor(transactionCategoryObjectMockFunc());
+          service.openEditor(categoryMock.type, categoryMock);
           flushMicrotasks();
           expect(loadingSnackbarServiceMock.show).not.toHaveBeenCalled();
         }));
 
         it('canceled updating category\'s name should NOT invoke hide', fakeAsync(() => {
-          service.openEditor(transactionCategoryObjectMockFunc());
+          service.openEditor(categoryMock.type, categoryMock);
           flushMicrotasks();
           expect(loadingSnackbarServiceMock.hide).not.toHaveBeenCalled();
         }));
 
-        it('should return undefined', (done) => {
-          service.openEditor(transactionCategoryObjectMockFunc())
+        it('should return null', (done) => {
+          service.openEditor(categoryMock.type, categoryMock)
             .subscribe( (data: TransactionCategory | null) => {
               expect(data).toBe(null);
               done();
@@ -141,11 +143,12 @@ describe('PagesCategoriesEditorService', () => {
     describe('creating category', () => {
       describe('success', () => {
         beforeEach(() => {
+          categoryMock = toCreateTransactionCategoryObjectsMockFunc();
           matDialogRef.afterClosed.and.returnValue(of(toCreateTransactionCategoryObjectsMockFunc()));
         });
 
         it('created category\'s name should invoke showNotification', (done) => {
-          service.openEditor(transactionCategoryObjectMockFunc())
+          service.openEditor(categoryMock.type)
             .subscribe( () => {
               expect(systemNotificationsServiceMock.showNotification).toHaveBeenCalled();
               done();
@@ -153,7 +156,7 @@ describe('PagesCategoriesEditorService', () => {
         });
 
         it('created category\'s should invoke show', (done) => {
-          service.openEditor(toCreateTransactionCategoryObjectsMockFunc())
+          service.openEditor(categoryMock.type)
             .subscribe(() => {
               expect(loadingSnackbarServiceMock.show).toHaveBeenCalled();
               done();
@@ -161,18 +164,18 @@ describe('PagesCategoriesEditorService', () => {
         });
 
         it('created category\'s should invoke hide', (done) => {
-          service.openEditor(toCreateTransactionCategoryObjectsMockFunc())
+          service.openEditor(categoryMock.type)
             .subscribe();
           expect(loadingSnackbarServiceMock.hide).toHaveBeenCalled();
           done();
         });
 
         it('should return created category', (done) => {
-          service.openEditor(toCreateTransactionCategoryObjectsMockFunc())
+          service.openEditor(categoryMock.type)
             .subscribe( (data: TransactionCategory | null) => {
               expect(data).toBeInstanceOf(TransactionCategory);
               expect(data!.id).toBe(null);
-              expect(data!.name).toBe(toCreateTransactionCategoryObjectsMockFunc().name);
+              expect(data!.name).toBe(categoryMock.name);
               done();
             });
         });
@@ -180,30 +183,31 @@ describe('PagesCategoriesEditorService', () => {
 
       describe('canceled', () => {
         beforeEach(() => {
+          categoryMock = toCreateTransactionCategoryObjectsMockFunc();
           matDialogRef.afterClosed.and.returnValue(of(null));
         });
 
         it('canceled updating category\'s name should not invoke showNotification', fakeAsync(() => {
-          service.openEditor(toCreateTransactionCategoryObjectsMockFunc());
+          service.openEditor(categoryMock.type);
           flushMicrotasks();
 
           expect(systemNotificationsServiceMock.showNotification).not.toHaveBeenCalled();
         }));
 
         it('canceled creating category\'s name should NOT invoke show', fakeAsync(() => {
-          service.openEditor(toCreateTransactionCategoryObjectsMockFunc());
+          service.openEditor(categoryMock.type);
           flushMicrotasks();
           expect(loadingSnackbarServiceMock.show).not.toHaveBeenCalled();
         }));
 
         it('canceled creating category\'s name should NOT invoke hide', fakeAsync(() => {
-          service.openEditor(toCreateTransactionCategoryObjectsMockFunc());
+          service.openEditor(categoryMock.type);
           flushMicrotasks();
           expect(loadingSnackbarServiceMock.hide).not.toHaveBeenCalled();
         }));
 
         it('should return null', (done) => {
-          service.openEditor(toCreateTransactionCategoryObjectsMockFunc())
+          service.openEditor(categoryMock.type)
             .subscribe( (data: TransactionCategory | null) => {
               expect(data).toBe(null);
               done();

@@ -11,6 +11,11 @@ export interface ITransactionCategoryApiResponse extends Omit<ITransactionCatego
   id: TServerEntityId;
 }
 
+export interface ITransactionCategoryFullResponse {
+  financialTransactionCategoryDTO: ITransactionCategoryApiResponse;
+  financialTransactionsCounter: number;
+}
+
 export interface ITransactionCategoryPayload {
   name: string;
   type: WalletTransactionType;

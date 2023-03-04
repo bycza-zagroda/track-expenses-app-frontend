@@ -4,9 +4,11 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
+import { categoryFullObjectMockFunc } from 'src/app/domains/categories/domains.transaction-categories.mocks';
 import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.constants';
 import { MaterialModule } from 'src/app/material.module';
 import { PagesTransactionCategoriesService } from '../../pages-transaction-categories.service';
+import { TransactionCategoryFull } from '../../transaction-category-full.model';
 import { TransactionCategory } from '../../transaction-category.model';
 import { PagesCategoriesEditorComponent } from './pages-categories-editor.component';
 import SpyObj = jasmine.SpyObj;
@@ -18,18 +20,22 @@ describe('PagesCategoriesEditorComponent', () => {
   let ERROR_MESSAGE_REQUIRED: string;
   let transactionCategoriesServiceMock: SpyObj<PagesTransactionCategoriesService>;
   let ERROR_MESSAGE_MAXLENGTH: string;
-  let isAlreadyUsedMockResponse: Subject<boolean>;
+  let categoryFullObjectSubjectMockResponse: Subject<TransactionCategoryFull>;
   let categoryObjectMock: TransactionCategory;
+  let categoryFullObjectMock_counter0: TransactionCategoryFull;
+  let categoryFullObjectMock_counter2: TransactionCategoryFull;
 
   describe('creating category', () => {
     beforeEach(async () => {
       categoryObjectMock =
         new TransactionCategory({ id: null, name: '', type: WalletTransactionType.Income });
-      isAlreadyUsedMockResponse = new Subject<boolean>();
+      categoryFullObjectSubjectMockResponse = new Subject<TransactionCategoryFull>();
+      categoryFullObjectMock_counter0 = categoryFullObjectMockFunc(0);
+      categoryFullObjectMock_counter2 = categoryFullObjectMockFunc(2);
 
       transactionCategoriesServiceMock = createSpyObj<PagesTransactionCategoriesService>
-      (PagesTransactionCategoriesService.name, [ 'isTransactionCategoryAlreadyUsed' ]);
-      transactionCategoriesServiceMock.isTransactionCategoryAlreadyUsed.and.returnValue(isAlreadyUsedMockResponse);
+      (PagesTransactionCategoriesService.name, [ 'getTransactionCategoryById' ]);
+      transactionCategoriesServiceMock.getTransactionCategoryById.and.returnValue(categoryFullObjectSubjectMockResponse);
 
       await TestBed.configureTestingModule({
         declarations: [
@@ -58,15 +64,15 @@ describe('PagesCategoriesEditorComponent', () => {
 
     describe('ngOnInit', () => {
       it('should not call api for checking if category is already used', fakeAsync(() => {
-        isAlreadyUsedMockResponse.next(true);
+        categoryFullObjectSubjectMockResponse.next(categoryFullObjectMock_counter0);
         flushMicrotasks();
         fixture.detectChanges();
 
-        expect(transactionCategoriesServiceMock.isTransactionCategoryAlreadyUsed).not.toHaveBeenCalled();
+        expect(transactionCategoriesServiceMock.getTransactionCategoryById).not.toHaveBeenCalled();
       }));
 
       it('should enable type form control', fakeAsync(() => {
-        isAlreadyUsedMockResponse.next(true);
+        categoryFullObjectSubjectMockResponse.next(categoryFullObjectMock_counter0);
         flushMicrotasks();
         fixture.detectChanges();
 
@@ -76,7 +82,7 @@ describe('PagesCategoriesEditorComponent', () => {
       }));
 
       it('should display "Create Category" title', fakeAsync(() => {
-        isAlreadyUsedMockResponse.next(true);
+        categoryFullObjectSubjectMockResponse.next(categoryFullObjectMock_counter0);
         flushMicrotasks();
         fixture.detectChanges();
 
@@ -87,7 +93,7 @@ describe('PagesCategoriesEditorComponent', () => {
       }));
 
       it('should set name input as empty string', fakeAsync(() => {
-        isAlreadyUsedMockResponse.next(false);
+        categoryFullObjectSubjectMockResponse.next(categoryFullObjectMock_counter2);
         flushMicrotasks();
 
         fixture.detectChanges();
@@ -97,7 +103,7 @@ describe('PagesCategoriesEditorComponent', () => {
       }));
 
       it('should set type input as Income', fakeAsync(() => {
-        isAlreadyUsedMockResponse.next(false);
+        categoryFullObjectSubjectMockResponse.next(categoryFullObjectMock_counter2);
         flushMicrotasks();
 
         fixture.detectChanges();
@@ -107,7 +113,7 @@ describe('PagesCategoriesEditorComponent', () => {
       }));
 
       it('should disable save button when form is opened', fakeAsync(() => {
-        isAlreadyUsedMockResponse.next(false);
+        categoryFullObjectSubjectMockResponse.next(categoryFullObjectMock_counter2);
         flushMicrotasks();
 
         fixture.detectChanges();
@@ -125,7 +131,7 @@ describe('PagesCategoriesEditorComponent', () => {
       });
 
       it('should show validation error if name input is empty', fakeAsync(() => {
-        isAlreadyUsedMockResponse.next(false);
+        categoryFullObjectSubjectMockResponse.next(categoryFullObjectMock_counter2);
         flushMicrotasks();
 
         component.form.get('name')?.setValue('');
@@ -140,7 +146,7 @@ describe('PagesCategoriesEditorComponent', () => {
       }));
 
       it('should show validation error if name input has more than 20 characters', fakeAsync(() => {
-        isAlreadyUsedMockResponse.next(false);
+        categoryFullObjectSubjectMockResponse.next(categoryFullObjectMock_counter2);
         flushMicrotasks();
 
         component.form.get('name')?.setValue('Text have more than twenty characters for sure');
@@ -155,7 +161,7 @@ describe('PagesCategoriesEditorComponent', () => {
       }));
 
       it('should disable save button when form is invalid', fakeAsync(() => {
-        isAlreadyUsedMockResponse.next(false);
+        categoryFullObjectSubjectMockResponse.next(categoryFullObjectMock_counter2);
         flushMicrotasks();
 
         component.form.get('name')?.setValue('Text have more than twenty characters for sure');
@@ -170,7 +176,7 @@ describe('PagesCategoriesEditorComponent', () => {
       }));
 
       it('should enable save button when form is valid', fakeAsync(() => {
-        isAlreadyUsedMockResponse.next(false);
+        categoryFullObjectSubjectMockResponse.next(categoryFullObjectMock_counter2);
         flushMicrotasks();
 
         component.form.get('name')?.setValue('Only few chars');
@@ -189,11 +195,13 @@ describe('PagesCategoriesEditorComponent', () => {
   describe('updating category', () => {
     beforeEach(async () => {
       categoryObjectMock = new TransactionCategory({ id: 1, name: 'Category Name 1', type: WalletTransactionType.Income });
-      isAlreadyUsedMockResponse = new Subject<boolean>();
+      categoryFullObjectSubjectMockResponse = new Subject<TransactionCategoryFull>();
+      categoryFullObjectMock_counter0 = categoryFullObjectMockFunc(0);
+      categoryFullObjectMock_counter2 = categoryFullObjectMockFunc(2);
 
       transactionCategoriesServiceMock = createSpyObj<PagesTransactionCategoriesService>
-      (PagesTransactionCategoriesService.name, [ 'isTransactionCategoryAlreadyUsed' ]);
-      transactionCategoriesServiceMock.isTransactionCategoryAlreadyUsed.and.returnValue(isAlreadyUsedMockResponse);
+      (PagesTransactionCategoriesService.name, [ 'getTransactionCategoryById' ]);
+      transactionCategoriesServiceMock.getTransactionCategoryById.and.returnValue(categoryFullObjectSubjectMockResponse);
 
       await TestBed.configureTestingModule({
         declarations: [
@@ -222,16 +230,16 @@ describe('PagesCategoriesEditorComponent', () => {
 
     describe('ngOnInit', () => {
       it('should call api for checking if category is already used', fakeAsync(() => {
-        isAlreadyUsedMockResponse.next(true);
+        categoryFullObjectSubjectMockResponse.next(categoryFullObjectMock_counter0);
 
         flushMicrotasks();
         fixture.detectChanges();
 
-        expect(transactionCategoriesServiceMock.isTransactionCategoryAlreadyUsed).toHaveBeenCalled();
+        expect(transactionCategoriesServiceMock.getTransactionCategoryById).toHaveBeenCalled();
       }));
 
       it('should disable type form control when api returns info that category is already used', fakeAsync(() => {
-        isAlreadyUsedMockResponse.next(true);
+        categoryFullObjectSubjectMockResponse.next(categoryFullObjectMock_counter2);
 
         flushMicrotasks();
         fixture.detectChanges();
@@ -241,7 +249,7 @@ describe('PagesCategoriesEditorComponent', () => {
       }));
 
       it('should enable type form control when api returns info that category is not used already', fakeAsync(() => {
-        isAlreadyUsedMockResponse.next(false);
+        categoryFullObjectSubjectMockResponse.next(categoryFullObjectMock_counter0);
 
         flushMicrotasks();
         fixture.detectChanges();
@@ -251,7 +259,7 @@ describe('PagesCategoriesEditorComponent', () => {
       }));
 
       it('should set name input as empty string', fakeAsync(() => {
-        isAlreadyUsedMockResponse.next(false);
+        categoryFullObjectSubjectMockResponse.next(categoryFullObjectMock_counter2);
         flushMicrotasks();
 
         fixture.detectChanges();
@@ -261,7 +269,7 @@ describe('PagesCategoriesEditorComponent', () => {
       }));
 
       it('should display "Update Category" title', fakeAsync(() => {
-        isAlreadyUsedMockResponse.next(true);
+        categoryFullObjectSubjectMockResponse.next(categoryFullObjectMock_counter0);
         flushMicrotasks();
         fixture.detectChanges();
 

@@ -2,8 +2,16 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { TestBed } from '@angular/core/testing';
 import { TServerEntityId } from 'src/app/common/http/common.http.types';
 import { DomainsTransactionCategoriesGateway } from './domains.transaction-categories.gateway';
-import { categoryPayloadMockFunc, transactionCategoriesMockFunc } from './domains.transaction-categories.mocks';
-import { ITransactionCategoryApiResponse, ITransactionCategoryPayload } from './domains.transaction-categories.types';
+import {
+  categoryFullResponseMockFunc,
+  categoryPayloadMockFunc,
+  transactionCategoriesMockFunc,
+} from './domains.transaction-categories.mocks';
+import {
+  ITransactionCategoryApiResponse,
+  ITransactionCategoryFullResponse,
+  ITransactionCategoryPayload,
+} from './domains.transaction-categories.types';
 
 describe('DomainsTransactionCategoriesGatewayService', () => {
   let service: DomainsTransactionCategoriesGateway;
@@ -105,10 +113,10 @@ describe('DomainsTransactionCategoriesGatewayService', () => {
     //   expect(req.request.method).toEqual('GET');
     //   req.flush(createdCategoryResponse);
 
-      service.isTransactionCategoryAlreadyUsed(categoryId)
-        .subscribe((val: boolean) => {
+      service.getTransactionCategoryById(categoryId)
+        .subscribe((val: ITransactionCategoryFullResponse) => {
           // sometimes can be true for now
-          expect(val).toBeFalse();
+          expect(val).toEqual(categoryFullResponseMockFunc(1, 2));
           done();
         });
     });

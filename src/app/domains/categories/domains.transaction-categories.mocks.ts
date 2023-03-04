@@ -1,6 +1,12 @@
+import { TServerEntityId } from 'src/app/common/http/common.http.types';
+import { TransactionCategoryFull } from 'src/app/pages/categories/transaction-category-full.model';
 import { TransactionCategory } from 'src/app/pages/categories/transaction-category.model';
 import { WalletTransactionType } from '../transactions/domains.transactions.constants';
-import { ITransactionCategoryApiResponse, ITransactionCategoryPayload } from './domains.transaction-categories.types';
+import {
+  ITransactionCategoryApiResponse,
+  ITransactionCategoryFullResponse,
+  ITransactionCategoryPayload,
+} from './domains.transaction-categories.types';
 
 export function transactionCategoriesMockFunc(): ITransactionCategoryApiResponse[] {
   return [
@@ -45,4 +51,27 @@ export function categoryPayloadMockFunc(): ITransactionCategoryPayload {
 
 export function categoryResponseMockFunc(): ITransactionCategoryApiResponse {
   return { id: 1, name: 'abc', type: WalletTransactionType.Income };
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function categoryFullResponseMockFunc(id: TServerEntityId, counter: number): ITransactionCategoryFullResponse {
+  const { id: id2, name, type }: TransactionCategory = transactionCategoryObjectMockFunc();
+
+  return {
+    financialTransactionCategoryDTO: {
+      id: id2!,
+      name,
+      type,
+    },
+    financialTransactionsCounter: counter,
+  };
+}
+
+export function categoryFullObjectMockFunc(counter: number): TransactionCategoryFull {
+  const {
+    financialTransactionCategoryDTO: { id, name, type },
+    financialTransactionsCounter,
+  } = categoryFullResponseMockFunc(1, counter);
+
+  return new TransactionCategoryFull({ id, name, type }, financialTransactionsCounter);
 }
