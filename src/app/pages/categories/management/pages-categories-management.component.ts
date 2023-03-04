@@ -57,7 +57,7 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
 
   public handleCreateCategory(type: WalletTransactionType): void {
     this.pagesCategoriesEditorService
-      .openEditor(new TransactionCategory({ id: null, name: '', type }))
+      .openEditor(type)
       .subscribe({
         next: (category: TransactionCategory | null) => {
           if(category) {
@@ -68,7 +68,7 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
   }
 
   public handleUpdateCategory(category: TransactionCategory): void {
-    this.pagesCategoriesEditorService.openEditor(category)
+    this.pagesCategoriesEditorService.openEditor(category.type, category)
       .subscribe({
         next: (categoryModal: TransactionCategory | null) => {
           if(categoryModal) {

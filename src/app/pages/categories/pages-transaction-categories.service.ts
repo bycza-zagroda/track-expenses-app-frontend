@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { DomainsTransactionCategoriesGateway } from 'src/app/domains/categories/domains.transaction-categories.gateway';
+import { TransactionCategoryFull } from './transaction-category-full.model';
 import { TransactionCategory } from './transaction-category.model';
 
 @Injectable({
@@ -31,7 +32,9 @@ export class PagesTransactionCategoriesService {
     );
   }
 
-  public isTransactionCategoryAlreadyUsed(category: TransactionCategory): Observable<boolean> {
-    return this.domainsTransactionCategoriesGateway.isTransactionCategoryAlreadyUsed(category.id!);
+  public getTransactionCategoryById(category: TransactionCategory): Observable<TransactionCategoryFull> {
+    return this.domainsTransactionCategoriesGateway.getTransactionCategoryById(category.id!).pipe(
+      map(categoryFull => new TransactionCategoryFull(category, categoryFull.financialTransactionsCounter)),
+    );
   }
 }

@@ -4,6 +4,8 @@ import {
   DomainsTransactionCategoriesGateway,
 } from 'src/app/domains/categories/domains.transaction-categories.gateway';
 import {
+  categoryFullObjectMockFunc,
+  categoryFullResponseMockFunc,
   transactionCategoriesMockFunc,
   transactionCategoriesObjectsMockFunc,
   transactionCategoryObjectMockFunc,
@@ -12,29 +14,30 @@ import { TransactionCategory } from './transaction-category.model';
 import { PagesTransactionCategoriesService } from './pages-transaction-categories.service';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
+import { TransactionCategoryFull } from './transaction-category-full.model';
 
 describe('PagesTransactionCategoriesService', () => {
   let service: PagesTransactionCategoriesService;
-  let domainsTransactionCategoryGatewayMock: SpyObj<DomainsTransactionCategoriesGateway>;
+  let gateway: SpyObj<DomainsTransactionCategoriesGateway>;
   let categoryObjectMock: TransactionCategory;
+  let counter: number;
 
   beforeEach(() => {
     categoryObjectMock = transactionCategoryObjectMockFunc();
+    counter = 1;
 
-    domainsTransactionCategoryGatewayMock = createSpyObj<DomainsTransactionCategoriesGateway>
+    gateway = createSpyObj<DomainsTransactionCategoriesGateway>
     (DomainsTransactionCategoriesGateway.name,
       [ 'getTransactionCategories', 'createTransactionCategory',
-        'updateTransactionCategory', 'isTransactionCategoryAlreadyUsed' ]);
-    domainsTransactionCategoryGatewayMock.getTransactionCategories.and.returnValue(of(transactionCategoriesMockFunc()));
-    domainsTransactionCategoryGatewayMock.createTransactionCategory.and.returnValue(of(transactionCategoriesMockFunc()[0]));
-    domainsTransactionCategoryGatewayMock.updateTransactionCategory.and.returnValue(of(transactionCategoriesMockFunc()[0]));
-
-    domainsTransactionCategoryGatewayMock.isTransactionCategoryAlreadyUsed
-      .and.returnValue(of(true));
+        'updateTransactionCategory', 'getTransactionCategoryById' ]);
+    gateway.getTransactionCategories.and.returnValue(of(transactionCategoriesMockFunc()));
+    gateway.createTransactionCategory.and.returnValue(of(transactionCategoriesMockFunc()[0]));
+    gateway.updateTransactionCategory.and.returnValue(of(transactionCategoriesMockFunc()[0]));
+    gateway.getTransactionCategoryById.and.returnValue(of(categoryFullResponseMockFunc(1, counter)));
 
     TestBed.configureTestingModule({
       providers: [
-        { provide: DomainsTransactionCategoriesGateway, useValue: domainsTransactionCategoryGatewayMock },
+        { provide: DomainsTransactionCategoriesGateway, useValue: gateway },
       ],
     });
     service = TestBed.inject(PagesTransactionCategoriesService);
@@ -75,9 +78,9 @@ describe('PagesTransactionCategoriesService', () => {
 
   describe('isTransactionCategorryAlreadyUsed', () => {
     it('should return info whether category is already used by any transaction', (done) => {
-      service.isTransactionCategoryAlreadyUsed(categoryObjectMock)
-        .subscribe((response: boolean) => {
-          expect(response).toBeTrue();
+      service.getTransactionCategoryById(categoryObjectMock)
+        .subscribe((response: TransactionCategoryFull) => {
+          expect(response).toEqual(categoryFullObjectMockFunc(counter));
           done();
         });
     });

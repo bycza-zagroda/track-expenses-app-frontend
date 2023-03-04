@@ -4,8 +4,9 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { checkInputError } from 'src/app/common/utils/forms/common-utils-forms-form-utils';
 import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.constants';
 import { PagesTransactionCategoriesService } from '../../pages-transaction-categories.service';
+import { TransactionCategoryFull } from '../../transaction-category-full.model';
 import { TransactionCategory } from '../../transaction-category.model';
-import { ITransactioCategorynModalFormType } from './pages-categories-editor.types';
+import { ITransactionCategoryModalFormType } from './pages-categories-editor.types';
 
 @Component({
   selector: 'app-pages-categories-editor',
@@ -18,11 +19,12 @@ export class PagesCategoriesEditorComponent implements OnInit {
     'Expense': WalletTransactionType.Expense,
   };
 
-  public form!: FormGroup<ITransactioCategorynModalFormType>;
+  public form!: FormGroup<ITransactionCategoryModalFormType>;
 
   public transactionTypeDisabledLoading = true;
 
-  private categoryId: number | null = null;
+  private category: TransactionCategory | null = null;
+  private fullCategory: TransactionCategoryFull | null = null;
 
   public constructor(
     private readonly pagesTransactionCategoriesService: PagesTransactionCategoriesService,
@@ -38,10 +40,15 @@ export class PagesCategoriesEditorComponent implements OnInit {
     return checkInputError(this.form, 'name', 'maxlength');
   }
 
-  public ngOnInit(): void {
-    this.categoryId = this.data.id;
+  public get typeAlreadyUsed(): boolean {
+    return this.fullCategory?.financialTransactionsCounter != null
+      && this.fullCategory.financialTransactionsCounter > 0;
+  }
 
-    this.form = new FormGroup<ITransactioCategorynModalFormType>({
+  public ngOnInit(): void {
+    this.category = this.data;
+
+    this.form = new FormGroup<ITransactionCategoryModalFormType>({
       name: new FormControl(this.data.name, {
         validators: [
           Validators.required,
@@ -57,12 +64,12 @@ export class PagesCategoriesEditorComponent implements OnInit {
       }),
     });
 
-    this.isTransactionCategoryAlreadyUsed();
+    this.getTransactionCategoryById();
   }
 
   public save(): void {
     this.dialogRef.close(new TransactionCategory({
-      id: this.categoryId,
+      id: this.category!.id,
       type: this.form.controls.type.value!,
       name: this.form.controls.name.value!,
     }));
@@ -72,15 +79,18 @@ export class PagesCategoriesEditorComponent implements OnInit {
     this.dialogRef.close(null);
   }
 
-  private isTransactionCategoryAlreadyUsed(): void {
-    if(this.categoryId) {
-      this.pagesTransactionCategoriesService.isTransactionCategoryAlreadyUsed(this.data).subscribe((resp: boolean) => {
-        this.transactionTypeDisabledLoading = false;
+  private getTransactionCategoryById(): void {
+    if(this.category?.id) {
+      this.pagesTransactionCategoriesService.getTransactionCategoryById(this.data)
+        .subscribe((transactionCategoryFull: TransactionCategoryFull) => {
+          this.transactionTypeDisabledLoading = false;
+          this.fullCategory = transactionCategoryFull;
 
-        if(!resp) {
-          this.form.controls.type.enable();
-        }
-      });
+          if(this.fullCategory.financialTransactionsCounter != null
+            && this.fullCategory.financialTransactionsCounter == 0) {
+            this.form.controls.type.enable();
+          }
+        });
     } else {
       this.transactionTypeDisabledLoading = false;
       this.form.controls.type.enable();

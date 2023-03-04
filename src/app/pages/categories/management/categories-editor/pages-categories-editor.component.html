@@ -1,23 +1,22 @@
-<form [formGroup]="form" class="form__container">
+<div class="loading-container" *ngIf="transactionTypeDisabledLoading">
+  <mat-spinner [diameter]="30"></mat-spinner>
+</div>
+
+<form [formGroup]="form" class="form__container" *ngIf="!transactionTypeDisabledLoading">
   <h1 mat-dialog-title>{{ data.id ? "Update Category" : "Create Category" }}</h1>
   <mat-form-field>
     <mat-label>Select type</mat-label>
-    <div class="loading-container" *ngIf="transactionTypeDisabledLoading">
-      <mat-spinner [diameter]="20"></mat-spinner>
-    </div>
-    <mat-select
-      [formControl]="form.controls['type']"
-      matTooltip="Category is already used by transaction"
-      matTooltipClass="typeDisabledTooltip"
-      [matTooltipDisabled]="!form.controls['type'].disabled">
-
+    <mat-select [formControl]="form.controls['type']">
       <mat-option *ngFor="let type of selectTransactionsTypes | keyvalue" [value]="type.value">
         {{ type.key }}
       </mat-option>
     </mat-select>
+    <mat-hint *ngIf="typeAlreadyUsed">
+      Category is already used by transaction(s)
+    </mat-hint>
   </mat-form-field>
   <mat-form-field>
-    <mat-label>name</mat-label>
+    <mat-label>Name</mat-label>
     <input matInput [formControl]="form.controls['name']">
     <mat-error *ngIf="nameIsNotProvided">
       Name is required

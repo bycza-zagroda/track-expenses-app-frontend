@@ -205,7 +205,7 @@ describe('PagesCategoriesManagementComponent', () => {
         fixture.detectChanges();
 
         expect(pagesCategoriesEditorServiceMock.openEditor)
-          .toHaveBeenCalledWith(new TransactionCategory({ id: null, name: '', type: WalletTransactionType.Income }));
+          .toHaveBeenCalledWith(WalletTransactionType.Income);
 
         flush();
       }));
@@ -222,7 +222,7 @@ describe('PagesCategoriesManagementComponent', () => {
         fixture.detectChanges();
 
         expect(pagesCategoriesEditorServiceMock.openEditor)
-          .toHaveBeenCalledWith(new TransactionCategory({ id: null, name: '', type: WalletTransactionType.Expense }));
+          .toHaveBeenCalledWith(WalletTransactionType.Expense);
 
         flush();
       }));
@@ -283,8 +283,10 @@ describe('PagesCategoriesManagementComponent', () => {
         btn.click();
         fixture.detectChanges();
 
+        const category = sortAlphabeticallyByProp(transactionCategoriesObjectsMockFunc(), 'name')[0];
+
         expect(pagesCategoriesEditorServiceMock.openEditor)
-          .toHaveBeenCalledWith(sortAlphabeticallyByProp(transactionCategoriesObjectsMockFunc(), 'name')[0]);
+          .toHaveBeenCalledWith(category.type, category);
 
         flush();
       }));
