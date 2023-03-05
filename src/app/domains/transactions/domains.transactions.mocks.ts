@@ -13,6 +13,7 @@ export function WALLET_TRANSACTIONS_API_RESPONSE_MOCK(id: number): IWalletTransa
         amount: 300,
         type: WalletTransactionType.Income,
         walletId: 1,
+        categoryId: null,
       },
       {
         id: 2,
@@ -22,6 +23,7 @@ export function WALLET_TRANSACTIONS_API_RESPONSE_MOCK(id: number): IWalletTransa
         amount: 50,
         type: WalletTransactionType.Expense,
         walletId: 1,
+        categoryId: 1,
       },
       {
         id: 3,
@@ -31,6 +33,7 @@ export function WALLET_TRANSACTIONS_API_RESPONSE_MOCK(id: number): IWalletTransa
         amount: 230,
         type: WalletTransactionType.Income,
         walletId: 1,
+        categoryId: 2,
       },
     ];
   }
@@ -44,6 +47,7 @@ export function WALLET_TRANSACTIONS_API_RESPONSE_MOCK(id: number): IWalletTransa
       amount: 320,
       type: WalletTransactionType.Income,
       walletId: 1,
+      categoryId: 3,
     },
     {
       id: 5,
@@ -52,6 +56,7 @@ export function WALLET_TRANSACTIONS_API_RESPONSE_MOCK(id: number): IWalletTransa
       description: 'description 5', amount: 150,
       type: WalletTransactionType.Expense,
       walletId: 1,
+      categoryId: 4,
     },
     {
       id: 6,
@@ -61,6 +66,7 @@ export function WALLET_TRANSACTIONS_API_RESPONSE_MOCK(id: number): IWalletTransa
       amount: 510,
       type: WalletTransactionType.Income,
       walletId: 1,
+      categoryId: 5,
     },
   ];
 }
@@ -85,6 +91,7 @@ export const TRANSACTION_PAYLOAD_MOCK: ITransactionPayload = {
   date: new Date().toISOString(),
   type: WalletTransactionType.Income,
   walletId: 1,
+  categoryId: null,
 };
 
 export const UPDATED_TRANSACTION_PAYLOAD_MOCK: ITransactionPayload = {
@@ -93,6 +100,7 @@ export const UPDATED_TRANSACTION_PAYLOAD_MOCK: ITransactionPayload = {
   date: new Date().toISOString(),
   type: WalletTransactionType.Income,
   walletId: 1,
+  categoryId: 2,
 };
 
 export const WALLET_TRANSACTIONS_API_RESPONSE_1 = [
@@ -151,6 +159,7 @@ export const WALLET_TRANSACTIONS_INCOME_MOCK = new WalletTransaction({
   type: WalletTransactionType.Income,
   description: 'Some description 1',
   walletId: 1,
+  categoryId: 1,
 });
 
 export const WALLET_TRANSACTIONS_TO_CREATE_INCOME_MOCK = new WalletTransaction({
@@ -161,6 +170,7 @@ export const WALLET_TRANSACTIONS_TO_CREATE_INCOME_MOCK = new WalletTransaction({
   type: WalletTransactionType.Income,
   description: 'Some description 1',
   walletId: 1,
+  categoryId: 2,
 });
 
 export const WALLET_TRANSACTIONS_CREATED_INCOME_MOCK = new WalletTransaction({
@@ -171,6 +181,7 @@ export const WALLET_TRANSACTIONS_CREATED_INCOME_MOCK = new WalletTransaction({
   type: WalletTransactionType.Income,
   description: 'Some description 1',
   walletId: 1,
+  categoryId: 3,
 });
 
 export const UPDATED_WALLET_TRANSACTIONS_INCOME_MOCK = new WalletTransaction({
@@ -181,6 +192,7 @@ export const UPDATED_WALLET_TRANSACTIONS_INCOME_MOCK = new WalletTransaction({
   type: WalletTransactionType.Income,
   description: 'Some updated description 1',
   walletId: 1,
+  categoryId: 4,
 });
 
 export const WALLET_TRANSACTIONS_EXPENSE_MOCK = new WalletTransaction({
@@ -191,4 +203,5 @@ export const WALLET_TRANSACTIONS_EXPENSE_MOCK = new WalletTransaction({
   type: WalletTransactionType.Expense,
   description: 'Some description 2',
   walletId: 1,
+  categoryId: 5,
 });
