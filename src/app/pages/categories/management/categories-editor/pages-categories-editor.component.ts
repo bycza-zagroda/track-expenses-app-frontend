@@ -23,11 +23,11 @@ export class PagesCategoriesEditorComponent implements OnInit {
     'Expense': WalletTransactionType.Expense,
   };
 
-  public form!: FormGroup<ITransactionCategoryModalFormType>;
+  public form: FormGroup<ITransactionCategoryModalFormType> | null = null;
 
   public isLoadingTransaction = true;
 
-  private fullCategory: TransactionCategoryFull | null = null;
+  private category: TransactionCategoryFull | null = null;
 
   public constructor(
     private readonly pagesTransactionCategoriesService: PagesTransactionCategoriesService,
@@ -37,27 +37,27 @@ export class PagesCategoriesEditorComponent implements OnInit {
   ) { }
 
   public get nameIsNotProvided(): boolean {
-    return checkInputError(this.form, 'name', 'required');
+    return checkInputError(this.form!, 'name', 'required');
   }
 
   public get nameIsTooLong(): boolean {
-    return checkInputError(this.form, 'name', 'maxlength');
+    return checkInputError(this.form!, 'name', 'maxlength');
   }
 
-  public get typeAlreadyUsed(): boolean {
-    return Number(this.fullCategory?.financialTransactionsCounter) > 0;
+  public get isCategoryAssignedToTransactions(): boolean {
+    return Number(this.category?.financialTransactionsCounter) > 0;
   }
 
   public ngOnInit(): void {
     this.getTransaction().subscribe({
       next: (category: TransactionCategoryFull) => {
         this.isLoadingTransaction = false;
-        this.fullCategory = category;
+        this.category = category;
         this.createForm();
       },
       error: () => {
         this.systemNotificationsService.showNotification({
-          message: 'Fetching category details failed',
+          message: 'Could not open category editor',
           type: NotificationType.Error,
         });
         this.cancel();
@@ -67,9 +67,9 @@ export class PagesCategoriesEditorComponent implements OnInit {
 
   public save(): void {
     this.dialogRef.close(new TransactionCategory({
-      id: this.fullCategory!.id,
-      type: this.form.controls.type.value!,
-      name: this.form.controls.name.value!,
+      id: this.category!.id,
+      type: this.form!.controls.type.value!,
+      name: this.form!.controls.name.value!,
     }));
   }
 
@@ -85,7 +85,7 @@ export class PagesCategoriesEditorComponent implements OnInit {
 
   private createForm(): void {
     this.form = new FormGroup<ITransactionCategoryModalFormType>({
-      name: new FormControl(this.fullCategory!.name, {
+      name: new FormControl(this.category!.name, {
         validators: [
           Validators.required,
           Validators.maxLength(20),
@@ -93,8 +93,8 @@ export class PagesCategoriesEditorComponent implements OnInit {
         nonNullable: true,
       }),
       type: new FormControl({
-        value: this.fullCategory!.type,
-        disabled: Number(this.fullCategory!.financialTransactionsCounter) > 0,
+        value: this.category!.type,
+        disabled: Number(this.category!.financialTransactionsCounter) > 0,
       }, {
         validators: [
           Validators.required,

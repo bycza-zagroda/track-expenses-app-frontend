@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { fakeRequest } from 'src/app/common/http/common.http.fake-request';
 import { TServerEntityId } from 'src/app/common/http/common.http.types';
-import { getFoundedRandomNumber } from 'src/app/common/utils/common.utils.random';
+import { getRoundedRandomNumber } from 'src/app/common/utils/common.utils.random';
 //import { API_TRANSACTION_CATEGORY_FULL_URL } from './domains.transaction-categories.constants';
 //import { API_TRANSACTION_CATEGORY_FULL_URL } from './domains.transaction-categories.constants';
 import { categoryFullResponseMockFunc, transactionCategoriesMockFunc } from './domains.transaction-categories.mocks';
@@ -29,7 +29,7 @@ export class DomainsTransactionCategoriesGateway {
   public createTransactionCategory({ name, type }: ITransactionCategoryPayload)
   : Observable<ITransactionCategoryApiResponse> {
     return fakeRequest({
-      id: getFoundedRandomNumber(100, 1000),
+      id: getRoundedRandomNumber(100, 1000),
       name,
       type,
     });
