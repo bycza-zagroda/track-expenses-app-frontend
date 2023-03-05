@@ -9,8 +9,7 @@ import { WalletTransactionType } from 'src/app/domains/transactions/domains.tran
 import { PagesTransactionCategoriesService } from '../../pages-transaction-categories.service';
 import { TransactionCategoryFull } from '../../transaction-category-full.model';
 import { TransactionCategory } from '../../transaction-category.model';
-import { ITransactionCategoryEditorPayload } from './pages-categories-editor.service';
-import { ITransactionCategoryModalFormType } from './pages-categories-editor.types';
+import { ITransactionCategoryEditorPayload, ITransactionCategoryModalFormType } from './pages-categories-editor.types';
 
 @Component({
   selector: 'app-pages-categories-editor',

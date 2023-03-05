@@ -9,11 +9,7 @@ import { WalletTransactionType } from 'src/app/domains/transactions/domains.tran
 import { PagesTransactionCategoriesService } from '../../pages-transaction-categories.service';
 import { TransactionCategory } from '../../transaction-category.model';
 import { PagesCategoriesEditorComponent } from './pages-categories-editor.component';
-
-export interface ITransactionCategoryEditorPayload {
-  categoryId?: TServerEntityId;
-  type: WalletTransactionType;
-}
+import { ITransactionCategoryEditorPayload } from './pages-categories-editor.types';
 
 @Injectable({
   providedIn: 'root',
