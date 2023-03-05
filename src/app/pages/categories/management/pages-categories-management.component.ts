@@ -68,7 +68,7 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
   }
 
   public handleUpdateCategory(category: TransactionCategory): void {
-    this.pagesCategoriesEditorService.openEditor(category.type, category)
+    this.pagesCategoriesEditorService.openEditor(category.type, category.id!)
       .subscribe({
         next: (categoryModal: TransactionCategory | null) => {
           if(categoryModal) {
