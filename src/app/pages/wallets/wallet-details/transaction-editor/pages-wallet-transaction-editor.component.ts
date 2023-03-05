@@ -30,7 +30,7 @@ export class PagesWalletTransactionEditorComponent implements OnInit {
 
   public constructor(
     private readonly dialogRef: MatDialogRef<PagesWalletTransactionEditorComponent>,
-    private readonly transactionCategories: PagesTransactionCategoriesService,
+    private readonly transactionCategoriesService: PagesTransactionCategoriesService,
     @Inject(MAT_DIALOG_DATA) public data: WalletTransaction,
   ) {}
 
@@ -53,7 +53,7 @@ export class PagesWalletTransactionEditorComponent implements OnInit {
   public ngOnInit(): void {
     this.transactionId = this.data.id;
     this.walletId = this.data.walletId;
-    
+    this.getCategoriesByType(this.data.type);
 
     this.form = new FormGroup<IWalletTransactionModalFormType>({
       amount: new FormControl(this.data.amount === 0 ? null : this.data.amount, {
@@ -79,13 +79,12 @@ export class PagesWalletTransactionEditorComponent implements OnInit {
       }),
       category: new FormControl(this.data.categoryId, {
         validators: [
-          Validators.required,
         ],
         nonNullable: false,
       }),
     });
 
-    this.getCategories();
+    this.subscribeToFormValueChange();
   }
 
   public save(): void {
@@ -119,19 +118,15 @@ export class PagesWalletTransactionEditorComponent implements OnInit {
     };
   }
 
-  private getCategories(): void {
-    let currentlySelectedTransactionType: WalletTransactionType | null;
-    let transactionCategoriesArray: TransactionCategory[];
-    let currentlySelectedCategoryType = this.data.type;
-    console.log(currentlySelectedCategoryType);
-
-    this.form.get("type")!.valueChanges.subscribe(selectedType => {
-      currentlySelectedTransactionType = selectedType;
-      console.log(selectedType);
-      this.transactionCategories.getCategories().subscribe((data) => {
-        transactionCategoriesArray = data;
-        this.transactionsCategories = transactionCategoriesArray.filter(cat => cat.type == currentlySelectedTransactionType);
-      })
+  private getCategoriesByType(typeToFilter: WalletTransactionType): void {
+    this.transactionCategoriesService.getCategories().subscribe((categoriesReceived) => {
+      this.transactionsCategories = categoriesReceived.filter(cat => cat.type == typeToFilter);
+    })
+  }
+  
+  private subscribeToFormValueChange(): void {
+    this.form.get("type")!.valueChanges.subscribe((selectedType) => {
+      this.getCategoriesByType(selectedType!);
     })
   }
 }
