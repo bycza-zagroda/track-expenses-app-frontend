@@ -23,10 +23,10 @@ export class PagesWalletTransactionEditorComponent implements OnInit {
   };
 
   public form!: FormGroup<IWalletTransactionModalFormType>;
+  public transactionsCategories!: TransactionCategory[];
 
   private transactionId: TServerEntityId | null = null;
   private walletId!: TServerEntityId;
-  public transactionsCategories!: TransactionCategory[];
 
   public constructor(
     private readonly dialogRef: MatDialogRef<PagesWalletTransactionEditorComponent>,
@@ -121,12 +121,12 @@ export class PagesWalletTransactionEditorComponent implements OnInit {
   private getCategoriesByType(typeToFilter: WalletTransactionType): void {
     this.transactionCategoriesService.getCategories().subscribe((categoriesReceived) => {
       this.transactionsCategories = categoriesReceived.filter(cat => cat.type == typeToFilter);
-    })
+    });
   }
   
   private subscribeToFormValueChange(): void {
-    this.form.get("type")!.valueChanges.subscribe((selectedType) => {
+    this.form.get('type')!.valueChanges.subscribe((selectedType) => {
       this.getCategoriesByType(selectedType!);
-    })
+    });
   }
 }
