@@ -75,7 +75,7 @@ describe('PagesCategoriesEditorService', () => {
         });
 
         it('updated category\'s name should invoke showNotification', (done) => {
-          service.openEditor(categoryMock.type, categoryMock)
+          service.openEditor(categoryMock.type, categoryMock.id!)
             .subscribe( () => {
               expect(systemNotificationsServiceMock.showNotification).toHaveBeenCalled();
               done();
@@ -83,7 +83,7 @@ describe('PagesCategoriesEditorService', () => {
         });
 
         it('updated category\'s name should invoke loading show', (done) => {
-          service.openEditor(categoryMock.type, categoryMock)
+          service.openEditor(categoryMock.type, categoryMock.id!)
             .subscribe(() => {
               expect(loadingSnackbarServiceMock.show).toHaveBeenCalled();
               done();
@@ -91,14 +91,14 @@ describe('PagesCategoriesEditorService', () => {
         });
 
         it('updated category\'s name should invoke hide', (done) => {
-          service.openEditor(categoryMock.type, categoryMock)
+          service.openEditor(categoryMock.type, categoryMock.id!)
             .subscribe();
           expect(loadingSnackbarServiceMock.hide).toHaveBeenCalled();
           done();
         });
 
         it('should return updated category', (done) => {
-          service.openEditor(categoryMock.type, categoryMock)
+          service.openEditor(categoryMock.type, categoryMock.id!)
             .subscribe( (data: TransactionCategory | null) => {
               expect(data!.name).toBe(updatedTransactionCategoryObjectMockFunc().name);
               done();
@@ -112,26 +112,26 @@ describe('PagesCategoriesEditorService', () => {
         });
 
         it('canceled updating category\'s name should not invoke showNotification', fakeAsync(() => {
-          service.openEditor(categoryMock.type, categoryMock);
+          service.openEditor(categoryMock.type, categoryMock.id!);
           flushMicrotasks();
 
           expect(systemNotificationsServiceMock.showNotification).not.toHaveBeenCalled();
         }));
 
         it('canceled updating category\'s name should NOT invoke show', fakeAsync(() => {
-          service.openEditor(categoryMock.type, categoryMock);
+          service.openEditor(categoryMock.type, categoryMock.id!);
           flushMicrotasks();
           expect(loadingSnackbarServiceMock.show).not.toHaveBeenCalled();
         }));
 
         it('canceled updating category\'s name should NOT invoke hide', fakeAsync(() => {
-          service.openEditor(categoryMock.type, categoryMock);
+          service.openEditor(categoryMock.type, categoryMock.id!);
           flushMicrotasks();
           expect(loadingSnackbarServiceMock.hide).not.toHaveBeenCalled();
         }));
 
         it('should return null', (done) => {
-          service.openEditor(categoryMock.type, categoryMock)
+          service.openEditor(categoryMock.type, categoryMock.id!)
             .subscribe( (data: TransactionCategory | null) => {
               expect(data).toBe(null);
               done();

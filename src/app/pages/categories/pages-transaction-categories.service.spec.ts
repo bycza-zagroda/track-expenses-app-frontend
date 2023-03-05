@@ -78,7 +78,7 @@ describe('PagesTransactionCategoriesService', () => {
 
   describe('isTransactionCategorryAlreadyUsed', () => {
     it('should return info whether category is already used by any transaction', (done) => {
-      service.getTransactionCategoryById(categoryObjectMock)
+      service.getTransactionCategoryById(categoryObjectMock.id!)
         .subscribe((response: TransactionCategoryFull) => {
           expect(response).toEqual(categoryFullObjectMockFunc(counter));
           done();

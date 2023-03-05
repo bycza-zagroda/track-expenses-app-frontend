@@ -286,7 +286,7 @@ describe('PagesCategoriesManagementComponent', () => {
         const category = sortAlphabeticallyByProp(transactionCategoriesObjectsMockFunc(), 'name')[0];
 
         expect(pagesCategoriesEditorServiceMock.openEditor)
-          .toHaveBeenCalledWith(category.type, category);
+          .toHaveBeenCalledWith(category.type, category.id!);
 
         flush();
       }));

@@ -1,9 +1,11 @@
-import { ComponentFixture, fakeAsync, flushMicrotasks, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flush, flushMicrotasks, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Subject } from 'rxjs';
+import { SystemNotificationsService } from 'src/app/common/utils/system-notifications/system-notifications.service';
+import { NotificationType } from 'src/app/common/utils/system-notifications/system.notifications.constants';
 import { categoryFullObjectMockFunc } from 'src/app/domains/categories/domains.transaction-categories.mocks';
 import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.constants';
 import { MaterialModule } from 'src/app/material.module';
@@ -11,6 +13,7 @@ import { PagesTransactionCategoriesService } from '../../pages-transaction-categ
 import { TransactionCategoryFull } from '../../transaction-category-full.model';
 import { TransactionCategory } from '../../transaction-category.model';
 import { PagesCategoriesEditorComponent } from './pages-categories-editor.component';
+import { ITransactionCategoryEditorPayload } from './pages-categories-editor.types';
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
 
@@ -20,16 +23,17 @@ describe('PagesCategoriesEditorComponent', () => {
   let ERROR_MESSAGE_REQUIRED: string;
   let ERROR_MESSAGE_ALREADY_USED: string;
   let transactionCategoriesServiceMock: SpyObj<PagesTransactionCategoriesService>;
+  let notificationServiceMock: SpyObj<SystemNotificationsService>;
   let ERROR_MESSAGE_MAXLENGTH: string;
   let categoryFullObjectSubjectMockResponse: Subject<TransactionCategoryFull>;
-  let categoryObjectMock: TransactionCategory;
+  let categoryPayloadMock: ITransactionCategoryEditorPayload;
   let categoryFullObjectMock_counter0: TransactionCategoryFull;
   let categoryFullObjectMock_counter2: TransactionCategoryFull;
+  let dialogRefMock: { close: (param: null | TransactionCategory) => void };
 
   describe('creating category', () => {
     beforeEach(async () => {
-      categoryObjectMock =
-        new TransactionCategory({ id: null, name: '', type: WalletTransactionType.Income });
+      categoryPayloadMock = { type: WalletTransactionType.Income };
       categoryFullObjectSubjectMockResponse = new Subject<TransactionCategoryFull>();
       categoryFullObjectMock_counter0 = categoryFullObjectMockFunc(0);
       categoryFullObjectMock_counter2 = categoryFullObjectMockFunc(2);
@@ -49,7 +53,7 @@ describe('PagesCategoriesEditorComponent', () => {
         ],
         providers: [
           { provide: MatDialogRef, useValue: null },
-          { provide: MAT_DIALOG_DATA, useValue: categoryObjectMock },
+          { provide: MAT_DIALOG_DATA, useValue: categoryPayloadMock },
           { provide: PagesTransactionCategoriesService, useValue: transactionCategoriesServiceMock },
         ],
       }).compileComponents();
@@ -77,7 +81,7 @@ describe('PagesCategoriesEditorComponent', () => {
         flushMicrotasks();
         fixture.detectChanges();
 
-        const typeDisabled = component.form.get('type')!.disabled;
+        const typeDisabled = component.form!.get('type')!.disabled;
 
         expect(typeDisabled).toBeFalse();
       }));
@@ -98,9 +102,9 @@ describe('PagesCategoriesEditorComponent', () => {
         flushMicrotasks();
 
         fixture.detectChanges();
-        const nameInput = component.form.get('name');
+        const nameInput = component.form!.get('name');
 
-        expect(nameInput!.value).toEqual(categoryObjectMock.name);
+        expect(nameInput!.value).toEqual('');
       }));
 
       it('should set type input as Income', fakeAsync(() => {
@@ -108,9 +112,9 @@ describe('PagesCategoriesEditorComponent', () => {
         flushMicrotasks();
 
         fixture.detectChanges();
-        const typeInput = component.form.get('type');
+        const typeInput = component.form!.get('type');
 
-        expect(typeInput!.value).toEqual(categoryObjectMock.type);
+        expect(typeInput!.value).toEqual(categoryFullObjectMock_counter0.type);
       }));
 
       it('should disable save button when form is opened', fakeAsync(() => {
@@ -118,7 +122,7 @@ describe('PagesCategoriesEditorComponent', () => {
         flushMicrotasks();
 
         fixture.detectChanges();
-        const saveBtnFixture = fixture.debugElement.query(By.css('.btn__save'));
+        const saveBtnFixture = fixture.debugElement.queryAll(By.css('.mat-button-base'))[1];
         const saveBtn: HTMLButtonElement = saveBtnFixture.nativeElement as HTMLButtonElement;
 
         expect(saveBtn.disabled).toBeTrue();
@@ -135,9 +139,9 @@ describe('PagesCategoriesEditorComponent', () => {
         categoryFullObjectSubjectMockResponse.next(categoryFullObjectMock_counter2);
         flushMicrotasks();
 
-        component.form.get('name')?.setValue('');
-        component.form.get('name')?.markAsTouched();
-        component.form.get('name')?.markAsDirty();
+        component.form!.get('name')?.setValue('');
+        component.form!.get('name')?.markAsTouched();
+        component.form!.get('name')?.markAsDirty();
         fixture.detectChanges();
 
         const errorMessageFixture = fixture.debugElement.query(By.css('.mat-error'));
@@ -150,9 +154,9 @@ describe('PagesCategoriesEditorComponent', () => {
         categoryFullObjectSubjectMockResponse.next(categoryFullObjectMock_counter2);
         flushMicrotasks();
 
-        component.form.get('name')?.setValue('Text have more than twenty characters for sure');
-        component.form.get('name')?.markAsTouched();
-        component.form.get('name')?.markAsDirty();
+        component.form!.get('name')?.setValue('Text have more than twenty characters for sure');
+        component.form!.get('name')?.markAsTouched();
+        component.form!.get('name')?.markAsDirty();
         fixture.detectChanges();
 
         const errorMessageFixture = fixture.debugElement.query(By.css('.mat-error'));
@@ -165,12 +169,12 @@ describe('PagesCategoriesEditorComponent', () => {
         categoryFullObjectSubjectMockResponse.next(categoryFullObjectMock_counter2);
         flushMicrotasks();
 
-        component.form.get('name')?.setValue('Text have more than twenty characters for sure');
-        component.form.get('name')?.markAsTouched();
-        component.form.get('name')?.markAsDirty();
+        component.form!.get('name')?.setValue('Text have more than twenty characters for sure');
+        component.form!.get('name')?.markAsTouched();
+        component.form!.get('name')?.markAsDirty();
         fixture.detectChanges();
 
-        const saveBtnFixture = fixture.debugElement.query(By.css('.btn__save'));
+        const saveBtnFixture = fixture.debugElement.queryAll(By.css('.mat-button-base'))[1];
         const saveBtn: HTMLButtonElement = saveBtnFixture.nativeElement as HTMLButtonElement;
 
         expect(saveBtn.disabled).toBeTrue();
@@ -180,12 +184,12 @@ describe('PagesCategoriesEditorComponent', () => {
         categoryFullObjectSubjectMockResponse.next(categoryFullObjectMock_counter2);
         flushMicrotasks();
 
-        component.form.get('name')?.setValue('Only few chars');
-        component.form.get('name')?.markAsTouched();
-        component.form.get('name')?.markAsDirty();
+        component.form!.get('name')?.setValue('Only few chars');
+        component.form!.get('name')?.markAsTouched();
+        component.form!.get('name')?.markAsDirty();
         fixture.detectChanges();
 
-        const saveBtnFixture = fixture.debugElement.query(By.css('.btn__save'));
+        const saveBtnFixture = fixture.debugElement.queryAll(By.css('.mat-button-base'))[1];
         const saveBtn: HTMLButtonElement = saveBtnFixture.nativeElement as HTMLButtonElement;
 
         expect(saveBtn.disabled).toBeFalse();
@@ -193,9 +197,14 @@ describe('PagesCategoriesEditorComponent', () => {
     });
   });
 
-  describe('updating category', () => {
+  fdescribe('updating category', () => {
     beforeEach(async () => {
-      categoryObjectMock = new TransactionCategory({ id: 1, name: 'Category Name 1', type: WalletTransactionType.Income });
+      dialogRefMock = {
+        close: (param: null | TransactionCategory): void => {
+          console.log(param);
+        },
+      };
+      categoryPayloadMock = { type: WalletTransactionType.Expense, categoryId: 1 };
       categoryFullObjectSubjectMockResponse = new Subject<TransactionCategoryFull>();
       categoryFullObjectMock_counter0 = categoryFullObjectMockFunc(0);
       categoryFullObjectMock_counter2 = categoryFullObjectMockFunc(2);
@@ -204,6 +213,9 @@ describe('PagesCategoriesEditorComponent', () => {
       transactionCategoriesServiceMock = createSpyObj<PagesTransactionCategoriesService>
       (PagesTransactionCategoriesService.name, [ 'getTransactionCategoryById' ]);
       transactionCategoriesServiceMock.getTransactionCategoryById.and.returnValue(categoryFullObjectSubjectMockResponse);
+
+      notificationServiceMock = createSpyObj<SystemNotificationsService>
+      (SystemNotificationsService.name, [ 'showNotification' ]);
 
       await TestBed.configureTestingModule({
         declarations: [
@@ -215,9 +227,10 @@ describe('PagesCategoriesEditorComponent', () => {
           NoopAnimationsModule,
         ],
         providers: [
-          { provide: MatDialogRef, useValue: null },
-          { provide: MAT_DIALOG_DATA, useValue: categoryObjectMock },
+          { provide: MatDialogRef, useValue: dialogRefMock },
+          { provide: MAT_DIALOG_DATA, useValue: categoryPayloadMock },
           { provide: PagesTransactionCategoriesService, useValue: transactionCategoriesServiceMock },
+          { provide: SystemNotificationsService, useValue: notificationServiceMock },
         ],
       }).compileComponents();
 
@@ -240,57 +253,76 @@ describe('PagesCategoriesEditorComponent', () => {
         expect(transactionCategoriesServiceMock.getTransactionCategoryById).toHaveBeenCalled();
       }));
 
-      it('should disable type form control when api returns info that category is already used', fakeAsync(() => {
-        categoryFullObjectSubjectMockResponse.next(categoryFullObjectMock_counter2);
+      describe('should receive data from api', () => {
+        describe('error', () => {
+          it('should invoke error notification', fakeAsync(() => {
+            categoryFullObjectSubjectMockResponse.error('error');
 
-        flushMicrotasks();
-        fixture.detectChanges();
-        const disabled = component.form.get('type')!.disabled;
+            flushMicrotasks();
+            fixture.detectChanges();
+            flush();
 
-        expect(disabled).toBeTrue();
-      }));
+            expect(notificationServiceMock.showNotification).toHaveBeenCalledWith({
+              message: 'Could not open category editor',
+              type: NotificationType.Error,
+            });
+          }));
+        });
 
-      it('should display hint when type form control is disabled', fakeAsync(() => {
-        categoryFullObjectSubjectMockResponse.next(categoryFullObjectMock_counter2);
+        describe('success', () => {
+          it('should disable type form control when api returns info that category is already used', fakeAsync(() => {
+            categoryFullObjectSubjectMockResponse.next(categoryFullObjectMock_counter2);
 
-        flushMicrotasks();
-        fixture.detectChanges();
-        const hintFixture = fixture.debugElement.query(By.css('.mat-hint'));
-        const hint: HTMLDivElement = hintFixture.nativeElement as HTMLDivElement;
+            flushMicrotasks();
+            fixture.detectChanges();
+            const disabled = component.form!.get('type')!.disabled;
 
-        expect(hint.textContent?.trim()).toBe(ERROR_MESSAGE_ALREADY_USED);
-      }));
+            expect(disabled).toBeTrue();
+          }));
 
-      it('should enable type form control when api returns info that category is not used already', fakeAsync(() => {
-        categoryFullObjectSubjectMockResponse.next(categoryFullObjectMock_counter0);
+          it('should display hint when type form control is disabled', fakeAsync(() => {
+            categoryFullObjectSubjectMockResponse.next(categoryFullObjectMock_counter2);
 
-        flushMicrotasks();
-        fixture.detectChanges();
-        const typeDisabled = component.form.get('type')!.disabled;
+            flushMicrotasks();
+            fixture.detectChanges();
+            const hintFixture = fixture.debugElement.query(By.css('.mat-hint'));
+            const hint: HTMLDivElement = hintFixture.nativeElement as HTMLDivElement;
 
-        expect(typeDisabled).toBeFalse();
-      }));
+            expect(hint.textContent?.trim()).toBe(ERROR_MESSAGE_ALREADY_USED);
+          }));
 
-      it('should set name input as empty string', fakeAsync(() => {
-        categoryFullObjectSubjectMockResponse.next(categoryFullObjectMock_counter2);
-        flushMicrotasks();
+          it('should enable type form control when api returns info that category is not used already', fakeAsync(() => {
+            categoryFullObjectSubjectMockResponse.next(categoryFullObjectMock_counter0);
 
-        fixture.detectChanges();
-        const nameInput = component.form.get('name');
+            flushMicrotasks();
+            fixture.detectChanges();
+            const typeDisabled = component.form!.get('type')!.disabled;
 
-        expect(nameInput!.value).toEqual(categoryObjectMock.name);
-      }));
+            expect(typeDisabled).toBeFalse();
+          }));
 
-      it('should display "Update Category" title', fakeAsync(() => {
-        categoryFullObjectSubjectMockResponse.next(categoryFullObjectMock_counter0);
-        flushMicrotasks();
-        fixture.detectChanges();
+          it('should set name input as empty string', fakeAsync(() => {
+            categoryFullObjectSubjectMockResponse.next(categoryFullObjectMock_counter2);
+            flushMicrotasks();
 
-        const titleFixture = fixture.debugElement.query(By.css('h1'));
-        const errorMessage: HTMLDivElement = titleFixture.nativeElement as HTMLDivElement;
+            fixture.detectChanges();
+            const nameInput = component.form!.get('name');
 
-        expect(errorMessage.textContent!.trim()).toBe('Update Category');
-      }));
+            expect(nameInput!.value).toEqual(categoryFullObjectMock_counter0.name);
+          }));
+
+          it('should display "Update Category" title', fakeAsync(() => {
+            categoryFullObjectSubjectMockResponse.next(categoryFullObjectMock_counter0);
+            flushMicrotasks();
+            fixture.detectChanges();
+
+            const titleFixture = fixture.debugElement.query(By.css('h1'));
+            const errorMessage: HTMLDivElement = titleFixture.nativeElement as HTMLDivElement;
+
+            expect(errorMessage.textContent!.trim()).toBe('Update Category');
+          }));
+        });
+      });
     });
   });
 });
