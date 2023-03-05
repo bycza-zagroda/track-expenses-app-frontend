@@ -16,7 +16,7 @@ export class WalletTransaction {
   public readonly type: WalletTransactionType;
   public readonly amount: number;
   public readonly walletId: TServerEntityId;
-  public readonly categoryId: number | null;
+  public readonly categoryId: TServerEntityId | null;
 
   public constructor(data: IWalletTransactionItemData) {
     this.id = data.id;

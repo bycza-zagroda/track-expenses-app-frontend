@@ -14,7 +14,7 @@ export interface ITransactionPayload {
   date: TServerDateTime;
   type: WalletTransactionType;
   walletId: TServerEntityId;
-  categoryId: number | null;
+  categoryId: TServerEntityId | null;
 }
 
 export interface IWalletTransactionApiResponse {
@@ -25,5 +25,5 @@ export interface IWalletTransactionApiResponse {
   creationDate: TServerDateTime;
   date: TServerDateTime;
   walletId: TServerEntityId;
-  categoryId: number | null;
+  categoryId: TServerEntityId | null;
 }
