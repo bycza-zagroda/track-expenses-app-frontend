@@ -37,6 +37,7 @@ export class PagesCategoriesEditorService {
         if (!category) {
           return of(null);
         }
+        this.loadingService.show('Saving category');
 
         return this.makeRequest(category).pipe(
           tap(() => this.systemNotificationsService.showNotification({
@@ -60,8 +61,6 @@ export class PagesCategoriesEditorService {
   }
 
   private makeRequest(category: TransactionCategory): Observable<TransactionCategory> {
-    this.loadingService.show('Saving category');
-
     return category.id ?
       this.pagesTransactionCategoriesService.updateTransactionCategory(category) :
       this.pagesTransactionCategoriesService.createTransactionCategory(category);
