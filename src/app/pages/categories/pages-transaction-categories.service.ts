@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
+import { TServerEntityId } from 'src/app/common/http/common.http.types';
 import { DomainsTransactionCategoriesGateway } from 'src/app/domains/categories/domains.transaction-categories.gateway';
+import { ITransactionCategoryFullResponse } from 'src/app/domains/categories/domains.transaction-categories.types';
 import { TransactionCategoryFull } from './transaction-category-full.model';
 import { TransactionCategory } from './transaction-category.model';
 
@@ -32,9 +34,11 @@ export class PagesTransactionCategoriesService {
     );
   }
 
-  public getTransactionCategoryById(category: TransactionCategory): Observable<TransactionCategoryFull> {
-    return this.domainsTransactionCategoriesGateway.getTransactionCategoryById(category.id!).pipe(
-      map(categoryFull => new TransactionCategoryFull(category, categoryFull.financialTransactionsCounter)),
+  public getTransactionCategoryById(categoryId: TServerEntityId): Observable<TransactionCategoryFull> {
+    return this.domainsTransactionCategoriesGateway.getTransactionCategoryById(categoryId).pipe(
+      map(({ financialTransactionCategoryDTO: { id, name, type }, financialTransactionsCounter }
+        : ITransactionCategoryFullResponse) =>
+        new TransactionCategoryFull({ id, name, type }, financialTransactionsCounter)),
     );
   }
 }

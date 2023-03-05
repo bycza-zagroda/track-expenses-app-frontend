@@ -1,11 +1,15 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Observable, of } from 'rxjs';
 import { checkInputError } from 'src/app/common/utils/forms/common-utils-forms-form-utils';
+import { SystemNotificationsService } from 'src/app/common/utils/system-notifications/system-notifications.service';
+import { NotificationType } from 'src/app/common/utils/system-notifications/system.notifications.constants';
 import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.constants';
 import { PagesTransactionCategoriesService } from '../../pages-transaction-categories.service';
 import { TransactionCategoryFull } from '../../transaction-category-full.model';
 import { TransactionCategory } from '../../transaction-category.model';
+import { ITransactionCategoryEditorPayload } from './pages-categories-editor.service';
 import { ITransactionCategoryModalFormType } from './pages-categories-editor.types';
 
 @Component({
@@ -21,22 +25,22 @@ export class PagesCategoriesEditorComponent implements OnInit {
 
   public form!: FormGroup<ITransactionCategoryModalFormType>;
 
-  public transactionTypeDisabledLoading = true;
+  public isLoadingTransaction = true;
 
-  private category: TransactionCategory | null = null;
   private fullCategory: TransactionCategoryFull | null = null;
 
   public constructor(
     private readonly pagesTransactionCategoriesService: PagesTransactionCategoriesService,
+    private readonly systemNotificationsService: SystemNotificationsService,
     private readonly dialogRef: MatDialogRef<PagesCategoriesEditorComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: TransactionCategory,
+    @Inject(MAT_DIALOG_DATA) public data: ITransactionCategoryEditorPayload,
   ) { }
 
   public get nameIsNotProvided(): boolean {
     return checkInputError(this.form, 'name', 'required');
   }
 
-  public get nameIsToLong(): boolean {
+  public get nameIsTooLong(): boolean {
     return checkInputError(this.form, 'name', 'maxlength');
   }
 
@@ -45,30 +49,25 @@ export class PagesCategoriesEditorComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.category = this.data;
-
-    this.form = new FormGroup<ITransactionCategoryModalFormType>({
-      name: new FormControl(this.data.name, {
-        validators: [
-          Validators.required,
-          Validators.maxLength(20),
-        ],
-        nonNullable: true,
-      }),
-      type: new FormControl({ value: this.data.type, disabled: true }, {
-        validators: [
-          Validators.required,
-        ],
-        nonNullable: true,
-      }),
+    this.getTransaction().subscribe({
+      next: (category: TransactionCategoryFull) => {
+        this.isLoadingTransaction = false;
+        this.fullCategory = category;
+        this.createForm();
+      },
+      error: () => {
+        this.systemNotificationsService.showNotification({
+          message: 'Fetching category details failed',
+          type: NotificationType.Error,
+        });
+        this.cancel();
+      },
     });
-
-    this.getTransactionCategoryById();
   }
 
   public save(): void {
     this.dialogRef.close(new TransactionCategory({
-      id: this.category!.id,
+      id: this.fullCategory!.id,
       type: this.form.controls.type.value!,
       name: this.form.controls.name.value!,
     }));
@@ -78,20 +77,30 @@ export class PagesCategoriesEditorComponent implements OnInit {
     this.dialogRef.close(null);
   }
 
-  private getTransactionCategoryById(): void {
-    if(this.category?.id) {
-      this.pagesTransactionCategoriesService.getTransactionCategoryById(this.data)
-        .subscribe((transactionCategoryFull: TransactionCategoryFull) => {
-          this.transactionTypeDisabledLoading = false;
-          this.fullCategory = transactionCategoryFull;
+  private getTransaction(): Observable<TransactionCategoryFull> {
+    return this.data.categoryId
+      ? this.pagesTransactionCategoriesService.getTransactionCategoryById(this.data.categoryId)
+      : of(new TransactionCategoryFull({ id: null, name: '', type: this.data.type }, 0));
+  }
 
-          if(this.fullCategory.financialTransactionsCounter == 0) {
-            this.form.controls.type.enable();
-          }
-        });
-    } else {
-      this.transactionTypeDisabledLoading = false;
-      this.form.controls.type.enable();
-    }
+  private createForm(): void {
+    this.form = new FormGroup<ITransactionCategoryModalFormType>({
+      name: new FormControl(this.fullCategory!.name, {
+        validators: [
+          Validators.required,
+          Validators.maxLength(20),
+        ],
+        nonNullable: true,
+      }),
+      type: new FormControl({
+        value: this.fullCategory!.type,
+        disabled: Number(this.fullCategory!.financialTransactionsCounter) > 0,
+      }, {
+        validators: [
+          Validators.required,
+        ],
+        nonNullable: true,
+      }),
+    });
   }
 }

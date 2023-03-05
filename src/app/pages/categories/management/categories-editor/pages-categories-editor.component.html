@@ -1,12 +1,12 @@
-<div class="loading-container" *ngIf="transactionTypeDisabledLoading">
+<div class="loading-container" *ngIf="isLoadingTransaction">
   <mat-spinner [diameter]="30"></mat-spinner>
 </div>
 
-<form [formGroup]="form" class="form__container" *ngIf="!transactionTypeDisabledLoading">
-  <h1 mat-dialog-title>{{ data.id ? "Update Category" : "Create Category" }}</h1>
-  <mat-form-field>
+<form [formGroup]="form" class="form__container" *ngIf="!isLoadingTransaction">
+  <h1 mat-dialog-title>{{ data.categoryId ? "Update Category" : "Create Category" }}</h1>
+  <mat-form-field [ngClass]="{ 'mb-15': typeAlreadyUsed }">
     <mat-label>Select type</mat-label>
-    <mat-select [formControl]="form.controls['type']">
+    <mat-select [formControl]="form.controls.type">
       <mat-option *ngFor="let type of selectTransactionsTypes | keyvalue" [value]="type.value">
         {{ type.key }}
       </mat-option>
@@ -17,11 +17,11 @@
   </mat-form-field>
   <mat-form-field>
     <mat-label>Name</mat-label>
-    <input matInput [formControl]="form.controls['name']">
+    <input matInput [formControl]="form.controls.name">
     <mat-error *ngIf="nameIsNotProvided">
       Name is required
     </mat-error>
-    <mat-error *ngIf="nameIsToLong">
+    <mat-error *ngIf="nameIsTooLong">
       Name can't have more than 20 characters
     </mat-error>
   </mat-form-field>
