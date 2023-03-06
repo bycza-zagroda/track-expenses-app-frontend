@@ -1,6 +1,7 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
 import { TServerEntityId } from 'src/app/common/http/common.http.types';
 import { checkInputError } from 'src/app/common/utils/forms/common-utils-forms-form-utils';
 import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.constants';
@@ -16,7 +17,7 @@ export const regexAmount = /^\d+(\.\d{1,2})?$/;
   templateUrl: './pages-wallet-transaction-editor.component.html',
   styleUrls: [ './pages-wallet-transaction-editor.component.scss' ],
 })
-export class PagesWalletTransactionEditorComponent implements OnInit {
+export class PagesWalletTransactionEditorComponent implements OnInit, OnDestroy {
   public selectTransactionsTypes: Record<string, WalletTransactionType> = {
     'Income': WalletTransactionType.Income,
     'Expense': WalletTransactionType.Expense,
@@ -24,6 +25,8 @@ export class PagesWalletTransactionEditorComponent implements OnInit {
 
   public form!: FormGroup<IWalletTransactionModalFormType>;
   public transactionsCategories!: TransactionCategory[];
+  private allTransactionCategories!: TransactionCategory[];
+  private listenToTypeChangeSubscription!: Subscription;
 
   private transactionId: TServerEntityId | null = null;
   private walletId!: TServerEntityId;
@@ -78,13 +81,15 @@ export class PagesWalletTransactionEditorComponent implements OnInit {
         nonNullable: true,
       }),
       category: new FormControl(this.data.categoryId, {
-        validators: [
-        ],
         nonNullable: false,
       }),
     });
 
-    this.subscribeToFormValueChange();
+    this.listenToTypeChangeSubscription = this.listenToTypeChange();
+  }
+
+  public ngOnDestroy(): void {
+    this.listenToTypeChangeSubscription.unsubscribe();
   }
 
   public save(): void {
@@ -120,13 +125,14 @@ export class PagesWalletTransactionEditorComponent implements OnInit {
 
   private getCategoriesByType(typeToFilter: WalletTransactionType): void {
     this.transactionCategoriesService.getCategories().subscribe((categoriesReceived) => {
-      this.transactionsCategories = categoriesReceived.filter(cat => cat.type == typeToFilter);
+      this.allTransactionCategories = categoriesReceived;
+      this.transactionsCategories = categoriesReceived.filter(cat => cat.type === typeToFilter);
     });
   }
   
-  private subscribeToFormValueChange(): void {
-    this.form.get('type')!.valueChanges.subscribe((selectedType) => {
-      this.getCategoriesByType(selectedType!);
+  private listenToTypeChange(): Subscription {
+    return this.form.get('type')!.valueChanges.subscribe((selectedType) => {
+      this.transactionsCategories = this.allTransactionCategories.filter(cat => cat.type === selectedType);
     });
   }
 }
