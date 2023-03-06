@@ -11,7 +11,6 @@ import { WalletTransactionType } from 'src/app/domains/transactions/domains.tran
 import { MaterialModule } from 'src/app/material.module';
 import { PagesTransactionCategoriesService } from '../../pages-transaction-categories.service';
 import { TransactionCategoryFull } from '../../transaction-category-full.model';
-import { TransactionCategory } from '../../transaction-category.model';
 import { PagesCategoriesEditorComponent } from './pages-categories-editor.component';
 import { ITransactionCategoryEditorPayload } from './pages-categories-editor.types';
 import SpyObj = jasmine.SpyObj;
@@ -29,7 +28,7 @@ describe('PagesCategoriesEditorComponent', () => {
   let categoryPayloadMock: ITransactionCategoryEditorPayload;
   let categoryFullObjectMock_counter0: TransactionCategoryFull;
   let categoryFullObjectMock_counter2: TransactionCategoryFull;
-  let dialogRefMock: { close: (param: null | TransactionCategory) => void };
+  let dialogRefMock: SpyObj<MatDialogRef<PagesCategoriesEditorComponent>>;
 
   describe('creating category', () => {
     beforeEach(async () => {
@@ -197,13 +196,8 @@ describe('PagesCategoriesEditorComponent', () => {
     });
   });
 
-  fdescribe('updating category', () => {
+  describe('updating category', () => {
     beforeEach(async () => {
-      dialogRefMock = {
-        close: (param: null | TransactionCategory): void => {
-          console.log(param);
-        },
-      };
       categoryPayloadMock = { type: WalletTransactionType.Expense, categoryId: 1 };
       categoryFullObjectSubjectMockResponse = new Subject<TransactionCategoryFull>();
       categoryFullObjectMock_counter0 = categoryFullObjectMockFunc(0);
@@ -216,6 +210,8 @@ describe('PagesCategoriesEditorComponent', () => {
 
       notificationServiceMock = createSpyObj<SystemNotificationsService>
       (SystemNotificationsService.name, [ 'showNotification' ]);
+
+      dialogRefMock = createSpyObj<MatDialogRef<PagesCategoriesEditorComponent>>(MatDialogRef.name, [ 'close' ]);
 
       await TestBed.configureTestingModule({
         declarations: [
