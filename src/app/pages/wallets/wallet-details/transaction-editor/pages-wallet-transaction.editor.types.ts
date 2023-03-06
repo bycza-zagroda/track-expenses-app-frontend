@@ -1,4 +1,5 @@
 import { FormControl } from '@angular/forms';
+import { TServerEntityId } from 'src/app/common/http/common.http.types';
 import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.constants';
 
 export interface ITransactionModalData {
@@ -13,5 +14,5 @@ export interface IWalletTransactionModalFormType {
   description: FormControl<string | null>;
   date: FormControl<Date | null>;
   type: FormControl<WalletTransactionType | null>;
-  category: FormControl<number | null>;
+  category: FormControl<TServerEntityId  | null>;
 }

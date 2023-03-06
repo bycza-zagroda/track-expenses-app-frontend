@@ -22,11 +22,11 @@ export class WalletTransaction {
     this.id = data.id;
     this.creationDate = new Date(data.creationDate);
     this.date = new Date(data.date);
-    this.description = data.description ?? null;
+    this.description = data.description;
     this.type = data.type;
     this.amount = data.amount;
     this.walletId = data.walletId;
-    this.categoryId = data.categoryId ?? null;
+    this.categoryId = data.categoryId;
   }
 
   public static create(data: Partial<IWalletTransactionApiResponse>): WalletTransaction {
