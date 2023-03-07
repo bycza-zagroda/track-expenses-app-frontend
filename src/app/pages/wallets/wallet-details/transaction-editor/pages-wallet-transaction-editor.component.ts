@@ -4,6 +4,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { TServerEntityId } from 'src/app/common/http/common.http.types';
 import { checkInputError } from 'src/app/common/utils/forms/common-utils-forms-form-utils';
+import { SystemNotificationsService } from 'src/app/common/utils/system-notifications/system-notifications.service';
+import { NotificationType } from 'src/app/common/utils/system-notifications/system.notifications.constants';
 import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.constants';
 import { PagesTransactionCategoriesService } from 'src/app/pages/categories/pages-transaction-categories.service';
 import { TransactionCategory } from 'src/app/pages/categories/transaction-category.model';
@@ -25,6 +27,7 @@ export class PagesWalletTransactionEditorComponent implements OnInit, OnDestroy 
 
   public form!: FormGroup<IWalletTransactionModalFormType>;
   public transactionsCategories!: TransactionCategory[];
+  public isTransactionCategoriesLoading = true;
   private allTransactionCategories!: TransactionCategory[];
   private listenToTypeChangeSubscription!: Subscription;
 
@@ -34,6 +37,7 @@ export class PagesWalletTransactionEditorComponent implements OnInit, OnDestroy 
   public constructor(
     private readonly dialogRef: MatDialogRef<PagesWalletTransactionEditorComponent>,
     private readonly transactionCategoriesService: PagesTransactionCategoriesService,
+    private readonly systemNotificationsService: SystemNotificationsService,
     @Inject(MAT_DIALOG_DATA) public data: WalletTransaction,
   ) {}
 
@@ -124,15 +128,35 @@ export class PagesWalletTransactionEditorComponent implements OnInit, OnDestroy 
   }
 
   private getCategoriesByType(typeToFilter: WalletTransactionType): void {
-    this.transactionCategoriesService.getCategories().subscribe((categoriesReceived) => {
-      this.allTransactionCategories = categoriesReceived;
-      this.transactionsCategories = categoriesReceived.filter(cat => cat.type === typeToFilter);
+    this.transactionCategoriesService.getCategories().subscribe({
+      next: (categoriesReceived) => {
+        this.allTransactionCategories = categoriesReceived;
+        this.transactionsCategories = this.filterCategories(categoriesReceived, typeToFilter);
+        this.isTransactionCategoriesLoading = false;
+      },
+      error: (e) => {
+        this.isTransactionCategoriesLoading = false;
+        console.log(e);
+
+        this.systemNotificationsService.showNotification({
+          message: 'Editing transaction failed',
+          type: NotificationType.Error,
+        });
+        this.cancel();
+      },
     });
   }
   
   private listenToTypeChange(): Subscription {
     return this.form.get('type')!.valueChanges.subscribe((selectedType) => {
-      this.transactionsCategories = this.allTransactionCategories.filter(cat => cat.type === selectedType);
+      this.transactionsCategories = this.filterCategories(this.allTransactionCategories, selectedType!);
     });
+  }
+
+  private filterCategories(
+    categoriesToFilter: TransactionCategory[], 
+    typeToFilter: WalletTransactionType,
+  ): TransactionCategory[] {
+    return categoriesToFilter.filter(cat => cat.type === typeToFilter);
   }
 }
