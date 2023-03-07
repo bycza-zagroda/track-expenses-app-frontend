@@ -1,4 +1,5 @@
-<form [formGroup]="form" class="form__container">
+<mat-spinner class="loading-container" *ngIf="isTransactionCategoriesLoading" [diameter]="30"></mat-spinner>
+<form [formGroup]="form" class="form__container" *ngIf="!isTransactionCategoriesLoading">
   <h1 mat-dialog-title>{{ data.id ? "Update Transaction" : "Create Transaction" }}</h1>
   <mat-form-field>
     <mat-label>Select type</mat-label>
