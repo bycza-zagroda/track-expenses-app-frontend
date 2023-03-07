@@ -70,11 +70,17 @@ describe('TransactionEditorComponent', () => {
         const x = component.form.get('type');
         expect(x!.value).toEqual(WALLET_TRANSACTIONS_EXPENSE_MOCK.type);
       });
+
+      it('category', () => {
+        const x = component.form.get('category');
+        expect(x!.value).toEqual(WALLET_TRANSACTIONS_EXPENSE_MOCK.categoryId);
+      });
     });
 
     describe('amount field validation', () => {
       describe('error', () => {
         it('should show validation error if value has invalid format', () => {
+          component.isTransactionCategoriesLoading = false;
           component.form.get('amount')?.setValue(12.3333);
           component.form.get('amount')?.markAsTouched();
 
@@ -138,11 +144,25 @@ describe('TransactionEditorComponent', () => {
         });
       });
     });
+
+    describe('category field validation', () => {
+      describe('error', () => {
+        it('should show no validation error if category field is not chosen', () => {
+          component.form.get('category')?.markAsTouched();
+
+          fixture.detectChanges();
+
+          const errorMessageDiv = fixture.debugElement.query(By.css('.mat-error'));
+          expect(errorMessageDiv).toBeFalsy();
+        });
+      });
+    });
   });
 
   describe('save method', () => {
     describe('invalid form', () => {
       it('should set form as not valid', () => {
+        component.isTransactionCategoriesLoading = false;
         component.form.get('amount')?.setValue(1.3303);
         component.form.get('amount')?.markAsTouched();
         fixture.detectChanges();
@@ -156,6 +176,7 @@ describe('TransactionEditorComponent', () => {
       });
 
       it('should not invoke close dialogRef if amount form in invalid', () => {
+        component.isTransactionCategoriesLoading = false;
         component.form.get('amount')?.setValue(0);
         component.form.get('amount')?.markAsTouched();
         fixture.detectChanges();
@@ -171,6 +192,7 @@ describe('TransactionEditorComponent', () => {
 
     describe('valid form', () => {
       it('should set form as valid', () => {
+        component.isTransactionCategoriesLoading = false;
         component.form.get('amount')?.setValue(10);
         component.form.get('amount')?.markAsTouched();
         fixture.detectChanges();
