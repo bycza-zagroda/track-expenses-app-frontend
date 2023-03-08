@@ -11,6 +11,11 @@ import createSpyObj = jasmine.createSpyObj;
 import { PagesWalletsManagementEditorComponent }
   from '../../management/wallet-editor/pages-wallets-management-editor.component';
 import { WALLET_TRANSACTIONS_EXPENSE_MOCK } from 'src/app/domains/transactions/domains.transactions.mocks';
+import { PagesTransactionCategoriesService } from 'src/app/pages/categories/pages-transaction-categories.service';
+import { of } from 'rxjs';
+import { transactionCategoriesObjectsMockFunc } from 'src/app/domains/categories/domains.transaction-categories.mocks';
+import { WalletTransactionType } from 'src/app/domains/transactions/domains.transactions.constants';
+import { TransactionCategory } from 'src/app/pages/categories/transaction-category.model';
 
 describe('TransactionEditorComponent', () => {
   let component: PagesWalletTransactionEditorComponent;
@@ -18,6 +23,7 @@ describe('TransactionEditorComponent', () => {
   let ERROR_MESSAGE_AMOUNT_INVALID_FORMAT: string;
   let matDialogMock: SpyObj<MatDialog>;
   let matDialogRef: SpyObj<MatDialogRef<PagesWalletsManagementEditorComponent>>;
+  let transactionCategoriesServiceMock: SpyObj<PagesTransactionCategoriesService>;
 
   beforeEach(async () => {
     ERROR_MESSAGE_AMOUNT_INVALID_FORMAT = 'Amount has invalid format';
@@ -25,6 +31,10 @@ describe('TransactionEditorComponent', () => {
     matDialogRef.close.and.callThrough();
     matDialogMock = createSpyObj<MatDialog>(MatDialog.name, [ 'open' ]);
     matDialogMock.open.and.returnValue(matDialogRef);
+
+    transactionCategoriesServiceMock = createSpyObj<PagesTransactionCategoriesService>
+    (PagesTransactionCategoriesService.name, [ 'getCategories' ]);
+    transactionCategoriesServiceMock.getCategories.and.returnValue(of(transactionCategoriesObjectsMockFunc()));
 
     await TestBed.configureTestingModule({
       declarations: [
@@ -39,6 +49,7 @@ describe('TransactionEditorComponent', () => {
       providers: [
         { provide: MatDialogRef, useValue: matDialogRef },
         { provide: MatDialog, useValue: matDialogMock },
+        { provide: PagesTransactionCategoriesService, useValue: transactionCategoriesServiceMock },
         { provide: MAT_DIALOG_DATA, useValue: WALLET_TRANSACTIONS_EXPENSE_MOCK },
       ],
     }).compileComponents();
@@ -80,7 +91,7 @@ describe('TransactionEditorComponent', () => {
     describe('amount field validation', () => {
       describe('error', () => {
         it('should show validation error if value has invalid format', () => {
-          component.isTransactionCategoriesLoading = false;
+          component.isLoadingTransactionCategories = false;
           component.form.get('amount')?.setValue(12.3333);
           component.form.get('amount')?.markAsTouched();
 
@@ -162,7 +173,7 @@ describe('TransactionEditorComponent', () => {
   describe('save method', () => {
     describe('invalid form', () => {
       it('should set form as not valid', () => {
-        component.isTransactionCategoriesLoading = false;
+        component.isLoadingTransactionCategories  = false;
         component.form.get('amount')?.setValue(1.3303);
         component.form.get('amount')?.markAsTouched();
         fixture.detectChanges();
@@ -176,7 +187,7 @@ describe('TransactionEditorComponent', () => {
       });
 
       it('should not invoke close dialogRef if amount form in invalid', () => {
-        component.isTransactionCategoriesLoading = false;
+        component.isLoadingTransactionCategories  = false;
         component.form.get('amount')?.setValue(0);
         component.form.get('amount')?.markAsTouched();
         fixture.detectChanges();
@@ -192,7 +203,7 @@ describe('TransactionEditorComponent', () => {
 
     describe('valid form', () => {
       it('should set form as valid', () => {
-        component.isTransactionCategoriesLoading = false;
+        component.isLoadingTransactionCategories  = false;
         component.form.get('amount')?.setValue(10);
         component.form.get('amount')?.markAsTouched();
         fixture.detectChanges();
@@ -207,6 +218,28 @@ describe('TransactionEditorComponent', () => {
         fixture.detectChanges();
 
         expect(component.form.valid).toBeTrue();
+      });
+    });
+
+    describe('transaction categorie', () => {
+      describe('valid inputs', () => {
+        it('should be equal to set category', () => {
+          expect(component.form.get('category')?.value).toBe(5);
+        });
+
+        it('should show income type transaction categories', () => {
+          component.form.get('type')?.setValue(WalletTransactionType.Income);
+          const transactions: TransactionCategory[] = [ 
+            transactionCategoriesObjectsMockFunc()[0], 
+            transactionCategoriesObjectsMockFunc()[1] ];
+          expect(component.transactionsCategories).toEqual(transactions);
+        });
+
+        it('should show expense type transaction categories', () => {
+          component.form.get('type')?.setValue(WalletTransactionType.Expense);
+          const transactions: TransactionCategory[] = [ transactionCategoriesObjectsMockFunc()[2] ];
+          expect(component.transactionsCategories).toEqual(transactions);
+        });
       });
     });
   });
