@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SystemNotificationsService } from './system-notifications.service';
 import { NotificationType, SNACKBAR_DURATION } from './system.notifications.constants';
@@ -29,30 +29,24 @@ describe('SystemNotificationsService', () => {
       durationTime = SNACKBAR_DURATION;
     });
 
-    it('should invoke Snackbar.open method with default dismiss value', (done) => {
+    it('should invoke Snackbar.open method with default dismiss value', fakeAsync(() => {
       systemNotificationsService.showNotification({ message, type: NotificationType.Info });
+      tick(durationTime);
 
-      setTimeout(() => {
-        expect(matSnackMock.open).toHaveBeenCalledWith(message, 'OK', {
-          duration: durationTime,
-          panelClass: 'notification--info',
-        });
+      expect(matSnackMock.open).toHaveBeenCalledWith(message, 'OK', {
+        duration: durationTime,
+        panelClass: 'notification--info',
+      });
+    }));
 
-        done();
-      }, durationTime);
-    });
-
-    it('should invoke Snackbar.open method with dismiss value', (done) => {
+    it('should invoke Snackbar.open method with dismiss value', fakeAsync(() => {
       systemNotificationsService.showNotification({ message, dismissBtnText: 'NOT OK', type: NotificationType.Success });
+      tick(durationTime);
 
-      setTimeout(() => {
-        expect(matSnackMock.open).toHaveBeenCalledWith(message, 'NOT OK', {
-          duration: durationTime,
-          panelClass: 'notification--success',
-        });
-
-        done();
-      }, durationTime);
-    });
+      expect(matSnackMock.open).toHaveBeenCalledWith(message, 'NOT OK', {
+        duration: durationTime,
+        panelClass: 'notification--success',
+      });
+    }));
   });
 });
