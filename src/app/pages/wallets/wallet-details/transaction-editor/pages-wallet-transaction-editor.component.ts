@@ -27,7 +27,7 @@ export class PagesWalletTransactionEditorComponent implements OnInit, OnDestroy 
 
   public form!: FormGroup<IWalletTransactionModalFormType>;
   public transactionsCategories!: TransactionCategory[];
-  public isTransactionCategoriesLoading = true;
+  public isLoadingTransactionCategories  = true;
   private allTransactionCategories!: TransactionCategory[];
   private listenToTypeChangeSubscription!: Subscription;
 
@@ -132,22 +132,25 @@ export class PagesWalletTransactionEditorComponent implements OnInit, OnDestroy 
       next: (categoriesReceived) => {
         this.allTransactionCategories = categoriesReceived;
         this.transactionsCategories = this.filterCategories(categoriesReceived, typeToFilter);
-        this.isTransactionCategoriesLoading = false;
+        this.isLoadingTransactionCategories  = false;
       },
-      error: (e) => {
-        this.isTransactionCategoriesLoading = false;
-        console.log(e);
+      complete: () => {
+        this.isLoadingTransactionCategories = false;
+      },
+      error: () => {
+        this.isLoadingTransactionCategories  = false;
 
         this.systemNotificationsService.showNotification({
           message: 'Editing transaction failed',
           type: NotificationType.Error,
         });
+
         this.cancel();
       },
     });
   }
   
-  private listenToTypeChange(): Subscription {
+  private listenToTypeChange(): Subscription { 
     return this.form.get('type')!.valueChanges.subscribe((selectedType) => {
       this.transactionsCategories = this.filterCategories(this.allTransactionCategories, selectedType!);
     });
