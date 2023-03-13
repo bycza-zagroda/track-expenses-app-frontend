@@ -8,6 +8,7 @@ import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-m
 import { LoadingModalComponent } from '../loading-modal/loading-modal.component';
 import { SystemMessageComponent } from './system-message/system-message.component';
 import { NoResultsComponent } from './no-results/no-results.component';
+import { TransactionCategoryDeletingModalComponent } from '../transaction-category-deleting-modal/transaction-category-deleting-modal.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { NoResultsComponent } from './no-results/no-results.component';
     LoadingModalComponent,
     SystemMessageComponent,
     NoResultsComponent,
+    TransactionCategoryDeletingModalComponent
   ],
   exports: [
     CommonComponentsNavbarComponent,
