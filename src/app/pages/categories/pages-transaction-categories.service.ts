@@ -41,4 +41,8 @@ export class PagesTransactionCategoriesService {
         new TransactionCategoryFull({ id, name, type }, financialTransactionsCounter)),
     );
   }
+
+  public deleteTransactionCategory(category: TransactionCategory): Observable<unknown> {
+    return this.domainsTransactionCategoriesGateway.deleteCategory(category.id!);
+  }
 }
