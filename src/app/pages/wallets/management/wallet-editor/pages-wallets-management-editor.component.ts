@@ -39,6 +39,8 @@ export class PagesWalletsManagementEditorComponent implements OnInit {
   }
 
   public save(): void {
+    this.form.markAllAsTouched();
+
     if (this.form.invalid) {
       return;
     }
