@@ -97,6 +97,8 @@ export class PagesWalletTransactionEditorComponent implements OnInit, OnDestroy 
   }
 
   public save(): void {
+    this.form.markAllAsTouched();
+
     if (this.form.invalid) {
       return;
     }
@@ -149,15 +151,15 @@ export class PagesWalletTransactionEditorComponent implements OnInit, OnDestroy 
       },
     });
   }
-  
-  private listenToTypeChange(): Subscription { 
+
+  private listenToTypeChange(): Subscription {
     return this.form.get('type')!.valueChanges.subscribe((selectedType) => {
       this.transactionsCategories = this.filterCategories(this.allTransactionCategories, selectedType!);
     });
   }
 
   private filterCategories(
-    categoriesToFilter: TransactionCategory[], 
+    categoriesToFilter: TransactionCategory[],
     typeToFilter: WalletTransactionType,
   ): TransactionCategory[] {
     return categoriesToFilter.filter(cat => cat.type === typeToFilter);
