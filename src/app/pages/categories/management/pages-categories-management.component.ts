@@ -8,6 +8,11 @@ import { TransactionCategory } from '../transaction-category.model';
 import { sortAlphabeticallyByProp } from 'src/app/common/utils/sorts/common.util.sort.';
 import { PagesCategoriesEditorService } from './categories-editor/pages-categories-editor.service';
 import { PagesTransactionCategoriesService } from '../pages-transaction-categories.service';
+import { ConfirmDialogService } from 'src/app/common/confirmation-modal/confirm-dialog.service';
+import { LoadingSnackbarService } from 'src/app/common/loading-modal/loading-snackbar.service';
+import { SystemNotificationsService } from 'src/app/common/utils/system-notifications/system-notifications.service';
+import { TransactionCategoryFull } from '../transaction-category-full.model';
+import { TransactionCategoryDeletingModalService } from 'src/app/common/transaction-category-deleting-modal/transaction-category-deleting-modal.service';
 
 export type CategorySelectionValue = WalletTransactionType | '';
 
@@ -40,6 +45,10 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
   public constructor(
     private readonly pagesCategoriesEditorService: PagesCategoriesEditorService,
     private readonly pagesTransactionCategoriesService: PagesTransactionCategoriesService,
+    private readonly confirmDialogService: ConfirmDialogService,
+    private readonly loadingDialogService: LoadingSnackbarService,
+    private readonly notificationService: SystemNotificationsService,
+    private readonly transactionCategoryDeletingDialog: TransactionCategoryDeletingModalService,
   ) { }
 
   public ngOnInit(): void {
@@ -76,6 +85,48 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
           }
         },
       });
+  }
+
+  public handleDeleteCategory(category: TransactionCategory): void {
+    this.pagesTransactionCategoriesService.getTransactionCategoryById(category.id!).subscribe((data) => {
+      let isAssigned = this.isCategoryAssignedToTransactions(data);
+      console.log(data.financialTransactionsCounter);
+      if(isAssigned) {
+        this.handleCategoryDeletingWhenNotAssigned(data);
+      } else {
+        this.handleCategoryDeletingWhenAssigned(category);
+      }
+    });    
+  }
+
+  private handleCategoryDeletingWhenAssigned(category: TransactionCategory) {
+    this.confirmDialogService.openConfirmModal({
+      headerText: `Deleting category`,
+      confirmationText: `Are you sure you want to delete category ${category.name}?`,
+    }).subscribe((result: boolean) => {
+      if (!result) {
+        return;
+      }
+      this.deleteCategory(category);
+    });
+  }
+
+  private handleCategoryDeletingWhenNotAssigned(category: TransactionCategoryFull) {
+    this.transactionCategoryDeletingDialog.openDeletingModal({
+      headerText: `Deleting category`,
+      confirmationText: `This category is assigned to ${category.financialTransactionsCounter} transactions. 
+      If you will delete this category those categories will have a category removed or you can select a new category to which those transactions will be assigned to.`,
+      transactionCategories: [],
+    }).subscribe((result: boolean) => {
+      if (!result) {
+        return;
+      }
+      this.deleteCategory(category);
+    });
+  }
+
+  private isCategoryAssignedToTransactions(category: TransactionCategoryFull): boolean {
+    return Number(category?.financialTransactionsCounter) > 0;
   }
 
   private initCategories(): void {
@@ -122,5 +173,21 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
       return categoryItem;
     });
     this.filterCategories();
+  }
+
+  private deleteCategory(category: TransactionCategory): void {
+    this.loadingDialogService.show('Deleting category');
+    this.pagesTransactionCategoriesService.deleteTransactionCategory(category).subscribe({
+        next: () => {
+          this.initCategories();
+          this.loadingDialogService.hide();
+          this.notificationService.showNotification({ message: 'Category deleted succesfully', type: NotificationType.Success });
+        },
+        error: () => {
+          this.loadingDialogService.hide();
+          this.notificationService.showNotification({ message: 'Deleting Category failed', type: NotificationType.Error });
+        },
+      },
+    );
   }
 }
