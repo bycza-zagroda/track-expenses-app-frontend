@@ -1,10 +1,18 @@
-import { TransactionCategory } from "src/app/pages/categories/transaction-category.model"
+import { FormControl } from "@angular/forms";
+import { TransactionCategory } from "src/app/pages/categories/transaction-category.model";
+import { TServerEntityId } from "../http/common.http.types";
 
 export interface ITransactionCategoryDeletingModalData {
     headerText: string
     confirmationText: string,
     confirmBtnText?: string,
     denyBtnText?: string,
-    transactionCategories: TransactionCategory[];
+    categories: TransactionCategory[];
+    // categoryId: TServerEntityId | null;
+
   }
+
+export interface ITransactionCategoryDeletingModalFormType {
+  category: FormControl<number  | null>;
+}
   
