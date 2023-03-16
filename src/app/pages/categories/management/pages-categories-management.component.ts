@@ -112,17 +112,26 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
   }
 
   private handleCategoryDeletingWhenNotAssigned(category: TransactionCategoryFull) {
+    const categories = this.filterCategoriesByType(this.displayedCategories, category.type);
+
     this.transactionCategoryDeletingDialog.openDeletingModal({
       headerText: `Deleting category`,
       confirmationText: `This category is assigned to ${category.financialTransactionsCounter} transactions. 
       If you will delete this category those categories will have a category removed or you can select a new category to which those transactions will be assigned to.`,
-      transactionCategories: [],
+      categories,
     }).subscribe((result: boolean) => {
       if (!result) {
         return;
       }
       this.deleteCategory(category);
     });
+  }
+
+  private filterCategoriesByType(
+    categoriesToFilter: TransactionCategory[], 
+    typeToFilter: WalletTransactionType,
+  ): TransactionCategory[] {
+    return categoriesToFilter.filter(cat => cat.type === typeToFilter);
   }
 
   private isCategoryAssignedToTransactions(category: TransactionCategoryFull): boolean {
