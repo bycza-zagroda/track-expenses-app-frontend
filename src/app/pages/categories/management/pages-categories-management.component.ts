@@ -12,7 +12,7 @@ import { ConfirmDialogService } from 'src/app/common/confirmation-modal/confirm-
 import { LoadingSnackbarService } from 'src/app/common/loading-modal/loading-snackbar.service';
 import { SystemNotificationsService } from 'src/app/common/utils/system-notifications/system-notifications.service';
 import { TransactionCategoryFull } from '../transaction-category-full.model';
-import { TransactionCategoryDeletingModalService } from 'src/app/common/transaction-category-deleting-modal/transaction-category-deleting-modal.service';
+import { TransactionCategoryDeletingModalService } from './categories-deleting/transaction-category-deleting-modal.service';
 
 export type CategorySelectionValue = WalletTransactionType | '';
 
@@ -90,7 +90,6 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
   public handleDeleteCategory(category: TransactionCategory): void {
     this.pagesTransactionCategoriesService.getTransactionCategoryById(category.id!).subscribe((data) => {
       let isAssigned = this.isCategoryAssignedToTransactions(data);
-      console.log(data.financialTransactionsCounter);
       if(isAssigned) {
         this.handleCategoryDeletingWhenNotAssigned(data);
       } else {
@@ -118,7 +117,8 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
       headerText: `Deleting category`,
       confirmationText: `This category is assigned to ${category.financialTransactionsCounter} transactions. 
       If you will delete this category those categories will have a category removed or you can select a new category to which those transactions will be assigned to.`,
-      categories,
+      denyBtnText: 'Cancel',
+      confirmBtnText: 'Delete',
     }).subscribe((result: boolean) => {
       if (!result) {
         return;
@@ -178,7 +178,6 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
       if(categoryItem.id === category.id) {
         return category;
       }
-
       return categoryItem;
     });
     this.filterCategories();
