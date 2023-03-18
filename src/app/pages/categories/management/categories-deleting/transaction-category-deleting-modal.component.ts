@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import {  FormControl } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SystemNotificationsService } from 'src/app/common/utils/system-notifications/system-notifications.service';
 import { NotificationType } from 'src/app/common/utils/system-notifications/system.notifications.constants';
@@ -10,22 +10,21 @@ import { ITransactionCategoryDeletingModalData } from './transaction-category-de
 @Component({
   selector: 'app-transaction-category-deleting-modal',
   templateUrl: './transaction-category-deleting-modal.component.html',
-  styleUrls: ['./transaction-category-deleting-modal.component.scss']
+  styleUrls: [ './transaction-category-deleting-modal.component.scss' ],
 })
 export class TransactionCategoryDeletingModalComponent implements OnInit {
   public form!: FormControl;
   public transactionsCategories!: TransactionCategory[];
   public isLoadingTransactionCategories  = true;
 
-  constructor(
+  public constructor(
     @Inject(MAT_DIALOG_DATA) public data: ITransactionCategoryDeletingModalData,
-    private transactionCategoriesService: PagesTransactionCategoriesService,
+    private readonly transactionCategoriesService: PagesTransactionCategoriesService,
     private readonly systemNotificationsService: SystemNotificationsService,
   ) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.getCategories();
-
     this.form = new FormControl();
   }
 
@@ -42,7 +41,7 @@ export class TransactionCategoryDeletingModalComponent implements OnInit {
         this.isLoadingTransactionCategories  = false;
 
         this.systemNotificationsService.showNotification({
-          message: 'Editing transaction failed',
+          message: 'Loading categories failed',
           type: NotificationType.Error,
         });
       },

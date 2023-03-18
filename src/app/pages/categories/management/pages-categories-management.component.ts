@@ -89,7 +89,8 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
 
   public handleDeleteCategory(category: TransactionCategory): void {
     this.pagesTransactionCategoriesService.getTransactionCategoryById(category.id!).subscribe((data) => {
-      let isAssigned = this.isCategoryAssignedToTransactions(data);
+      const isAssigned = this.isCategoryAssignedToTransactions(data);
+
       if(isAssigned) {
         this.handleCategoryDeletingWhenNotAssigned(data);
       } else {
@@ -98,9 +99,9 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
     });    
   }
 
-  private handleCategoryDeletingWhenAssigned(category: TransactionCategory) {
+  public handleCategoryDeletingWhenAssigned(category: TransactionCategory): void {
     this.confirmDialogService.openConfirmModal({
-      headerText: `Deleting category`,
+      headerText: 'Deleting category',
       confirmationText: `Are you sure you want to delete category ${category.name}?`,
     }).subscribe((result: boolean) => {
       if (!result) {
@@ -110,13 +111,12 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
     });
   }
 
-  private handleCategoryDeletingWhenNotAssigned(category: TransactionCategoryFull) {
-    const categories = this.filterCategoriesByType(this.displayedCategories, category.type);
-
+  public handleCategoryDeletingWhenNotAssigned(category: TransactionCategoryFull): void {
     this.transactionCategoryDeletingDialog.openDeletingModal({
-      headerText: `Deleting category`,
-      confirmationText: `This category is assigned to ${category.financialTransactionsCounter} transactions. 
-      If you will delete this category those categories will have a category removed or you can select a new category to which those transactions will be assigned to.`,
+      headerText: 'Deleting category',
+      confirmationText: `This category is assigned to ${category.financialTransactionsCounter!} transactions. 
+      If you will delete this category those transactions will have a category removed or you can select a 
+      new category to which those transactions will be assigned to.`,
       denyBtnText: 'Cancel',
       confirmBtnText: 'Delete',
     }).subscribe((result: boolean) => {
@@ -127,15 +127,8 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
     });
   }
 
-  private filterCategoriesByType(
-    categoriesToFilter: TransactionCategory[], 
-    typeToFilter: WalletTransactionType,
-  ): TransactionCategory[] {
-    return categoriesToFilter.filter(cat => cat.type === typeToFilter);
-  }
-
   private isCategoryAssignedToTransactions(category: TransactionCategoryFull): boolean {
-    return Number(category?.financialTransactionsCounter) > 0;
+    return Number(category.financialTransactionsCounter) > 0;
   }
 
   private initCategories(): void {
@@ -178,6 +171,7 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
       if(categoryItem.id === category.id) {
         return category;
       }
+      
       return categoryItem;
     });
     this.filterCategories();
@@ -185,17 +179,20 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
 
   private deleteCategory(category: TransactionCategory): void {
     this.loadingDialogService.show('Deleting category');
-    this.pagesTransactionCategoriesService.deleteTransactionCategory(category).subscribe({
-        next: () => {
-          this.initCategories();
-          this.loadingDialogService.hide();
-          this.notificationService.showNotification({ message: 'Category deleted succesfully', type: NotificationType.Success });
-        },
-        error: () => {
-          this.loadingDialogService.hide();
-          this.notificationService.showNotification({ message: 'Deleting Category failed', type: NotificationType.Error });
-        },
+
+    this.pagesTransactionCategoriesService.deleteTransactionCategory().subscribe({
+      next: () => {
+        this.initCategories();
+        this.loadingDialogService.hide();
+
+        this.notificationService.showNotification(
+          { message: 'Category deleted succesfully', type: NotificationType.Success });
       },
+      error: () => {
+        this.loadingDialogService.hide();
+        this.notificationService.showNotification({ message: 'Deleting Category failed', type: NotificationType.Error });
+      },
+    },
     );
   }
 }

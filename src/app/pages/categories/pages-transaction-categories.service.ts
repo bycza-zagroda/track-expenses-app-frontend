@@ -42,7 +42,7 @@ export class PagesTransactionCategoriesService {
     );
   }
 
-  public deleteTransactionCategory(category: TransactionCategory): Observable<unknown> {
-    return this.domainsTransactionCategoriesGateway.deleteCategory(category.id!);
+  public deleteTransactionCategory(): Observable<unknown> {
+    return this.domainsTransactionCategoriesGateway.deleteCategory();
   }
 }
