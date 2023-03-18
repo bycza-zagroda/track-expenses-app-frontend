@@ -52,8 +52,8 @@ export class DomainsTransactionCategoriesGateway {
     //return this.http.get<ITransactionCategoryFullResponse>(API_TRANSACTION_CATEGORY_FULL_URL(id));
   }
 
-  public deleteCategory(id: TServerEntityId): Observable<unknown> {
-    return fakeRequest("deleted");
+  public deleteCategory(): Observable<unknown> {
+    return fakeRequest('deleted');
     // return this.http.delete(`${ API_TRANSACTION_CATEGORIES_URL }/${ id }`);
   }
 }
