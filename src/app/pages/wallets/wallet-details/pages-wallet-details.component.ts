@@ -22,7 +22,7 @@ import { NotificationType } from '../../../common/utils/system-notifications/sys
   styleUrls: [ './pages-wallet-details.component.scss' ],
 })
 export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
-  public selectTransactionsTypes: Record<string, WalletSelectionValue> = {
+  public selectTransactionsTypes = {
     'All transactions': '',
     'Incomes': WalletTransactionType.Income,
     'Expenses': WalletTransactionType.Expense,

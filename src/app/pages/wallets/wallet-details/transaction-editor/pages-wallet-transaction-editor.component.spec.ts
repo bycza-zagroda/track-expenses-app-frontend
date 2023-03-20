@@ -185,20 +185,6 @@ describe('TransactionEditorComponent', () => {
 
         expect(component.form.valid).toBeFalse();
       });
-
-      it('should not invoke close dialogRef if amount form in invalid', () => {
-        component.isLoadingTransactionCategories  = false;
-        component.form.get('amount')?.setValue(0);
-        component.form.get('amount')?.markAsTouched();
-        fixture.detectChanges();
-
-        const errorMessageDiv: HTMLButtonElement =
-          fixture.debugElement.query(By.css('.btn__save')).nativeElement as HTMLButtonElement;
-        errorMessageDiv.click();
-        fixture.detectChanges();
-
-        expect(matDialogRef.close).not.toHaveBeenCalled();
-      });
     });
 
     describe('valid form', () => {
@@ -219,6 +205,20 @@ describe('TransactionEditorComponent', () => {
 
         expect(component.form.valid).toBeTrue();
       });
+
+      it('should invoke close dialogRef if amount is valid', () => {
+        component.isLoadingTransactionCategories  = false;
+        component.form.get('amount')?.setValue(0);
+        component.form.get('amount')?.markAsTouched();
+        fixture.detectChanges();
+
+        const errorMessageDiv: HTMLButtonElement =
+          fixture.debugElement.query(By.css('.btn__save')).nativeElement as HTMLButtonElement;
+        errorMessageDiv.click();
+        fixture.detectChanges();
+
+        expect(matDialogRef.close).toHaveBeenCalled();
+      });
     });
 
     describe('transaction categorie', () => {
@@ -229,8 +229,8 @@ describe('TransactionEditorComponent', () => {
 
         it('should show income type transaction categories', () => {
           component.form.get('type')?.setValue(WalletTransactionType.Income);
-          const transactions: TransactionCategory[] = [ 
-            transactionCategoriesObjectsMockFunc()[0], 
+          const transactions: TransactionCategory[] = [
+            transactionCategoriesObjectsMockFunc()[0],
             transactionCategoriesObjectsMockFunc()[1] ];
           expect(component.transactionsCategories).toEqual(transactions);
         });
