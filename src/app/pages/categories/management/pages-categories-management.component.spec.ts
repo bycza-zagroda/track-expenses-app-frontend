@@ -95,8 +95,7 @@ describe('PagesCategoriesManagementComponent', () => {
               By.css('.mat-table'),
             ).nativeElement as HTMLDivElement;
 
-            const sortecCategories = sortAlphabeticallyByProp<TransactionCategory, 'name'>
-            (transactionCategoriesObjectsMockFunc(), 'name');
+            const sortecCategories = sortAlphabeticallyByProp(transactionCategoriesObjectsMockFunc(), 'name');
 
             expect(table).toBeTruthy();
             expect(component.transactionCategoriesData.hasError).toBeFalse();
