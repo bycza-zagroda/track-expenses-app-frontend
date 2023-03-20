@@ -63,7 +63,7 @@ export class PagesWalletTransactionEditorComponent implements OnInit, OnDestroy 
     this.getCategoriesByType(this.data.type);
 
     this.form = new FormGroup<IWalletTransactionModalFormType>({
-      amount: new FormControl(this.data.amount === 0 ? null : this.data.amount, {
+      amount: new FormControl(this.data.amount, {
         validators: [
           Validators.required,
           Validators.pattern(regexAmount),
@@ -121,7 +121,7 @@ export class PagesWalletTransactionEditorComponent implements OnInit, OnDestroy 
     return (control: AbstractControl) => {
       const value: number = parseFloat(control.value as string);
 
-      if(value && value > 0) {
+      if(!isNaN(value) && value >= 0) {
         return null;
       }
 

@@ -3,6 +3,7 @@ import { TransactionAmountPipe } from './transaction-amount.pipe';
 
 describe('TransactionAmountPipe', () => {
   let pipe: TransactionAmountPipe;
+  let amount: number;
 
   beforeEach(() => {
     pipe = new TransactionAmountPipe();
@@ -13,20 +14,23 @@ describe('TransactionAmountPipe', () => {
   });
 
   it('adds minus to negative value', () => {
-    const transformedValue: string = pipe.transform(30, WalletTransactionType.Expense);
+    amount = 30;
+    const transformedValue: string = pipe.transform(amount, WalletTransactionType.Expense);
 
-    expect(transformedValue).toBe('- 30');
+    expect(transformedValue).toBe(`- ${amount.toFixed(2)}`);
   });
 
   it('adds plus to positive value', () => {
-    const transformedValue: string = pipe.transform(20, WalletTransactionType.Income);
+    amount = 20;
+    const transformedValue: string = pipe.transform(amount, WalletTransactionType.Income);
 
-    expect(transformedValue).toBe('+ 20');
+    expect(transformedValue).toBe(`+ ${amount.toFixed(2)}`);
   });
 
   it('throw error for value = 0', () => {
-    const transformedValue = pipe.transform(0);
+    amount = 0;
+    const transformedValue = pipe.transform(amount);
 
-    expect(transformedValue).toBe('0');
+    expect(transformedValue).toBe(amount.toFixed(2));
   });
 });
