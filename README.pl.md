@@ -3,15 +3,15 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/877a40fe-be18-4706-afca-48fef282bfac/deploy-status)](https://app.netlify.com/sites/track-expenses-app-frontend/deploys)
 * 
 * [O Projekcie](#o-projekcie)
-* [Początkowe założenia aplikacji](#zalozenia)
-* [Wymagane aplikacje/narzędzia](#wymagane-aplikacje-narzedzia)
-* [Jak zacząć](#jak-zaczacz)
+* [Początkowe założenia aplikacji](#początkowe-założenia-aplikacji)
+* [Wymagane aplikacje/narzędzia](#wymagane-aplikacjenarzędzia)
+* [Jak zacząć](#jak-zacząć)
   - [Repozytorium backend](#repozytorium-front-end)
 * [Stack technologiczny](#stack-technologiczny)
   - [Development](#development)
   - [Testy](#testy)
-* [Kodeks postępowania współtwórców (CoC)](#kodeks-post-powania-wsp--tw-rc-w--coc-)
-* [Twój wkład](#tw-j-wk-ad)
+* [Kodeks postępowania współtwórców (CoC)](#kodeks-postępowania-współtwórców--coc-)
+* [Twój wkład](#twój-wkład)
 * [Autorzy](#autorzy)
 * [Licencja](#licencja)
 
@@ -53,13 +53,13 @@ Należy sklonować repozytorium backend i frontend używając [Git'a](https://gi
 - [Karma](https://angular.io/guide/testing)
 
 ## Kodeks postępowania współtwórców (CoC)
-Więcej informacji znajdziesz w sekcji [Kodeks postępowania współtwórców](doc/CODE_OF_CONDUCT.pl.md)
+Więcej informacji znajdziesz w sekcji [Kodeks postępowania współtwórców](CODE_OF_CONDUCT.pl.md)
 
 ## Twój wkład
-Proszę przeczytać [CONTRIBUTING.md](doc/CONTRIBUTING.md)
+Proszę przeczytać [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## Autorzy
 Społeczność [**_bycza-zagroda_**](https://github.com/orgs/bycza-zagroda/people) ❤
 
 ## Licencja
-Projekt jest objęty licencją [_Apache License Version 2.0, January 2004_](doc/LICENSE)
+Projekt jest objęty licencją [_Apache License Version 2.0, January 2004_](LICENSE)
