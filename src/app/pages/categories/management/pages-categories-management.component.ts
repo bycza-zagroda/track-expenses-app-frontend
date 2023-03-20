@@ -81,7 +81,7 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
   private initCategories(): void {
     this.pagesTransactionCategoriesService.getCategories().subscribe({
       next: (categories: TransactionCategory[]) => {
-        this.displayedCategories = sortAlphabeticallyByProp<TransactionCategory, 'name'>(categories, 'name');
+        this.displayedCategories = sortAlphabeticallyByProp(categories, 'name');
 
         this.transactionCategoriesData = {
           data: categories,
@@ -105,7 +105,7 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
         (this.categoriesTypeForm.value === '') ? true : this.categoriesTypeForm.value === category.type.toString(),
     );
 
-    this.displayedCategories = sortAlphabeticallyByProp<TransactionCategory, 'name'>(this.displayedCategories, 'name');
+    this.displayedCategories = sortAlphabeticallyByProp(this.displayedCategories, 'name');
   }
 
   private createCategory(transaction: TransactionCategory): void {
