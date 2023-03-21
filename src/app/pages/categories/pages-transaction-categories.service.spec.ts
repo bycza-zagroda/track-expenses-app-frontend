@@ -15,6 +15,7 @@ import { PagesTransactionCategoriesService } from './pages-transaction-categorie
 import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
 import { TransactionCategoryFull } from './transaction-category-full.model';
+import { MatDialog } from '@angular/material/dialog';
 
 describe('PagesTransactionCategoriesService', () => {
   let service: PagesTransactionCategoriesService;
@@ -38,6 +39,7 @@ describe('PagesTransactionCategoriesService', () => {
     TestBed.configureTestingModule({
       providers: [
         { provide: DomainsTransactionCategoriesGateway, useValue: gateway },
+        { provide: MatDialog, useValue: {} },
       ],
     });
     service = TestBed.inject(PagesTransactionCategoriesService);

@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { map, Observable } from 'rxjs';
 import { TServerEntityId } from 'src/app/common/http/common.http.types';
 import { DomainsTransactionCategoriesGateway } from 'src/app/domains/categories/domains.transaction-categories.gateway';
 import { ITransactionCategoryFullResponse } from 'src/app/domains/categories/domains.transaction-categories.types';
+import { 
+  TransactionCategoryDeletingModalComponent, 
+} from './management/categories-deleting/transaction-category-deleting-modal.component';
 import { TransactionCategoryFull } from './transaction-category-full.model';
 import { TransactionCategory } from './transaction-category.model';
 
@@ -12,7 +16,17 @@ import { TransactionCategory } from './transaction-category.model';
 export class PagesTransactionCategoriesService {
   public constructor(
     private readonly domainsTransactionCategoriesGateway: DomainsTransactionCategoriesGateway,
+    private readonly dialog: MatDialog,
   ) {}
+
+  public showCategoryDeletionModal(categoryId: number): Observable<boolean> {
+    return this.dialog.open<TransactionCategoryDeletingModalComponent, number, boolean>
+    (TransactionCategoryDeletingModalComponent, {
+      data: categoryId,
+    }).afterClosed().pipe(
+      map((val: boolean | undefined) => !!val),
+    );
+  }
 
   public getCategories(): Observable<TransactionCategory[]> {
     return this.domainsTransactionCategoriesGateway.getTransactionCategories().pipe(

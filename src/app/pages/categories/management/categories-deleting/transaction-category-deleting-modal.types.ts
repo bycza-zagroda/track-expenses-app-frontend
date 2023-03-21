@@ -1,13 +1,7 @@
 import { FormControl } from '@angular/forms';
-
-export interface ITransactionCategoryDeletingModalData {
-    headerText: string
-    confirmationText: string,
-    confirmBtnText?: string,
-    denyBtnText?: string,
-  }
+import { TServerEntityId } from 'src/app/common/http/common.http.types';
 
 export interface ITransactionCategoryDeletingModalFormType {
-  category: FormControl<number  | null>;
+  category: FormControl<TServerEntityId | null>;
 }
   
