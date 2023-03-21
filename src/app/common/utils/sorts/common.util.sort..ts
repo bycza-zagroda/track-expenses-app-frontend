@@ -13,6 +13,7 @@ export function sortAlphabeticallyByProp<T extends object, K extends KeysMatchin
       return 0;
     }
 
+
     return propAValue.toLowerCase() < propBValue.toLowerCase() ? -1 : 1;
   });
 }
