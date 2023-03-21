@@ -51,7 +51,7 @@
       <ng-container matColumnDef="amount">
         <th mat-header-cell *matHeaderCellDef> Amount </th>
         <td mat-cell *matCellDef="let element">
-          <span [ngClass]="element.amount === 0 ? 'amount--0' : (element.type === walletTransactionType.Expense ? 'amount--expense' : 'amount--income')">
+          <span [ngClass]="element.amount === 0 ? 'amount--zero' : (element.type === walletTransactionType.Expense ? 'amount--expense' : 'amount--income')">
             {{ element.amount | transactionAmount: element.type }}
           </span>
         </td>

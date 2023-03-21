@@ -90,42 +90,38 @@ describe('TransactionEditorComponent', () => {
 
     describe('amount field validation', () => {
       describe('error', () => {
-        describe('should show validation error if value has invalid format', () => {
-          it('12.3333', () => {
-            component.isLoadingTransactionCategories = false;
-            component.form.get('amount')?.setValue(12.3333);
-            component.form.get('amount')?.markAsTouched();
+        it('should show validation error if value is equal to 12.3333', () => {
+          component.isLoadingTransactionCategories = false;
+          component.form.get('amount')?.setValue(12.3333);
+          component.form.get('amount')?.markAsTouched();
 
-            fixture.detectChanges();
-            const errorMessageDiv = fixture.debugElement.query(By.css('.mat-error'));
-            const errorMessageText: HTMLDivElement = errorMessageDiv.nativeElement as HTMLDivElement;
+          fixture.detectChanges();
+          const errorMessageDiv = fixture.debugElement.query(By.css('.mat-error'));
+          const errorMessageText: HTMLDivElement = errorMessageDiv.nativeElement as HTMLDivElement;
 
-            expect(errorMessageText.textContent!.trim()).toBe(ERROR_MESSAGE_AMOUNT_INVALID_FORMAT);
-          });
+          expect(errorMessageText.textContent!.trim()).toBe(ERROR_MESSAGE_AMOUNT_INVALID_FORMAT);
         });
       });
 
       describe('success', () => {
-        describe('should show no validation error if amount has valid format', () => {
-          it('0', () => {
-            component.form.get('amount')?.setValue(0);
-            component.form.get('amount')?.markAsTouched();
+        it('should show no validation error if amount is equal to 0', () => {
+          component.form.get('amount')?.setValue(0);
+          component.form.get('amount')?.markAsTouched();
 
-            fixture.detectChanges();
+          fixture.detectChanges();
 
-            const errorMessageDiv = fixture.debugElement.query(By.css('.mat-error'));
-            expect(errorMessageDiv).toBeFalsy();
-          });
+          const errorMessageDiv = fixture.debugElement.query(By.css('.mat-error'));
+          expect(errorMessageDiv).toBeFalsy();
+        });
 
-          it('10.12', () => {
-            component.form.get('amount')?.setValue(10.21);
-            component.form.get('amount')?.markAsTouched();
+        it('should show no validation error if amount is equal to 10.12', () => {
+          component.form.get('amount')?.setValue(10.21);
+          component.form.get('amount')?.markAsTouched();
 
-            fixture.detectChanges();
+          fixture.detectChanges();
 
-            const errorMessageDiv = fixture.debugElement.query(By.css('.mat-error'));
-            expect(errorMessageDiv).toBeFalsy();
-          });
+          const errorMessageDiv = fixture.debugElement.query(By.css('.mat-error'));
+          expect(errorMessageDiv).toBeFalsy();
         });
       });
     });
