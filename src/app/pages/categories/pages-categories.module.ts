@@ -6,6 +6,9 @@ import { MaterialModule } from 'src/app/material.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonComponentsModule } from 'src/app/common/components/common-components.module';
 import { PagesCategoriesEditorComponent } from './management/categories-editor/pages-categories-editor.component';
+import { 
+  TransactionCategoryDeletingModalComponent, 
+} from './management/categories-deleting/transaction-category-deleting-modal.component';
 
 const routes: Routes = [
   {
@@ -18,6 +21,7 @@ const routes: Routes = [
   declarations: [
     PagesCategoriesManagementComponent,
     PagesCategoriesEditorComponent,
+    TransactionCategoryDeletingModalComponent,
   ],
   imports: [
     RouterModule.forChild(routes),
