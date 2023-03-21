@@ -121,7 +121,7 @@ export class PagesWalletTransactionEditorComponent implements OnInit, OnDestroy 
     return (control: AbstractControl) => {
       const value: number = parseFloat(control.value as string);
 
-      if(!isNaN(value) && value >= 0) {
+      if (!isNaN(value) && value >= 0) {
         return null;
       }
 

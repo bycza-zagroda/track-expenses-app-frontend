@@ -6,7 +6,7 @@ import { WalletTransactionType } from 'src/app/domains/transactions/domains.tran
 })
 export class TransactionAmountPipe implements PipeTransform {
   public transform(value: number, type?: WalletTransactionType): string {
-    if(value === 0) {
+    if (value === 0) {
       return value.toFixed(2).toString();
     }
 
