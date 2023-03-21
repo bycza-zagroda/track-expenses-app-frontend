@@ -85,7 +85,7 @@ export class PagesWalletsManagementComponent implements OnInit {
   }
 
   private createWallet(wallet: WalletsManagementItem): void {
-    this.myWalletsData.data = [ wallet, ...this.myWalletsData.data! ].sort().reverse();
+    this.myWalletsData.data = [ wallet, ...this.myWalletsData.data! ].sort();
   }
 
   private updateWallet(wallet: WalletsManagementItem, { name }: WalletsManagementItem): void {
