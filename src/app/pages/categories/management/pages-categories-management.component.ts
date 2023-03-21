@@ -8,11 +8,8 @@ import { TransactionCategory } from '../transaction-category.model';
 import { sortAlphabeticallyByProp } from 'src/app/common/utils/sorts/common.util.sort.';
 import { PagesCategoriesEditorService } from './categories-editor/pages-categories-editor.service';
 import { PagesTransactionCategoriesService } from '../pages-transaction-categories.service';
-import { ConfirmDialogService } from 'src/app/common/confirmation-modal/confirm-dialog.service';
 import { LoadingSnackbarService } from 'src/app/common/loading-modal/loading-snackbar.service';
 import { SystemNotificationsService } from 'src/app/common/utils/system-notifications/system-notifications.service';
-import { TransactionCategoryFull } from '../transaction-category-full.model';
-import { TransactionCategoryDeletingModalService } from './categories-deleting/transaction-category-deleting-modal.service';
 
 export type CategorySelectionValue = WalletTransactionType | '';
 
@@ -45,10 +42,8 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
   public constructor(
     private readonly pagesCategoriesEditorService: PagesCategoriesEditorService,
     private readonly pagesTransactionCategoriesService: PagesTransactionCategoriesService,
-    private readonly confirmDialogService: ConfirmDialogService,
     private readonly loadingDialogService: LoadingSnackbarService,
     private readonly notificationService: SystemNotificationsService,
-    private readonly transactionCategoryDeletingDialog: TransactionCategoryDeletingModalService,
   ) { }
 
   public ngOnInit(): void {
@@ -87,48 +82,13 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
       });
   }
 
-  public handleDeleteCategory(category: TransactionCategory): void {
-    this.pagesTransactionCategoriesService.getTransactionCategoryById(category.id!).subscribe((data) => {
-      const isAssigned = this.isCategoryAssignedToTransactions(data);
-
-      if(isAssigned) {
-        this.handleCategoryDeletingWhenNotAssigned(data);
-      } else {
-        this.handleCategoryDeletingWhenAssigned(category);
-      }
-    });    
-  }
-
-  public handleCategoryDeletingWhenAssigned(category: TransactionCategory): void {
-    this.confirmDialogService.openConfirmModal({
-      headerText: 'Deleting category',
-      confirmationText: `Are you sure you want to delete category ${category.name}?`,
-    }).subscribe((result: boolean) => {
-      if (!result) {
+  public handleDeleteCategory(categoryId: number): void {
+    this.pagesTransactionCategoriesService.showCategoryDeletionModal(categoryId).subscribe((wasDeleted) => {
+      if (!wasDeleted) {
         return;
       }
-      this.deleteCategory(category);
+      this.deleteCategory();
     });
-  }
-
-  public handleCategoryDeletingWhenNotAssigned(category: TransactionCategoryFull): void {
-    this.transactionCategoryDeletingDialog.openDeletingModal({
-      headerText: 'Deleting category',
-      confirmationText: `This category is assigned to ${category.financialTransactionsCounter!} transactions. 
-      If you will delete this category those transactions will have a category removed or you can select a 
-      new category to which those transactions will be assigned to.`,
-      denyBtnText: 'Cancel',
-      confirmBtnText: 'Delete',
-    }).subscribe((result: boolean) => {
-      if (!result) {
-        return;
-      }
-      this.deleteCategory(category);
-    });
-  }
-
-  private isCategoryAssignedToTransactions(category: TransactionCategoryFull): boolean {
-    return Number(category.financialTransactionsCounter) > 0;
   }
 
   private initCategories(): void {
@@ -177,7 +137,7 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
     this.filterCategories();
   }
 
-  private deleteCategory(category: TransactionCategory): void {
+  private deleteCategory(): void {
     this.loadingDialogService.show('Deleting category');
 
     this.pagesTransactionCategoriesService.deleteTransactionCategory().subscribe({
@@ -190,7 +150,7 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
       },
       error: () => {
         this.loadingDialogService.hide();
-        this.notificationService.showNotification({ message: 'Deleting Category failed', type: NotificationType.Error });
+        this.notificationService.showNotification({ message: 'Deleting category failed', type: NotificationType.Error });
       },
     },
     );
