@@ -15,6 +15,7 @@ import { WalletTransaction } from './pages-wallet-details-item.model';
 import { PagesWalletDetailsService } from './pages-wallet-details.service';
 import { PagesWalletTransactionEditorService } from './transaction-editor/pages-wallet-transaction-editor.service';
 import { NotificationType } from '../../../common/utils/system-notifications/system.notifications.constants';
+import { sortByDate } from 'src/app/common/utils/sorts/common.util.sort.';
 
 @Component({
   selector: 'app-pages-wallet-details',
@@ -139,6 +140,8 @@ export class PagesWalletDetailsComponent implements OnInit, OnDestroy {
       (transaction: WalletTransaction) =>
         (this.transactionsTypeForm.value === '') ? true : this.transactionsTypeForm.value === transaction.type.toString(),
     );
+
+    this.displayedTransactions = sortByDate(this.displayedTransactions, 'date');
   }
 
   private createTransaction(transaction: WalletTransaction): void {
