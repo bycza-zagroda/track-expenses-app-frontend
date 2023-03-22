@@ -13,7 +13,27 @@ export function sortAlphabeticallyByProp<T extends object, K extends KeysMatchin
       return 0;
     }
 
-
     return propAValue.toLowerCase() < propBValue.toLowerCase() ? -1 : 1;
+  });
+}
+
+export function sortByDate<T extends object, K extends KeysMatching<T, Date>>
+(array: T[], prop: K, desc = false): T[] {
+  return array.sort((a, b) => {
+    const propAValue = a[prop];
+    const propBValue = b[prop];
+
+    if (!(propAValue instanceof Date) || !(propBValue instanceof Date)) {
+      throw new Error(`[${prop.toString()}] value is not a proper Date type`);
+    }
+
+    if (propAValue === propBValue) {
+      return 0;
+    }
+
+    return (desc) ?
+      (propAValue < propBValue ? -1 : 1)
+      :
+      (propAValue < propBValue ? 1 : -1);
   });
 }

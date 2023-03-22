@@ -8,6 +8,7 @@ import { LoadingSnackbarService } from '../../../common/loading-modal/loading-sn
 import { PagesWalletsManagementEditorService } from './wallet-editor/pages-wallets-management-editor.service';
 import { Router } from '@angular/router';
 import { SystemNotificationsService } from '../../../common/utils/system-notifications/system-notifications.service';
+import { sortAlphabeticallyByProp } from 'src/app/common/utils/sorts/common.util.sort.';
 
 @Component({
   selector: 'app-wallets-management',
@@ -85,7 +86,7 @@ export class PagesWalletsManagementComponent implements OnInit {
   }
 
   private createWallet(wallet: WalletsManagementItem): void {
-    this.myWalletsData.data = [ wallet, ...this.myWalletsData.data! ].sort();
+    this.myWalletsData.data = sortAlphabeticallyByProp([ wallet, ...this.myWalletsData.data! ], 'name');
   }
 
   private updateWallet(wallet: WalletsManagementItem, { name }: WalletsManagementItem): void {
