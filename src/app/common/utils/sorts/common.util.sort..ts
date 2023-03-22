@@ -18,7 +18,7 @@ export function sortAlphabeticallyByProp<T extends object, K extends KeysMatchin
 }
 
 export function sortByDate<T extends object, K extends KeysMatching<T, Date>>
-(array: T[], prop: K, desc = false): T[] {
+(array: T[], prop: K, descending = false): T[] {
   return array.sort((a, b) => {
     const propAValue = a[prop];
     const propBValue = b[prop];
@@ -31,9 +31,6 @@ export function sortByDate<T extends object, K extends KeysMatching<T, Date>>
       return 0;
     }
 
-    return (desc) ?
-      (propAValue < propBValue ? -1 : 1)
-      :
-      (propAValue < propBValue ? 1 : -1);
+    return (descending) ? (propAValue < propBValue ? -1 : 1) : (propAValue < propBValue ? 1 : -1);
   });
 }
