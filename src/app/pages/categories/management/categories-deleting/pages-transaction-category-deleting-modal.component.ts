@@ -7,11 +7,11 @@ import { PagesTransactionCategoriesService } from '../../pages-transaction-categ
 import { TransactionCategoryFull } from '../../transaction-category-full.model';
 
 @Component({
-  selector: 'app-transaction-category-deleting-modal',
-  templateUrl: './transaction-category-deleting-modal.component.html',
-  styleUrls: [ './transaction-category-deleting-modal.component.scss' ],
+  selector: 'app-pages-transaction-category-deleting-modal',
+  templateUrl: './pages-transaction-category-deleting-modal.component.html',
+  styleUrls: [ './pages-transaction-category-deleting-modal.component.scss' ],
 })
-export class TransactionCategoryDeletingModalComponent implements OnInit {
+export class PagesTransactionCategoryDeletingModalComponent implements OnInit {
   public transactionCategoryId!: number;
   public transactionCategoryFull!: TransactionCategoryFull;
   public isAssigned!: boolean;
