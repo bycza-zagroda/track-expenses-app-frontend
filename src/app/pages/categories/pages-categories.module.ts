@@ -7,8 +7,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CommonComponentsModule } from 'src/app/common/components/common-components.module';
 import { PagesCategoriesEditorComponent } from './management/categories-editor/pages-categories-editor.component';
 import { 
-  TransactionCategoryDeletingModalComponent, 
-} from './management/categories-deleting/transaction-category-deleting-modal.component';
+  PagesTransactionCategoryDeletingModalComponent, 
+} from './management/categories-deleting/pages-transaction-category-deleting-modal.component';
 
 const routes: Routes = [
   {
@@ -21,7 +21,7 @@ const routes: Routes = [
   declarations: [
     PagesCategoriesManagementComponent,
     PagesCategoriesEditorComponent,
-    TransactionCategoryDeletingModalComponent,
+    PagesTransactionCategoryDeletingModalComponent,
   ],
   imports: [
     RouterModule.forChild(routes),

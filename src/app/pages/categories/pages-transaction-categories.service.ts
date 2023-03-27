@@ -5,8 +5,8 @@ import { TServerEntityId } from 'src/app/common/http/common.http.types';
 import { DomainsTransactionCategoriesGateway } from 'src/app/domains/categories/domains.transaction-categories.gateway';
 import { ITransactionCategoryFullResponse } from 'src/app/domains/categories/domains.transaction-categories.types';
 import { 
-  TransactionCategoryDeletingModalComponent, 
-} from './management/categories-deleting/transaction-category-deleting-modal.component';
+  PagesTransactionCategoryDeletingModalComponent, 
+} from './management/categories-deleting/pages-transaction-category-deleting-modal.component';
 import { TransactionCategoryFull } from './transaction-category-full.model';
 import { TransactionCategory } from './transaction-category.model';
 
@@ -20,8 +20,8 @@ export class PagesTransactionCategoriesService {
   ) {}
 
   public showCategoryDeletionModal(categoryId: number): Observable<boolean> {
-    return this.dialog.open<TransactionCategoryDeletingModalComponent, number, boolean>
-    (TransactionCategoryDeletingModalComponent, {
+    return this.dialog.open<PagesTransactionCategoryDeletingModalComponent, number, boolean>
+    (PagesTransactionCategoryDeletingModalComponent, {
       data: categoryId,
     }).afterClosed().pipe(
       map((val: boolean | undefined) => !!val),
