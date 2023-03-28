@@ -82,12 +82,12 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
       });
   }
 
-  public handleDeleteCategory(categoryId: number): void {
-    this.pagesTransactionCategoriesService.showCategoryDeletionModal(categoryId).subscribe((wasDeleted) => {
+  public handleDeleteCategory(category: TransactionCategory): void {
+    this.pagesTransactionCategoriesService.showCategoryDeletionModal(category.id!).subscribe((wasDeleted) => {
       if (!wasDeleted) {
         return;
       }
-      this.deleteCategory();
+      this.deleteCategory(category);
     });
   }
 
@@ -137,12 +137,12 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
     this.filterCategories();
   }
 
-  private deleteCategory(): void {
+  private deleteCategory(category: TransactionCategory): void {
     this.loadingDialogService.show('Deleting category');
+    this.removeCategoryFromCategoriesData(category);
 
     this.pagesTransactionCategoriesService.deleteTransactionCategory().subscribe({
       next: () => {
-        this.initCategories();
         this.loadingDialogService.hide();
 
         this.notificationService.showNotification(
@@ -154,5 +154,11 @@ export class PagesCategoriesManagementComponent implements OnInit, OnDestroy {
       },
     },
     );
+  }
+
+  private removeCategoryFromCategoriesData(category: TransactionCategory): void {
+    const index = this.transactionCategoriesData.data!.indexOf(category);
+    this.transactionCategoriesData.data!.splice(index, 1);
+    this.filterCategories();
   }
 }
