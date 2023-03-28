@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { combineLatest, Observable } from 'rxjs';
 import { SystemNotificationsService } from 'src/app/common/utils/system-notifications/system-notifications.service';
 import { NotificationType } from 'src/app/common/utils/system-notifications/system.notifications.constants';
 import { TransactionCategory } from 'src/app/pages/categories/transaction-category.model';
@@ -25,22 +26,15 @@ export class PagesTransactionCategoryDeletingModalComponent implements OnInit {
   ) { }
 
   public ngOnInit(): void {
-    this.getCategoryById();
+    this.loadTransactionCategories();
     this.categorySelectionField = new FormControl();
   }
 
-  private getCategoryById(): void {
-    this.transactionCategoriesService.getTransactionCategoryById(this.transactionCategoryId).subscribe((category) => {
-      this.isAssigned = category.financialTransactionsCounter! > 0;
-      this.transactionCategoryFull = category;
-      this.getCategories();
-    });
-  }
-
-  private getCategories(): void {
-    this.transactionCategoriesService.getCategories().subscribe({
-      next: (receivedCategories) => {
-        this.transactionCategories = receivedCategories;
+  private loadTransactionCategories(): void {
+    combineLatest([ this.getCategoryById(), this.getCategories() ]).subscribe({
+      next: ([ transactionCategoryFullObs, transactionCategoryListObs ]) => {
+        this.assignCategoryFull(transactionCategoryFullObs);
+        this.assignCategories(transactionCategoryListObs);
         this.isLoadingTransactionCategories = false;
       },
       complete: () => {
@@ -48,12 +42,28 @@ export class PagesTransactionCategoryDeletingModalComponent implements OnInit {
       },
       error: () => {
         this.isLoadingTransactionCategories  = false;
-
         this.systemNotificationsService.showNotification({
           message: 'Loading categories failed',
           type: NotificationType.Error,
         });
       },
     });
+  }
+
+  private getCategoryById(): Observable<TransactionCategoryFull> {
+    return this.transactionCategoriesService.getTransactionCategoryById(this.transactionCategoryId);
+  }
+
+  private assignCategoryFull(transactionCategoryFullObs: TransactionCategoryFull): void {
+    this.isAssigned = transactionCategoryFullObs.financialTransactionsCounter! > 0;
+    this.transactionCategoryFull = transactionCategoryFullObs;
+  }
+
+  private assignCategories(transactionCategoryListObs: TransactionCategory[]): void {
+    this.transactionCategories = transactionCategoryListObs;
+  }
+
+  private getCategories(): Observable<TransactionCategory[]> {
+    return this.transactionCategoriesService.getCategories();
   }
 }
