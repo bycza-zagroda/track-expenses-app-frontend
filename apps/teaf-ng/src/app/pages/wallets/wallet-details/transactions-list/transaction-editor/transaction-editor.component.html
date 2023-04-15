@@ -1,0 +1,48 @@
+<div class="transaction-editor">
+  <form [formGroup]="form">
+    <div class="transaction-editor__fields-container">
+      <teaf-ng-form-field>
+        <label>Amount</label>
+        <p-inputNumber formControlName="amount" mode="decimal" [minFractionDigits]="2" [maxFractionDigits]="2" [min]="0"> </p-inputNumber>
+      </teaf-ng-form-field>
+
+      <teaf-ng-form-field>
+        <label>Date</label>
+        <p-calendar appendTo="body" formControlName="date"></p-calendar>
+      </teaf-ng-form-field>
+    </div>
+
+    <div class="transaction-editor__fields-container">
+      <teaf-ng-form-field>
+        <label>Type</label>
+
+        <div class="radio-button-group radio-button-group--horizontal">
+          <div class="radio-button">
+            <p-radioButton [value]="transactionTypes.Income" formControlName="type"></p-radioButton>
+            <label>Income</label>
+          </div>
+
+          <div class="radio-button">
+            <p-radioButton [value]="transactionTypes.Expense" formControlName="type"></p-radioButton>
+            <label>Expense</label>
+          </div>
+        </div>
+      </teaf-ng-form-field>
+
+      <teaf-ng-form-field>
+        <label>Category</label>
+        <p-dropdown [options]="visibleCategories" formControlName="category" optionLabel="name" optionValue="id"></p-dropdown>
+      </teaf-ng-form-field>
+    </div>
+
+    <teaf-ng-form-field [control]="form.controls.description">
+      <label for="description">Description</label>
+      <input type="text" id="description" pInputText formControlName="description"/>
+    </teaf-ng-form-field>
+  </form>
+
+  <div class="transaction-editor__actions">
+    <button class="p-button-outlined" pButton type="button" label="Cancel" [disabled]="isSaving" (click)="cancel()"></button>
+    <button pButton type="button" label="Save" [loading]="isSaving" [disabled]="isSaving || form.invalid" (click)="save()"></button>
+  </div>
+</div>

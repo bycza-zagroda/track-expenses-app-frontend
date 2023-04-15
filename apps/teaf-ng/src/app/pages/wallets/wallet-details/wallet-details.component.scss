@@ -1,0 +1,34 @@
+.wallet-details {
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+    padding: 25px 0;
+  }
+
+  &__loading-data-error,
+  &__no-data-info {
+    margin-top: 100px;
+  }
+
+  &__loading-container {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__data-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    teaf-ng-wallet-data {
+      flex: 1;
+    }
+
+    @media (min-width: 800px) {
+      flex-direction: row;
+      align-items: stretch;
+      justify-content: space-between;
+    }
+  }
+}

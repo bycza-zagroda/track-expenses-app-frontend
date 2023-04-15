@@ -1,0 +1,26 @@
+<teaf-ng-container>
+  <div class="wallets-overview__header">
+    <span class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input pInputText [formControl]="walletSearchControl" />
+    </span>
+
+    <p-button (click)="onWalletCreate()" [disabled]="showLoading" label="Add new wallet" icon="pi pi-plus" styleClass="p-button-sm"></p-button>
+  </div>
+
+  <div class="wallets-overview__no-data-info" *ngIf="showNoWalletsInfo">
+    <teaf-ng-no-results title="You have no wallets currently" text="Considering adding your first wallet :)"></teaf-ng-no-results>
+  </div>
+
+  <div class="wallets-overview__loading-data-error" *ngIf="showLoadingError">
+    <teaf-ng-loading-data-error></teaf-ng-loading-data-error>
+  </div>
+
+  <div *ngIf="showLoading" class="wallets-overview__loading-container">
+    <p-progressSpinner styleClass="w-4rem h-4rem" strokeWidth="5" animationDuration=".5s"></p-progressSpinner>
+  </div>
+
+  <div *ngIf="showWallets" class="wallets-overview__container">
+    <teaf-ng-wallets-overview-item *ngFor="let wallet of wallets | filterByText :'name' : walletSearchControl.value | sortByText : 'name'" [wallet]="wallet" (walletDeleted)="onWalletDelete(wallet)"></teaf-ng-wallets-overview-item>
+  </div>
+</teaf-ng-container>

@@ -1,114 +1,41 @@
 {
   "root": true,
-  "ignorePatterns": ["projects/**/*"],
+  "ignorePatterns": ["**/*"],
+  "plugins": ["@nrwl/nx"],
   "overrides": [
     {
-      "files": ["*.ts"],
-      "parserOptions": {
-        "project": ["tsconfig.json"],
-        "createDefaultProgram": true
-      },
-      "extends": [
-        "plugin:@angular-eslint/recommended",
-        "plugin:@angular-eslint/template/process-inline-templates",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:@typescript-eslint/recommended-requiring-type-checking",
-        "plugin:@typescript-eslint/strict"
-      ],
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "rules": {
-        "@angular-eslint/directive-selector": [
+        "@nrwl/nx/enforce-module-boundaries": [
           "error",
           {
-            "type": "attribute",
-            "prefix": "app",
-            "style": "camelCase"
-          }
-        ],
-        "@angular-eslint/component-selector": [
-          "error",
-          {
-            "type": "element",
-            "prefix": "app",
-            "style": "kebab-case"
-          }
-        ],
-        "comma-dangle": ["warn", "always-multiline"],
-        "quotes": ["error", "single"],
-        "@typescript-eslint/explicit-member-accessibility": "warn",
-        "@typescript-eslint/no-non-null-assertion": "off",
-        "@typescript-eslint/explicit-function-return-type": "warn",
-        "no-multiple-empty-lines": ["error", { "max":  1, "maxEOF": 1, "maxBOF": 1 }],
-        "@typescript-eslint/unbound-method": "off",
-        "padded-blocks": ["error", "never"],
-        "semi": ["error", "always"],
-        "object-curly-spacing": ["error", "always"],
-        "array-bracket-spacing": ["error", "always"],
-        "newline-before-return": "error",
-        "indent": ["error", 2],
-        "max-len": ["error", 125],
-        "@typescript-eslint/member-ordering": [
-          "error",
-          {
-            "default": [
-              // Index signature
-              "signature",
-
-              // Fields
-              "public-abstract-field",
-              "public-static-field",
-              "public-instance-field",
-
-              "protected-abstract-field",
-              "protected-static-field",
-              "protected-instance-field",
-
-              "private-abstract-field",
-              "private-static-field",
-              "private-instance-field",
-
-              // Constructors
-              "public-constructor",
-              "protected-constructor",
-              "private-constructor",
-
-              // Methods
-              "public-abstract-method",
-              "public-static-method",
-              "public-instance-method",
-
-              "protected-abstract-method",
-              "protected-static-method",
-              "protected-instance-method",
-
-              "private-abstract-method",
-              "private-static-method",
-              "private-instance-method"
-            ]}
-        ],
-        "padding-line-between-statements": [
-          "error",
-          {
-            "blankLine": "always",
-            "prev": "*",
-            "next": "block-like"
-          },
-          {
-            "blankLine": "always",
-            "prev": "*",
-            "next": "multiline-expression"
+            "enforceBuildableLibDependency": true,
+            "allow": [],
+            "depConstraints": [
+              {
+                "sourceTag": "*",
+                "onlyDependOnLibsWithTags": ["*"]
+              }
+            ]
           }
         ]
       }
     },
     {
-      "files": ["*.component.ts", "*.module.ts"],
-      "rules": {
-        "@typescript-eslint/no-extraneous-class": "off"
-      }
+      "files": ["*.ts", "*.tsx"],
+      "extends": ["plugin:@nrwl/nx/typescript"],
+      "rules": {}
     },
     {
-      "files": ["*.html"],
-      "extends": ["plugin:@angular-eslint/template/recommended"],
+      "files": ["*.js", "*.jsx"],
+      "extends": ["plugin:@nrwl/nx/javascript"],
+      "rules": {}
+    },
+    {
+      "files": ["*.spec.ts", "*.spec.tsx", "*.spec.js", "*.spec.jsx"],
+      "env": {
+        "jest": true
+      },
       "rules": {}
     }
   ]

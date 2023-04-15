@@ -1,0 +1,37 @@
+:host {
+  display: block;
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+
+.wallets-overview {
+  &__loading-data-error,
+  &__no-data-info {
+    margin-top: 100px;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    gap: 15px;
+
+    @media (min-width: 460px) {
+      flex-direction: row;
+    }
+  }
+
+  &__container {
+    margin-top: 25px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(345px, 1fr));
+    gap: 25px;
+  }
+
+  &__loading-container {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+  }
+}

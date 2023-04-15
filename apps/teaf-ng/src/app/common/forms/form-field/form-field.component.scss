@@ -1,0 +1,50 @@
+.form-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+
+  label {
+    display: block;
+    color: var(--text-color-secondary);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 13px;
+  }
+
+  &-errors {
+    color: var(--teaf-text-color-error);
+    font-size: 13px;
+    margin-top: 10px;
+  }
+}
+
+.radio-button-group {
+  &--horizontal {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    align-items: center;
+  }
+}
+
+.radio-button {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+
+  label {
+    margin-bottom: 0 !important;
+    text-transform: capitalize !important;
+  }
+}
+
+.p-dropdown,
+.p-calendar,
+.p-inputnumber {
+  width: 100%;
+}
+
+
+
