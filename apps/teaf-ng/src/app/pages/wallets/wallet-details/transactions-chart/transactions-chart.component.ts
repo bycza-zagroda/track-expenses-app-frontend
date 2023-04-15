@@ -13,7 +13,6 @@ export class TransactionsChartComponent implements OnInit {
   @Input() public incomesCount!: number;
   @Input() public expensesCount!: number;
 
-  // TODO: improve types
   public chartData: any;
   public chartOptions: any
 
@@ -38,7 +37,6 @@ export class TransactionsChartComponent implements OnInit {
       datasets: [
         {
           data: [this.incomesCount, this.expensesCount],
-          // TODO: use our colors here
           backgroundColor: [documentStyle.getPropertyValue('--green-500'), documentStyle.getPropertyValue('--red-500')],
           hoverBackgroundColor: [documentStyle.getPropertyValue('--green-400'), documentStyle.getPropertyValue('--red-400')]
         }

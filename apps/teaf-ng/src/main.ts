@@ -23,6 +23,3 @@ bootstrapApplication(AppComponent, {
     DialogService,
   ],
 }).catch((err) => console.error(err));
-
-// TODO: add missing eslint rules
-// TODO: fix prefixing selector when using NX UI

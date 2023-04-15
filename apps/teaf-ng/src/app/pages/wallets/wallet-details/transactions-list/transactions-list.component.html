@@ -20,7 +20,7 @@
     <ng-template pTemplate="body" let-transaction>
       <tr>
         <td>{{ transaction.date | dateView }}</td>
-        <td><div class="transactions-list__category-wrapper"><p-chip label="food"></p-chip></div></td> <!-- TODO: replace with real category -->
+        <td><div class="transactions-list__category-wrapper"><p-chip label="food"></p-chip></div></td>
         <td><span [ngClass]="{ 'transactions-list__amount--income': transaction.type === transactionTypes.Income, 'transactions-list__amount--expense': transaction.type === transactionTypes.Expense}">{{ transaction.type === transactionTypes.Expense ? '-' : ''}} {{ transaction.amount.toFixed(2) }}</span></td>
         <td>{{ transaction.description || '-' }}</td>
         <td>
