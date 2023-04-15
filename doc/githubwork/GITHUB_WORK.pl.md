@@ -2,11 +2,11 @@
 
 # Jak pracujemy z GitHub'em
 
-* [Rozpoczęcie pracy nad zadaniem](#rozpoczecie-pracy-nad-zadaniem)
+* [Rozpoczęcie pracy nad zadaniem](#rozpoczęcie-pracy-nad-zadaniem)
   - [Gita](#gita)
   - [IntelliJ IDEA](#intellij-idea)
 * [Code review](#code-review)
-* [Ukończenie zadania](#ukoczenie-zadania)
+* [Ukończenie zadania](#ukończenie-zadania)
 
 ## Rozpoczęcie pracy nad zadaniem
 
