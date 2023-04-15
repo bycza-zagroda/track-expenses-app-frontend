@@ -50,7 +50,7 @@ export class CategoryEditorComponent implements OnInit {
     if (this.category) {
       this.gateway.getCategoryById(this.category.id).subscribe({
         next: () => {
-          // TODO: implement disabling type field if category is used in transactions
+          // implement disabling type field if category is used in transactions
         },
       })
 
