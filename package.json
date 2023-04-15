@@ -1,6 +1,7 @@
 {
   "name": "track-expenses-app-frontend",
-  "version": "0.0.0",
+  "author": "bycza-zagroda",
+  "version": "0.4.0",
   "license": "MIT",
   "scripts": {},
   "private": true,

@@ -10,7 +10,7 @@
 * [Stack technologiczny](#stack-technologiczny)
   - [Development](#development)
   - [Testy](#testy)
-* [Kodeks postępowania współtwórców (CoC)](#kodeks-postępowania-współtwórców--coc-)
+* [Kodeks postępowania współtwórców (CoC)](#kodeks-postępowania-współtwórców-coc)
 * [Twój wkład](#twój-wkład)
 * [Autorzy](#autorzy)
 * [Licencja](#licencja)
