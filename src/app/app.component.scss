@@ -1,7 +1,0 @@
-@use 'sizes';
-@use 'colors';
-
-.main-container {
-  min-height: calc(100vh - #{sizes.$navbar-height});
-  background: colors.$main-background;
-}
