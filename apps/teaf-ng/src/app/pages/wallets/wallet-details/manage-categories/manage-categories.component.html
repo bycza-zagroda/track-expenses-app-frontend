@@ -1,0 +1,16 @@
+<p-selectButton [options]="categoryTypesOptions" [formControl]="categoryTypesControl"></p-selectButton>
+<button pButton label="Add category" class="p-button-sm manage-categories__add-category-btn" (click)="onCategoryCreate()"></button>
+
+<teaf-ng-no-results *ngIf="hasNoIncomeCategories && categoryTypesControl.value === transactionTypes.Income" title="No income categories created yet" text="Feel free to create your first income category"></teaf-ng-no-results>
+<teaf-ng-no-results *ngIf="hasNoExpenseCategories && categoryTypesControl.value === transactionTypes.Expense" title="No expense categories created yet" text="Feel free to create your first expense category"></teaf-ng-no-results>
+
+<div class="manage-categories__container">
+  <div *ngFor="let category of categories | filterByText : 'type' : categoryTypesControl.value | sortByText : 'name'">
+    <p-chip [label]="category.name"></p-chip>
+
+    <div class="manage-categories__actions">
+      <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-sm" (click)="onCategoryEdit(category)"></button>
+      <button pButton icon="pi pi-trash" [loading]="currentlyDeletedCategories[category.id]" class="p-button-rounded p-button-text p-button-sm" (click)="onCategoryRemove($event, category)"></button>
+    </div>
+  </div>
+</div>

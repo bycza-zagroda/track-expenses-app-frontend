@@ -1,0 +1,18 @@
+<div class="wallets-overview-item">
+  <div class="wallets-overview-item__container">
+    <div class="wallets-overview-item__header">
+      <p-tag [value]="'CURRENCY: ' + wallet.currency"></p-tag>
+      <p-tag [value]="'BALANCE: ' + wallet.balance" [severity]="wallet.balance > 0 ? 'success' : 'danger'"></p-tag>
+    </div>
+
+    <h3 class="wallets-overview-item__name">{{ wallet.name }}</h3>
+    <p class="wallets-overview-item__description" *ngIf="wallet.description">{{ wallet.description }}</p>
+  </div>
+
+  <div class="wallets-overview-item__date">Created at: {{ wallet.createdAt | dateView }}</div>
+
+  <div class="wallets-overview-item__actions">
+    <p-button (click)="goToDetails()" styleClass="p-button-sm" icon="pi pi-eye" label="Details"></p-button>
+    <p-button [loading]="isDeletingWallet" (click)="onWalletDelete($event)" styleClass="p-button-outlined p-button-sm" icon="pi pi-trash"></p-button>
+  </div>
+</div>

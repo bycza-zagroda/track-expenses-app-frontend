@@ -1,0 +1,35 @@
+<div class="transactions-list__header">
+  <p-button (click)="onTransactionCreate()" icon="pi pi-plus" styleClass="p-button-sm" label="Add transaction"></p-button>
+</div>
+
+<div class="transactions-list__container">
+  <div *ngIf="transactions.length === 0" class="transactions-list__no-results-wrapper">
+    <teaf-ng-no-results title="You have no transactions yet" text="Feel free to add your first transaction."></teaf-ng-no-results>
+  </div>
+
+  <p-table *ngIf="transactions.length > 0" [paginator]="true" [rows]="20" [value]="transactions" styleClass="p-datatable-gridlines p-datatable-sm" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Date</th>
+        <th>Category</th>
+        <th>Amount</th>
+        <th>Description</th>
+        <th>Actions</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-transaction>
+      <tr>
+        <td>{{ transaction.date | dateView }}</td>
+        <td><div class="transactions-list__category-wrapper"><p-chip label="food"></p-chip></div></td> <!-- TODO: replace with real category -->
+        <td><span [ngClass]="{ 'transactions-list__amount--income': transaction.type === transactionTypes.Income, 'transactions-list__amount--expense': transaction.type === transactionTypes.Expense}">{{ transaction.type === transactionTypes.Expense ? '-' : ''}} {{ transaction.amount.toFixed(2) }}</span></td>
+        <td>{{ transaction.description || '-' }}</td>
+        <td>
+          <div class="transactions-list__actions">
+            <button pButton icon="pi pi-pencil" (click)="onTransactionEdit(transaction)" class="p-button-text p-button-sm"></button>
+            <button pButton icon="pi pi-trash" [loading]="currentlyDeletedTransactions[transaction.id]" class="p-button-text p-button-sm" (click)="onTransactionRemove($event, transaction)"></button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

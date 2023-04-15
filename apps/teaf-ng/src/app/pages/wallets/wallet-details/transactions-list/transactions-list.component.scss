@@ -1,0 +1,44 @@
+@import '../../../../../styles/mixins/card';
+
+:host {
+  padding-bottom: 25px;
+}
+
+.transactions-list {
+  &__header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 25px 0;
+  }
+
+  &__category-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+
+  &__amount {
+    &--income {
+      color: var(--teaf-income-color);
+    }
+
+    &--expense {
+      color: var(--teaf-expense-color);
+    }
+  }
+
+  &__actions {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__container {
+    @include card;
+    padding: 0;
+  }
+
+  &__no-results-wrapper {
+    margin: 50px 0;
+  }
+}

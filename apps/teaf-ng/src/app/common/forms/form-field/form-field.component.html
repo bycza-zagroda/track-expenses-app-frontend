@@ -1,0 +1,7 @@
+<div class="form-field">
+  <ng-content></ng-content>
+
+  <div class="form-field-errors" *ngIf="validations.length">
+    <span *ngFor="let validation of validations">{{ validation }}</span>
+  </div>
+</div>

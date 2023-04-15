@@ -1,0 +1,15 @@
+<div *ngIf="wallet">
+  <div class="wallet-data__actions">
+    <p-tag [value]="'CURRENCY: ' + wallet.currency"></p-tag>
+    <button (click)="onWalletEdit()" pButton class="p-button-sm p-button-outlined" type="button" icon="pi pi-pencil" label="Edit wallet"></button>
+  </div>
+
+  <div class="wallet-data__container">
+    <div>
+      <h3 class="wallet-data__name">{{ wallet.name }}</h3>
+      <p class="wallet-data__description" *ngIf="wallet.description">{{ wallet.description }}</p>
+
+      <div class="wallet-data__date">Created at: {{ wallet.createdAt | dateView }}</div>
+    </div>
+  </div>
+</div>

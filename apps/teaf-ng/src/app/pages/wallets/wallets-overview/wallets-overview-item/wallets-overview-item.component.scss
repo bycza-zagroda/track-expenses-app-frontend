@@ -1,0 +1,51 @@
+@import '../../../../../styles/mixins/card';
+
+.wallets-overview-item {
+  @include card;
+  padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  &__container {
+    padding: 25px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+  }
+
+  &__name {
+    color: var(--teaf-text-color);
+  }
+
+  &__description {
+    color: #afb3b4;
+  }
+
+  &__date {
+    display: block;
+    text-align: right;
+    color: var(--gray-400);
+    font-size: 12px;
+    padding-right: 15px;
+    padding-bottom: 15px;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 5px;
+    background: var(--gray-50);
+    border-top: 1px solid var(--teaf-border-color);
+    padding: 15px;
+  }
+
+}

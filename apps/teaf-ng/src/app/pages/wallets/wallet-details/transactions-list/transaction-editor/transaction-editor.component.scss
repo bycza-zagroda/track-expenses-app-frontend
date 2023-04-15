@@ -1,0 +1,30 @@
+.transaction-editor {
+  width: 100%;
+  max-width: 600px;
+
+  &__fields-container {
+    display: flex;
+    flex-direction: column;
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+      gap: 30px;
+
+      > teaf-ng-form-field {
+        flex: 1;
+      }
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 25px;
+
+    button {
+      display: block;
+      flex: 1;
+    }
+  }
+}

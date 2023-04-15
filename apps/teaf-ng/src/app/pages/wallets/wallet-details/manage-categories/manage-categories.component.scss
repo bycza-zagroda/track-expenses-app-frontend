@@ -1,0 +1,38 @@
+:host ::ng-deep {
+  .p-selectbutton.p-buttonset {
+    display: flex;
+
+    > div {
+      flex: 1;
+    }
+  }
+}
+
+.manage-categories {
+  &__add-category-btn {
+    width: 100%;
+    margin: 25px 0;
+  }
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    > div {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  &__actions {
+    margin-left: auto;
+    display: flex;
+    gap: 10px;
+
+    span {
+      cursor: pointer;
+    }
+  }
+}

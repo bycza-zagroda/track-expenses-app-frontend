@@ -1,0 +1,35 @@
+<p-sidebar [(visible)]="menuVisible">
+  <div class="header__navigation-mobile-secondary-navigation">
+    <button pButton icon="pi pi-user" class="p-button-rounded p-button-info p-button-text p-button-sm"></button>
+    <button pButton icon="pi pi-cog" class="p-button-rounded p-button-info p-button-text p-button-sm"></button>
+    <button pButton icon="pi pi-sign-out" class="p-button-rounded p-button-info p-button-text p-button-sm"></button>
+  </div>
+
+  <div class="header__navigation-mobile">
+    <a class="header__navigation-mobile-item" routerLink="/wallets" routerLinkActive="header__navigation-mobile-item--active">My wallets</a>
+    <a class="header__navigation-mobile-item" routerLink="/reports" routerLinkActive="header__navigation-mobile-item--active">Reports</a>
+  </div>
+</p-sidebar>
+
+<div class="header">
+  <teaf-ng-container>
+    <div class="header__inner-container">
+      <a routerLink="/" class="header__logo">
+        <h1>TrackExpensesApp</h1>
+      </a>
+
+      <div class="header__navigation">
+        <a class="header__navigation-item" routerLink="/wallets" routerLinkActive="header__navigation-item--active">My wallets</a>
+        <a class="header__navigation-item" routerLink="/reports" routerLinkActive="header__navigation-item--active">Reports</a>
+      </div>
+
+      <div class="header__secondary-navigation">
+        <button pButton icon="pi pi-user" class="p-button-rounded p-button-info p-button-text p-button-sm"></button>
+        <button pButton icon="pi pi-cog" class="p-button-rounded p-button-info p-button-text p-button-sm"></button>
+        <button pButton icon="pi pi-sign-out" class="p-button-rounded p-button-info p-button-text p-button-sm"></button>
+      </div>
+
+      <button (click)="menuVisible = true" pButton icon="pi pi-bars" class="p-button-rounded p-button-text p-button-sm header__menu-toggle"></button>
+    </div>
+  </teaf-ng-container>
+</div>
