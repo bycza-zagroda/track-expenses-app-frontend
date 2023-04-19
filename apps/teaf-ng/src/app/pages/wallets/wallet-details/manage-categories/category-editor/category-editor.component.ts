@@ -36,7 +36,7 @@ export class CategoryEditorComponent implements OnInit {
     private readonly gateway: CategoriesGatewayService,
     private readonly dialogRef: DynamicDialogRef,
     private readonly messageService: MessageService,
-    private readonly dialogConfig: DynamicDialogConfig<{ category?: Category, type?: TransactionType }>,
+    private readonly dialogConfig: DynamicDialogConfig<{ category?: Category, type?: TransactionType, isCategoryUsed?: boolean }>,
   ) {
   }
 
@@ -47,13 +47,11 @@ export class CategoryEditorComponent implements OnInit {
 
     this.category = this.dialogConfig.data.category;
 
-    if (this.category) {
-      this.gateway.getCategoryById(this.category.id).subscribe({
-        next: () => {
-          // implement disabling type field if category is used in transactions
-        },
-      })
+    if (this.dialogConfig.data.isCategoryUsed) {
+      this.form.controls.type.disable();
+    }
 
+    if (this.category) {
       this.form.patchValue({
         name: this.category.name || '',
         type: this.category.type,
@@ -121,7 +119,7 @@ export class CategoryEditorComponent implements OnInit {
 
     const category = this.category.copy({
       name: this.form.controls.name.value,
-      type: this.form.controls.type.value,
+      type: this.form.controls.type.value || this.category.type,
     });
 
     return this.gateway.updateCategory(this.category.id, category.toPayload()).pipe(

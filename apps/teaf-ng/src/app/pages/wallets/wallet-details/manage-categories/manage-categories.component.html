@@ -9,7 +9,7 @@
     <p-chip [label]="category.name"></p-chip>
 
     <div class="manage-categories__actions">
-      <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text p-button-sm" (click)="onCategoryEdit(category)"></button>
+      <button pButton icon="pi pi-pencil" [loading]="currentlyEditedCategories[category.id]" class="p-button-rounded p-button-text p-button-sm" (click)="onCategoryEdit(category)"></button>
       <button pButton icon="pi pi-trash" [loading]="currentlyDeletedCategories[category.id]" class="p-button-rounded p-button-text p-button-sm" (click)="onCategoryRemove($event, category)"></button>
     </div>
   </div>
