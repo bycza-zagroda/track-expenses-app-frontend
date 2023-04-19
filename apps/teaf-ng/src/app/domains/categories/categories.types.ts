@@ -7,6 +7,11 @@ export interface ICategoryResponse {
   type: TransactionType;
 }
 
+export interface IFullCategoryResponse {
+  financialTransactionCategoryDTO: ICategoryResponse;
+  financialTransactionsCounter: number;
+}
+
 export interface ICategoryData<IsNew extends boolean = true> {
   id: IsNew extends true ? null : TServerEntityId;
   name: string;

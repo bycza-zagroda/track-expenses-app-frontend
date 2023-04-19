@@ -23,8 +23,17 @@ import { ChipModule } from 'primeng/chip';
 })
 export class TransactionsListComponent {
   @Input() public transactions: Transaction[] = [];
-  @Input() public categories: Category[] = [];
   @Input() public walletId!: TServerEntityId;
+
+  @Input() public set categories(categories: Category[]) {
+    this.categoriesList = categories;
+
+    this.categoriesMap = categories.reduce((acc, category) => {
+      acc[category.id] = category;
+
+      return acc;
+    }, {} as Record<TServerEntityId, Category>);
+  }
 
   @Output() public addTransaction = new EventEmitter<Transaction>();
   @Output() public removeTransaction = new EventEmitter<Transaction>();
@@ -32,6 +41,9 @@ export class TransactionsListComponent {
 
   public currentlyDeletedTransactions: Record<TServerEntityId, boolean> = {};
   public transactionTypes = TransactionType;
+  public categoriesMap: Record<number, Category> = {};
+
+  private categoriesList: Category[] = [];
 
   public constructor(
     private readonly dialogService: DialogService,
@@ -45,7 +57,7 @@ export class TransactionsListComponent {
       header: 'Create transaction',
       width: 'min(100%, 600px)',
       data: {
-        categories: this.categories,
+        categories: this.categoriesList,
         walletId: this.walletId,
       }
     });
@@ -80,7 +92,7 @@ export class TransactionsListComponent {
       width: 'min(100%, 600px)',
       data: {
         transaction,
-        categories: this.categories,
+        categories: this.categoriesList,
         walletId: this.walletId,
       }
     });

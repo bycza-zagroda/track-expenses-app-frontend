@@ -43,6 +43,7 @@ export class ManageCategoriesComponent {
   ];
 
   public currentlyDeletedCategories: Record<TServerEntityId, boolean> = {};
+  public currentlyEditedCategories: Record<TServerEntityId, boolean> = {};
 
   public get hasNoIncomeCategories(): boolean {
     return this.categories.filter((category: Category) => category.type === TransactionType.Income).length === 0;
@@ -93,20 +94,40 @@ export class ManageCategoriesComponent {
   }
 
   public onCategoryEdit(category: Category): void {
-    const ref = this.dialogService.open(CategoryEditorComponent, {
-      header: 'Edit category',
-      width: 'min(100%, 600px)',
-      data: {
-        category,
-        type: this.categoryTypesControl.value,
-      }
-    });
+    this.currentlyEditedCategories[category.id] = true;
 
-    ref.onClose.subscribe({
-      next: (category: Category | undefined) => {
-        if (category) {
-          this.updateCategory.emit(category);
-        }
+    this.gateway.getCategoryById(category.id).subscribe({
+      next: (resp) => {
+        const isCategoryUsed = resp.financialTransactionsCounter > 0;
+
+        const ref = this.dialogService.open(CategoryEditorComponent, {
+          header: 'Edit category',
+          width: 'min(100%, 600px)',
+          data: {
+            category,
+            isCategoryUsed,
+            type: this.categoryTypesControl.value,
+          }
+        });
+
+        ref.onClose.subscribe({
+          next: (cat: Category | undefined) => {
+            this.currentlyEditedCategories[category.id] = false;
+
+            if (cat) {
+              this.updateCategory.emit(cat);
+            }
+          }
+        });
+      },
+      error: () => {
+        this.currentlyEditedCategories[category.id] = false;
+
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to open category editor',
+        });
       }
     });
   }
