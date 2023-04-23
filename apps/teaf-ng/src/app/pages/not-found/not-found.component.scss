@@ -1,0 +1,22 @@
+.not-found-page {
+  margin-top: 50px;
+
+  @media (min-width: 800px) {
+    margin-top: 100px;
+  }
+
+  &__image-container {
+    position: relative;
+    height: 300px;
+  }
+
+  p {
+    text-align: center;
+    font-size: 30px;
+    margin-top: 50px;
+
+    @media (min-width: 800px) {
+      font-size: 55px;
+    }
+  }
+}
