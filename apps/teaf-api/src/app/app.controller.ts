@@ -1,13 +1,24 @@
 import { Controller, Get } from '@nestjs/common';
-
-import { AppService } from './app.service';
+import {InjectRepository} from "@nestjs/typeorm";
+import {Transaction} from "./transactions/transaction.entity";
+import {Repository} from "typeorm";
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(@InjectRepository(Transaction) private readonly transactionRepository: Repository<Transaction>) {}
 
   @Get()
   getData() {
-    return this.appService.getData();
+    // example method, to be removed
+    return this.transactionRepository.find({
+      where: {
+       wallet: {
+         id: 3,
+       },
+        category: {
+         id: 9,
+        }
+      }
+    });
   }
 }
