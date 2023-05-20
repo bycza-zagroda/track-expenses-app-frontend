@@ -8,21 +8,24 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Wallet } from '../../../domains/wallets/wallet.model';
 import { WalletsGatewayService } from '../../../domains/wallets/wallets-gateway.service';
 import { map, Observable } from 'rxjs';
-import { FormsUtils } from '../../../common/forms/forms.utils';
+import { markAllControlsAsDirty } from '../../../common/forms/forms.utils';
 import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'teaf-ng-wallet-editor',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, InputTextModule, ButtonModule, FormFieldComponent],
+  imports: [ CommonModule, ReactiveFormsModule, InputTextModule, ButtonModule, FormFieldComponent ],
   templateUrl: './wallet-editor.component.html',
-  styleUrls: ['./wallet-editor.component.scss'],
+  styleUrls: [ './wallet-editor.component.scss' ],
 })
 export class WalletEditorComponent implements OnInit {
   public isSaving = false;
 
   public form = new FormGroup({
-    name: new FormControl<string>({ value: '', disabled: false }, { nonNullable: true, validators: [Validators.required,  Validators.maxLength(20),] }),
+    name: new FormControl<string>(
+      { value: '', disabled: false },
+      { nonNullable: true, validators: [ Validators.required,  Validators.maxLength(20) ] },
+    ),
   });
 
   private wallet: Wallet | undefined;
@@ -50,7 +53,7 @@ export class WalletEditorComponent implements OnInit {
   }
 
   public save(): void {
-    FormsUtils.markAllControlsAsDirty([this.form]);
+    markAllControlsAsDirty([ this.form ]);
 
     if (this.form.invalid) {
       return;
@@ -70,8 +73,6 @@ export class WalletEditorComponent implements OnInit {
           detail: 'Wallet saved',
         });
 
-
-
         this.dialogRef.close(wallet);
       },
       error: () => {
@@ -82,7 +83,7 @@ export class WalletEditorComponent implements OnInit {
           summary: 'Error',
           detail: 'Failed to save wallet',
         });
-      }
+      },
     });
   }
 

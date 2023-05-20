@@ -24,9 +24,21 @@ import { SortByDatePipe } from '../../../common/pipes/sort-by-date.pipe';
 @Component({
   selector: 'teaf-ng-wallet-details',
   standalone: true,
-  imports: [CommonModule, ContainerComponent, ButtonModule, WalletDataComponent, TransactionsListComponent, SidebarModule, ManageCategoriesComponent, LoadingDataErrorComponent, NoResultsComponent, ProgressSpinnerModule, TransactionsChartComponent],
+  imports: [
+    CommonModule,
+    ContainerComponent,
+    ButtonModule,
+    WalletDataComponent,
+    TransactionsListComponent,
+    SidebarModule,
+    ManageCategoriesComponent,
+    LoadingDataErrorComponent,
+    NoResultsComponent,
+    ProgressSpinnerModule,
+    TransactionsChartComponent,
+  ],
   templateUrl: './wallet-details.component.html',
-  styleUrls: ['./wallet-details.component.scss'],
+  styleUrls: [ './wallet-details.component.scss' ],
 })
 export class WalletDetailsComponent implements OnInit {
   public categoriesVisible = false;
@@ -77,7 +89,7 @@ export class WalletDetailsComponent implements OnInit {
         this.transactionsGateway.getTransactions(this.walletId),
         this.walletGateway.getWalletById(this.walletId),
       ]).subscribe({
-        next: ([categoriesResp, transactionsResp, walletResp]) => {
+        next: ([ categoriesResp, transactionsResp, walletResp ]) => {
           this.categories = categoriesResp.map(category => Category.fromResponse(category));
           this.nonSortedTransactions = transactionsResp.map(transaction => Transaction.fromResponse(transaction));
           this.wallet = Wallet.fromResponse(walletResp);
@@ -95,7 +107,7 @@ export class WalletDetailsComponent implements OnInit {
         error: () => {
           this.isLoading = false;
           this.hasLoadingError = true;
-        }
+        },
       });
     });
   }
@@ -105,7 +117,7 @@ export class WalletDetailsComponent implements OnInit {
   }
 
   public onCategoryAdded(category: Category): void {
-    this.categories = [...this.categories, category];
+    this.categories = [ ...this.categories, category ];
   }
 
   public onCategoryRemove(category: Category): void {
@@ -117,7 +129,7 @@ export class WalletDetailsComponent implements OnInit {
   }
 
   public onTransactionAdded(transaction: Transaction): void {
-    this.nonSortedTransactions = [...this.nonSortedTransactions, transaction];
+    this.nonSortedTransactions = [ ...this.nonSortedTransactions, transaction ];
   }
 
   public onTransactionRemove(transaction: Transaction): void {

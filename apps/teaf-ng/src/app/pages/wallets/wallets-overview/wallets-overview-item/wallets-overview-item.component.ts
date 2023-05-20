@@ -12,9 +12,9 @@ import { DatePipe } from '../../../../common/pipes/date.pipe';
 @Component({
   selector: 'teaf-ng-wallets-overview-item',
   standalone: true,
-  imports: [CommonModule, ButtonModule, TagModule, ConfirmPopupModule, DatePipe],
+  imports: [ CommonModule, ButtonModule, TagModule, ConfirmPopupModule, DatePipe ],
   templateUrl: './wallets-overview-item.component.html',
-  styleUrls: ['./wallets-overview-item.component.scss'],
+  styleUrls: [ './wallets-overview-item.component.scss' ],
 })
 export class WalletsOverviewItemComponent {
   @Input() public wallet!: Wallet;
@@ -46,7 +46,7 @@ export class WalletsOverviewItemComponent {
   }
 
   public async goToDetails(): Promise<void> {
-    await this.router.navigate(['/wallets', this.wallet.id]);
+    await this.router.navigate([ '/wallets', this.wallet.id ]);
   }
 
   private deleteWallet(): void {
@@ -70,7 +70,7 @@ export class WalletsOverviewItemComponent {
           summary: 'Error',
           detail: 'Failed to delete wallet',
         });
-      }
+      },
     });
   }
 }

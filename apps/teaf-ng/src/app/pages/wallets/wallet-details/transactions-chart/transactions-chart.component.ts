@@ -5,16 +5,16 @@ import { ChartModule } from 'primeng/chart';
 @Component({
   selector: 'teaf-ng-transactions-chart',
   standalone: true,
-  imports: [CommonModule, ChartModule],
+  imports: [ CommonModule, ChartModule ],
   templateUrl: './transactions-chart.component.html',
-  styleUrls: ['./transactions-chart.component.scss'],
+  styleUrls: [ './transactions-chart.component.scss' ],
 })
 export class TransactionsChartComponent implements OnInit {
   @Input() public incomesCount!: number;
   @Input() public expensesCount!: number;
 
-  public chartData: any;
-  public chartOptions: any
+  public chartData: unknown; // TODO: improve types
+  public chartOptions: unknown; // TODO: improve types
 
   public ngOnInit(): void {
     const documentStyle = getComputedStyle(document.documentElement);
@@ -26,21 +26,21 @@ export class TransactionsChartComponent implements OnInit {
         legend: {
           labels: {
             usePointStyle: true,
-            color: textColor
-          }
-        }
-      }
+            color: textColor,
+          },
+        },
+      },
     };
 
     this.chartData = {
-      labels: ['Incomes', 'Expenses'],
+      labels: [ 'Incomes', 'Expenses' ],
       datasets: [
         {
-          data: [this.incomesCount, this.expensesCount],
-          backgroundColor: [documentStyle.getPropertyValue('--green-500'), documentStyle.getPropertyValue('--red-500')],
-          hoverBackgroundColor: [documentStyle.getPropertyValue('--green-400'), documentStyle.getPropertyValue('--red-400')]
-        }
-      ]
+          data: [ this.incomesCount, this.expensesCount ],
+          backgroundColor: [ documentStyle.getPropertyValue('--green-500'), documentStyle.getPropertyValue('--red-500') ],
+          hoverBackgroundColor: [ documentStyle.getPropertyValue('--green-400'), documentStyle.getPropertyValue('--red-400') ],
+        },
+      ],
     };
   }
 }

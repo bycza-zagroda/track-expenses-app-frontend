@@ -7,7 +7,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Transaction } from '../../../../../domains/transactions/transaction.model';
 import { TransactionsGatewayService } from '../../../../../domains/transactions/transactions-gateway.service';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { FormsUtils } from '../../../../../common/forms/forms.utils';
+import { markAllControlsAsDirty } from '../../../../../common/forms/forms.utils';
 import { map, Observable, startWith } from 'rxjs';
 import { TransactionType } from '../../../../../domains/transactions/transaction.constants';
 import { TServerEntityId } from '../../../../../common/types';
@@ -21,9 +21,19 @@ import { MessageService } from 'primeng/api';
 @Component({
   selector: 'teaf-ng-transaction-editor',
   standalone: true,
-  imports: [CommonModule, ButtonModule, FormFieldComponent, InputTextModule, ReactiveFormsModule, InputNumberModule, RadioButtonModule, DropdownModule, CalendarModule],
+  imports: [
+    CommonModule,
+    ButtonModule,
+    FormFieldComponent,
+    InputTextModule,
+    ReactiveFormsModule,
+    InputNumberModule,
+    RadioButtonModule,
+    DropdownModule,
+    CalendarModule,
+  ],
   templateUrl: './transaction-editor.component.html',
-  styleUrls: ['./transaction-editor.component.scss'],
+  styleUrls: [ './transaction-editor.component.scss' ],
 })
 export class TransactionEditorComponent implements OnInit {
   public isSaving = false;
@@ -76,11 +86,11 @@ export class TransactionEditorComponent implements OnInit {
     this.categories = this.dialogConfig.data.categories;
     this.walletId = this.dialogConfig.data.walletId;
 
-    this.buildVisibleCategories(this.transaction?.type || TransactionType.Income);
+    this.buildVisibleCategories(this.transaction?.type ?? TransactionType.Income);
 
     if (this.transaction) {
       this.form.patchValue({
-        description: this.transaction.description || '',
+        description: this.transaction.description ?? '',
         type: this.transaction.type,
         amount: this.transaction.amount,
         category: this.transaction.categoryId,
@@ -94,7 +104,7 @@ export class TransactionEditorComponent implements OnInit {
   }
 
   public save(): void {
-    FormsUtils.markAllControlsAsDirty([this.form]);
+    markAllControlsAsDirty([ this.form ]);
 
     if (this.form.invalid) {
       return;
@@ -124,7 +134,7 @@ export class TransactionEditorComponent implements OnInit {
           summary: 'Error',
           detail: 'Failed to save transaction',
         });
-      }
+      },
     });
   }
 

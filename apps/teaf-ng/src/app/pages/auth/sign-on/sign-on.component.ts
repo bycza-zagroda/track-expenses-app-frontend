@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'teaf-ng-reports',
+  selector: 'teaf-ng-sign-on',
   standalone: true,
   imports: [ CommonModule ],
-  templateUrl: './reports.component.html',
-  styleUrls: [ './reports.component.scss' ],
+  templateUrl: './sign-on.component.html',
+  styleUrls: [ './sign-on.component.scss' ],
 })
-export class ReportsComponent {}
+export class SignOnComponent {}

@@ -7,6 +7,6 @@ import { format } from 'date-fns';
 })
 export class DatePipe implements PipeTransform {
   public transform(value: Date): string {
-    return format(value, 'dd/MM/yyyy')
+    return format(value, 'dd/MM/yyyy');
   }
 }

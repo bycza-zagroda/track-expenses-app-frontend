@@ -4,6 +4,9 @@
   "overrides": [
     {
       "files": ["*.ts"],
+      "parserOptions": {
+        "project": ["apps/teaf-ng/tsconfig.*?.json"]
+      },
       "rules": {
         "@angular-eslint/directive-selector": [
           "error",
@@ -20,12 +23,58 @@
             "prefix": "teaf-ng",
             "style": "kebab-case"
           }
+        ],
+        "@typescript-eslint/member-ordering": [
+          "error",
+          {
+            "default": {
+              "memberTypes": [
+                // Index signature
+                "signature",
+
+                // Fields
+                "public-abstract-field",
+                "public-static-field",
+                "public-instance-field",
+
+                "protected-abstract-field",
+                "protected-static-field",
+                "protected-instance-field",
+
+                "private-static-field",
+                "private-instance-field",
+
+                // Constructors
+                "public-constructor",
+                "protected-constructor",
+                "private-constructor",
+
+                // Methods
+                "public-abstract-method",
+                "public-static-method",
+                "public-instance-method",
+
+                "protected-abstract-method",
+                "protected-static-method",
+                "protected-instance-method",
+
+                "private-static-method",
+                "private-instance-method"
+              ]
+            }
+          }
         ]
       },
       "extends": [
         "plugin:@nrwl/nx/angular",
         "plugin:@angular-eslint/template/process-inline-templates"
       ]
+    },
+    {
+      "files": ["*.component.ts", "*.module.ts"],
+      "rules": {
+        "@typescript-eslint/no-extraneous-class": "off"
+      }
     },
     {
       "files": ["*.html"],

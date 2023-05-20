@@ -1,7 +1,7 @@
 import { ITransactionResponse, ITransactionData, ITransactionPayload } from './transaction.types';
 import { TServerEntityId } from '../../common/types';
 import { TransactionType } from './transaction.constants';
-import { DateUtils } from '../../common/dates/date-utils';
+import { parseDate } from '../../common/dates/date-utils';
 
 export class Transaction<IsNew extends boolean = false> {
   public readonly amount: number;
@@ -11,14 +11,14 @@ export class Transaction<IsNew extends boolean = false> {
   public readonly date: Date;
   public readonly walletId: TServerEntityId;
   public readonly categoryId: TServerEntityId | null;
-  public readonly id: IsNew extends true ? null : TServerEntityId
+  public readonly id: IsNew extends true ? null : TServerEntityId;
 
   private constructor(data: ITransactionData<IsNew>) {
     this.amount = data.amount;
     this.description = data.description ?? null;
     this.type = data.type;
-    this.createdAt = data?.createdAt ? DateUtils.parseDate(data.createdAt) : new Date();
-    this.date = DateUtils.parseDate(data.date);
+    this.createdAt = data.createdAt ? parseDate(data.createdAt) : new Date();
+    this.date = parseDate(data.date);
     this.walletId = data.walletId;
     this.categoryId = data.categoryId ?? null;
     this.id = data.id;
@@ -41,16 +41,16 @@ export class Transaction<IsNew extends boolean = false> {
     });
   }
 
-  public copy(data: Partial<ITransactionData>): Transaction<IsNew> {
+  public copy(data: Partial<ITransactionData<IsNew>>): Transaction<IsNew> {
     return new Transaction({
-      id: data.id || this.id,
-      amount: data.amount || this.amount,
-      description: data.description || this.description,
-      type: data.type || this.type,
-      createdAt: data.createdAt || this.createdAt,
-      date: data.date || this.date,
-      walletId: data.walletId || this.walletId,
-      categoryId: data.categoryId || this.categoryId,
+      id: data.id ?? this.id,
+      amount: data.amount ?? this.amount,
+      description: data.description ?? this.description,
+      type: data.type ?? this.type,
+      createdAt: data.createdAt ?? this.createdAt,
+      date: data.date ?? this.date,
+      walletId: data.walletId ?? this.walletId,
+      categoryId: data.categoryId ?? this.categoryId,
     });
   }
 

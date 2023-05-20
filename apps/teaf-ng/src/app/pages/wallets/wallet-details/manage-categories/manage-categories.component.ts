@@ -23,9 +23,18 @@ interface ICategoryTypeOption {
 @Component({
   selector: 'teaf-ng-manage-categories',
   standalone: true,
-  imports: [CommonModule, SelectButtonModule, ReactiveFormsModule, ButtonModule, ChipModule, FilterByTextPipe, SortByTextPipe, NoResultsComponent],
+  imports: [
+    CommonModule,
+    SelectButtonModule,
+    ReactiveFormsModule,
+    ButtonModule,
+    ChipModule,
+    FilterByTextPipe,
+    SortByTextPipe,
+    NoResultsComponent,
+  ],
   templateUrl: './manage-categories.component.html',
-  styleUrls: ['./manage-categories.component.scss'],
+  styleUrls: [ './manage-categories.component.scss' ],
 })
 export class ManageCategoriesComponent {
   @Input() public categories: Category[] = [];
@@ -89,7 +98,7 @@ export class ManageCategoriesComponent {
         if (category) {
           this.addCategory.emit(category);
         }
-      }
+      },
     });
   }
 
@@ -107,7 +116,7 @@ export class ManageCategoriesComponent {
             category,
             isCategoryUsed,
             type: this.categoryTypesControl.value,
-          }
+          },
         });
 
         ref.onClose.subscribe({
@@ -117,7 +126,7 @@ export class ManageCategoriesComponent {
             if (cat) {
               this.updateCategory.emit(cat);
             }
-          }
+          },
         });
       },
       error: () => {
@@ -128,7 +137,7 @@ export class ManageCategoriesComponent {
           summary: 'Error',
           detail: 'Failed to open category editor',
         });
-      }
+      },
     });
   }
 

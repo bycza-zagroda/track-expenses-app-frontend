@@ -9,9 +9,9 @@ import { SidebarModule } from 'primeng/sidebar';
 @Component({
   selector: 'teaf-ng-header',
   standalone: true,
-  imports: [CommonModule, ContainerComponent, RouterLink, RouterLinkActive, ButtonModule, ManageCategoriesComponent, SidebarModule],
+  imports: [ CommonModule, ContainerComponent, RouterLink, RouterLinkActive, ButtonModule, ManageCategoriesComponent, SidebarModule ],
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
+  styleUrls: [ './header.component.scss' ],
 })
 export class HeaderComponent {
   public menuVisible = false;
