@@ -1,12 +1,12 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { KeysMatching } from '../types';
+import { TKeysMatching } from '../types';
 
 @Pipe({
   name: 'sortByText',
   standalone: true,
 })
 export class SortByTextPipe implements PipeTransform {
-  public transform<T extends object, K extends KeysMatching<T, string>>(array: T[], prop: K): T[] {
+  public transform<T extends object, K extends TKeysMatching<T, string>>(array: T[], prop: K): T[] {
     return array.sort((a, b) => {
       const propAValue = a[prop];
       const propBValue = b[prop];

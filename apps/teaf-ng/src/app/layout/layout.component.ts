@@ -6,8 +6,8 @@ import { HeaderComponent } from './header/header.component';
 @Component({
   selector: 'teaf-ng-layout',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, HeaderComponent],
+  imports: [ CommonModule, RouterOutlet, HeaderComponent ],
   templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.scss'],
+  styleUrls: [ './layout.component.scss' ],
 })
 export class LayoutComponent {}

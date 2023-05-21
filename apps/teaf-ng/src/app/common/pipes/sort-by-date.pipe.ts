@@ -1,12 +1,12 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { KeysMatching } from '../types';
+import { TKeysMatching } from '../types';
 
 @Pipe({
   name: 'sortByDate',
   standalone: true,
 })
 export class SortByDatePipe implements PipeTransform {
-  public transform<T extends object, K extends KeysMatching<T, Date>>(array: T[], prop: K, descending = false): T[] {
+  public transform<T extends object, K extends TKeysMatching<T, Date>>(array: T[], prop: K, descending = false): T[] {
     return array.sort((a, b) => {
       const propAValue = a[prop];
       const propBValue = b[prop];

@@ -2,6 +2,6 @@ export type TServerDateTime = string; // ISO date string like "2022-10-22T09:47:
 
 export type TServerEntityId = number;
 
-export type KeysMatching<T extends object, V> = {
+export type TKeysMatching<T extends object, V> = {
   [K in keyof T]-?: T[K] extends V ? K : never
 } [keyof T];

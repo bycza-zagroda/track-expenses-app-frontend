@@ -23,8 +23,60 @@
     },
     {
       "files": ["*.ts", "*.tsx"],
-      "extends": ["plugin:@nrwl/nx/typescript"],
-      "rules": {}
+      "extends": [
+        "plugin:@nrwl/nx/typescript",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking",
+        "plugin:@typescript-eslint/strict"
+      ],
+      "rules": {
+        "comma-dangle": ["warn", "always-multiline"],
+        "keyword-spacing": ["error", { "after": true, "before": true }],
+        "eqeqeq": "error",
+        "space-infix-ops": "error",
+        "quotes": ["error", "single"],
+        "@typescript-eslint/explicit-member-accessibility": "warn",
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/naming-convention": [
+          "error",
+          { "selector": "variable", "format": ["camelCase", "UPPER_CASE"], "leadingUnderscore": "allow", "trailingUnderscore": "forbid" },
+          { "selector": "function", "format": ["camelCase"], "leadingUnderscore": "forbid", "trailingUnderscore": "forbid" },
+          { "selector": "parameter", "format": ["camelCase"], "leadingUnderscore": "allow", "trailingUnderscore": "forbid" },
+          { "selector": "property", "format": null, "leadingUnderscore": "allow", "trailingUnderscore": "forbid" },
+          { "selector": "parameterProperty", "format": ["camelCase"], "leadingUnderscore": "allow", "trailingUnderscore": "forbid" },
+          { "selector": "method", "format": ["camelCase"], "leadingUnderscore": "allow", "trailingUnderscore": "forbid" },
+          { "selector": "accessor", "format": ["camelCase"], "leadingUnderscore": "allow", "trailingUnderscore": "forbid" },
+          { "selector": "enumMember", "format": ["PascalCase"], "leadingUnderscore": "allow", "trailingUnderscore": "forbid" },
+          { "selector": "class", "format": ["PascalCase"], "leadingUnderscore": "forbid", "trailingUnderscore": "forbid" },
+          { "selector": "interface", "format": ["PascalCase"], "leadingUnderscore": "forbid", "trailingUnderscore": "forbid", "prefix": ["I"] },
+          { "selector": "typeAlias", "format": ["PascalCase"], "leadingUnderscore": "forbid", "trailingUnderscore": "forbid", "prefix": ["T"] },
+          { "selector": "enum", "format": ["PascalCase"], "leadingUnderscore": "forbid", "trailingUnderscore": "forbid" },
+          { "selector": "typeParameter", "format": ["PascalCase"], "leadingUnderscore": "forbid", "trailingUnderscore": "forbid" }
+        ],
+        "no-multiple-empty-lines": ["error", { "max":  1, "maxEOF": 1, "maxBOF": 1 }],
+        "@typescript-eslint/unbound-method": "off",
+        "padded-blocks": ["error", "never"],
+        "semi": ["error", "always"],
+        "object-curly-spacing": ["error", "always"],
+        "array-bracket-spacing": ["error", "always"],
+        "newline-before-return": "error",
+        "indent": ["error", 2],
+        "max-len": ["error", 140],
+        "padding-line-between-statements": [
+          "error",
+          {
+            "blankLine": "always",
+            "prev": "*",
+            "next": "block-like"
+          },
+          {
+            "blankLine": "always",
+            "prev": "*",
+            "next": "multiline-expression"
+          }
+        ],
+        "@typescript-eslint/explicit-function-return-type": "warn"
+      }
     },
     {
       "files": ["*.js", "*.jsx"],

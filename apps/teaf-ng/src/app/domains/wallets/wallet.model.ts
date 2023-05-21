@@ -1,21 +1,21 @@
 import { IWalletData, IWalletPayload, IWalletResponse } from './wallets.types';
 import { faker } from '@faker-js/faker';
 import { TServerEntityId } from '../../common/types';
-import { DateUtils } from '../../common/dates/date-utils';
+import { parseDate } from '../../common/dates/date-utils';
 
 export class Wallet<IsNew extends boolean = false> {
   public readonly createdAt: Date;
   public readonly name: string;
   public readonly description: string | null;
   public readonly currency: string;
-  public readonly id: IsNew extends true ? null : TServerEntityId
+  public readonly id: IsNew extends true ? null : TServerEntityId;
   public readonly balance: number;
 
   private constructor(data: IWalletData<IsNew>) {
     this.id = data.id;
-    this.createdAt = data?.createdAt ? DateUtils.parseDate(data.createdAt) : new Date();
+    this.createdAt = data.createdAt ? parseDate(data.createdAt) : new Date();
     this.name = data.name;
-    this.description = faker.helpers.arrayElement([faker.lorem.sentence(), null]);
+    this.description = faker.helpers.arrayElement([ faker.lorem.sentence(), null ]);
     this.currency = faker.finance.currencyCode();
     this.balance = Number(faker.finance.amount(-1000, 1000, 2));
   }
@@ -24,7 +24,7 @@ export class Wallet<IsNew extends boolean = false> {
     return new Wallet(data);
   }
 
-  public static fromResponse(response: IWalletResponse): Wallet<false> {
+  public static fromResponse(response: IWalletResponse): Wallet {
     return new Wallet({
       id: response.id,
       name: response.name,
@@ -32,11 +32,11 @@ export class Wallet<IsNew extends boolean = false> {
     });
   }
 
-  public copy(data: Partial<IWalletData>): Wallet<IsNew> {
+  public copy(data: Partial<IWalletData<IsNew>>): Wallet<IsNew> {
     return new Wallet({
-      id: data.id || this.id,
-      createdAt: data.createdAt || this.createdAt,
-      name: data.name || this.name,
+      id: data.id ?? this.id,
+      createdAt: data.createdAt ?? this.createdAt,
+      name: data.name ?? this.name,
     });
   }
 

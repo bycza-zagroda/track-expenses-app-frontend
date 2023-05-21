@@ -5,11 +5,11 @@ import { TServerEntityId } from '../../common/types';
 export class Category<IsNew extends boolean = false> {
   public readonly name: string;
   public readonly type: TransactionType;
-  public readonly id: IsNew extends true ? null : TServerEntityId
+  public readonly id: IsNew extends true ? null : TServerEntityId;
 
   private constructor(data: ICategoryData<IsNew>) {
-    this.name = data?.name;
-    this.type = data?.type;
+    this.name = data.name;
+    this.type = data.type;
     this.id = data.id;
   }
 
@@ -23,14 +23,13 @@ export class Category<IsNew extends boolean = false> {
       name: response.name,
       type: response.type,
     });
-
   }
 
-  public copy(data: Partial<ICategoryData>): Category<IsNew> {
+  public copy(data: Partial<ICategoryData<IsNew>>): Category<IsNew> {
     return new Category({
-      id: data.id || this.id,
-      name: data.name || this.name,
-      type: data.type || this.type,
+      id: data.id ?? this.id,
+      name: data.name ?? this.name,
+      type: data.type ?? this.type,
     });
   }
 

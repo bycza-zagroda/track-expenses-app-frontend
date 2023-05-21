@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ICategoryResponse, ICategoryPayload, IFullCategoryResponse } from "./categories.types";
+import { ICategoryResponse, ICategoryPayload, IFullCategoryResponse } from './categories.types';
 import { TServerEntityId } from '../../common/types';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CategoriesGatewayService {
-  constructor(private readonly http: HttpClient) {}
+  public constructor(private readonly http: HttpClient) {}
 
   public getCategories(): Observable<ICategoryResponse[]> {
     return this.http.get<ICategoryResponse[]>('/api/categories');
   }
 
-  public deleteCategory(id: TServerEntityId): Observable<void> {
-    return this.http.delete<void>(`/api/categories/${id}`);
+  public deleteCategory(id: TServerEntityId): Observable<unknown> {
+    return this.http.delete<unknown>(`/api/categories/${id}`);
   }
 
   public createCategory(payload: ICategoryPayload): Observable<ICategoryResponse> {

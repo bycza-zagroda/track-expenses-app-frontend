@@ -18,9 +18,21 @@ import { SortByTextPipe } from '../../../common/pipes/sort-by-text.pipe';
 @Component({
   selector: 'teaf-ng-wallets-overview',
   standalone: true,
-  imports: [CommonModule, ContainerComponent, WalletsOverviewItemComponent, ButtonModule, ReactiveFormsModule, InputTextModule, ProgressSpinnerModule, FilterByTextPipe, NoResultsComponent, LoadingDataErrorComponent, SortByTextPipe],
+  imports: [
+    CommonModule,
+    ContainerComponent,
+    WalletsOverviewItemComponent,
+    ButtonModule,
+    ReactiveFormsModule,
+    InputTextModule,
+    ProgressSpinnerModule,
+    FilterByTextPipe,
+    NoResultsComponent,
+    LoadingDataErrorComponent,
+    SortByTextPipe,
+  ],
   templateUrl: './wallets-overview.component.html',
-  styleUrls: ['./wallets-overview.component.scss'],
+  styleUrls: [ './wallets-overview.component.scss' ],
 })
 export class WalletsOverviewComponent implements OnInit {
   public walletSearchControl = new FormControl<string>({ value: '', disabled: false } , { nonNullable: true });
@@ -32,7 +44,7 @@ export class WalletsOverviewComponent implements OnInit {
   }
 
   public get showNoWalletsInfo(): boolean {
-    return this.wallets.length === 0 && !this.isLoading && !this.hasLoadingError
+    return this.wallets.length === 0 && !this.isLoading && !this.hasLoadingError;
   }
 
   public get showLoadingError(): boolean {
@@ -63,7 +75,7 @@ export class WalletsOverviewComponent implements OnInit {
       error: () => {
         this.isLoading = false;
         this.hasLoadingError = true;
-      }
+      },
     });
   }
 
@@ -80,9 +92,9 @@ export class WalletsOverviewComponent implements OnInit {
     ref.onClose.subscribe({
       next: (wallet: Wallet | undefined) => {
         if (wallet) {
-          this.wallets = [...this.wallets, wallet];
+          this.wallets = [ ...this.wallets, wallet ];
         }
-      }
+      },
     });
   }
 }

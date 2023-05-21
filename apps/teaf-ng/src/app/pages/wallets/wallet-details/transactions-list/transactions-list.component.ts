@@ -17,9 +17,9 @@ import { ChipModule } from 'primeng/chip';
 @Component({
   selector: 'teaf-ng-transactions-list',
   standalone: true,
-  imports: [CommonModule, TableModule, DatePipe, ButtonModule, NoResultsComponent, ChipModule],
+  imports: [ CommonModule, TableModule, DatePipe, ButtonModule, NoResultsComponent, ChipModule ],
   templateUrl: './transactions-list.component.html',
-  styleUrls: ['./transactions-list.component.scss'],
+  styleUrls: [ './transactions-list.component.scss' ],
 })
 export class TransactionsListComponent {
   @Input() public transactions: Transaction[] = [];
@@ -28,11 +28,11 @@ export class TransactionsListComponent {
   @Input() public set categories(categories: Category[]) {
     this.categoriesList = categories;
 
-    this.categoriesMap = categories.reduce((acc, category) => {
+    this.categoriesMap = categories.reduce<Record<TServerEntityId, Category>>((acc, category) => {
       acc[category.id] = category;
 
       return acc;
-    }, {} as Record<TServerEntityId, Category>);
+    }, {});
   }
 
   @Output() public addTransaction = new EventEmitter<Transaction>();
@@ -59,7 +59,7 @@ export class TransactionsListComponent {
       data: {
         categories: this.categoriesList,
         walletId: this.walletId,
-      }
+      },
     });
 
     ref.onClose.subscribe({
@@ -67,7 +67,7 @@ export class TransactionsListComponent {
         if (transaction) {
           this.addTransaction.emit(transaction);
         }
-      }
+      },
     });
   }
 
@@ -94,7 +94,7 @@ export class TransactionsListComponent {
         transaction,
         categories: this.categoriesList,
         walletId: this.walletId,
-      }
+      },
     });
 
     ref.onClose.subscribe({
@@ -102,7 +102,7 @@ export class TransactionsListComponent {
         if (transaction) {
           this.updateTransaction.emit(transaction);
         }
-      }
+      },
     });
   }
 

@@ -5,10 +5,10 @@ import { ITransactionPayload, ITransactionResponse } from './transaction.types';
 import { TServerEntityId } from '../../common/types';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TransactionsGatewayService {
-  constructor(private readonly http: HttpClient) {}
+  public constructor(private readonly http: HttpClient) {}
 
   public getTransactions(walletId: TServerEntityId): Observable<ITransactionResponse[]> {
     const params = new HttpParams().append('walletId', walletId);

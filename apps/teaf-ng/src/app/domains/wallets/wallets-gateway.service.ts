@@ -5,10 +5,10 @@ import { IWalletResponse, IWalletPayload } from './wallets.types';
 import { TServerEntityId } from '../../common/types';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class WalletsGatewayService {
-  constructor(private readonly http: HttpClient) {}
+  public constructor(private readonly http: HttpClient) {}
 
   public getWallets(): Observable<IWalletResponse[]> {
     return this.http.get<IWalletResponse[]>('/api/wallets');
@@ -18,8 +18,8 @@ export class WalletsGatewayService {
     return this.http.get<IWalletResponse>(`/api/wallets/${id}`);
   }
 
-  public deleteWallet(id: TServerEntityId): Observable<void> {
-    return this.http.delete<void>(`/api/wallets/${id}`);
+  public deleteWallet(id: TServerEntityId): Observable<unknown> {
+    return this.http.delete<unknown>(`/api/wallets/${id}`);
   }
 
   public createWallet(payload: IWalletPayload): Observable<IWalletResponse> {
