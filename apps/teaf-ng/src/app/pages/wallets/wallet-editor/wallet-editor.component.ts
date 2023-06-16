@@ -39,11 +39,7 @@ export class WalletEditorComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    if (this.dialogConfig.data === undefined) {
-      throw new Error('Data is not defined');
-    }
-
-    this.wallet = this.dialogConfig.data.wallet;
+    this.wallet = this.dialogConfig.data?.wallet;
 
     if (this.wallet) {
       this.form.patchValue({
