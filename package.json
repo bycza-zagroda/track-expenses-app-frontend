@@ -3,7 +3,9 @@
   "author": "bycza-zagroda",
   "version": "0.4.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "start:remote-backend": "nx run teaf-ng:serve --proxy-config apps/teaf-ng/proxy.remote.conf.json"
+  },
   "private": true,
   "devDependencies": {
     "@angular-devkit/build-angular": "~15.2.0",
