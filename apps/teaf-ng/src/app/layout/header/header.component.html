@@ -19,14 +19,23 @@
       </a>
 
       <div class="header__navigation">
-        <a class="header__navigation-item" routerLink="/wallets" routerLinkActive="header__navigation-item--active">My wallets</a>
-        <a class="header__navigation-item" routerLink="/reports" routerLinkActive="header__navigation-item--active">Reports</a>
+       <ng-container *ngIf="isUserLoggedIn$ | async">
+         <a class="header__navigation-item" routerLink="/wallets" routerLinkActive="header__navigation-item--active">My wallets</a>
+         <a class="header__navigation-item" routerLink="/reports" routerLinkActive="header__navigation-item--active">Reports</a>
+       </ng-container>
       </div>
 
       <div class="header__secondary-navigation">
-        <button pButton icon="pi pi-user" class="p-button-rounded p-button-info p-button-text p-button-sm"></button>
-        <button pButton icon="pi pi-cog" class="p-button-rounded p-button-info p-button-text p-button-sm"></button>
-        <button pButton icon="pi pi-sign-out" class="p-button-rounded p-button-info p-button-text p-button-sm"></button>
+        <ng-container *ngIf="isUserLoggedIn$ | async; else signInUserSecondaryNav">
+          <button pButton icon="pi pi-user" class="p-button-rounded p-button-info p-button-text p-button-sm"></button>
+          <button pButton icon="pi pi-cog" class="p-button-rounded p-button-info p-button-text p-button-sm"></button>
+          <button (click)="logout()" pButton icon="pi pi-sign-out" class="p-button-rounded p-button-info p-button-text p-button-sm"></button>
+        </ng-container>
+
+        <ng-template #signInUserSecondaryNav>
+          <p-button (click)="goToSignOn()" label="Register new account" icon="pi pi-user-plus" styleClass="p-button-sm p-button-text"></p-button>
+          <p-button (click)="goToSignIn()" label="Log in" icon="pi pi-sign-in" styleClass="p-button-sm p-button-text"></p-button>
+        </ng-template>
       </div>
 
       <button (click)="menuVisible = true" pButton icon="pi pi-bars" class="p-button-rounded p-button-text p-button-sm header__menu-toggle"></button>

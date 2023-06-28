@@ -1,1 +1,35 @@
-<p>sign-on works!</p>
+<teaf-ng-container>
+  <div class="sign-on">
+    <div class="sign-on__image">
+      <img ngSrc="../../../assets/images/welcome.svg" alt="TrackExpensesApp welcoming image" fill />
+    </div>
+
+    <div class="sign-on__form-container">
+      <h2>Create new account</h2>
+
+      <form [formGroup]="form">
+        <teaf-ng-form-field [control]="form.controls.email" [validationMessages]="{ required: 'Email is required', pattern: 'This is not a valid email' }">
+          <label for="name">Email</label>
+          <input type="email" id="name" pInputText formControlName="email"/>
+        </teaf-ng-form-field>
+
+        <teaf-ng-form-field [control]="form.controls.email" [validationMessages]="{ required: 'Email is required', pattern: 'This is not a valid email' }">
+          <label for="username">Username</label>
+          <input type="text" id="username" pInputText formControlName="username"/>
+        </teaf-ng-form-field>
+
+        <teaf-ng-form-field [control]="form.controls.password" [validationMessages]="{ required: 'Password is required', pattern: 'This is not a valid password' }">
+          <label for="password">Password</label>
+          <input type="password" id="password" pInputText formControlName="password"/>
+        </teaf-ng-form-field>
+
+        <teaf-ng-form-field [control]="form.controls.passwordConfirmation" [validationMessages]="{ required: 'Password confirmation is required', passwordConfirmation: 'Passwords must by equal' }">
+          <label for="confirmPassword">Password confirmation</label>
+          <input type="password" id="confirmPassword" pInputText formControlName="passwordConfirmation"/>
+        </teaf-ng-form-field>
+      </form>
+
+      <button class="p-button-sm sign-on__btn" pButton type="button" label="Create account" [loading]="isSaving" [disabled]="isSaving || form.invalid" (click)="register()"></button>
+    </div>
+  </div>
+</teaf-ng-container>

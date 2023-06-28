@@ -1,0 +1,29 @@
+@import '../../../../styles/mixins/card';
+
+.sign-in {
+  @include card;
+  margin-top: 50px;
+  display: flex;
+  gap: 15px;
+
+  &__form-container {
+    flex: 1;
+
+    form {
+      margin-top: 25px;
+    }
+  }
+
+  &__btn {
+    display: block;
+    margin-top: 25px;
+    width: 150px;
+    margin-left: auto;
+  }
+
+  &__image {
+    position: relative;
+    flex: 1;
+  }
+}
+
