@@ -4,7 +4,10 @@
   "version": "0.4.0",
   "license": "MIT",
   "scripts": {
-    "start:remote-backend": "nx run teaf-ng:serve --proxy-config apps/teaf-ng/proxy.remote.conf.json"
+    "start:remote-backend": "nx run teaf-ng:serve --proxy-config apps/teaf-ng/proxy.remote.conf.json",
+    "start:mock": "nx run teaf-ng:serve --proxy-config apps/teaf-ng/proxy.mock.conf.json",
+    "start:json-server": "json-server --watch  apps/teaf-ng/mock/json-server/db.js",
+    "start:mock-json-server": "concurrently \"yarn:start:mock\" \"yarn:start:json-server\""
   },
   "private": true,
   "devDependencies": {
@@ -36,6 +39,7 @@
     "@types/node": "~18.7.1",
     "@typescript-eslint/eslint-plugin": "^5.36.1",
     "@typescript-eslint/parser": "^5.36.1",
+    "concurrently": "^8.2.0",
     "cypress": "^12.2.0",
     "eslint": "~8.15.0",
     "eslint-config-prettier": "8.1.0",
@@ -45,7 +49,7 @@
     "jest-environment-node": "^29.4.1",
     "jest-preset-angular": "~13.0.0",
     "nx": "15.9.2",
-    "prettier": "^2.6.2",
+    "prettier": "^3.0.0",
     "ts-jest": "^29.0.5",
     "ts-node": "10.9.1",
     "typescript": "~4.9.5"
@@ -69,6 +73,7 @@
     "axios": "^1.0.0",
     "chart.js": "^4.2.1",
     "date-fns": "^2.29.3",
+    "json-server": "^0.17.3",
     "pg": "^8.10.0",
     "primeicons": "^6.0.1",
     "primeng": "^15.3.0",
