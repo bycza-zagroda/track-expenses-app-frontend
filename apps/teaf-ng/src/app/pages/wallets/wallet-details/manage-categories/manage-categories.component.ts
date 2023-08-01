@@ -76,7 +76,7 @@ export class ManageCategoriesComponent {
 
     this.confirmationService.confirm({
       target: $event.target,
-      message: `Are you sure you want to delete ${category.name} category?`,
+      message: `Are you sure you want to delete ${category.name} category? All related transactions will be unassigned`,
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.deleteCategory(category);
