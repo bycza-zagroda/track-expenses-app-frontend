@@ -7,17 +7,20 @@ export const ROUTES: Route[] = [
   { path: '', component: HomeComponent },
   {
     path: 'auth',
-    loadChildren: () => import('./pages/auth/auth.routes').then(m => m.AUTH_ROUTES),
+    loadChildren: () =>
+      import('./pages/auth/auth.routes').then((m) => m.AUTH_ROUTES),
   },
   {
     path: 'wallets',
-    loadChildren: () => import('./pages/wallets/wallets.routes').then(m => m.WALLETS_ROUTES),
-    canActivate: [ loggedInUserGuard ],
+    loadChildren: () =>
+      import('./pages/wallets/wallets.routes').then((m) => m.WALLETS_ROUTES),
+    canActivate: [loggedInUserGuard],
   },
   {
     path: 'reports',
-    loadChildren: () => import('./pages/reports/reports.routes').then(m => m.REPORTS_ROUTES),
-    canActivate: [ loggedInUserGuard ],
+    loadChildren: () =>
+      import('./pages/reports/reports.routes').then((m) => m.REPORTS_ROUTES),
+    canActivate: [loggedInUserGuard],
   },
   { path: '**', component: NotFoundComponent },
 ];

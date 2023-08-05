@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { IRefreshTokenResponse, ISignInPayload, ISignInResponse, ISignOnPayload } from './auth.types';
+import {
+  IRefreshTokenResponse,
+  ISignInPayload,
+  ISignInResponse,
+  ISignOnPayload,
+} from './auth.types';
 
 @Injectable({
   providedIn: 'root',

@@ -4,9 +4,9 @@ import { CommonModule, NgOptimizedImage } from '@angular/common';
 @Component({
   selector: 'teaf-ng-no-results',
   standalone: true,
-  imports: [ CommonModule, NgOptimizedImage ],
+  imports: [CommonModule, NgOptimizedImage],
   templateUrl: './no-results.component.html',
-  styleUrls: [ './no-results.component.scss' ],
+  styleUrls: ['./no-results.component.scss'],
 })
 export class NoResultsComponent {
   @Input() public title = 'No data available';

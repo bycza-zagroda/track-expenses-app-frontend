@@ -15,12 +15,17 @@ export class Wallet<IsNew extends boolean = false> {
     this.id = data.id;
     this.createdAt = data.createdAt ? parseDate(data.createdAt) : new Date();
     this.name = data.name;
-    this.description = faker.helpers.arrayElement([ faker.lorem.sentence(), null ]);
+    this.description = faker.helpers.arrayElement([
+      faker.lorem.sentence(),
+      null,
+    ]);
     this.currency = faker.finance.currencyCode();
     this.balance = Number(faker.finance.amount(-1000, 1000, 2));
   }
 
-  public static create<IsNew extends boolean = true>(data: IWalletData<IsNew>): Wallet<IsNew> {
+  public static create<IsNew extends boolean = true>(
+    data: IWalletData<IsNew>,
+  ): Wallet<IsNew> {
     return new Wallet(data);
   }
 

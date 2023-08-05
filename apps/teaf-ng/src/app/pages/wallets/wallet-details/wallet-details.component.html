@@ -4,25 +4,50 @@
   </div>
 
   <div *ngIf="showLoading" class="wallet-details__loading-container">
-    <p-progressSpinner styleClass="w-4rem h-4rem" strokeWidth="5" animationDuration=".5s"></p-progressSpinner>
+    <p-progressSpinner
+      styleClass="w-4rem h-4rem"
+      strokeWidth="5"
+      animationDuration=".5s"
+    ></p-progressSpinner>
   </div>
 
   <ng-container *ngIf="showData && wallet">
     <p-sidebar [(visible)]="categoriesVisible">
-      <teaf-ng-manage-categories [categories]="categories" (removeCategory)="onCategoryRemove($event)" (addCategory)="onCategoryAdded($event)" (updateCategory)="onCategoryUpdated($event)"></teaf-ng-manage-categories>
+      <teaf-ng-manage-categories
+        [categories]="categories"
+        (removeCategory)="onCategoryRemove($event)"
+        (addCategory)="onCategoryAdded($event)"
+        (updateCategory)="onCategoryUpdated($event)"
+      ></teaf-ng-manage-categories>
     </p-sidebar>
 
     <div class="wallet-details__actions">
-      <p-button icon="pi pi-bookmark" styleClass="p-button-sm" label="Manage categories" (click)="categoriesVisible = !categoriesVisible"></p-button>
+      <p-button
+        icon="pi pi-bookmark"
+        styleClass="p-button-sm"
+        label="Manage categories"
+        (click)="categoriesVisible = !categoriesVisible"
+      ></p-button>
     </div>
 
     <div class="wallet-details__data-container">
-      <teaf-ng-wallet-data [wallet]="wallet" ></teaf-ng-wallet-data>
-      <teaf-ng-transactions-chart *ngIf="transactions.length > 0" [incomesCount]="incomesCount" [expensesCount]="expensesCount"></teaf-ng-transactions-chart>
+      <teaf-ng-wallet-data [wallet]="wallet"></teaf-ng-wallet-data>
+      <teaf-ng-transactions-chart
+        *ngIf="transactions.length > 0"
+        [incomesCount]="incomesCount"
+        [expensesCount]="expensesCount"
+      ></teaf-ng-transactions-chart>
     </div>
 
     <div>
-      <teaf-ng-transactions-list [walletId]="wallet.id" (addTransaction)="onTransactionAdded($event)" (updateTransaction)="onTransactionUpdated($event)" (removeTransaction)="onTransactionRemove($event)" [transactions]="transactions" [categories]="categories"></teaf-ng-transactions-list>
+      <teaf-ng-transactions-list
+        [walletId]="wallet.id"
+        (addTransaction)="onTransactionAdded($event)"
+        (updateTransaction)="onTransactionUpdated($event)"
+        (removeTransaction)="onTransactionRemove($event)"
+        [transactions]="transactions"
+        [categories]="categories"
+      ></teaf-ng-transactions-list>
     </div>
   </ng-container>
 </teaf-ng-container>

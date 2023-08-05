@@ -4,8 +4,8 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'teaf-ng-reports',
   standalone: true,
-  imports: [ CommonModule ],
+  imports: [CommonModule],
   templateUrl: './reports.component.html',
-  styleUrls: [ './reports.component.scss' ],
+  styleUrls: ['./reports.component.scss'],
 })
 export class ReportsComponent {}

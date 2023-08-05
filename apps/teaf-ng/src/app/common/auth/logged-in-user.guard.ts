@@ -8,9 +8,9 @@ export const loggedInUserGuard: CanActivateFn = () => {
   const router = inject(Router);
 
   return authService.isUserLoggedIn$.pipe(
-    tap(val => {
+    tap((val) => {
       if (!val) {
-        void router.navigate([ '/auth/sign-in' ]);
+        void router.navigate(['/auth/sign-in']);
       }
     }),
   );

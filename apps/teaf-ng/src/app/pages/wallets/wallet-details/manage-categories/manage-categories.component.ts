@@ -34,7 +34,7 @@ interface ICategoryTypeOption {
     NoResultsComponent,
   ],
   templateUrl: './manage-categories.component.html',
-  styleUrls: [ './manage-categories.component.scss' ],
+  styleUrls: ['./manage-categories.component.scss'],
 })
 export class ManageCategoriesComponent {
   @Input() public categories: Category[] = [];
@@ -43,7 +43,10 @@ export class ManageCategoriesComponent {
   @Output() public removeCategory = new EventEmitter<Category>();
   @Output() public updateCategory = new EventEmitter<Category>();
 
-  public categoryTypesControl = new FormControl<TransactionType>({ value: TransactionType.Income, disabled: false }, { nonNullable: true });
+  public categoryTypesControl = new FormControl<TransactionType>(
+    { value: TransactionType.Income, disabled: false },
+    { nonNullable: true },
+  );
   public transactionTypes = TransactionType;
 
   public categoryTypesOptions: ICategoryTypeOption[] = [
@@ -55,11 +58,19 @@ export class ManageCategoriesComponent {
   public currentlyEditedCategories: Record<TServerEntityId, boolean> = {};
 
   public get hasNoIncomeCategories(): boolean {
-    return this.categories.filter((category: Category) => category.type === TransactionType.Income).length === 0;
+    return (
+      this.categories.filter(
+        (category: Category) => category.type === TransactionType.Income,
+      ).length === 0
+    );
   }
 
   public get hasNoExpenseCategories(): boolean {
-    return this.categories.filter((category: Category) => category.type === TransactionType.Expense).length === 0;
+    return (
+      this.categories.filter(
+        (category: Category) => category.type === TransactionType.Expense,
+      ).length === 0
+    );
   }
 
   public constructor(
@@ -70,7 +81,10 @@ export class ManageCategoriesComponent {
   ) {}
 
   public onCategoryRemove($event: MouseEvent, category: Category): void {
-    if ($event.target === null || this.currentlyDeletedCategories[category.id]) {
+    if (
+      $event.target === null ||
+      this.currentlyDeletedCategories[category.id]
+    ) {
       return;
     }
 

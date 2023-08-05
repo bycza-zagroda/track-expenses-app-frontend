@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { FormFieldComponent } from '../../../common/forms/form-field/form-field.component';
@@ -14,9 +19,15 @@ import { MessageService } from 'primeng/api';
 @Component({
   selector: 'teaf-ng-wallet-editor',
   standalone: true,
-  imports: [ CommonModule, ReactiveFormsModule, InputTextModule, ButtonModule, FormFieldComponent ],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    InputTextModule,
+    ButtonModule,
+    FormFieldComponent,
+  ],
   templateUrl: './wallet-editor.component.html',
-  styleUrls: [ './wallet-editor.component.scss' ],
+  styleUrls: ['./wallet-editor.component.scss'],
 })
 export class WalletEditorComponent implements OnInit {
   public isSaving = false;
@@ -24,7 +35,10 @@ export class WalletEditorComponent implements OnInit {
   public form = new FormGroup({
     name: new FormControl<string>(
       { value: '', disabled: false },
-      { nonNullable: true, validators: [ Validators.required,  Validators.maxLength(20) ] },
+      {
+        nonNullable: true,
+        validators: [Validators.required, Validators.maxLength(20)],
+      },
     ),
   });
 
@@ -35,8 +49,7 @@ export class WalletEditorComponent implements OnInit {
     private readonly dialogRef: DynamicDialogRef,
     private readonly dialogConfig: DynamicDialogConfig<{ wallet?: Wallet }>,
     private readonly messageService: MessageService,
-  ) {
-  }
+  ) {}
 
   public ngOnInit(): void {
     this.wallet = this.dialogConfig.data?.wallet;
@@ -49,7 +62,7 @@ export class WalletEditorComponent implements OnInit {
   }
 
   public save(): void {
-    markAllControlsAsDirty([ this.form ]);
+    markAllControlsAsDirty([this.form]);
 
     if (this.form.invalid) {
       return;
@@ -93,9 +106,9 @@ export class WalletEditorComponent implements OnInit {
       id: null,
     });
 
-    return this.gateway.createWallet(wallet.toPayload()).pipe(
-      map(resp => Wallet.fromResponse(resp)),
-    );
+    return this.gateway
+      .createWallet(wallet.toPayload())
+      .pipe(map((resp) => Wallet.fromResponse(resp)));
   }
 
   private updateWallet(): Observable<Wallet> {
@@ -105,8 +118,8 @@ export class WalletEditorComponent implements OnInit {
 
     const wallet = this.wallet.copy({ name: this.form.controls.name.value });
 
-    return this.gateway.updateWallet(this.wallet.id, wallet.toPayload()).pipe(
-      map(resp => Wallet.fromResponse(resp)),
-    );
+    return this.gateway
+      .updateWallet(this.wallet.id, wallet.toPayload())
+      .pipe(map((resp) => Wallet.fromResponse(resp)));
   }
 }

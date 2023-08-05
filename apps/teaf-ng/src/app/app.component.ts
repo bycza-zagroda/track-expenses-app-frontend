@@ -6,9 +6,9 @@ import { ConfirmPopupModule } from 'primeng/confirmpopup';
 
 @Component({
   standalone: true,
-  imports: [ RouterModule, LayoutComponent, ToastModule, ConfirmPopupModule ],
+  imports: [RouterModule, LayoutComponent, ToastModule, ConfirmPopupModule],
   selector: 'teaf-ng-root',
   templateUrl: './app.component.html',
-  styleUrls: [ './app.component.scss' ],
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {}

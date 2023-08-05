@@ -1,13 +1,33 @@
 <div class="wallet-editor">
   <form [formGroup]="form">
-    <teaf-ng-form-field [control]="form.controls.name" [validationMessages]="{ required: 'Name is required', maxlength: 'Name can\'t have more than 20 characters' }">
+    <teaf-ng-form-field
+      [control]="form.controls.name"
+      [validationMessages]="{
+        required: 'Name is required',
+        maxlength: 'Name can\'t have more than 20 characters'
+      }"
+    >
       <label for="name">Name</label>
-      <input type="text" id="name" pInputText formControlName="name"/>
+      <input type="text" id="name" pInputText formControlName="name" />
     </teaf-ng-form-field>
   </form>
 
   <div class="wallet-editor__actions">
-    <button class="p-button-outlined" pButton type="button" label="Cancel" [disabled]="isSaving" (click)="cancel()"></button>
-    <button pButton type="button" label="Save" [loading]="isSaving" [disabled]="isSaving || form.invalid" (click)="save()"></button>
+    <button
+      class="p-button-outlined"
+      pButton
+      type="button"
+      label="Cancel"
+      [disabled]="isSaving"
+      (click)="cancel()"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Save"
+      [loading]="isSaving"
+      [disabled]="isSaving || form.invalid"
+      (click)="save()"
+    ></button>
   </div>
 </div>

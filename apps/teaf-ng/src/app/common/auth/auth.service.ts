@@ -9,14 +9,15 @@ import { ISignInPayload, ISignOnPayload } from '../../domains/auth/auth.types';
 export class AuthService {
   public isUserLoggedIn$: Observable<boolean>;
 
-  private userLoggedInState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private userLoggedInState: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
   private readonly ACCESS_TOKEN_LC_KEY = 'accessToken';
 
-  public constructor(
-    private readonly authGateway: AuthGatewayService,
-  ) {
+  public constructor(private readonly authGateway: AuthGatewayService) {
     this.isUserLoggedIn$ = this.userLoggedInState.asObservable();
-    this.userLoggedInState.next(!!localStorage.getItem(this.ACCESS_TOKEN_LC_KEY));
+    this.userLoggedInState.next(
+      !!localStorage.getItem(this.ACCESS_TOKEN_LC_KEY),
+    );
   }
 
   public getToken(): string | null {

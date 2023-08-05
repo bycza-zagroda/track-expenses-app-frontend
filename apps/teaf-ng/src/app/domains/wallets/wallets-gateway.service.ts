@@ -26,7 +26,10 @@ export class WalletsGatewayService {
     return this.http.post<IWalletResponse>('/api/wallets', payload);
   }
 
-  public updateWallet(id: TServerEntityId, payload: IWalletPayload): Observable<IWalletResponse> {
+  public updateWallet(
+    id: TServerEntityId,
+    payload: IWalletPayload,
+  ): Observable<IWalletResponse> {
     return this.http.patch<IWalletResponse>(`/api/wallets/${id}`, payload);
   }
 }

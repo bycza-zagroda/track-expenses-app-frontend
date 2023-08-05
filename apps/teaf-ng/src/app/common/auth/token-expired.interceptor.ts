@@ -8,10 +8,9 @@ export const tokenExpiredInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((err: HttpErrorResponse) => {
-      if (err.status === 401) { // TODO: instead check for proper error code
-        return authService.refreshToken().pipe(
-          switchMap(() => next(req)),
-        );
+      if (err.status === 401) {
+        // TODO: instead check for proper error code
+        return authService.refreshToken().pipe(switchMap(() => next(req)));
       } else {
         return throwError(() => err);
       }
