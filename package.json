@@ -4,6 +4,7 @@
   "version": "0.4.0",
   "license": "MIT",
   "scripts": {
+    "start:local-backend": "nx run teaf-ng:serve --proxy-config apps/teaf-ng/proxy.local.conf.json",
     "start:remote-backend": "nx run teaf-ng:serve --proxy-config apps/teaf-ng/proxy.remote.conf.json",
     "start:mock": "nx run teaf-ng:serve --proxy-config apps/teaf-ng/proxy.mock.conf.json",
     "start:json-server": "json-server --watch  apps/teaf-ng/mock/json-server/db.js",
