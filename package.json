@@ -10,6 +10,10 @@
     "start:json-server": "json-server --watch  apps/teaf-ng/mock/json-server/db.js",
     "start:mock-json-server": "concurrently \"yarn:start:mock\" \"yarn:start:json-server\""
   },
+  "engines" : {
+    "yarn" : ">=1.22.19",
+    "node" : ">=18.0.0 <= 18.17.0"
+  },
   "private": true,
   "devDependencies": {
     "@angular-devkit/build-angular": "~15.2.0",
