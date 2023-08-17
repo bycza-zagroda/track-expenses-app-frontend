@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ICategoryResponse, ICategoryPayload, IFullCategoryResponse } from './categories.types';
+import {
+  ICategoryResponse,
+  ICategoryPayload,
+  IFullCategoryResponse,
+} from './categories.types';
 import { TServerEntityId } from '../../common/types';
 
 @Injectable({
@@ -18,15 +22,22 @@ export class CategoriesGatewayService {
     return this.http.delete<unknown>(`/api/categories/${id}`);
   }
 
-  public createCategory(payload: ICategoryPayload): Observable<ICategoryResponse> {
+  public createCategory(
+    payload: ICategoryPayload,
+  ): Observable<ICategoryResponse> {
     return this.http.post<ICategoryResponse>('/api/categories', payload);
   }
 
-  public updateCategory(id: TServerEntityId, payload: ICategoryPayload): Observable<ICategoryResponse> {
+  public updateCategory(
+    id: TServerEntityId,
+    payload: ICategoryPayload,
+  ): Observable<ICategoryResponse> {
     return this.http.patch<ICategoryResponse>(`/api/categories/${id}`, payload);
   }
 
-  public getCategoryById(id: TServerEntityId): Observable<IFullCategoryResponse> {
+  public getCategoryById(
+    id: TServerEntityId,
+  ): Observable<IFullCategoryResponse> {
     return this.http.get<IFullCategoryResponse>(`/api/categories/${id}`);
   }
 }

@@ -3,7 +3,12 @@ import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { FormFieldComponent } from '../../../../../common/forms/form-field/form-field.component';
 import { InputTextModule } from 'primeng/inputtext';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { markAllControlsAsDirty } from '../../../../../common/forms/forms.utils';
 import { map, Observable } from 'rxjs';
@@ -16,9 +21,16 @@ import { MessageService } from 'primeng/api';
 @Component({
   selector: 'teaf-ng-category-editor',
   standalone: true,
-  imports: [ CommonModule, ButtonModule, FormFieldComponent, InputTextModule, ReactiveFormsModule, RadioButtonModule ],
+  imports: [
+    CommonModule,
+    ButtonModule,
+    FormFieldComponent,
+    InputTextModule,
+    ReactiveFormsModule,
+    RadioButtonModule,
+  ],
   templateUrl: './category-editor.component.html',
-  styleUrls: [ './category-editor.component.scss' ],
+  styleUrls: ['./category-editor.component.scss'],
 })
 export class CategoryEditorComponent implements OnInit {
   public isSaving = false;
@@ -26,11 +38,14 @@ export class CategoryEditorComponent implements OnInit {
   public form = new FormGroup({
     name: new FormControl<string>(
       { value: '', disabled: false },
-      { nonNullable: true, validators: [ Validators.required,  Validators.maxLength(20) ] },
+      {
+        nonNullable: true,
+        validators: [Validators.required, Validators.maxLength(20)],
+      },
     ),
     type: new FormControl<TransactionType>(
       { value: TransactionType.Income, disabled: false },
-      { nonNullable: true, validators: [ Validators.required ] },
+      { nonNullable: true, validators: [Validators.required] },
     ),
   });
 
@@ -42,9 +57,12 @@ export class CategoryEditorComponent implements OnInit {
     private readonly gateway: CategoriesGatewayService,
     private readonly dialogRef: DynamicDialogRef,
     private readonly messageService: MessageService,
-    private readonly dialogConfig: DynamicDialogConfig<{ category?: Category, type?: TransactionType, isCategoryUsed?: boolean }>,
-  ) {
-  }
+    private readonly dialogConfig: DynamicDialogConfig<{
+      category?: Category;
+      type?: TransactionType;
+      isCategoryUsed?: boolean;
+    }>,
+  ) {}
 
   public ngOnInit(): void {
     if (this.dialogConfig.data === undefined) {
@@ -68,7 +86,7 @@ export class CategoryEditorComponent implements OnInit {
   }
 
   public save(): void {
-    markAllControlsAsDirty([ this.form ]);
+    markAllControlsAsDirty([this.form]);
 
     if (this.form.invalid) {
       return;
@@ -76,7 +94,9 @@ export class CategoryEditorComponent implements OnInit {
 
     this.isSaving = true;
 
-    const observable = this.category ? this.updateCategory() : this.createCategory();
+    const observable = this.category
+      ? this.updateCategory()
+      : this.createCategory();
 
     observable.subscribe({
       next: (category) => {
@@ -113,9 +133,9 @@ export class CategoryEditorComponent implements OnInit {
       type: this.form.controls.type.value,
     });
 
-    return this.gateway.createCategory(category.toPayload()).pipe(
-      map(resp => Category.fromResponse(resp)),
-    );
+    return this.gateway
+      .createCategory(category.toPayload())
+      .pipe(map((resp) => Category.fromResponse(resp)));
   }
 
   private updateCategory(): Observable<Category> {
@@ -128,8 +148,8 @@ export class CategoryEditorComponent implements OnInit {
       type: this.form.controls.type.value,
     });
 
-    return this.gateway.updateCategory(this.category.id, category.toPayload()).pipe(
-      map(resp => Category.fromResponse(resp)),
-    );
+    return this.gateway
+      .updateCategory(this.category.id, category.toPayload())
+      .pipe(map((resp) => Category.fromResponse(resp)));
   }
 }

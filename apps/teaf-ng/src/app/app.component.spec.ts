@@ -9,14 +9,8 @@ describe('AppComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        AppComponent,
-        RouterTestingModule,
-      ],
-      providers: [
-        MessageService,
-        ConfirmationService,
-      ],
+      imports: [AppComponent, RouterTestingModule],
+      providers: [MessageService, ConfirmationService],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AppComponent);

@@ -3,7 +3,12 @@ import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { FormFieldComponent } from '../../../../../common/forms/form-field/form-field.component';
 import { InputTextModule } from 'primeng/inputtext';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Transaction } from '../../../../../domains/transactions/transaction.model';
 import { TransactionsGatewayService } from '../../../../../domains/transactions/transactions-gateway.service';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -33,7 +38,7 @@ import { MessageService } from 'primeng/api';
     CalendarModule,
   ],
   templateUrl: './transaction-editor.component.html',
-  styleUrls: [ './transaction-editor.component.scss' ],
+  styleUrls: ['./transaction-editor.component.scss'],
 })
 export class TransactionEditorComponent implements OnInit {
   public isSaving = false;
@@ -42,22 +47,16 @@ export class TransactionEditorComponent implements OnInit {
 
   public form = new FormGroup({
     amount: new FormControl(0, {
-      validators: [
-        Validators.required,
-      ],
+      validators: [Validators.required],
       nonNullable: true,
     }),
     description: new FormControl<string | null>(null),
     date: new FormControl(new Date(), {
-      validators: [
-        Validators.required,
-      ],
+      validators: [Validators.required],
       nonNullable: true,
     }),
     type: new FormControl(TransactionType.Income, {
-      validators: [
-        Validators.required,
-      ],
+      validators: [Validators.required],
       nonNullable: true,
     }),
     category: new FormControl<TServerEntityId | null>(null, {
@@ -73,9 +72,12 @@ export class TransactionEditorComponent implements OnInit {
     private readonly gateway: TransactionsGatewayService,
     private readonly dialogRef: DynamicDialogRef,
     private readonly messageService: MessageService,
-    private readonly dialogConfig: DynamicDialogConfig<{ categories: Category[], walletId: TServerEntityId, transaction?: Transaction }>,
-  ) {
-  }
+    private readonly dialogConfig: DynamicDialogConfig<{
+      categories: Category[];
+      walletId: TServerEntityId;
+      transaction?: Transaction;
+    }>,
+  ) {}
 
   public ngOnInit(): void {
     if (this.dialogConfig.data === undefined) {
@@ -86,7 +88,9 @@ export class TransactionEditorComponent implements OnInit {
     this.categories = this.dialogConfig.data.categories;
     this.walletId = this.dialogConfig.data.walletId;
 
-    this.buildVisibleCategories(this.transaction?.type ?? TransactionType.Income);
+    this.buildVisibleCategories(
+      this.transaction?.type ?? TransactionType.Income,
+    );
 
     if (this.transaction) {
       this.form.patchValue({
@@ -98,13 +102,15 @@ export class TransactionEditorComponent implements OnInit {
       });
     }
 
-    this.form.controls.type.valueChanges.pipe(startWith(TransactionType.Income)).subscribe((type: TransactionType) => {
-      this.buildVisibleCategories(type);
-    });
+    this.form.controls.type.valueChanges
+      .pipe(startWith(TransactionType.Income))
+      .subscribe((type: TransactionType) => {
+        this.buildVisibleCategories(type);
+      });
   }
 
   public save(): void {
-    markAllControlsAsDirty([ this.form ]);
+    markAllControlsAsDirty([this.form]);
 
     if (this.form.invalid) {
       return;
@@ -112,7 +118,9 @@ export class TransactionEditorComponent implements OnInit {
 
     this.isSaving = true;
 
-    const observable = this.transaction ? this.updateTransaction() : this.createTransaction();
+    const observable = this.transaction
+      ? this.updateTransaction()
+      : this.createTransaction();
 
     observable.subscribe({
       next: (transaction) => {
@@ -153,15 +161,19 @@ export class TransactionEditorComponent implements OnInit {
       date: this.form.controls.date.value,
     });
 
-    return this.gateway.createTransaction(transaction.toPayload()).pipe(
-      map(resp => Transaction.fromResponse(resp)),
-    );
+    return this.gateway
+      .createTransaction(transaction.toPayload())
+      .pipe(map((resp) => Transaction.fromResponse(resp)));
   }
 
   private buildVisibleCategories(categoryType: TransactionType): void {
     this.visibleCategories = [
-      Category.create({ id: null, name: 'No category', type: TransactionType.Income }),
-      ...this.categories.filter(category => category.type === categoryType),
+      Category.create({
+        id: null,
+        name: 'No category',
+        type: TransactionType.Income,
+      }),
+      ...this.categories.filter((category) => category.type === categoryType),
     ];
   }
 
@@ -178,8 +190,8 @@ export class TransactionEditorComponent implements OnInit {
       date: this.form.controls.date.value,
     });
 
-    return this.gateway.updateTransaction(this.transaction.id, transaction.toPayload()).pipe(
-      map(resp => Transaction.fromResponse(resp)),
-    );
+    return this.gateway
+      .updateTransaction(this.transaction.id, transaction.toPayload())
+      .pipe(map((resp) => Transaction.fromResponse(resp)));
   }
 }

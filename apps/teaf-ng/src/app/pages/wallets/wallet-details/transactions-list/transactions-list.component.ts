@@ -17,9 +17,16 @@ import { ChipModule } from 'primeng/chip';
 @Component({
   selector: 'teaf-ng-transactions-list',
   standalone: true,
-  imports: [ CommonModule, TableModule, DatePipe, ButtonModule, NoResultsComponent, ChipModule ],
+  imports: [
+    CommonModule,
+    TableModule,
+    DatePipe,
+    ButtonModule,
+    NoResultsComponent,
+    ChipModule,
+  ],
   templateUrl: './transactions-list.component.html',
-  styleUrls: [ './transactions-list.component.scss' ],
+  styleUrls: ['./transactions-list.component.scss'],
 })
 export class TransactionsListComponent {
   @Input() public transactions: Transaction[] = [];
@@ -28,11 +35,14 @@ export class TransactionsListComponent {
   @Input() public set categories(categories: Category[]) {
     this.categoriesList = categories;
 
-    this.categoriesMap = categories.reduce<Record<TServerEntityId, Category>>((acc, category) => {
-      acc[category.id] = category;
+    this.categoriesMap = categories.reduce<Record<TServerEntityId, Category>>(
+      (acc, category) => {
+        acc[category.id] = category;
 
-      return acc;
-    }, {});
+        return acc;
+      },
+      {},
+    );
   }
 
   @Output() public addTransaction = new EventEmitter<Transaction>();
@@ -71,8 +81,14 @@ export class TransactionsListComponent {
     });
   }
 
-  public onTransactionRemove($event: MouseEvent, transaction: Transaction): void {
-    if ($event.target === null || this.currentlyDeletedTransactions[transaction.id]) {
+  public onTransactionRemove(
+    $event: MouseEvent,
+    transaction: Transaction,
+  ): void {
+    if (
+      $event.target === null ||
+      this.currentlyDeletedTransactions[transaction.id]
+    ) {
       return;
     }
 

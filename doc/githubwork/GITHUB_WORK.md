@@ -2,12 +2,11 @@
 
 # How we work with GitHub
 
-* [Starting work with the task](#starting-work-with-the-task)
+- [Starting work with the task](#starting-work-with-the-task)
   - [Git](#git)
   - [IntelliJ IDEA](#intellij-idea)
-* [Code Review](#code-review)
-* [Completing work with the task](#completing-work-with-the-task)
-
+- [Code Review](#code-review)
+- [Completing work with the task](#completing-work-with-the-task)
 
 ## Starting work with the task
 
@@ -57,39 +56,39 @@ git push
 
 ---
 
-3. Back to [your repository on GitHub](https://github.com/bycza-zagroda/track-expenses-app-backend), click **_Pull requests_** and **_New pull request_** button. 
+3. Back to [your repository on GitHub](https://github.com/bycza-zagroda/track-expenses-app-backend), click **_Pull requests_** and **_New pull request_** button.
 
 ![new pull request](images/img004_new_pull_request.png)
 
 ---
 
-4. Select project repository as base repository and **_develop_** as a base branch. 
-Head repository should point to your repository and field compare - new created branch.
-Click **_Create pull request_** button.
+4. Select project repository as base repository and **_develop_** as a base branch.
+   Head repository should point to your repository and field compare - new created branch.
+   Click **_Create pull request_** button.
 
 ![create draft pull request](images/img005_create_pull_request.png)
 
 ---
 
 5. On the next page make sure that you have correctly set branches (develop in project repository, newly created in yours),
-that you selected **_Create draft pull request_** and click on button **_Draft pull request_**.
+   that you selected **_Create draft pull request_** and click on button **_Draft pull request_**.
 
 ![create draft pull request](images/img006_draft_pull_request.png)
 
 ---
 
-Now you can start working with the task. 
+Now you can start working with the task.
 
 ## Code review
 
 Code review can be started from opened draft pull request. You can open it in several ways, below described one of it.
-Go to project page and open **_Pull requests_** page. Find yours on the list and open it. Next, click the button **_Ready for review_**. 
+Go to project page and open **_Pull requests_** page. Find yours on the list and open it. Next, click the button **_Ready for review_**.
 
 ![ready for review](images/img007_ready_for_review.png)
 
 ## Completing work with the task
 
-After completing work with the task give an information to the leader that you ask for code review. 
-Then Leader assign reviewer for your task and that you are waiting for checking. 
-If there is some cases to improve, you need to improve them and give information to your reviewer that you finished. 
+After completing work with the task give an information to the leader that you ask for code review.
+Then Leader assign reviewer for your task and that you are waiting for checking.
+If there is some cases to improve, you need to improve them and give information to your reviewer that you finished.
 Next the leaders check that your changes can be merged to upstream.

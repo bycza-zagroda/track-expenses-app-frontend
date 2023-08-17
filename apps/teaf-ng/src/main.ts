@@ -6,7 +6,11 @@ import {
 import { ROUTES } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import { importProvidersFrom } from '@angular/core';
-import { HttpClientModule, provideHttpClient, withInterceptors } from '@angular/common/http';
+import {
+  HttpClientModule,
+  provideHttpClient,
+  withInterceptors,
+} from '@angular/common/http';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { DialogService } from 'primeng/dynamicdialog';
@@ -20,7 +24,9 @@ bootstrapApplication(AppComponent, {
     provideRouter(ROUTES, withEnabledBlockingInitialNavigation()),
     importProvidersFrom(HttpClientModule),
     provideAnimations(),
-    provideHttpClient(withInterceptors([ accessTokenInterceptor, tokenExpiredInterceptor ])),
+    provideHttpClient(
+      withInterceptors([accessTokenInterceptor, tokenExpiredInterceptor]),
+    ),
     ConfirmationService,
     MessageService,
     DialogService,

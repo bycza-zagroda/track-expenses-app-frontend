@@ -5,9 +5,9 @@ import { ChartModule } from 'primeng/chart';
 @Component({
   selector: 'teaf-ng-transactions-chart',
   standalone: true,
-  imports: [ CommonModule, ChartModule ],
+  imports: [CommonModule, ChartModule],
   templateUrl: './transactions-chart.component.html',
-  styleUrls: [ './transactions-chart.component.scss' ],
+  styleUrls: ['./transactions-chart.component.scss'],
 })
 export class TransactionsChartComponent implements OnInit {
   @Input() public incomesCount!: number;
@@ -33,12 +33,18 @@ export class TransactionsChartComponent implements OnInit {
     };
 
     this.chartData = {
-      labels: [ 'Incomes', 'Expenses' ],
+      labels: ['Incomes', 'Expenses'],
       datasets: [
         {
-          data: [ this.incomesCount, this.expensesCount ],
-          backgroundColor: [ documentStyle.getPropertyValue('--green-500'), documentStyle.getPropertyValue('--red-500') ],
-          hoverBackgroundColor: [ documentStyle.getPropertyValue('--green-400'), documentStyle.getPropertyValue('--red-400') ],
+          data: [this.incomesCount, this.expensesCount],
+          backgroundColor: [
+            documentStyle.getPropertyValue('--green-500'),
+            documentStyle.getPropertyValue('--red-500'),
+          ],
+          hoverBackgroundColor: [
+            documentStyle.getPropertyValue('--green-400'),
+            documentStyle.getPropertyValue('--red-400'),
+          ],
         },
       ],
     };

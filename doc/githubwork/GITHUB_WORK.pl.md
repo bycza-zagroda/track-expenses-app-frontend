@@ -2,11 +2,11 @@
 
 # Jak pracujemy z GitHub'em
 
-* [Rozpoczęcie pracy nad zadaniem](#rozpoczęcie-pracy-nad-zadaniem)
+- [Rozpoczęcie pracy nad zadaniem](#rozpoczęcie-pracy-nad-zadaniem)
   - [Gita](#gita)
   - [IntelliJ IDEA](#intellij-idea)
-* [Code review](#code-review)
-* [Ukończenie zadania](#ukończenie-zadania)
+- [Code review](#code-review)
+- [Ukończenie zadania](#ukończenie-zadania)
 
 ## Rozpoczęcie pracy nad zadaniem
 
@@ -45,7 +45,6 @@
 ![IntelliJ Import Step 2](images/img008_intellij_import_step_2.png)
 ![IntelliJ Import Step 3](images/img008_intellij_import_step_3.png)
 
-
 ---
 
 2. W cmd lub powershellu wykonaj poniższą komendę: (flag `--allow-empty` [pozwala na commitowanie bez zmian])
@@ -63,12 +62,12 @@ git push
 
 ---
 
-4. Wybierz nowo utworzoną gałąź jako źródłową np. **_feature/task-1_** oraz 
-**_develop_** jako gałąź docelową i kliknij **_Create pull request_**.
+4. Wybierz nowo utworzoną gałąź jako źródłową np. **_feature/task-1_** oraz
+   **_develop_** jako gałąź docelową i kliknij **_Create pull request_**.
 
 ![create draft pull request](images/img005_create_pull_request.png)
 
-5. 
+5.
 
 ![create draft pull request](images/img006_draft_pull_request.png)
 

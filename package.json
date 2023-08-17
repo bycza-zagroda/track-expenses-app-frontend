@@ -8,7 +8,8 @@
     "start:remote-backend": "nx run teaf-ng:serve --proxy-config apps/teaf-ng/proxy.remote.conf.json",
     "start:mock": "nx run teaf-ng:serve --proxy-config apps/teaf-ng/proxy.mock.conf.json",
     "start:json-server": "json-server --watch  apps/teaf-ng/mock/json-server/db.js",
-    "start:mock-json-server": "concurrently \"yarn:start:mock\" \"yarn:start:json-server\""
+    "start:mock-json-server": "concurrently \"yarn:start:mock\" \"yarn:start:json-server\"",
+    "prepare": "husky install"
   },
   "engines" : {
     "yarn" : ">=1.22.19",
@@ -47,19 +48,22 @@
     "concurrently": "^8.2.0",
     "cypress": "^12.2.0",
     "eslint": "~8.15.0",
-    "eslint-config-prettier": "8.1.0",
+    "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-cypress": "^2.10.3",
+    "husky": "^8.0.0",
     "jest": "^29.4.1",
     "jest-environment-jsdom": "^29.4.1",
     "jest-environment-node": "^29.4.1",
     "jest-preset-angular": "~13.0.0",
+    "lint-staged": "^13.2.3",
     "nx": "15.9.2",
-    "prettier": "^3.0.0",
+    "prettier": "^3.0.1",
     "ts-jest": "^29.0.5",
     "ts-node": "10.9.1",
     "typescript": "~4.9.5"
   },
   "dependencies": {
+    "-": "^0.0.1",
     "@angular/animations": "~15.2.0",
     "@angular/common": "~15.2.0",
     "@angular/compiler": "~15.2.0",
@@ -78,14 +82,22 @@
     "axios": "^1.0.0",
     "chart.js": "^4.2.1",
     "date-fns": "^2.29.3",
+    "eslint-plugin-prettier": "^5.0.0",
     "json-server": "^0.17.3",
     "pg": "^8.10.0",
+    "prettier-eslint": "^15.0.1",
     "primeicons": "^6.0.1",
     "primeng": "^15.3.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "~7.8.0",
+    "save-dev": "^0.0.1-security",
     "tslib": "^2.3.0",
     "typeorm": "^0.3.15",
     "zone.js": "~0.12.0"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": [
+      "npx prettier --check"
+    ]
   }
 }

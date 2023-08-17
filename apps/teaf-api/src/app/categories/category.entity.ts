@@ -1,5 +1,5 @@
-import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
-import {TransactionType} from "../transactions/transactions.constants";
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { TransactionType } from '../transactions/transactions.constants';
 
 @Entity()
 export class Category {

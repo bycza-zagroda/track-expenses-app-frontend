@@ -1,7 +1,7 @@
-import {Column, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
-import {TransactionType} from "./transactions.constants";
-import {Category} from "../categories/category.entity";
-import {Wallet} from "../wallets/wallet.entity";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { TransactionType } from './transactions.constants';
+import { Category } from '../categories/category.entity';
+import { Wallet } from '../wallets/wallet.entity';
 
 @Entity()
 export class Transaction {
@@ -23,7 +23,7 @@ export class Transaction {
   public type: TransactionType;
 
   @Column({
-    type: "float",
+    type: 'float',
   })
   public amount: number;
 

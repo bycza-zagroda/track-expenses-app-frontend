@@ -18,6 +18,7 @@ their own GitHub repository. In the application the [_REST_](https://pl.wikipedi
 Viable Product (MVP)_](https://www.parp.gov.pl/component/content/article/52414:minimum-viable-product) model is used.
 
 ### Initial assumptions of the application
+
 - this is a small project in order to build and release with the best code practise.
 - the base of the application is able to execute the most basic actions such as:
   _create_, _read_, _update_, _delete_, aka [CRUD](https://pl.wikipedia.org/wiki/CRUD)

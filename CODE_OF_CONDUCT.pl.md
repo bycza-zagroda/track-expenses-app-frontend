@@ -8,12 +8,12 @@ Pragniemy, aby udział w projekcie był pozbawiony szykanowania ze względu na d
 
 Wśród przykładów zachowania, którego nie będziemy akceptować, są:
 
-* Używanie seksualnego języka i grafik,
-* Ataki osobiste,
-* Trollowanie i obraźliwe bądź urągające komentarze,
-* Zastraszanie, tak na forum publicznym jak i prywatne,
-* Publikowanie bez wyraźnej zgody informacji osobistych, takich jak: adres fizyczny czy elektroniczny,
-* Inne nieetyczne lub nieprofesjonalne zachowania.
+- Używanie seksualnego języka i grafik,
+- Ataki osobiste,
+- Trollowanie i obraźliwe bądź urągające komentarze,
+- Zastraszanie, tak na forum publicznym jak i prywatne,
+- Publikowanie bez wyraźnej zgody informacji osobistych, takich jak: adres fizyczny czy elektroniczny,
+- Inne nieetyczne lub nieprofesjonalne zachowania.
 
 Opiekunowie projektu zastrzegają sobie prawo do usuwania, edycji oraz odrzucania: komentarzy, commitów, kodu, wpisów na wiki oraz innych treści które łamią niniejszy Kodeks Postępowania. Ponadto zastrzegają sobie prawo do banowania — tak tymczasowego jak i stałego — osób, których zachowania uznają za: niestosowne, zastraszające, obraźliwe lub szkodliwe.
 

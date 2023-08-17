@@ -11,16 +11,14 @@ import { WalletEditorComponent } from '../../wallet-editor/wallet-editor.compone
 @Component({
   selector: 'teaf-ng-wallet-data',
   standalone: true,
-  imports: [ CommonModule, DatePipe, TagModule, ChartModule, ButtonModule ],
+  imports: [CommonModule, DatePipe, TagModule, ChartModule, ButtonModule],
   templateUrl: './wallet-data.component.html',
-  styleUrls: [ './wallet-data.component.scss' ],
+  styleUrls: ['./wallet-data.component.scss'],
 })
-export class WalletDataComponent{
+export class WalletDataComponent {
   @Input() public wallet!: Wallet;
 
-  public constructor(
-    private readonly dialogService: DialogService,
-  ) {}
+  public constructor(private readonly dialogService: DialogService) {}
 
   public onWalletEdit(): void {
     const ref = this.dialogService.open(WalletEditorComponent, {

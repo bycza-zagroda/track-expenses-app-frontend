@@ -11,9 +11,17 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'teaf-ng-header',
   standalone: true,
-  imports: [ CommonModule, ContainerComponent, RouterLink, RouterLinkActive, ButtonModule, ManageCategoriesComponent, SidebarModule ],
+  imports: [
+    CommonModule,
+    ContainerComponent,
+    RouterLink,
+    RouterLinkActive,
+    ButtonModule,
+    ManageCategoriesComponent,
+    SidebarModule,
+  ],
   templateUrl: './header.component.html',
-  styleUrls: [ './header.component.scss' ],
+  styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
   public menuVisible = false;
@@ -29,11 +37,11 @@ export class HeaderComponent implements OnInit {
   }
 
   public async goToSignIn(): Promise<void> {
-    await this.router.navigate([ '/auth/sign-in' ]);
+    await this.router.navigate(['/auth/sign-in']);
   }
 
   public async goToSignOn(): Promise<void> {
-    await this.router.navigate([ '/auth/sign-on' ]);
+    await this.router.navigate(['/auth/sign-on']);
   }
 
   public logout(): void {

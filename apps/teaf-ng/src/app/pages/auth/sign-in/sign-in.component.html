@@ -1,27 +1,61 @@
 <teaf-ng-container>
   <div class="sign-in">
     <div class="sign-in__image">
-      <img ngSrc="../../../assets/images/welcome.svg" alt="TrackExpensesApp welcoming image" fill />
+      <img
+        ngSrc="../../../assets/images/welcome.svg"
+        alt="TrackExpensesApp welcoming image"
+        fill
+      />
     </div>
 
     <div class="sign-in__form-container">
       <h2>Log In</h2>
 
       <form [formGroup]="form">
-        <teaf-ng-form-field [control]="form.controls.email" [validationMessages]="{ required: 'Email is required', pattern: 'This is not a valid email' }">
+        <teaf-ng-form-field
+          [control]="form.controls.email"
+          [validationMessages]="{
+            required: 'Email is required',
+            pattern: 'This is not a valid email'
+          }"
+        >
           <label for="email">Email</label>
-          <input type="email" id="email" pInputText formControlName="email"/>
+          <input type="email" id="email" pInputText formControlName="email" />
         </teaf-ng-form-field>
 
-        <teaf-ng-form-field [control]="form.controls.password" [validationMessages]="{ required: 'Password is required', pattern: 'This is not a valid password' }">
+        <teaf-ng-form-field
+          [control]="form.controls.password"
+          [validationMessages]="{
+            required: 'Password is required',
+            pattern: 'This is not a valid password'
+          }"
+        >
           <label for="password">Password</label>
-          <input type="password" id="password" pInputText formControlName="password"/>
+          <input
+            type="password"
+            id="password"
+            pInputText
+            formControlName="password"
+          />
         </teaf-ng-form-field>
 
-        <p-checkbox [binary]="true" name="isRememberMe" label="Remember me" formControlName="isRememberMe"></p-checkbox>
+        <p-checkbox
+          [binary]="true"
+          name="isRememberMe"
+          label="Remember me"
+          formControlName="isRememberMe"
+        ></p-checkbox>
       </form>
 
-      <button class="p-button-sm sign-in__btn" pButton type="button" label="Log in" [loading]="isSaving" [disabled]="isSaving || form.invalid" (click)="logIn()"></button>
+      <button
+        class="p-button-sm sign-in__btn"
+        pButton
+        type="button"
+        label="Log in"
+        [loading]="isSaving"
+        [disabled]="isSaving || form.invalid"
+        (click)="logIn()"
+      ></button>
     </div>
   </div>
 </teaf-ng-container>

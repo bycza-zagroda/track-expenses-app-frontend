@@ -1,4 +1,8 @@
-import { ICategoryData, ICategoryPayload, ICategoryResponse } from './categories.types';
+import {
+  ICategoryData,
+  ICategoryPayload,
+  ICategoryResponse,
+} from './categories.types';
 import { TransactionType } from '../transactions/transaction.constants';
 import { TServerEntityId } from '../../common/types';
 
@@ -13,7 +17,9 @@ export class Category<IsNew extends boolean = false> {
     this.id = data.id;
   }
 
-  public static create<IsNew extends boolean = true>(data: ICategoryData<IsNew>): Category<IsNew> {
+  public static create<IsNew extends boolean = true>(
+    data: ICategoryData<IsNew>,
+  ): Category<IsNew> {
     return new Category(data);
   }
 

@@ -38,7 +38,7 @@ import { SortByDatePipe } from '../../../common/pipes/sort-by-date.pipe';
     TransactionsChartComponent,
   ],
   templateUrl: './wallet-details.component.html',
-  styleUrls: [ './wallet-details.component.scss' ],
+  styleUrls: ['./wallet-details.component.scss'],
 })
 export class WalletDetailsComponent implements OnInit {
   public categoriesVisible = false;
@@ -89,17 +89,21 @@ export class WalletDetailsComponent implements OnInit {
         this.transactionsGateway.getTransactions(this.walletId),
         this.walletGateway.getWalletById(this.walletId),
       ]).subscribe({
-        next: ([ categoriesResp, transactionsResp, walletResp ]) => {
-          this.categories = categoriesResp.map(category => Category.fromResponse(category));
-          this.nonSortedTransactions = transactionsResp.map(transaction => Transaction.fromResponse(transaction));
+        next: ([categoriesResp, transactionsResp, walletResp]) => {
+          this.categories = categoriesResp.map((category) =>
+            Category.fromResponse(category),
+          );
+          this.nonSortedTransactions = transactionsResp.map((transaction) =>
+            Transaction.fromResponse(transaction),
+          );
           this.wallet = Wallet.fromResponse(walletResp);
 
           this.incomesCount = this.nonSortedTransactions
-            .filter(t => t.type === TransactionType.Income)
+            .filter((t) => t.type === TransactionType.Income)
             .reduce((acc, t) => acc + t.amount, 0);
 
           this.expensesCount = this.nonSortedTransactions
-            .filter(t => t.type === TransactionType.Expense)
+            .filter((t) => t.type === TransactionType.Expense)
             .reduce((acc, t) => acc + t.amount, 0);
 
           this.isLoading = false;
@@ -113,26 +117,32 @@ export class WalletDetailsComponent implements OnInit {
   }
 
   public onCategoryUpdated(category: Category): void {
-    this.categories = this.categories.map(c => c.id === category.id ? category : c);
+    this.categories = this.categories.map((c) =>
+      c.id === category.id ? category : c,
+    );
   }
 
   public onCategoryAdded(category: Category): void {
-    this.categories = [ ...this.categories, category ];
+    this.categories = [...this.categories, category];
   }
 
   public onCategoryRemove(category: Category): void {
-    this.categories = this.categories.filter(c => c.id !== category.id);
+    this.categories = this.categories.filter((c) => c.id !== category.id);
   }
 
   public onTransactionUpdated(transaction: Transaction): void {
-    this.nonSortedTransactions = this.nonSortedTransactions.map(t => t.id === transaction.id ? transaction : t);
+    this.nonSortedTransactions = this.nonSortedTransactions.map((t) =>
+      t.id === transaction.id ? transaction : t,
+    );
   }
 
   public onTransactionAdded(transaction: Transaction): void {
-    this.nonSortedTransactions = [ ...this.nonSortedTransactions, transaction ];
+    this.nonSortedTransactions = [...this.nonSortedTransactions, transaction];
   }
 
   public onTransactionRemove(transaction: Transaction): void {
-    this.nonSortedTransactions = this.nonSortedTransactions.filter(t => t.id !== transaction.id);
+    this.nonSortedTransactions = this.nonSortedTransactions.filter(
+      (t) => t.id !== transaction.id,
+    );
   }
 }

@@ -1,4 +1,8 @@
-import { ITransactionResponse, ITransactionData, ITransactionPayload } from './transaction.types';
+import {
+  ITransactionResponse,
+  ITransactionData,
+  ITransactionPayload,
+} from './transaction.types';
 import { TServerEntityId } from '../../common/types';
 import { TransactionType } from './transaction.constants';
 import { parseDate } from '../../common/dates/date-utils';
@@ -24,7 +28,9 @@ export class Transaction<IsNew extends boolean = false> {
     this.id = data.id;
   }
 
-  public static create<IsNew extends boolean = true>(data: ITransactionData<IsNew>): Transaction<IsNew> {
+  public static create<IsNew extends boolean = true>(
+    data: ITransactionData<IsNew>,
+  ): Transaction<IsNew> {
     return new Transaction(data);
   }
 

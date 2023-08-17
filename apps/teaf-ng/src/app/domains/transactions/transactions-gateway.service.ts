@@ -10,21 +10,35 @@ import { TServerEntityId } from '../../common/types';
 export class TransactionsGatewayService {
   public constructor(private readonly http: HttpClient) {}
 
-  public getTransactions(walletId: TServerEntityId): Observable<ITransactionResponse[]> {
+  public getTransactions(
+    walletId: TServerEntityId,
+  ): Observable<ITransactionResponse[]> {
     const params = new HttpParams().append('walletId', walletId);
 
-    return this.http.get<ITransactionResponse[]>('/api/transactions', { params });
+    return this.http.get<ITransactionResponse[]>('/api/transactions', {
+      params,
+    });
   }
 
-  public createTransaction(payload: ITransactionPayload): Observable<ITransactionResponse> {
+  public createTransaction(
+    payload: ITransactionPayload,
+  ): Observable<ITransactionResponse> {
     return this.http.post<ITransactionResponse>('/api/transactions', payload);
   }
 
-  public updateTransaction(transactionId: TServerEntityId, payload: ITransactionPayload): Observable<ITransactionResponse> {
-    return this.http.patch<ITransactionResponse>(`/api/transactions/${transactionId}`, payload);
+  public updateTransaction(
+    transactionId: TServerEntityId,
+    payload: ITransactionPayload,
+  ): Observable<ITransactionResponse> {
+    return this.http.patch<ITransactionResponse>(
+      `/api/transactions/${transactionId}`,
+      payload,
+    );
   }
 
-  public deleteTransaction(transactionId: TServerEntityId): Observable<unknown> {
+  public deleteTransaction(
+    transactionId: TServerEntityId,
+  ): Observable<unknown> {
     return this.http.delete(`/api/transactions/${transactionId}`);
   }
 }

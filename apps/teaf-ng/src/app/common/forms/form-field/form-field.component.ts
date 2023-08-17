@@ -5,9 +5,9 @@ import { AbstractControl } from '@angular/forms';
 @Component({
   selector: 'teaf-ng-form-field',
   standalone: true,
-  imports: [ CommonModule ],
+  imports: [CommonModule],
   templateUrl: './form-field.component.html',
-  styleUrls: [ './form-field.component.scss' ],
+  styleUrls: ['./form-field.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
 export class FormFieldComponent {
@@ -20,7 +20,7 @@ export class FormFieldComponent {
     }
 
     return Object.entries(this.validationMessages)
-      .filter(([ key ]) => this.control?.hasError(key))
+      .filter(([key]) => this.control?.hasError(key))
       .map((item) => item[1]);
   }
 }

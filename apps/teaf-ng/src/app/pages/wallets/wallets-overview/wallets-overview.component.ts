@@ -32,10 +32,13 @@ import { SortByTextPipe } from '../../../common/pipes/sort-by-text.pipe';
     SortByTextPipe,
   ],
   templateUrl: './wallets-overview.component.html',
-  styleUrls: [ './wallets-overview.component.scss' ],
+  styleUrls: ['./wallets-overview.component.scss'],
 })
 export class WalletsOverviewComponent implements OnInit {
-  public walletSearchControl = new FormControl<string>({ value: '', disabled: false } , { nonNullable: true });
+  public walletSearchControl = new FormControl<string>(
+    { value: '', disabled: false },
+    { nonNullable: true },
+  );
 
   public wallets: Wallet[] = [];
 
@@ -44,7 +47,9 @@ export class WalletsOverviewComponent implements OnInit {
   }
 
   public get showNoWalletsInfo(): boolean {
-    return this.wallets.length === 0 && !this.isLoading && !this.hasLoadingError;
+    return (
+      this.wallets.length === 0 && !this.isLoading && !this.hasLoadingError
+    );
   }
 
   public get showLoadingError(): boolean {
@@ -68,7 +73,7 @@ export class WalletsOverviewComponent implements OnInit {
 
     this.gateway.getWallets().subscribe({
       next: (wallets) => {
-        this.wallets = wallets.map(wallet => Wallet.fromResponse(wallet));
+        this.wallets = wallets.map((wallet) => Wallet.fromResponse(wallet));
         this.isLoading = false;
         this.walletSearchControl.enable();
       },
@@ -80,7 +85,7 @@ export class WalletsOverviewComponent implements OnInit {
   }
 
   public onWalletDelete(wallet: Wallet): void {
-    this.wallets = this.wallets.filter(w => w.id !== wallet.id);
+    this.wallets = this.wallets.filter((w) => w.id !== wallet.id);
   }
 
   public onWalletCreate(): void {
@@ -92,7 +97,7 @@ export class WalletsOverviewComponent implements OnInit {
     ref.onClose.subscribe({
       next: (wallet: Wallet | undefined) => {
         if (wallet) {
-          this.wallets = [ ...this.wallets, wallet ];
+          this.wallets = [...this.wallets, wallet];
         }
       },
     });

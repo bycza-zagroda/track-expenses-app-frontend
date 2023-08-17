@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import {TypeOrmModule} from "@nestjs/typeorm";
-import {Wallet} from "./wallets/wallet.entity";
-import {Transaction} from "./transactions/transaction.entity";
-import {Category} from "./categories/category.entity";
-import {ConfigModule, ConfigService} from "@nestjs/config";
-import {AppController} from "./app.controller";
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Wallet } from './wallets/wallet.entity';
+import { Transaction } from './transactions/transaction.entity';
+import { Category } from './categories/category.entity';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
