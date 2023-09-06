@@ -10,11 +10,11 @@ export class AuthGatewayService {
   public constructor(private readonly http: HttpClient) {}
 
   public signIn(_payload: ISignInPayload): Observable<ISignInResponse> {
-    return of({
-      accessToken: 'some token',
-    });
+//     return of({
+//       accessToken: 'some token',
+//     });
 
-    // return this.http.post<ISignInResponse>('/api/auth/login', payload);
+    return this.http.post<ISignInResponse>('/api/auth/login', _payload);
   }
 
   public refreshToken(): Observable<IRefreshTokenResponse> {
