@@ -1,34 +1,37 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { IWalletResponse, IWalletPayload } from './wallets.types';
 import { TServerEntityId } from '../../common/types';
+
+export const BASE_URL = '/api/wallets/';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WalletsGatewayService {
-  requestOptions = {headers:new HttpHeaders({'ngrok-skip-browser-warning':'hello'})}
-
   public constructor(private readonly http: HttpClient) {}
 
   public getWallets(): Observable<IWalletResponse[]> {
-    return this.http.get<IWalletResponse[]>('/api/wallets', this.requestOptions);
+    return this.http.get<IWalletResponse[]>(BASE_URL);
   }
 
   public getWalletById(id: TServerEntityId): Observable<IWalletResponse> {
-    return this.http.get<IWalletResponse>(`/api/wallets/${id}`, this.requestOptions);
+    return this.http.get<IWalletResponse>(`${BASE_URL}${id}`);
   }
 
   public deleteWallet(id: TServerEntityId): Observable<unknown> {
-    return this.http.delete<unknown>(`/api/wallets/${id}`, this.requestOptions);
+    return this.http.delete<unknown>(`${BASE_URL}${id}`);
   }
 
   public createWallet(payload: IWalletPayload): Observable<IWalletResponse> {
-    return this.http.post<IWalletResponse>('/api/wallets', payload, this.requestOptions);
+    return this.http.post<IWalletResponse>(BASE_URL, payload);
   }
 
-  public updateWallet(id: TServerEntityId, payload: IWalletPayload): Observable<IWalletResponse> {
-    return this.http.patch<IWalletResponse>(`/api/wallets/${id}`, payload);
+  public updateWallet(
+    id: TServerEntityId,
+    payload: IWalletPayload,
+  ): Observable<IWalletResponse> {
+    return this.http.patch<IWalletResponse>(`${BASE_URL}${id}`, payload);
   }
 }
