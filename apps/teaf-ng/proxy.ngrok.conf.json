@@ -1,6 +1,6 @@
 {
   "/api/*": {
-    "target": "https://tea-zagrodnicy.koyeb.app/api",
+    "target": "https://witty-usefully-slug.ngrok-free.app/api",
     "secure": true,
     "logLeveL": "debug",
     "changeOrigin": true,

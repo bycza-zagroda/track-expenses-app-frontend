@@ -21,7 +21,7 @@ export class CategoriesGatewayService {
   }
 
   public deleteCategory(id: TServerEntityId): Observable<unknown> {
-    return this.http.delete<unknown>(`${BASE_URL}${id}`);
+    return this.http.delete<unknown>(`${BASE_URL}/${id}`);
   }
 
   public createCategory(
@@ -34,12 +34,12 @@ export class CategoriesGatewayService {
     id: TServerEntityId,
     payload: ICategoryPayload,
   ): Observable<ICategoryResponse> {
-    return this.http.patch<ICategoryResponse>(`${BASE_URL}${id}`, payload);
+    return this.http.patch<ICategoryResponse>(`${BASE_URL}/${id}`, payload);
   }
 
   public getCategoryById(
     id: TServerEntityId,
   ): Observable<IFullCategoryResponse> {
-    return this.http.get<IFullCategoryResponse>(`${BASE_URL}${id}`);
+    return this.http.get<IFullCategoryResponse>(`${BASE_URL}/${id}`);
   }
 }

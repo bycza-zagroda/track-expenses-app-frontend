@@ -33,7 +33,7 @@ export class TransactionsGatewayService {
     payload: ITransactionPayload,
   ): Observable<ITransactionResponse> {
     return this.http.patch<ITransactionResponse>(
-      `${BASE_URL}${transactionId}`,
+      `${BASE_URL}/${transactionId}`,
       payload,
     );
   }
@@ -41,6 +41,6 @@ export class TransactionsGatewayService {
   public deleteTransaction(
     transactionId: TServerEntityId,
   ): Observable<unknown> {
-    return this.http.delete(`${BASE_URL}${transactionId}`);
+    return this.http.delete(`${BASE_URL}/${transactionId}`);
   }
 }
