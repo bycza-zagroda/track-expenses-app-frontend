@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { ITransactionPayload, ITransactionResponse } from './transaction.types';
 import { TServerEntityId } from '../../common/types';
 
-const BASE_URL = '/api/transactions';
+const BASE_URL = '/api/transactions/';
 
 @Injectable({
   providedIn: 'root',
@@ -33,7 +33,7 @@ export class TransactionsGatewayService {
     payload: ITransactionPayload,
   ): Observable<ITransactionResponse> {
     return this.http.patch<ITransactionResponse>(
-      `${BASE_URL}/${transactionId}`,
+      `${BASE_URL}${transactionId}`,
       payload,
     );
   }
@@ -41,6 +41,6 @@ export class TransactionsGatewayService {
   public deleteTransaction(
     transactionId: TServerEntityId,
   ): Observable<unknown> {
-    return this.http.delete(`${BASE_URL}/${transactionId}`);
+    return this.http.delete(`${BASE_URL}${transactionId}`);
   }
 }
