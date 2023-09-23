@@ -40,7 +40,7 @@ export class TransactionsGatewayService {
 
   public deleteTransaction(
     transactionId: TServerEntityId,
-  ): Observable<unknown> {
-    return this.http.delete(`${BASE_URL}${transactionId}`);
+  ): Observable<void> {
+    return this.http.delete<void>(`${BASE_URL}${transactionId}`);
   }
 }

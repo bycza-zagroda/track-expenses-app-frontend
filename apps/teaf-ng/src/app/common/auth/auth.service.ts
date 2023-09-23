@@ -20,7 +20,6 @@ export class AuthService {
   }
 
   public getToken(): string | null {
-    console.log(localStorage.getItem(this.ACCESS_TOKEN_LC_KEY));
     return localStorage.getItem(this.ACCESS_TOKEN_LC_KEY);
   }
 

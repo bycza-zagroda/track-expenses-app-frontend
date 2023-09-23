@@ -20,8 +20,8 @@ export class WalletsGatewayService {
     return this.http.get<IWalletResponse>(`${BASE_URL}${id}`);
   }
 
-  public deleteWallet(id: TServerEntityId): Observable<unknown> {
-    return this.http.delete<unknown>(`${BASE_URL}${id}`);
+  public deleteWallet(id: TServerEntityId): Observable<void> {
+    return this.http.delete<void>(`${BASE_URL}${id}`);
   }
 
   public createWallet(payload: IWalletPayload): Observable<IWalletResponse> {

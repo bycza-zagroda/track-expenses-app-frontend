@@ -20,8 +20,8 @@ export class CategoriesGatewayService {
     return this.http.get<ICategoryResponse[]>(BASE_URL);
   }
 
-  public deleteCategory(id: TServerEntityId): Observable<unknown> {
-    return this.http.delete<unknown>(`${BASE_URL}${id}`);
+  public deleteCategory(id: TServerEntityId): Observable<void> {
+    return this.http.delete<void>(`${BASE_URL}${id}`);
   }
 
   public createCategory(
