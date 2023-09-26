@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { IRefreshTokenResponse, ISignInPayload, ISignInResponse, ISignOnPayload } from './auth.types';
 
 @Injectable({
@@ -10,30 +10,19 @@ export class AuthGatewayService {
   public constructor(private readonly http: HttpClient) {}
 
   public signIn(_payload: ISignInPayload): Observable<ISignInResponse> {
-    return of({
-      accessToken: 'some token',
-    });
-
-    // return this.http.post<ISignInResponse>('/api/auth/login', payload);
+    return this.http.post<ISignInResponse>('/api/auth/login', _payload);
   }
 
   public refreshToken(): Observable<IRefreshTokenResponse> {
-    return of({
-      accessToken: 'some token',
-    });
-
-    // return this.http.post<IRefreshTokenResponse>('/api/auth/refresh', {});
+    return this.http.post<IRefreshTokenResponse>('/api/auth/refresh', {});
   }
 
-  public signOut(): Observable<unknown> {
-    return of({});
-
-    // return this.http.post<unknown>('/api/auth/logout', {});
+  public signOut(): Observable<void> {
+    return this.http.post<void>('/api/auth/logout', {});
   }
 
-  public signOn(payload: ISignOnPayload): Observable<unknown> {
-    return of({});
-
-    // return this.http.post<unknown>('/api/auth/register', payload);
+  public signOn(payload: ISignOnPayload): Observable<ISignOnPayload> {
+    return this.http.post<ISignOnPayload>('/api/auth/register', payload);
   }
+
 }

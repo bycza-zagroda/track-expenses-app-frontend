@@ -1,0 +1,20 @@
+{
+  "/api/*": {
+    "target": "https://witty-usefully-slug.ngrok-free.app/api",
+    "secure": true,
+    "logLeveL": "debug",
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api": ""
+    }
+  },
+  "/api-secondary/*": {
+    "target": "https://tea-zagrodnicy.koyeb.app/api",
+    "secure": true,
+    "logLeveL": "debug",
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api": ""
+    }
+  }
+}

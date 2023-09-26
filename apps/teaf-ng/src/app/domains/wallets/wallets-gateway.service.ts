@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import { IWalletResponse, IWalletPayload } from './wallets.types';
 import { TServerEntityId } from '../../common/types';
 
+export const BASE_URL = '/api/wallets/';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -11,22 +13,25 @@ export class WalletsGatewayService {
   public constructor(private readonly http: HttpClient) {}
 
   public getWallets(): Observable<IWalletResponse[]> {
-    return this.http.get<IWalletResponse[]>('/api/wallets');
+    return this.http.get<IWalletResponse[]>(BASE_URL);
   }
 
   public getWalletById(id: TServerEntityId): Observable<IWalletResponse> {
-    return this.http.get<IWalletResponse>(`/api/wallets/${id}`);
+    return this.http.get<IWalletResponse>(`${BASE_URL}${id}`);
   }
 
-  public deleteWallet(id: TServerEntityId): Observable<unknown> {
-    return this.http.delete<unknown>(`/api/wallets/${id}`);
+  public deleteWallet(id: TServerEntityId): Observable<void> {
+    return this.http.delete<void>(`${BASE_URL}${id}`);
   }
 
   public createWallet(payload: IWalletPayload): Observable<IWalletResponse> {
-    return this.http.post<IWalletResponse>('/api/wallets', payload);
+    return this.http.post<IWalletResponse>(BASE_URL, payload);
   }
 
-  public updateWallet(id: TServerEntityId, payload: IWalletPayload): Observable<IWalletResponse> {
-    return this.http.patch<IWalletResponse>(`/api/wallets/${id}`, payload);
+  public updateWallet(
+    id: TServerEntityId,
+    payload: IWalletPayload,
+  ): Observable<IWalletResponse> {
+    return this.http.patch<IWalletResponse>(`${BASE_URL}${id}`, payload);
   }
 }
